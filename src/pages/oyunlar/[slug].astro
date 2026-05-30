@@ -131,12 +131,37 @@ const hours = game.playtimeMinutes > 0
 
       <!-- Genres -->
       {game.genres?.length > 0 && (
-        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;">
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;">
           {game.genres.map((g: string) => (
             <span style="font-size: 12px; background: #1a1a1a; border: 1px solid #222; color: #888; padding: 3px 10px;">{g}</span>
           ))}
         </div>
       )}
+
+      <!-- External Links -->
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+        {game.steamAppId && (
+          <a href={`https://www.steamdb.info/app/${game.steamAppId}/`} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; display: flex; align-items: center; gap: 6px;"
+            onmouseover="this.style.borderColor='#e5c46b';this.style.color='#e5c46b'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            SteamDB ↗
+          </a>
+        )}
+        {game.steamAppId && (
+          <a href={`https://store.steampowered.com/app/${game.steamAppId}/`} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
+            onmouseover="this.style.borderColor='#4a9eed';this.style.color='#4a9eed'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            Steam ↗
+          </a>
+        )}
+        {game.igdbId && (
+          <a href={`https://www.igdb.com/games/${game.slug.replace(/-+/g, '-')}`} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
+            onmouseover="this.style.borderColor='#9b59b6';this.style.color='#9b59b6'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            IGDB ↗
+          </a>
+        )}
+      </div>
 
       <!-- Summary -->
       {game.summary && (
