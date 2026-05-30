@@ -32,9 +32,9 @@ const stats = {
 <Layout title="Game Archive" description="KarbonGameStudios 1,640 game archive — backlog, active and completed games.">
 
   <div style="margin-bottom: 40px;">
-    <p data-i18n="archive.title" style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Game Archive</p>
-    <h1 data-i18n="nav.games" style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Games</h1>
-    <p data-i18n="archive.desc" style="font-size: 15px; color: #666; margin: 0;">Full library. Played, waiting, completed.</p>
+    <p data-i18n="archive.title" style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Oyun Arşivi</p>
+    <h1 data-i18n="nav.games" style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Oyunlar</h1>
+    <p data-i18n="archive.desc" style="font-size: 15px; color: #666; margin: 0;">Tüm kütüphane. Oynanan, bekleyen, tamamlanan.</p>
   </div>
 
   <!-- Stats -->
@@ -59,21 +59,21 @@ const stats = {
       type="text"
       id="search"
       data-i18n-placeholder="archive.search"
-      placeholder="Search games..."
+      placeholder="Oyun ara..."
       style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; flex: 1; min-width: 200px; font-family: inherit;"
     />
     <select id="statusFilter" style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; font-family: inherit;">
-      <option value="" data-i18n="archive.allStatus">All Statuses</option>
-      <option value="active" data-i18n="archive.active">Active</option>
+      <option value="" data-i18n="archive.allStatus">Tüm Durumlar</option>
+      <option value="active" data-i18n="archive.active">Aktif</option>
       <option value="backlog" data-i18n="archive.backlog">Backlog</option>
-      <option value="paused" data-i18n="archive.paused">Paused</option>
-      <option value="completed" data-i18n="archive.completed">Completed</option>
+      <option value="paused" data-i18n="archive.paused">Duraklatıldı</option>
+      <option value="completed" data-i18n="archive.completed">Tamamlandı</option>
     </select>
     <select id="platformFilter" style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; font-family: inherit;">
-      <option value="" data-i18n="archive.allPlatforms">All Platforms</option>
+      <option value="" data-i18n="archive.allPlatforms">Tüm Platformlar</option>
       {storePlatforms.map(p => <option value={p.toLowerCase()}>{p}</option>)}
     </select>
-    <span style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; white-space: nowrap;"><span id="count">{games.length}</span> <span data-i18n="archive.gamesCount">games</span></span>
+    <span style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; white-space: nowrap;"><span id="count">{games.length}</span> <span data-i18n="archive.gamesCount">oyun</span></span>
   </div>
 
   <!-- Game Grid -->
@@ -123,7 +123,7 @@ const stats = {
 
   <!-- No results -->
   <div id="noResults" style="display: none; border: 1px solid #222; padding: 48px; text-align: center; color: #444; font-family: 'JetBrains Mono', monospace; font-size: 14px; margin-top: 1px;">
-    <span data-i18n="archive.noResults">no results found</span>
+    <span data-i18n="archive.noResults">sonuç bulunamadı</span>
   </div>
 
 </Layout>

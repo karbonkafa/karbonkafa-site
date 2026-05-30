@@ -28,13 +28,13 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
         karbon<span style="color: #e5c46b;">kafa</span>
       </a>
       <div style="display: flex; align-items: center; gap: 28px; font-size: 14px; color: #666;">
-        <a href="/games" data-i18n="nav.games" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.en['nav.games']}</a>
-        <a href="/guides" data-i18n="nav.guides" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.en['nav.guides']}</a>
-        <a href="/news" data-i18n="nav.news" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.en['nav.news']}</a>
+        <a href="/games" data-i18n="nav.games" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.games']}</a>
+        <a href="/guides" data-i18n="nav.guides" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.guides']}</a>
+        <a href="/news" data-i18n="nav.news" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.news']}</a>
         <!-- Lang toggle -->
-        <button id="langToggle" style="background: none; border: 1px solid #333; color: #666; font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; transition: all 0.15s;"
-          onmouseover="this.style.borderColor='#e5c46b';this.style.color='#e5c46b'"
-          onmouseout="this.style.borderColor='#333';this.style.color='#666'">
+        <button id="langToggle" style="background: none; border: 1px solid #e5c46b44; color: #e5c46b; font-size: 11px; padding: 3px 10px; cursor: pointer; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; transition: all 0.15s;"
+          onmouseover="this.style.background='#e5c46b22'"
+          onmouseout="this.style.background='none'">
           EN
         </button>
       </div>
@@ -53,7 +53,7 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
 <script define:vars={{ translations: t }}>
   const btn = document.getElementById('langToggle');
   const html = document.getElementById('html-root');
-  let lang = localStorage.getItem('lang') || 'en';
+  let lang = localStorage.getItem('lang') || 'tr';
 
   function applyLang(l) {
     lang = l;
