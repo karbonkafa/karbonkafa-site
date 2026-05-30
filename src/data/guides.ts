@@ -1,5 +1,5 @@
 export const guides: Record<string, { path: string; trophy: string; missable: number; hours: string }> = {
-  "the-witcher-3-wild-hunt-game-of-the-year-edition': {
+  'the-witcher-3-wild-hunt-game-of-the-year-edition': {
     path: '/guides/witcher-3',
     trophy: 'Platinum',
     missable: 19,
