@@ -32,23 +32,23 @@ const stats = {
 <Layout title="Oyun Arşivi" description="KarbonGameStudios 1.640 oyunluk arşiv — backlog, aktif ve tamamlanan oyunlar.">
 
   <div style="margin-bottom: 40px;">
-    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Oyun Arşivi</p>
-    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Oyunlar</h1>
-    <p style="font-size: 15px; color: #666; margin: 0;">Tüm kütüphane. Oynanan, bekleyen, tamamlanan.</p>
+    <p data-i18n="archive.title" style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Oyun Arşivi</p>
+    <h1 data-i18n="nav.games" style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Oyunlar</h1>
+    <p data-i18n="archive.desc" style="font-size: 15px; color: #666; margin: 0;">Tüm kütüphane. Oynanan, bekleyen, tamamlanan.</p>
   </div>
 
   <!-- Stats -->
   <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; border: 1px solid #222; margin-bottom: 40px;">
     {[
-      { label: 'Toplam', value: stats.total, color: '#e5e5e5' },
-      { label: 'Aktif', value: stats.active, color: '#22c55e' },
-      { label: 'Backlog', value: stats.backlog, color: '#666' },
-      { label: 'Duraklatıldı', value: stats.paused, color: '#eab308' },
-      { label: 'Tamamlandı', value: stats.completed, color: '#e5c46b' },
+      { key: 'archive.total', label: 'Toplam', value: stats.total, color: '#e5e5e5' },
+      { key: 'archive.active', label: 'Aktif', value: stats.active, color: '#22c55e' },
+      { key: 'archive.backlog', label: 'Backlog', value: stats.backlog, color: '#666' },
+      { key: 'archive.paused', label: 'Duraklatıldı', value: stats.paused, color: '#eab308' },
+      { key: 'archive.completed', label: 'Tamamlandı', value: stats.completed, color: '#e5c46b' },
     ].map(s => (
       <div style="padding: 20px 16px; background: #111; text-align: center;">
         <p style={`font-size: 24px; font-weight: 600; margin: 0 0 4px; color: ${s.color}; font-family: 'JetBrains Mono', monospace;`}>{s.value}</p>
-        <p style="font-size: 11px; color: #444; margin: 0; text-transform: uppercase; letter-spacing: 0.08em;">{s.label}</p>
+        <p data-i18n={s.key} style="font-size: 11px; color: #444; margin: 0; text-transform: uppercase; letter-spacing: 0.08em;">{s.label}</p>
       </div>
     ))}
   </div>
@@ -58,15 +58,16 @@ const stats = {
     <input
       type="text"
       id="search"
+      data-i18n-placeholder="archive.search"
       placeholder="Oyun ara..."
       style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; flex: 1; min-width: 200px; font-family: inherit;"
     />
     <select id="statusFilter" style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; font-family: inherit;">
-      <option value="">Tüm Durumlar</option>
-      <option value="active">Aktif</option>
-      <option value="backlog">Backlog</option>
-      <option value="paused">Duraklatıldı</option>
-      <option value="completed">Tamamlandı</option>
+      <option value="" data-i18n="archive.allStatus">Tüm Durumlar</option>
+      <option value="active" data-i18n="archive.active">Aktif</option>
+      <option value="backlog" data-i18n="archive.backlog">Backlog</option>
+      <option value="paused" data-i18n="archive.paused">Duraklatıldı</option>
+      <option value="completed" data-i18n="archive.completed">Tamamlandı</option>
     </select>
     <select id="platformFilter" style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; font-family: inherit;">
       <option value="">Tüm Platformlar</option>
