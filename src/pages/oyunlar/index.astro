@@ -88,7 +88,7 @@ const stats = {
       >
         {game.coverUrl ? (
           <img
-            src={game.coverUrl}
+            src={game.coverUrl?.replace('t_cover_big/', 't_cover_big_2x/')}
             alt={game.title}
             loading="lazy"
             style="width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.85;"

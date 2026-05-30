@@ -50,7 +50,7 @@ const hours = game.playtimeMinutes > 0
     <div>
       {game.coverUrl ? (
         <img
-          src={game.coverUrl}
+          src={game.coverUrl?.replace('t_cover_big/', 't_cover_big_2x/')}
           alt={game.title}
           style="width: 200px; aspect-ratio: 3/4; object-fit: cover; display: block; border: 1px solid #222;"
         />
