@@ -67,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (!updateRes.ok) {
-    return new Response(JSON.stringify({ error: 'GitHub write error" }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'GitHub write error' }), { status: 500 });
   }
 
   return new Response(JSON.stringify({ ok: true, review: currentContent[slug] }), { status: 200 });

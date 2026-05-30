@@ -151,6 +151,6 @@ export const t: Record<Lang, Record<string, string>> = {
     'archive.active': 'Active',
     'archive.backlog': 'Backlog',
     'archive.paused': 'Paused',
-    'archive.completed': 'Completed",
+    'archive.completed': 'Completed',
   },
 };

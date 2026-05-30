@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (!res.ok) {
-    return new Response(JSON.stringify({ error: 'API error" }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'API error' }), { status: 500 });
   }
 
   const data = await res.json();
