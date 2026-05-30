@@ -261,7 +261,7 @@ const filteredWebsites = igdb.websites
 
     <div style="padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;">
       <p id="reviewStatus" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">
-        {review.overall ? `updated ${new Date(review.updatedAt).toLocaleDateString('tr-TR')}` : 'not reviewed yet'}
+        {review.overall ? `updated ${new Date(review.updatedAt).toLocaleDateString('en-US')}` : 'not reviewed yet'}
       </p>
       <button id="saveReview" data-slug={game.slug} style="background: #e5c46b; color: #0a0a0a; border: none; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
         Save
@@ -580,8 +580,8 @@ const filteredWebsites = igdb.websites
       const data = await res.json();
       if (data.ok) {
         const overall = data.review.overall;
-        statusEl.textContent = `kaydedildi — ${new Date().toLocaleDateString('tr-TR')}`;
-        const overallEl = document.querySelector('[data-overall]") as HTMLElement;
+        statusEl.textContent = `saved — ${new Date().toLocaleDateString('en-US')}`;
+        const overallEl = document.querySelector('[data-overall]') as HTMLElement;
         if (overallEl) overallEl.textContent = String(overall);
       } else {
         statusEl.textContent = 'an error occurred';
