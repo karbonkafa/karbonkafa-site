@@ -106,24 +106,33 @@ const hours = game.playtimeMinutes > 0
             <p style="font-size: 14px; margin: 0;">{game.releaseYear}</p>
           </div>
         )}
-        {game.metacriticScore && (
+        {igdb.engines?.length > 0 && (
           <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Metacritic</p>
-            <p style={`font-size: 14px; margin: 0; color: ${game.metacriticScore >= 80 ? '#22c55e' : game.metacriticScore >= 60 ? '#eab308' : '#ef4444'};`}>
-              {game.metacriticScore}
-            </p>
+            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Motor</p>
+            <p style="font-size: 14px; margin: 0;">{igdb.engines.join(', ')}</p>
+          </div>
+        )}
+        {(igdb.franchises?.length > 0 || igdb.collections?.length > 0) && (
+          <div style="padding: 12px 16px; background: #111;">
+            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Seri</p>
+            <p style="font-size: 14px; margin: 0;">{[...(igdb.franchises||[]), ...(igdb.collections||[])].filter((v,i,a)=>a.indexOf(v)===i).join(', ')}</p>
+          </div>
+        )}
+        {igdb.totalRating && (
+          <div style="padding: 12px 16px; background: #111;">
+            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">IGDB Puanı</p>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="flex: 1; height: 3px; background: #1a1a1a; border-radius: 2px;">
+                <div style={`height: 100%; border-radius: 2px; background: ${igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444'}; width: ${igdb.totalRating}%;`}></div>
+              </div>
+              <span style={`font-size: 14px; color: ${igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444'};`}>{igdb.totalRating}</span>
+            </div>
           </div>
         )}
         {hours && (
           <div style="padding: 12px 16px; background: #111;">
             <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Oynanan Süre</p>
             <p style="font-size: 14px; margin: 0; color: #e5c46b;">{hours}</p>
-          </div>
-        )}
-        {game.metacriticScore && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Metacritic</p>
-            <p style={`font-size: 14px; margin: 0; color: ${game.metacriticScore >= 80 ? '#22c55e' : game.metacriticScore >= 60 ? '#eab308' : '#ef4444'};`}>{game.metacriticScore}</p>
           </div>
         )}
         {review.overall && (
@@ -281,6 +290,73 @@ const hours = game.playtimeMinutes > 0
     </div>
   )}
 
+  <!-- Keywords -->
+  {igdb.keywords?.length > 0 && (
+    <div style="margin-bottom: 32px; display: flex; gap: 6px; flex-wrap: wrap;">
+      {igdb.keywords.map((k: string) => (
+        <span style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px;">{k}</span>
+      ))}
+    </div>
+  )}
+
+  <!-- DLC & Expansions -->
+  {(igdb.expansions?.length > 0 || igdb.dlcs?.length > 0) && (
+    <div style="margin-bottom: 48px; border: 1px solid #222;">
+      <div style="padding: 14px 20px; border-bottom: 1px solid #222;">
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;">İçerik Genişletmeleri</p>
+      </div>
+      {igdb.expansions?.map((e: any) => (
+        <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <p style="font-size: 14px; margin: 0;">{e.name}</p>
+          <span style="font-size: 11px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; white-space: nowrap;">Expansion</span>
+        </div>
+      ))}
+      {igdb.dlcs?.map((d: any) => (
+        <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <p style="font-size: 14px; margin: 0;">{d.name}</p>
+          <span style="font-size: 11px; color: #666; font-family: 'JetBrains Mono', monospace; white-space: nowrap;">DLC</span>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <!-- Language Support -->
+  {(igdb.languages?.audio?.length > 0 || igdb.languages?.subtitles?.length > 0) && (
+    <div style="margin-bottom: 48px; border: 1px solid #222;">
+      <div style="padding: 14px 20px; border-bottom: 1px solid #222;">
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;">Dil Desteği</p>
+      </div>
+      {igdb.languages?.audio?.length > 0 && (
+        <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Seslendirme</span>
+          <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.audio.join(' · ')}</p>
+        </div>
+      )}
+      {igdb.languages?.subtitles?.length > 0 && (
+        <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Altyazı</span>
+          <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.subtitles.join(' · ')}</p>
+        </div>
+      )}
+    </div>
+  )}
+
+  <!-- Websites -->
+  {igdb.websites && Object.keys(igdb.websites).length > 0 && (
+    <div style="margin-bottom: 48px; display: flex; gap: 8px; flex-wrap: wrap;">
+      {Object.entries(igdb.websites as Record<string, string>)
+        .filter(([cat]) => ['official','wikipedia','reddit','discord','youtube','twitch'].includes(cat))
+        .map(([cat, url]) => (
+          <a href={url} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; text-transform: capitalize;"
+            onmouseover="this.style.borderColor='#444';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            {cat} ↗
+          </a>
+        ))
+      }
+    </div>
+  )}
+
   <!-- Trailer -->
   {igdb.videos?.length > 0 && (
     <div style="margin-bottom: 48px;">
@@ -294,6 +370,22 @@ const hours = game.playtimeMinutes > 0
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         ></iframe>
+      </div>
+    </div>
+  )}
+
+  <!-- Artworks -->
+  {igdb.artworks?.length > 0 && (
+    <div style="margin-bottom: 48px;">
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">Sanat Eserleri</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; border: 1px solid #222;">
+        {igdb.artworks.map((id: string) => (
+          <a href={`https://images.igdb.com/igdb/image/upload/t_1080p/${id}.jpg`} target="_blank" rel="noopener" style="display: block; aspect-ratio: 16/9; overflow: hidden;">
+            <img src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${id}.jpg`} loading="lazy"
+              style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s;"
+              onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'" />
+          </a>
+        ))}
       </div>
     </div>
   )}
