@@ -59,12 +59,9 @@ const apps = [
         onmouseover="this.style.background='#0a1020'" onmouseout="this.style.background='#0d0d12'">
         ▶ BAŞLAT
       </button>
-      <div style="flex: 1; min-width: 160px;">
-        <p style="font-family:'VT323',monospace;font-size:16px;color:#888899;margin:0 0 2px;letter-spacing:0.04em;">90'lar · Eurodance · Pop · Rock · R&B</p>
-        <div id="radio-status" style="display:flex;align-items:center;gap:6px;">
-          <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
-          <span id="radio-label" style="font-family:'VT323',monospace;font-size:14px;color:#444455;letter-spacing:0.04em;">HAZIR</span>
-        </div>
+      <div id="radio-status" style="display:flex;align-items:center;gap:6px;">
+        <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
+        <span id="radio-label" style="font-family:'VT323',monospace;font-size:15px;color:#555566;letter-spacing:0.04em;">HAZIR</span>
       </div>
       <input id="radio-vol" type="range" min="0" max="100" value="70"
         style="width:80px;accent-color:#3b82f6;flex-shrink:0;" />
@@ -228,8 +225,8 @@ const apps = [
     align-items: start;
   }
   .bento-apps  { grid-area: apps; }
-  .bento-lists { grid-area: lists; }
-  .bento-news  { grid-area: news; }
+  .bento-lists { grid-area: lists; margin-top: 8px; }
+  .bento-news  { grid-area: news; margin-top: 8px; }
   .bento-right { grid-area: right; }
   .bento-quiz  { grid-area: quiz; }
   .bento-gta   { grid-area: gta; }
