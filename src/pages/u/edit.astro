@@ -1,0 +1,154 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import { supabase } from '../../lib/supabase';
+
+// Require auth — we'll check client-side since this is static-ish
+---
+
+<Layout title="Profili Düzenle">
+  <div style="max-width: 480px; margin: 0 auto;">
+
+    <div style="margin-bottom: 40px;">
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 10px;">Hesap</p>
+      <h1 style="font-size: 26px; font-weight: 600; letter-spacing: -0.03em; margin: 0;">Profili Düzenle</h1>
+    </div>
+
+    <div id="authWall" style="display: none; text-align: center; padding: 48px 0; color: #444; font-family: 'JetBrains Mono', monospace;">
+      <p style="margin: 0 0 16px;">Giriş yapman gerekiyor.</p>
+      <a href="/auth/login" style="color: #e5c46b; text-decoration: none;">Giriş Yap →</a>
+    </div>
+
+    <div id="editForm" style="display: none;">
+
+      <!-- Avatar preview -->
+      <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 32px; padding: 20px; background: #111; border: 1px solid #1a1a1a;">
+        <div id="avatarPreview" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; background: #222; border: 2px solid #333; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: #e5c46b;"></div>
+        <div>
+          <p style="font-size: 13px; color: #888; margin: 0 0 6px;">Profil fotoğrafın Discord/Google giriş bilgilerinden geliyor.</p>
+          <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">Değiştirmek için farklı bir hesapla giriş yap.</p>
+        </div>
+      </div>
+
+      <!-- Display name -->
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Görünen Ad</label>
+        <input id="displayName" type="text" placeholder="Görünen adın"
+          style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
+          onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'" />
+      </div>
+
+      <!-- Username -->
+      <div style="margin-bottom: 32px;">
+        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Kullanıcı Adı <span style="color: #2a2a2a;">(@username)</span></label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #444; font-size: 14px;">@</span>
+          <input id="username" type="text" placeholder="kullanici_adi"
+            style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px 12px 28px; font-size: 14px; font-family: 'JetBrains Mono', monospace; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
+            onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'"
+            oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" />
+        </div>
+        <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 6px 0 0;">Sadece harf, rakam ve alt çizgi. Profil URL'in: /u/[kullanıcı adın]</p>
+      </div>
+
+      <!-- Save -->
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="saveBtn"
+          style="background: #e5c46b; border: none; color: #0a0a0a; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;"
+          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Kaydet
+        </button>
+        <p id="saveStatus" style="font-size: 12px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;"></p>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  let currentUser: any = null;
+  let currentUsername = '';
+
+  async function init() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      document.getElementById('authWall')!.style.display = 'block';
+      return;
+    }
+    currentUser = user;
+
+    const { data: profile } = await supabase.from('profiles')
+      .select('*').eq('id', user.id).single();
+
+    if (!profile) return;
+    currentUsername = profile.username;
+
+    const displayEl = document.getElementById('displayName') as HTMLInputElement;
+    const usernameEl = document.getElementById('username') as HTMLInputElement;
+    const avatarEl = document.getElementById('avatarPreview')!;
+
+    displayEl.value = profile.display_name || '';
+    usernameEl.value = profile.username || '';
+
+    if (profile.avatar_url) {
+      avatarEl.innerHTML = `<img src="${profile.avatar_url}" style="width:100%;height:100%;object-fit:cover;" />`;
+    } else {
+      avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
+    }
+
+    document.getElementById('editForm')!.style.display = 'block';
+  }
+
+  document.getElementById('saveBtn')?.addEventListener('click', async () => {
+    if (!currentUser) return;
+    const displayName = (document.getElementById('displayName') as HTMLInputElement).value.trim();
+    const username = (document.getElementById('username') as HTMLInputElement).value.trim();
+    const status = document.getElementById('saveStatus')!;
+    const btn = document.getElementById('saveBtn') as HTMLButtonElement;
+
+    if (!username) { status.textContent = 'Kullanıcı adı boş olamaz.'; return; }
+    if (username.length < 3) { status.textContent = 'En az 3 karakter.'; return; }
+
+    btn.textContent = 'Kaydediliyor...';
+    btn.disabled = true;
+
+    // Check username uniqueness if changed
+    if (username !== currentUsername) {
+      const { data: existing } = await supabase.from('profiles')
+        .select('id').eq('username', username).single();
+      if (existing) {
+        status.textContent = 'Bu kullanıcı adı alınmış.';
+        status.style.color = '#ef4444';
+        btn.textContent = 'Kaydet';
+        btn.disabled = false;
+        return;
+      }
+    }
+
+    const { error } = await supabase.from('profiles').update({
+      display_name: displayName || username,
+      username,
+    }).eq('id', currentUser.id);
+
+    if (error) {
+      status.textContent = 'Hata: ' + error.message;
+      status.style.color = '#ef4444';
+    } else {
+      status.textContent = '✓ Kaydedildi';
+      status.style.color = '#22c55e';
+      currentUsername = username;
+      setTimeout(() => { window.location.href = `/u/${username}`; }, 800);
+    }
+
+    btn.textContent = 'Kaydet';
+    btn.disabled = false;
+  });
+
+  init();
+</script>
