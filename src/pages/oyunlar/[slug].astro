@@ -141,6 +141,28 @@ const hours = game.playtimeMinutes > 0
             <p style="font-size: 14px; margin: 0; color: #e5c46b; font-weight: 600;">{review.overall}/10</p>
           </div>
         )}
+        <a href={`https://howlongtobeat.com/?q=${encodeURIComponent(game.title)}`} target="_blank" rel="noopener"
+          style="padding: 12px 16px; background: #111; display: block; grid-column: 1 / -1; transition: background 0.15s;"
+          onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
+          <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 6px; font-family: 'JetBrains Mono', monospace;">Tamamlama Süresi</p>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+              <div>
+                <p style="font-size: 10px; color: #444; margin: 0 0 2px; font-family: 'JetBrains Mono', monospace;">Ana Hikaye</p>
+                <p style="font-size: 13px; color: #888; margin: 0;" id="hltb-main">—</p>
+              </div>
+              <div>
+                <p style="font-size: 10px; color: #444; margin: 0 0 2px; font-family: 'JetBrains Mono', monospace;">Ana + Yan</p>
+                <p style="font-size: 13px; color: #888; margin: 0;" id="hltb-extra">—</p>
+              </div>
+              <div>
+                <p style="font-size: 10px; color: #444; margin: 0 0 2px; font-family: 'JetBrains Mono', monospace;">%100</p>
+                <p style="font-size: 13px; color: #888; margin: 0;" id="hltb-complete">—</p>
+              </div>
+            </div>
+            <span style="font-size: 11px; color: #e8a838; font-family: 'JetBrains Mono', monospace;">HowLongToBeat ↗</span>
+          </div>
+        </a>
       </div>
 
       <!-- Genres -->
@@ -152,58 +174,44 @@ const hours = game.playtimeMinutes > 0
         </div>
       )}
 
-      <!-- External Links -->
-      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
-        {game.stores?.steam && (
-          <a href={`https://www.steamdb.info/app/${game.stores.steam.uid}/`} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#e5c46b';this.style.color='#e5c46b'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            SteamDB ↗
-          </a>
-        )}
-        {game.stores?.steam && (
-          <a href={`https://store.steampowered.com/app/${game.stores.steam.uid}/`} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#4a9eed';this.style.color='#4a9eed'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            Steam ↗
-          </a>
-        )}
-        {game.stores?.epic?.url && (
-          <a href={game.stores.epic.url} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#333';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            Epic ↗
-          </a>
-        )}
-        {game.stores?.gog?.url && (
-          <a href={game.stores.gog.url} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#a1253a';this.style.color='#a1253a'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            GOG ↗
-          </a>
-        )}
-        {game.stores?.psn?.url && (
-          <a href={game.stores.psn.url} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#0072ce';this.style.color='#0072ce'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            PSN ↗
-          </a>
-        )}
-        {game.stores?.xbox?.url && (
-          <a href={game.stores.xbox.url} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#107c10';this.style.color='#107c10'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            Xbox ↗
-          </a>
-        )}
-        {game.igdbId && (
-          <a href={`https://www.igdb.com/games/${game.slug}`} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
-            onmouseover="this.style.borderColor='#9b59b6';this.style.color='#9b59b6'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            IGDB ↗
-          </a>
-        )}
-      </div>
+      <!-- Links -->
+      {(() => {
+        const q = encodeURIComponent(game.title);
+        const steamId = game.stores?.steam?.uid;
+        type LinkItem = { label: string; url: string; color: string };
+        const storeLinks: LinkItem[] = [
+          ...(steamId ? [
+            { label: 'Steam', url: `https://store.steampowered.com/app/${steamId}/`, color: '#4a9eed' },
+            { label: 'SteamDB', url: `https://www.steamdb.info/app/${steamId}/`, color: '#e5c46b' },
+          ] : []),
+          ...(game.stores?.epic?.url ? [{ label: 'Epic', url: game.stores.epic.url, color: '#aaa' }] : []),
+          ...(game.stores?.gog?.url ? [{ label: 'GOG', url: game.stores.gog.url, color: '#a1253a' }] : []),
+          ...(game.stores?.psn?.url ? [{ label: 'PSN', url: game.stores.psn.url, color: '#0072ce' }] : []),
+          ...(game.stores?.xbox?.url ? [{ label: 'Xbox', url: game.stores.xbox.url, color: '#107c10' }] : []),
+        ];
+        const refLinks: LinkItem[] = [
+          { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${q}`, color: '#e8a838' },
+          ...(steamId ? [{ label: 'ProtonDB', url: `https://www.protondb.com/app/${steamId}`, color: '#c06000' }] : []),
+          { label: 'IsThereAnyDeal', url: `https://isthereanydeal.com/search/?q=${q}`, color: '#60a050' },
+          { label: 'OpenCritic', url: `https://opencritic.com/search#${q}`, color: '#f0a000' },
+          ...(game.igdbId ? [{ label: 'IGDB', url: `https://www.igdb.com/games/${game.slug}`, color: '#9b59b6' }] : []),
+        ];
+        const allLinks = [...storeLinks, ...refLinks];
+        return allLinks.length > 0 ? (
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              {allLinks.map(link => (
+                <a href={link.url} target="_blank" rel="noopener"
+                  style={`font-size: 11px; border: 1px solid #222; color: #555; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;`}
+                  onmouseover={`this.style.borderColor='${link.color}';this.style.color='${link.color}'`}
+                  onmouseout="this.style.borderColor='#222';this.style.color='#555'">
+                  {link.label} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : null;
+      })()}
 
       <!-- Summary -->
       {game.summary && (
