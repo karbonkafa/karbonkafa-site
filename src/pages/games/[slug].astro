@@ -249,6 +249,79 @@ const filteredWebsites = igdb.websites
     </div>
   </div>
 
+  <!-- Language Support -->
+  {(igdb.languages?.audio?.length > 0 || igdb.languages?.subtitles?.length > 0) && (
+    <div style="margin-bottom: 24px; border: 1px solid #222;">
+      <div style="padding: 12px 20px; border-bottom: 1px solid #222;">
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.languages">Dil Desteği</p>
+      </div>
+      {igdb.languages?.audio?.length > 0 && (
+        <div style="padding: 10px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;" data-i18n="game.audio">Audio</span>
+          <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.audio.join(' · ')}</p>
+        </div>
+      )}
+      {igdb.languages?.subtitles?.length > 0 && (
+        <div style="padding: 10px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;" data-i18n="game.subtitles">Subtitles</span>
+          <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.subtitles.join(' · ')}</p>
+        </div>
+      )}
+    </div>
+  )}
+
+  <!-- Tags: Keywords + Themes + Modes + Perspectives -->
+  {(igdb.keywords?.length > 0 || igdb.themes?.length > 0 || igdb.gameModes?.length > 0 || igdb.perspectives?.length > 0) && (
+    <div style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px;">
+      {igdb.themes?.length > 0 && (
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Tema</span>
+          {igdb.themes.map((t: string) => (
+            <span style="font-size: 11px; border: 1px solid #222; color: #888; padding: 2px 8px;">{t}</span>
+          ))}
+        </div>
+      )}
+      {igdb.gameModes?.length > 0 && (
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Mod</span>
+          {igdb.gameModes.map((m: string) => (
+            <span style="font-size: 11px; border: 1px solid #222; color: #888; padding: 2px 8px;">{m}</span>
+          ))}
+        </div>
+      )}
+      {igdb.perspectives?.length > 0 && (
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Perspective</span>
+          {igdb.perspectives.map((p: string) => (
+            <span style="font-size: 11px; border: 1px solid #222; color: #888; padding: 2px 8px;">{p}</span>
+          ))}
+        </div>
+      )}
+      {igdb.keywords?.length > 0 && (
+        <div style="display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px; padding-top: 3px;">Etiket</span>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            {igdb.keywords.map((k: string) => (
+              <a href={`/games?q=${encodeURIComponent(k)}`}
+                style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px; transition: all 0.15s;"
+                onmouseover="this.style.borderColor='#444';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e1e';this.style.color='#555'">
+                {k}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )}
+
+  <!-- Personal Note -->
+  {game.note && (
+    <div style="margin-bottom: 32px; border-left: 2px solid #e5c46b44; padding: 16px 20px; background: #0d0d0d;">
+      <p style="font-size: 11px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px;">Karbon Notu</p>
+      <p style="font-size: 14px; color: #aaa; line-height: 1.75; margin: 0; font-style: italic;">"{game.note}"</p>
+    </div>
+  )}
+
   <!-- Achievement Guide Banner -->
   {guide ? (
     <a href={guide.path} style="display: block; border: 1px solid #e5c46b44; background: #111; padding: 24px 28px; margin-bottom: 48px; transition: background 0.15s;" onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
@@ -399,19 +472,6 @@ const filteredWebsites = igdb.websites
     </div>
   )}
 
-  <!-- Keywords -->
-  {igdb.keywords?.length > 0 && (
-    <div style="margin-bottom: 32px; display: flex; gap: 6px; flex-wrap: wrap;">
-      {igdb.keywords.map((k: string) => (
-        <a href={`/games?q=${encodeURIComponent(k)}`}
-          style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px; transition: all 0.15s;"
-          onmouseover="this.style.borderColor='#444';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e1e';this.style.color='#555'">
-          {k}
-        </a>
-      ))}
-    </div>
-  )}
-
   <!-- DLC & Expansions -->
   {(igdb.expansions?.length > 0 || igdb.dlcs?.length > 0) && (
     <div style="margin-bottom: 48px; border: 1px solid #222;">
@@ -430,27 +490,6 @@ const filteredWebsites = igdb.websites
           <span style="font-size: 11px; color: #666; font-family: 'JetBrains Mono', monospace; white-space: nowrap;">DLC</span>
         </div>
       ))}
-    </div>
-  )}
-
-  <!-- Language Support -->
-  {(igdb.languages?.audio?.length > 0 || igdb.languages?.subtitles?.length > 0) && (
-    <div style="margin-bottom: 48px; border: 1px solid #222;">
-      <div style="padding: 14px 20px; border-bottom: 1px solid #222;">
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.languages">Dil Desteği</p>
-      </div>
-      {igdb.languages?.audio?.length > 0 && (
-        <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Audio</span>
-          <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.audio.join(' · ')}</p>
-        </div>
-      )}
-      {igdb.languages?.subtitles?.length > 0 && (
-        <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Subtitles</span>
-          <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.subtitles.join(' · ')}</p>
-        </div>
-      )}
     </div>
   )}
 
@@ -511,36 +550,6 @@ const filteredWebsites = igdb.websites
         </div>
 
       </div>
-    </div>
-  )}
-
-  <!-- Tags: Themes, Modes, Perspectives -->
-  {(igdb.themes?.length > 0 || igdb.gameModes?.length > 0 || igdb.perspectives?.length > 0) && (
-    <div style="margin-bottom: 48px; display: flex; flex-direction: column; gap: 12px;">
-      {igdb.themes?.length > 0 && (
-        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Tema</span>
-          {igdb.themes.map((t: string) => (
-            <span style="font-size: 12px; border: 1px solid #222; color: #888; padding: 3px 10px;">{t}</span>
-          ))}
-        </div>
-      )}
-      {igdb.gameModes?.length > 0 && (
-        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Mod</span>
-          {igdb.gameModes.map((m: string) => (
-            <span style="font-size: 12px; border: 1px solid #222; color: #888; padding: 3px 10px;">{m}</span>
-          ))}
-        </div>
-      )}
-      {igdb.perspectives?.length > 0 && (
-        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Perspective</span>
-          {igdb.perspectives.map((p: string) => (
-            <span style="font-size: 12px; border: 1px solid #222; color: #888; padding: 3px 10px;">{p}</span>
-          ))}
-        </div>
-      )}
     </div>
   )}
 
