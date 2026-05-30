@@ -141,41 +141,38 @@ const apps = [
 
     <!-- LISTS -->
     <div class="bento-lists px-window">
-      <div class="px-titlebar">
-        <span class="px-title">📋 LİSTELER.EXE</span>
+      <div class="px-titlebar" style="border-left-color: #e5c46b;">
+        <span class="px-title" style="color: #e5c46b;">📋 LİSTELER.EXE</span>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
-      <div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0;">
         {lists.map(list => {
           const slugs = list.games.map((i: any) => i.slug);
           return (
             <a href={`/lists/${list.slug}`}
-              style="display: block; padding: 14px 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
-              onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
-              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
-                <p style="font-family: 'VT323', monospace; font-size: 17px; color: #c8c8e0; margin: 0; letter-spacing: 0.02em;">{list.title}</p>
-                <span style="font-family: 'VT323', monospace; font-size: 12px; color: #666677; flex-shrink: 0;">{list.games.length} oyun</span>
-              </div>
-              <p style="font-size: 13px; color: #778899; margin: 0 0 8px; line-height: 1.45;">{list.description}</p>
+              style="display: block; padding: 16px; border-right: 1px solid #1e1e2e; border-bottom: 1px solid #1e1e2e; transition: background 0.15s;"
+              onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
+              <p style="font-family:'VT323',monospace;font-size:20px;color:#ffffff;margin:0 0 3px;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
+              <p style="font-size:12px;color:#666677;margin:0 0 10px;line-height:1.4;font-family:'VT323',monospace;">{list.author} · {list.games.length} oyun</p>
               <div style="display: flex; gap: 2px; flex-wrap: wrap;">
-                {slugs.slice(0, 20).map((slug: string) => {
+                {slugs.slice(0, 18).map((slug: string) => {
                   const g = gmap[slug];
                   const cover = g?.coverUrl;
                   return cover ? (
-                    <div style="width: 26px; height: 26px; overflow: hidden; border: 1px solid #1e1e2e;">
+                    <div style="width: 28px; height: 28px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
                       <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
                     </div>
-                  ) : <div style="width:26px;height:26px;background:#0d0d12;border:1px solid #1e1e2e;"></div>;
+                  ) : <div style="width:28px;height:28px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
                 })}
               </div>
             </a>
           );
         })}
-        <a href="/lists" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 15px; color: #666677; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
-          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#666677'">
-          [ TÜM LİSTELER → ]
-        </a>
       </div>
+      <a href="/lists" style="display:block;padding:11px 14px;font-family:'VT323',monospace;font-size:16px;color:#555566;text-align:center;letter-spacing:0.06em;transition:color 0.1s;"
+        onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#555566'">
+        [ TÜM LİSTELER → ]
+      </a>
     </div>
 
     <!-- WEATHER -->
