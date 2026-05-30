@@ -2,280 +2,353 @@
 import Layout from '../layouts/Layout.astro';
 import quizPool from '../data/quiz-pool.json';
 
-const pool = quizPool as any[];
+const pool = (quizPool as any[]).filter(g => g.screenshots && g.screenshots.length >= 2);
 const titles = pool.map(g => g.title);
 ---
 
-<Layout title="Oyun Quiz" description="Ekran görüntüsünden oyunu tahmin et.">
+<Layout title="Quiz.EXE — Karbon OS">
 
-  <div style="margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-    <div>
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 6px;">Görsel Quiz</p>
-      <h1 class="os-title">🎮 QUİZ.EXE</h1>
-    </div>
-    <div style="display: flex; align-items: center; gap: 20px; font-family: 'JetBrains Mono', monospace;">
-      <div style="text-align: center;">
-        <div id="scoreVal" style="font-size: 24px; font-weight: 600; color: #22c55e;">0</div>
-        <div style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em;">Doğru</div>
+  <p class="os-path">C:\KARBON\QUIZ</p>
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <h1 class="os-title" style="margin:0;">🎮 QUİZ.EXE</h1>
+    <div style="display:flex;align-items:center;gap:16px;font-family:'VT323',monospace;">
+      <div style="text-align:center;">
+        <div id="scoreVal" style="font-size:28px;font-weight:600;color:#22c55e;">0</div>
+        <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">DOĞRU</div>
       </div>
-      <div style="text-align: center;">
-        <div id="totalVal" style="font-size: 24px; font-weight: 600; color: #666;">0</div>
-        <div style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em;">Toplam</div>
+      <div style="text-align:center;">
+        <div id="streakVal" style="font-size:28px;font-weight:600;color:#e5c46b;">0</div>
+        <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">SERİ</div>
       </div>
-      <div style="text-align: center;">
-        <div id="streakVal" style="font-size: 24px; font-weight: 600; color: #e5c46b;">0</div>
-        <div style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em;">Seri</div>
+      <div style="text-align:center;">
+        <div id="totalVal" style="font-size:28px;font-weight:600;color:#555566;">0</div>
+        <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">TOPLAM</div>
       </div>
     </div>
   </div>
 
-  <!-- Screenshot area -->
-  <div id="screenshotWrap" style="position: relative; width: 100%; aspect-ratio: 16/9; background: #0a0a0a; border: 1px solid #222; overflow: hidden; margin-bottom: 20px;">
-    <img id="screenshot" src="" alt="Oyun ekran görüntüsü"
-      style="width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.5s;"
-    />
-    <!-- Hint overlay -->
-    <div id="hintBadge" style="position: absolute; top: 12px; left: 12px; display: none; background: #0a0a0a99; border: 1px solid #333; padding: 6px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #aaa;"></div>
-    <!-- Result overlay -->
-    <div id="resultOverlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 32px; text-align: center;">
-      <div id="resultEmoji" style="font-size: 48px;"></div>
-      <div id="resultTitle" style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em;"></div>
-      <div id="resultMeta" style="font-size: 13px; color: #888; font-family: 'JetBrains Mono', monospace;"></div>
-      <div id="resultCta" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px;"></div>
+  <div class="px-window">
+    <div class="px-titlebar">
+      <span class="px-title">📸 EKRAN KESİTİ — TAHMİN ET</span>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span></div>
+    </div>
+
+    <!-- Canvas -->
+    <div style="position:relative;background:#050508;">
+      <canvas id="quizCanvas" style="display:block;width:100%;max-height:420px;image-rendering:pixelated;cursor:crosshair;"></canvas>
+      <!-- Level indicator -->
+      <div style="position:absolute;top:10px;left:10px;display:flex;gap:4px;" id="levelDots"></div>
+      <!-- Lives -->
+      <div style="position:absolute;top:10px;right:10px;font-family:'VT323',monospace;font-size:20px;" id="livesDisplay"></div>
+      <!-- Reveal overlay -->
+      <div id="revealOverlay" style="display:none;position:absolute;inset:0;background:rgba(5,5,8,0.88);flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
+        <div id="revealIcon" style="font-size:52px;"></div>
+        <div id="revealTitle" style="font-family:'VT323',monospace;font-size:28px;color:#fff;letter-spacing:0.04em;"></div>
+        <div id="revealMeta" style="font-family:'VT323',monospace;font-size:16px;color:#666677;"></div>
+        <div id="revealCta" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+      <!-- Guess input -->
+      <div style="position:relative;">
+        <input id="guessInput" type="text" placeholder="Oyun adını yaz..."
+          autocomplete="off" spellcheck="false"
+          style="width:100%;background:#0d0d12;border:2px solid #1e1e2e;color:#e5e5e5;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
+          onfocus="this.style.borderColor='#444'" onblur="this.style.borderColor='#1e1e2e'" />
+        <div id="suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#0d0d12;border:2px solid #1e1e2e;border-top:none;z-index:20;max-height:200px;overflow-y:auto;"></div>
+      </div>
+      <!-- Buttons row -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <button id="hintBtn"
+          style="font-family:'VT323',monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
+          💡 İPUCU
+        </button>
+        <button id="skipBtn"
+          style="font-family:'VT323',monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
+          ✕ BİLMİYORUM
+        </button>
+        <button id="nextBtn" style="display:none;font-family:'VT323',monospace;font-size:17px;background:#e5c46b;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
+          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          SONRAKI →
+        </button>
+        <!-- Wrong guesses -->
+        <div id="wrongGuesses" style="display:flex;gap:4px;flex-wrap:wrap;margin-left:auto;"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Controls -->
-  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
-    <!-- Input + suggestions -->
-    <div style="position: relative;">
-      <input id="guessInput" type="text" placeholder="Oyun adını yaz..."
-        style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 14px 16px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
-        autocomplete="off" spellcheck="false"
-      />
-      <div id="suggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333; border-top: none; z-index: 10; max-height: 200px; overflow-y: auto;"></div>
-    </div>
-    <!-- Buttons -->
-    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <button id="hintBtn" style="background: none; border: 1px solid #333; color: #666; padding: 10px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.15s;"
-        onmouseover="this.style.borderColor='#555';this.style.color='#aaa'" onmouseout="this.style.borderColor='#333';this.style.color='#666'">
-        İpucu (−1p)
-      </button>
-      <button id="skipBtn" style="background: none; border: 1px solid #333; color: #666; padding: 10px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.15s;"
-        onmouseover="this.style.borderColor='#555';this.style.color='#aaa'" onmouseout="this.style.borderColor='#333';this.style.color='#666'">
-        Bilmiyorum
-      </button>
-      <button id="nextBtn" style="display: none; background: #e5c46b; border: none; color: #0a0a0a; padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; margin-left: auto;"
-        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-        Sonraki →
-      </button>
-    </div>
-  </div>
-
-  <!-- Progress dots -->
-  <div id="progress" style="display: flex; gap: 4px; flex-wrap: wrap;"></div>
+  <!-- History dots -->
+  <div id="historyDots" style="display:flex;gap:4px;flex-wrap:wrap;margin-top:12px;"></div>
 
 </Layout>
 
 <script define:vars={{ pool, titles }}>
-  // --- State ---
-  let currentIdx = 0;
-  let shuffled = [...pool].sort(() => Math.random() - 0.5);
-  let score = 0;
-  let total = 0;
-  let streak = 0;
-  let hintsUsed = 0;
-  let revealed = false;
-  const MAX_HISTORY = 20;
-  const history = []; // 'correct' | 'wrong' | 'skip'
+// ── CONFIG ──────────────────────────────────────────────────
+const MAX_LIVES = 5;
+// Crop fractions: how much of the image to show (smaller = more zoomed in)
+const CROPS = [0.15, 0.22, 0.32, 0.45, 0.62, 1.0];
+const IMG_BASE = 'https://images.igdb.com/igdb/image/upload/t_screenshot_big/';
 
-  // --- Elements ---
-  const img = document.getElementById('screenshot');
-  const guessInput = document.getElementById('guessInput');
-  const suggestionsEl = document.getElementById('suggestions');
-  const hintBadge = document.getElementById('hintBadge');
-  const resultOverlay = document.getElementById('resultOverlay');
-  const resultEmoji = document.getElementById('resultEmoji');
-  const resultTitle = document.getElementById('resultTitle');
-  const resultMeta = document.getElementById('resultMeta');
-  const resultCta = document.getElementById('resultCta');
-  const scoreVal = document.getElementById('scoreVal');
-  const totalVal = document.getElementById('totalVal');
-  const streakVal = document.getElementById('streakVal');
-  const hintBtn = document.getElementById('hintBtn');
-  const skipBtn = document.getElementById('skipBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const progressEl = document.getElementById('progress');
+// ── STATE ───────────────────────────────────────────────────
+let shuffled = [...pool].sort(() => Math.random() - 0.5);
+let idx = 0;
+let score = 0, streak = 0, totalCount = 0;
+let lives = MAX_LIVES;
+let level = 0; // which crop we're on
+let revealed = false;
+let wrongGuesses: string[] = [];
 
-  function currentGame() { return shuffled[currentIdx % shuffled.length]; }
+// ── DOM ─────────────────────────────────────────────────────
+const canvas = document.getElementById('quizCanvas') as HTMLCanvasElement;
+const ctx = canvas.getContext('2d')!;
+canvas.width = 800; canvas.height = 450;
 
-  function loadGame() {
-    revealed = false;
-    hintsUsed = 0;
+const guessInput = document.getElementById('guessInput') as HTMLInputElement;
+const suggestionsEl = document.getElementById('suggestions')!;
+const hintBtn = document.getElementById('hintBtn') as HTMLButtonElement;
+const skipBtn = document.getElementById('skipBtn') as HTMLButtonElement;
+const nextBtn = document.getElementById('nextBtn') as HTMLButtonElement;
+const levelDots = document.getElementById('levelDots')!;
+const livesEl = document.getElementById('livesDisplay')!;
+const wrongEl = document.getElementById('wrongGuesses')!;
+const overlay = document.getElementById('revealOverlay')!;
+const historyEl = document.getElementById('historyDots')!;
+
+// ── HELPERS ─────────────────────────────────────────────────
+function game() { return shuffled[idx % shuffled.length]; }
+
+function normalize(s: string) {
+  return s.toLowerCase().replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim();
+}
+
+function renderLives() {
+  livesEl.innerHTML = Array.from({length: MAX_LIVES}, (_, i) =>
+    `<span style="color:${i < lives ? '#ef4444' : '#1e1e2e'}">♥</span>`
+  ).join('');
+}
+
+function renderLevelDots() {
+  levelDots.innerHTML = Array.from({length: CROPS.length - 1}, (_, i) =>
+    `<div style="width:8px;height:8px;border-radius:50%;background:${i < level ? '#22c55e' : i === level ? '#e5c46b' : '#1e1e2e'};"></div>`
+  ).join('');
+}
+
+function renderWrong() {
+  wrongEl.innerHTML = wrongGuesses.map(w =>
+    `<span style="font-family:'VT323',monospace;font-size:13px;color:#ef444466;background:#1a0808;border:1px solid #ef444433;padding:1px 6px;text-decoration:line-through;">${w}</span>`
+  ).join('');
+}
+
+function addHistory(result: 'correct'|'wrong'|'skip') {
+  const colors = { correct:'#22c55e', wrong:'#ef4444', skip:'#444455' };
+  const dot = document.createElement('div');
+  dot.style.cssText = `width:9px;height:9px;border-radius:50%;background:${colors[result]};flex-shrink:0;`;
+  historyEl.appendChild(dot);
+}
+
+// ── DRAW CROP ───────────────────────────────────────────────
+function drawCrop(screenshotId: string, cropFrac: number) {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const sw = img.width * cropFrac;
+    const sh = img.height * cropFrac;
+    const maxSx = Math.max(0, img.width - sw);
+    const maxSy = Math.max(0, img.height - sh);
+    const sx = Math.random() * maxSx;
+    const sy = Math.random() * maxSy;
+
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.imageSmoothingEnabled = cropFrac > 0.5;
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+    // Add scanline overlay for pixel feel
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    for (let y = 0; y < canvas.height; y += 4) {
+      ctx.fillRect(0, y, canvas.width, 1);
+    }
+
+    // Level label
+    ctx.fillStyle = 'rgba(5,5,8,0.7)';
+    ctx.fillRect(0, canvas.height - 28, canvas.width, 28);
+    ctx.fillStyle = '#333344';
+    ctx.font = '14px VT323';
+    ctx.textAlign = 'left';
+    ctx.fillText(`KESİT ${level + 1}/${CROPS.length - 1}  •  ZOOM: ${Math.round(cropFrac * 100)}%`, 10, canvas.height - 8);
+  };
+  img.onerror = () => {
+    ctx.fillStyle = '#0d0d12';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#333344';
+    ctx.font = '20px VT323';
+    ctx.textAlign = 'center';
+    ctx.fillText('GÖRSEL YÜKLENEMEDI', canvas.width / 2, canvas.height / 2);
+  };
+  img.src = IMG_BASE + screenshotId + '.jpg';
+}
+
+// ── LOAD GAME ───────────────────────────────────────────────
+function loadGame() {
+  revealed = false;
+  lives = MAX_LIVES;
+  level = 0;
+  wrongGuesses = [];
+  guessInput.value = '';
+  guessInput.disabled = false;
+  guessInput.style.borderColor = '#1e1e2e';
+  suggestionsEl.style.display = 'none';
+  overlay.style.display = 'none';
+  nextBtn.style.display = 'none';
+  hintBtn.style.display = '';
+  skipBtn.style.display = '';
+
+  const g = game();
+  const screens = g.screenshots;
+  drawCrop(screens[0], CROPS[0]);
+  renderLives();
+  renderLevelDots();
+  renderWrong();
+}
+
+// ── HINT ────────────────────────────────────────────────────
+function giveHint() {
+  if (revealed || level >= CROPS.length - 2) {
+    hintBtn.textContent = '— İPUCU KALMADI —';
+    hintBtn.disabled = true;
+    return;
+  }
+  level++;
+  const g = game();
+  const screens = g.screenshots;
+  const screenIdx = Math.min(level, screens.length - 1);
+  drawCrop(screens[screenIdx], CROPS[level]);
+  renderLevelDots();
+  if (level >= CROPS.length - 2) {
+    hintBtn.textContent = '— İPUCU KALMADI —';
+    hintBtn.disabled = true;
+  }
+}
+
+// ── REVEAL ──────────────────────────────────────────────────
+function reveal(correct: boolean) {
+  if (revealed) return;
+  revealed = true;
+  totalCount++;
+
+  const g = game();
+
+  // Draw full screenshot
+  const screens = g.screenshots;
+  drawCrop(screens[screens.length - 1], 1.0);
+
+  guessInput.disabled = true;
+  suggestionsEl.style.display = 'none';
+  hintBtn.style.display = 'none';
+  skipBtn.style.display = 'none';
+  nextBtn.style.display = 'inline-block';
+
+  if (correct) { score++; streak++; addHistory('correct'); }
+  else { streak = 0; addHistory('skip'); }
+
+  document.getElementById('scoreVal')!.textContent = String(score);
+  document.getElementById('streakVal')!.textContent = String(streak);
+  document.getElementById('totalVal')!.textContent = String(totalCount);
+
+  overlay.style.display = 'flex';
+  const icon = document.getElementById('revealIcon')!;
+  const title = document.getElementById('revealTitle')!;
+  const meta = document.getElementById('revealMeta')!;
+  const cta = document.getElementById('revealCta')!;
+
+  icon.textContent = correct ? '✓' : '?';
+  icon.style.color = correct ? '#22c55e' : '#e5c46b';
+  icon.style.fontSize = '56px';
+  title.textContent = g.title;
+  title.style.color = correct ? '#22c55e' : '#e5e5e5';
+  meta.textContent = [
+    g.developer?.[0],
+    g.genres?.slice(0,2).join(' / '),
+  ].filter(Boolean).join('  ·  ');
+
+  cta.innerHTML = '';
+  if (!correct) {
+    const btn = document.createElement('a');
+    btn.href = `/games/${g.slug}`;
+    btn.textContent = 'OYNAMALISIN →';
+    btn.style.cssText = 'background:#e5c46b;color:#0a0a0a;padding:8px 18px;font-family:"VT323",monospace;font-size:18px;font-weight:700;text-decoration:none;letter-spacing:0.06em;';
+    cta.appendChild(btn);
+  }
+  const infoBtn = document.createElement('a');
+  infoBtn.href = `/games/${g.slug}`;
+  infoBtn.textContent = 'OYUN SAYFASI';
+  infoBtn.style.cssText = 'border:2px solid #1e1e2e;color:#888899;padding:8px 18px;font-family:"VT323",monospace;font-size:18px;text-decoration:none;letter-spacing:0.06em;';
+  cta.appendChild(infoBtn);
+}
+
+// ── CHECK GUESS ─────────────────────────────────────────────
+function checkGuess(val: string) {
+  if (revealed || !val.trim()) return;
+  const g = game();
+  if (normalize(val) === normalize(g.title)) {
+    guessInput.style.borderColor = '#22c55e';
+    reveal(true);
+  } else {
+    lives--;
+    wrongGuesses.push(val.length > 20 ? val.slice(0, 20) + '...' : val);
+    renderLives();
+    renderWrong();
+    guessInput.style.borderColor = '#ef4444';
     guessInput.value = '';
-    guessInput.disabled = false;
+    setTimeout(() => { guessInput.style.borderColor = '#1e1e2e'; }, 600);
+    if (lives <= 0) { reveal(false); return; }
+    // Auto hint on wrong guess
+    if (!revealed) giveHint();
+  }
+}
+
+// ── AUTOCOMPLETE ────────────────────────────────────────────
+guessInput.addEventListener('input', () => {
+  const q = normalize(guessInput.value);
+  if (q.length < 2) { suggestionsEl.style.display = 'none'; return; }
+  const matches = titles.filter((t: string) => normalize(t).includes(q)).slice(0, 6);
+  if (!matches.length) { suggestionsEl.style.display = 'none'; return; }
+  suggestionsEl.innerHTML = matches.map((t: string) =>
+    `<div class="sug" data-title="${t.replace(/"/g,'&quot;')}"
+      style="padding:10px 14px;cursor:pointer;font-size:14px;color:#ccc;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
+      onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">${t}</div>`
+  ).join('');
+  suggestionsEl.style.display = 'block';
+});
+
+suggestionsEl.addEventListener('click', e => {
+  const item = (e.target as HTMLElement).closest('.sug') as HTMLElement;
+  if (!item) return;
+  guessInput.value = item.dataset.title!;
+  suggestionsEl.style.display = 'none';
+  checkGuess(item.dataset.title!);
+});
+
+guessInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { suggestionsEl.style.display = 'none'; checkGuess(guessInput.value); }
+  if (e.key === 'Escape') suggestionsEl.style.display = 'none';
+});
+
+document.addEventListener('click', e => {
+  if (!(suggestionsEl.contains(e.target as Node)) && e.target !== guessInput)
     suggestionsEl.style.display = 'none';
-    resultOverlay.style.display = 'none';
-    nextBtn.style.display = 'none';
-    hintBtn.style.display = '';
-    skipBtn.style.display = '';
-    hintBadge.style.display = 'none';
-    guessInput.style.borderColor = '#333';
+});
 
-    const g = currentGame();
-    const screen = g.screenshots[Math.floor(Math.random() * g.screenshots.length)];
-    img.src = `https://images.igdb.com/igdb/image/upload/t_screenshot_big/${screen}.jpg`;
-    img.style.filter = 'blur(18px) brightness(0.7)';
-  }
+hintBtn.addEventListener('click', giveHint);
+skipBtn.addEventListener('click', () => reveal(false));
+nextBtn.addEventListener('click', () => { idx++; hintBtn.textContent = '💡 İPUCU'; hintBtn.disabled = false; loadGame(); });
 
-  function updateStats() {
-    scoreVal.textContent = score;
-    totalVal.textContent = total;
-    streakVal.textContent = streak;
-  }
-
-  function updateProgress() {
-    progressEl.innerHTML = history.slice(-MAX_HISTORY).map(h => {
-      const color = h === 'correct' ? '#22c55e' : h === 'wrong' ? '#ef4444' : '#444';
-      return `<div style="width:8px;height:8px;border-radius:50%;background:${color};"></div>`;
-    }).join('');
-  }
-
-  function reveal(correct) {
-    if (revealed) return;
-    revealed = true;
-    const g = currentGame();
-    total++;
-    if (correct) {
-      score++;
-      streak++;
-      history.push('correct');
-    } else {
-      streak = 0;
-      history.push('skip');
-    }
-    updateStats();
-    updateProgress();
-
-    img.style.filter = 'none';
-    guessInput.disabled = true;
-    suggestionsEl.style.display = 'none';
-    hintBtn.style.display = 'none';
-    skipBtn.style.display = 'none';
-    nextBtn.style.display = '';
-
-    resultOverlay.style.display = 'flex';
-    resultEmoji.textContent = correct ? '✓' : '?';
-    resultEmoji.style.color = correct ? '#22c55e' : '#e5c46b';
-    resultTitle.textContent = g.title;
-    resultMeta.textContent = [
-      g.developer?.[0],
-      g.genres?.slice(0,2).join(', '),
-      g.releaseYear,
-      g.metacritic ? `MC: ${g.metacritic}` : null
-    ].filter(Boolean).join('  ·  ');
-
-    resultCta.innerHTML = '';
-    if (!correct) {
-      const btn = document.createElement('a');
-      btn.href = `/games/${g.slug}`;
-      btn.textContent = 'Oynamalısın →';
-      btn.style.cssText = 'background:#e5c46b;color:#0a0a0a;padding:10px 20px;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;text-decoration:none;';
-      resultCta.appendChild(btn);
-    }
-    const infoBtn = document.createElement('a');
-    infoBtn.href = `/games/${g.slug}`;
-    infoBtn.textContent = 'Oyun Sayfası';
-    infoBtn.style.cssText = 'border:1px solid #333;color:#666;padding:10px 20px;font-family:"JetBrains Mono",monospace;font-size:12px;text-decoration:none;';
-    resultCta.appendChild(infoBtn);
-  }
-
-  function applyHint() {
-    if (revealed) return;
-    const g = currentGame();
-    hintsUsed++;
-    if (hintsUsed === 1) {
-      img.style.filter = 'blur(8px) brightness(0.8)';
-      const genre = g.genres?.[0] || 'Oyun';
-      hintBadge.textContent = `Tür: ${genre}`;
-      hintBadge.style.display = 'block';
-    } else if (hintsUsed === 2) {
-      img.style.filter = 'blur(2px)';
-      const dev = g.developer?.[0] || '?';
-      hintBadge.textContent = `Geliştirici: ${dev}`;
-    } else {
-      img.style.filter = 'none';
-      hintBadge.textContent = `Yıl: ${g.releaseYear || '?'}`;
-    }
-    if (hintsUsed >= 3) hintBtn.textContent = '— ipucu bitti —';
-  }
-
-  // Autocomplete
-  function showSuggestions(val) {
-    if (!val || val.length < 2) { suggestionsEl.style.display = 'none'; return; }
-    const q = val.toLowerCase();
-    const matches = titles.filter(t => t.toLowerCase().includes(q)).slice(0, 6);
-    if (!matches.length) { suggestionsEl.style.display = 'none'; return; }
-    suggestionsEl.innerHTML = matches.map(t =>
-      `<div class="sug-item" style="padding:10px 16px;cursor:pointer;font-size:14px;color:#ccc;border-bottom:1px solid #1a1a1a;transition:background 0.1s;"
-        onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='none'"
-        data-title="${t.replace(/"/g, '&quot;')}">${t}</div>`
-    ).join('');
-    suggestionsEl.style.display = 'block';
-  }
-
-  guessInput.addEventListener('input', e => showSuggestions(e.target.value));
-
-  suggestionsEl.addEventListener('click', e => {
-    const item = e.target.closest('.sug-item');
-    if (!item) return;
-    guessInput.value = item.dataset.title;
-    suggestionsEl.style.display = 'none';
-    checkGuess(item.dataset.title);
-  });
-
-  guessInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      suggestionsEl.style.display = 'none';
-      checkGuess(guessInput.value);
-    }
-    if (e.key === 'Escape') suggestionsEl.style.display = 'none';
-  });
-
-  function normalize(s) {
-    return s.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
-  }
-
-  function checkGuess(val) {
-    if (revealed || !val.trim()) return;
-    const g = currentGame();
-    const correct = normalize(val) === normalize(g.title);
-    if (correct) {
-      guessInput.style.borderColor = '#22c55e';
-      reveal(true);
-    } else {
-      guessInput.style.borderColor = '#ef4444';
-      history.push('wrong');
-      total++;
-      streak = 0;
-      updateStats();
-      updateProgress();
-      setTimeout(() => { guessInput.style.borderColor = '#333'; guessInput.value = ''; }, 800);
-    }
-  }
-
-  hintBtn.addEventListener('click', applyHint);
-  skipBtn.addEventListener('click', () => reveal(false));
-  nextBtn.addEventListener('click', () => { currentIdx++; loadGame(); });
-
-  // Close suggestions on outside click
-  document.addEventListener('click', e => {
-    if (!suggestionsEl.contains(e.target) && e.target !== guessInput) {
-      suggestionsEl.style.display = 'none';
-    }
-  });
-
-  // Init
-  loadGame();
-  updateStats();
+// Start
+loadGame();
 </script>
