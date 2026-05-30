@@ -40,19 +40,19 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
       </a>
     </div>
 
-    <nav style="border-bottom: 1px solid #222; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 28px; background: #0a0a0a; z-index: 100;">
-      <a href="/" style="font-weight: 600; font-size: 15px; letter-spacing: -0.02em;">
+    <nav style="border-bottom: 1px solid #222; padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 28px; background: #0a0a0a; z-index: 100; overflow-x: auto; gap: 16px;">
+      <a href="/" style="font-weight: 600; font-size: 15px; letter-spacing: -0.02em; white-space: nowrap; flex-shrink: 0;">
         karbon<span style="color: #e5c46b;">kafa</span>
       </a>
-      <div style="display: flex; align-items: center; gap: 28px; font-size: 14px; color: #666;">
-        <a href="/lists" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Listeler</a>
-        <a href="/guides" data-i18n="nav.guides" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.guides']}</a>
-        <a href="/news" data-i18n="nav.news" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.news']}</a>
-        <a href="/schedule" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Akış</a>
-        <a href="/muzik" style="transition: color 0.15s; color: #3b82f655;" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='#3b82f655'">Müzik</a>
-        <a href="/yemek" style="transition: color 0.15s; color: #f9731655;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#f9731655'">Yemek</a>
-        <a href="/mekan" style="transition: color 0.15s; color: #06b6d455;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#06b6d455'">Mekan</a>
-        <a href="/quiz" style="transition: color 0.15s; color: #e5c46b44;" onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5c46b44'">Quiz</a>
+      <div style="display: flex; align-items: center; gap: 20px; font-size: 13px; color: #666; overflow-x: auto; flex-shrink: 1; min-width: 0;">
+        <a href="/lists" style="transition: color 0.15s; white-space: nowrap;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Listeler</a>
+        <a href="/guides" data-i18n="nav.guides" style="transition: color 0.15s; white-space: nowrap;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.guides']}</a>
+        <a href="/news" data-i18n="nav.news" style="transition: color 0.15s; white-space: nowrap;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.news']}</a>
+        <a href="/schedule" style="transition: color 0.15s; white-space: nowrap;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Akış</a>
+        <a href="/muzik" style="transition: color 0.15s; color: #3b82f655; white-space: nowrap;" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='#3b82f655'">Müzik</a>
+        <a href="/yemek" style="transition: color 0.15s; color: #f9731655; white-space: nowrap;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#f9731655'">Yemek</a>
+        <a href="/mekan" style="transition: color 0.15s; color: #06b6d455; white-space: nowrap;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#06b6d455'">Mekan</a>
+        <a href="/quiz" style="transition: color 0.15s; color: #e5c46b44; white-space: nowrap;" onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5c46b44'">Quiz</a>
         <!-- Auth -->
         <div id="navAuth" style="display: flex; align-items: center; gap: 12px; position: relative;">
           <a id="navLogin" href="/auth/login" style="font-size: 12px; border: 1px solid #333; color: #555; padding: 4px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; display: none;"

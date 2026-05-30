@@ -46,13 +46,13 @@ const apps = [
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: start;">
+    <div class="os-grid">
 
       <!-- LEFT: App icons + about window -->
       <div style="display: flex; flex-direction: column; gap: 16px;">
 
         <!-- About window -->
-        <div class="px-window">
+        <div class="px-window" style="order: 1;">
           <div class="px-titlebar">
             <span class="px-title">📁 HAKKINDA.TXT</span>
             <div class="px-btns">
@@ -84,7 +84,7 @@ const apps = [
               <span class="px-btn">×</span>
             </div>
           </div>
-          <div style="padding: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+          <div style="padding: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;" class="app-grid">
             {apps.map(app => (
               <a href={app.href} class="app-icon">
                 <div class="icon-box">{app.icon}</div>
@@ -96,8 +96,8 @@ const apps = [
 
         <!-- GTA Countdown window -->
         <div class="px-window" style="border-color: #e5c46b55;">
-          <div class="px-titlebar" style="background: linear-gradient(90deg, #1a0a00, #3a1a00);">
-            <span class="px-title" style="color: #e5c46b;">📺 GTA VI SAYAÇ</span>
+          <div class="px-titlebar" style="border-left-color: #ef4444;">
+            <span class="px-title" style="color: #ef4444;">📺 GTA VI SAYAÇ</span>
             <div class="px-btns"><span class="px-btn">×</span></div>
           </div>
           <div style="padding: 14px 16px; text-align: center;">
@@ -153,7 +153,7 @@ const apps = [
         <!-- Quiz shortcut -->
         <a href="/quiz" class="px-window" style="text-decoration: none; display: block; transition: border-color 0.15s; border-color: #22c55e44;"
           onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
-          <div class="px-titlebar" style="background: linear-gradient(90deg, #0a1a0a, #0a2a0a);">
+          <div class="px-titlebar" style="border-left-color: #22c55e;">
             <span class="px-title" style="color: #22c55e;">🎮 QUİZ.EXE — OYUNU BİL</span>
             <div class="px-btns"><span class="px-btn">▶</span></div>
           </div>
@@ -205,6 +205,24 @@ const apps = [
   </div>
 
 </Layout>
+
+<style>
+  .os-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .os-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .os-grid { grid-template-columns: 1fr; }
+    .icon-box { width: 44px; height: 44px; font-size: 22px; }
+    .icon-label { font-size: 10px; }
+    .app-grid { grid-template-columns: repeat(4, 1fr) !important; }
+  }
+</style>
 
 <script>
   // System clock
