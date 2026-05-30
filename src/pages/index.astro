@@ -4,7 +4,7 @@ import listsData from '../data/lists.json';
 import gamesData from '../data/games.json';
 import { getCollection } from 'astro:content';
 
-const lists = (listsData as any[]).slice(0, 3);
+const lists = (listsData as any[]).slice(0, 7);
 const games = gamesData as any[];
 const gmap: Record<string, any> = {};
 for (const g of games) gmap[g.slug] = g;
@@ -12,7 +12,9 @@ for (const g of games) gmap[g.slug] = g;
 const allNews = await getCollection('news');
 const latestNews = allNews
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
+  .slice(0, 9);
+const featuredNews = latestNews.slice(0, 3);  // 3 big with images
+const smallNews = latestNews.slice(3);         // rest as list
 
 const apps = [
   { href: '/lists',    icon: '📋', label: 'LİSTELER' },
@@ -94,42 +96,43 @@ const apps = [
         <span class="px-title">📰 HABERLER.LOG</span>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
-        {latestNews.slice(0, 2).map(article => {
+      <!-- 3 featured news with images -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-bottom: 1px solid #1e1e2e;">
+        {featuredNews.map((article, i) => {
           const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
           return (
             <a href={`/news/${article.id}`}
-              style="display: block; padding: 16px; border-right: 1px solid #1e1e2e; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
+              style={`display: block; padding: 14px; border-right: 1px solid #1e1e2e; transition: background 0.1s; ${i===2?'border-right:none':''}`}
               onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
               {article.data.image && (
-                <div style="width: 100%; height: 80px; overflow: hidden; margin-bottom: 10px; border: 1px solid #1e1e2e;">
+                <div style="width: 100%; height: 90px; overflow: hidden; margin-bottom: 10px; border: 1px solid #1e1e2e;">
                   <img src={article.data.image} alt="" loading="lazy"
-                    style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.8;" />
+                    style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.85;" />
                 </div>
               )}
-              <span style="font-family: 'VT323', monospace; font-size: 14px; color: #666677; letter-spacing: 0.04em; display: block; margin-bottom: 5px;">{dateStr}</span>
-              <p style="font-size: 14px; font-weight: 500; color: #d0d0e0; margin: 0 0 6px; line-height: 1.4;">{article.data.title}</p>
+              <span style="font-family:'VT323',monospace;font-size:13px;color:#666677;display:block;margin-bottom:4px;">{dateStr}</span>
+              <p style="font-size:13px;font-weight:500;color:#d0d0e0;margin:0 0 5px;line-height:1.35;">{article.data.title}</p>
               {article.data.excerpt && (
-                <p style="font-size: 13px; color: #778899; margin: 0; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">{article.data.excerpt}</p>
+                <p style="font-size:12px;color:#778899;margin:0;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{article.data.excerpt}</p>
               )}
             </a>
           );
         })}
       </div>
-      <!-- Smaller news list -->
+      <!-- Remaining news as compact list -->
       <div>
-        {latestNews.slice(2).map(article => {
+        {smallNews.map(article => {
           const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
           return (
             <a href={`/news/${article.id}`}
-              style="display: flex; align-items: baseline; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
+              style="display: flex; align-items: baseline; gap: 12px; padding: 9px 14px; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
               onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
-              <span style="font-family: 'VT323', monospace; font-size: 13px; color: #778899; white-space: nowrap;">{dateStr}</span>
-              <p style="font-size: 13px; color: #aaa; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">{article.data.title}</p>
+              <span style="font-family:'VT323',monospace;font-size:13px;color:#666677;white-space:nowrap;flex-shrink:0;">{dateStr}</span>
+              <p style="font-size:13px;color:#aaa;margin:0;line-height:1.35;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;">{article.data.title}</p>
             </a>
           );
         })}
-        <a href="/news" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 15px; color: #666677; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
+        <a href="/news" style="display:block;padding:10px 14px;font-family:'VT323',monospace;font-size:15px;color:#666677;text-align:center;letter-spacing:0.06em;transition:color 0.1s;"
           onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#666677'">
           [ TÜM HABERLER → ]
         </a>
