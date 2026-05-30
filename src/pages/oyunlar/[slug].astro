@@ -356,14 +356,16 @@ const hours = game.playtimeMinutes > 0
   {(igdb.videos?.length > 0 || igdb.screenshots?.length > 0 || igdb.artworks?.length > 0) && (
     <div style="margin-bottom: 48px;">
       <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Medya</p>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid #222;">
+      <div style="display: flex; gap: 1px; border: 1px solid #222; align-items: flex-start;">
 
         {igdb.videos?.length > 0 && (
-          <div style="aspect-ratio: 16/9; overflow: hidden; background: #0a0a0a;">
+          <div style="flex: 0 0 280px; position: relative; background: #0a0a0a;">
             <iframe
               src={`https://www.youtube.com/embed/${igdb.videos[0].id}`}
               title={igdb.videos[0].name}
-              style="width: 100%; height: 100%; border: 0; display: block;"
+              width="280"
+              height="158"
+              style="display: block; border: 0;"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -371,25 +373,27 @@ const hours = game.playtimeMinutes > 0
           </div>
         )}
 
-        {[...(igdb.screenshots || []).map((id: string) => ({id})),
-           ...(igdb.artworks || []).map((id: string) => ({id}))]
-          .slice(0, igdb.videos?.length > 0 ? 5 : 6)
-          .map((img: any) => (
-            <a
-              href={`https://images.igdb.com/igdb/image/upload/t_screenshot_huge/${img.id}.jpg`}
-              target="_blank" rel="noopener"
-              style="aspect-ratio: 16/9; overflow: hidden; display: block; background: #0a0a0a;"
-            >
-              <img
-                src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${img.id}.jpg`}
-                loading="lazy"
-                style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s;"
-                onmouseover="this.style.opacity='0.75'"
-                onmouseout="this.style.opacity='1'"
-              />
-            </a>
-          ))
-        }
+        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1px;">
+          {[...(igdb.screenshots || []).map((id: string) => ({id})),
+             ...(igdb.artworks || []).map((id: string) => ({id}))]
+            .slice(0, 6)
+            .map((img: any) => (
+              <a
+                href={`https://images.igdb.com/igdb/image/upload/t_screenshot_huge/${img.id}.jpg`}
+                target="_blank" rel="noopener"
+                style="aspect-ratio: 16/9; overflow: hidden; display: block; background: #0a0a0a;"
+              >
+                <img
+                  src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${img.id}.jpg`}
+                  loading="lazy"
+                  style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s;"
+                  onmouseover="this.style.opacity='0.75'"
+                  onmouseout="this.style.opacity='1'"
+                />
+              </a>
+            ))
+          }
+        </div>
 
       </div>
     </div>
