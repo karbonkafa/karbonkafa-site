@@ -1,52 +1,150 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import listsData from '../data/lists.json';
+import gamesData from '../data/games.json';
+import { getCollection } from 'astro:content';
+
+const lists = (listsData as any[]).slice(0, 3);
+const games = gamesData as any[];
+const gmap: Record<string, any> = {};
+for (const g of games) gmap[g.slug] = g;
+
+const allNews = await getCollection('news');
+const latestNews = allNews
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const categoryColors: Record<string, string> = {
+  'Duyuru': '#4a9eed', 'Çıkış': '#22c55e', 'Donanım': '#f97316',
+  'Endüstri': '#9b59b6', 'Bağımsız': '#14b8a6', 'Haftalık': '#e5c46b',
+};
+
+function getBanner(slug: string): string {
+  const g = gmap[slug];
+  if (!g) return '';
+  const sid = g.stores?.steam?.uid;
+  return sid
+    ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${sid}/header.jpg`
+    : g.coverUrl || '';
+}
 ---
 
 <Layout title="Home">
 
   <!-- Hero -->
-  <section style="padding: 64px 0 80px;">
-    <p data-i18n="hero.tagline" style="font-size: 13px; color: #e5c46b; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace;">KarbonGameStudios</p>
-    <h1 style="font-size: clamp(32px, 5vw, 52px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px;">
-      <span data-i18n="hero.title">Oyunları oynuyoruz.</span><br />
-      <span data-i18n="hero.title2" style="color: #444;">Eksiksiz bitiriyoruz.</span>
+  <section style="padding: 72px 0 80px;">
+    <p style="font-size: 12px; color: #e5c46b; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;">KarbonGameStudios</p>
+    <h1 style="font-size: clamp(32px, 5vw, 56px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.08; margin: 0 0 24px;">
+      <span>Oyunlar için</span><br />
+      <span style="color: #444;">bir bakış açısı.</span>
     </h1>
-    <p data-i18n="hero.desc" style="font-size: 16px; color: #666; max-width: 480px; line-height: 1.6; margin: 0;">
-      1.640 oyunluk backlog. Önemli olanları başarımlarıyla bitiriyoruz.
+    <p style="font-size: 16px; color: #555; max-width: 520px; line-height: 1.7; margin: 0 0 32px;">
+      1.400+ oyunluk arşiv. Küratörlenmiş listeler. Başarım rehberleri.
+      Bir içerik üreticisinin oyun dünyasına bakışı.
     </p>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <a href="/lists" style="background: #e5c46b; color: #0a0a0a; padding: 12px 24px; font-size: 14px; font-weight: 600; font-family: 'JetBrains Mono', monospace; transition: opacity 0.15s; text-decoration: none;"
+        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        Listeler →
+      </a>
+      <a href="/quiz" style="border: 1px solid #333; color: #666; padding: 12px 24px; font-size: 14px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; text-decoration: none;"
+        onmouseover="this.style.borderColor='#666';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#333';this.style.color='#666'">
+        Quiz Oyna
+      </a>
+    </div>
   </section>
 
-  <!-- Sections grid -->
-  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; border: 1px solid #222; margin-bottom: 80px;">
+  <!-- Featured Lists -->
+  <section style="margin-bottom: 72px;">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px;">
+      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;">Öne Çıkan Listeler</p>
+      <a href="/lists" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s; text-decoration: none;"
+        onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">tümü →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a;">
+      {lists.map(list => (
+        <a href={`/lists/${list.slug}`}
+          style="display: flex; flex-direction: column; background: #111; transition: background 0.15s;"
+          onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #0a0a0a; height: 80px; overflow: hidden;">
+            {list.games.slice(0, 3).map((item: any) => {
+              const url = getBanner(item.slug);
+              return url
+                ? <img src={url} alt="" loading="lazy" style="width:100%;height:80px;object-fit:cover;object-position:top;opacity:0.8;" />
+                : <div style="background:#0d0d0d;"></div>;
+            })}
+          </div>
+          <div style="padding: 16px 18px; flex: 1;">
+            <h3 style="font-size: 15px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em;">{list.title}</h3>
+            <p style="font-size: 12px; color: #555; margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{list.description}</p>
+            <p style="font-size: 10px; color: #444; margin: 8px 0 0; font-family: 'JetBrains Mono', monospace;">{list.games.length} oyun</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 
-    <a href="/games" style="padding: 32px; background: #111; display: block; border-right: 1px solid #222; transition: background 0.15s;" onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
-      <p data-i18n="section.games" style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px; font-family: 'JetBrains Mono', monospace;">Oyun Kartları</p>
-      <h2 data-i18n="nav.games" style="font-size: 20px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em;">Oyunlar</h2>
-      <p data-i18n="section.games.desc" style="font-size: 14px; color: #666; margin: 0; line-height: 1.5;">Her oyun için store-page formatında bilgi kartı.</p>
-    </a>
+  <!-- Latest News -->
+  <section style="margin-bottom: 72px;">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px;">
+      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;">Son Haberler</p>
+      <a href="/news" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s; text-decoration: none;"
+        onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">tümü →</a>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a;">
+      {latestNews.map(article => {
+        const color = categoryColors[article.data.category] || '#666';
+        const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
+        return (
+          <a href={`/news/${article.id}`}
+            style="display: grid; grid-template-columns: auto 1fr; gap: 0; background: #111; transition: background 0.15s;"
+            onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
+            {article.data.image && (
+              <div style="width: 120px; overflow: hidden; flex-shrink: 0;">
+                <img src={article.data.image} alt="" loading="lazy"
+                  style="width: 120px; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.8;" />
+              </div>
+            )}
+            <div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style={`font-size: 9px; border: 1px solid ${color}44; color: ${color}; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;`}>
+                  {article.data.category}
+                </span>
+                <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{dateStr}</span>
+              </div>
+              <p style="font-size: 14px; font-weight: 500; margin: 0; line-height: 1.35; color: #ccc;">{article.data.title}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
 
-    <a href="/guides" style="padding: 32px; background: #111; display: block; border-right: 1px solid #222; transition: background 0.15s;" onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
-      <p data-i18n="section.guides" style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px; font-family: 'JetBrains Mono', monospace;">Başarım Rehberleri</p>
-      <h2 data-i18n="nav.guides" style="font-size: 20px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em;">Rehberler</h2>
-      <p data-i18n="section.guides.desc" style="font-size: 14px; color: #666; margin: 0; line-height: 1.5;">100% tamamlama için missable odaklı rehberler.</p>
-    </a>
-
-    <a href="/news" style="padding: 32px; background: #111; display: block; transition: background 0.15s;" onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
-      <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px; font-family: 'JetBrains Mono', monospace;">Karbon News</p>
-      <h2 data-i18n="nav.news" style="font-size: 20px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em;">Haberler</h2>
-      <p data-i18n="section.news.desc" style="font-size: 14px; color: #666; margin: 0; line-height: 1.5;">Haftalık oyun haberleri. Oyuncu perspektifinden.</p>
-    </a>
-
+  <!-- Quick links row -->
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a; margin-bottom: 72px;">
+    {[
+      { href: '/guides', label: 'Rehberler', sub: '%100 tamamlama için', icon: '🏆' },
+      { href: '/schedule', label: 'Yayın Akışı', sub: 'Bu hafta ne yayınlanıyor', icon: '📅' },
+      { href: '/quiz', label: 'Quiz', sub: 'Ekran görüntüsünden tahmin et', icon: '🎮' },
+    ].map(item => (
+      <a href={item.href}
+        style="padding: 28px 24px; background: #111; display: flex; flex-direction: column; gap: 8px; transition: background 0.15s; text-decoration: none;"
+        onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
+        <span style="font-size: 20px;">{item.icon}</span>
+        <h3 style="font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">{item.label}</h3>
+        <p style="font-size: 13px; color: #555; margin: 0;">{item.sub}</p>
+      </a>
+    ))}
   </section>
 
   <!-- GTA 6 countdown -->
-  <section style="border: 1px solid #222; padding: 32px; background: #111; margin-bottom: 80px;">
-    <p data-i18n="rockstar.title" style="font-size: 11px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px; font-family: 'JetBrains Mono', monospace;">Rockstar Saati</p>
-    <div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;">
-      <h2 data-i18n="rockstar.launch" style="font-size: 24px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">GTA 6 Konsol Lansmanı</h2>
-      <span style="font-size: 14px; color: #666;">November 19, 2026</span>
+  <section style="border: 1px solid #222; padding: 28px 32px; background: #111; margin-bottom: 48px;">
+    <p style="font-size: 11px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 10px; font-family: 'JetBrains Mono', monospace;">Rockstar Saati</p>
+    <div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px;">
+      <h2 style="font-size: 20px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">GTA 6 Konsol Lansmanı</h2>
+      <span style="font-size: 13px; color: #555; font-family: 'JetBrains Mono', monospace;">19 Kasım 2026</span>
     </div>
-    <p data-i18n="rockstar.desc" style="font-size: 14px; color: #666; margin: 12px 0 0; line-height: 1.5;">
+    <p style="font-size: 14px; color: #555; margin: 0; line-height: 1.5;">
       GTA Tarihi sezonu bu güne yönelmiş. PC lansmanı sonrası tam playthrough + Karbon RP.
     </p>
   </section>
