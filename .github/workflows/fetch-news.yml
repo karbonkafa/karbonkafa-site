@@ -23,7 +23,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install feedparser requests deep-translator
+        run: pip install feedparser requests deep-translator trafilatura
 
       - name: Fetch and create news articles
         run: python3 scripts/fetch-news.py

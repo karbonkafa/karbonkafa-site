@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Fetches gaming news from RSS feeds, translates to Turkish, creates markdown files.
+Fetches gaming news from RSS feeds, extracts real article content,
+translates to Turkish, creates markdown files.
 Runs via GitHub Actions 3x/day.
 """
 
 import feedparser
 import requests
+import trafilatura
 import json
-import os
 import re
 import hashlib
 import time
@@ -39,6 +40,8 @@ CATEGORY_KEYWORDS = {
 PROCESSED_PATH = Path('src/data/news-processed.json')
 NEWS_DIR = Path('src/content/news')
 MAX_PER_RUN = 5
+# Max chars to extract from article body (avoid copyright, keep focused)
+BODY_MAX_CHARS = 800
 
 
 def is_gaming_relevant(title: str, summary: str) -> bool:
@@ -60,7 +63,7 @@ def translate(text: str) -> str:
     try:
         return GoogleTranslator(source='en', target='tr').translate(text[:500])
     except Exception as e:
-        print(f'Translation error: {e}')
+        print(f'  Translation error: {e}')
     return text
 
 
@@ -72,20 +75,42 @@ def slugify(text: str) -> str:
     return text[:50]
 
 
+def fetch_article_body(url: str, rss_summary: str) -> str:
+    """Fetch real article text. Fall back to RSS summary if extraction fails."""
+    try:
+        downloaded = trafilatura.fetch_url(url)
+        if downloaded:
+            text = trafilatura.extract(
+                downloaded,
+                include_comments=False,
+                include_tables=False,
+                no_fallback=False,
+            )
+            if text and len(text) > 100:
+                # Take first BODY_MAX_CHARS worth of meaningful paragraphs
+                paragraphs = [p.strip() for p in text.split('\n') if p.strip()]
+                body = ''
+                for p in paragraphs:
+                    if len(body) >= BODY_MAX_CHARS:
+                        break
+                    body += p + '\n\n'
+                return body.strip()
+    except Exception as e:
+        print(f'  Article fetch error: {e}')
+    # Fall back to RSS summary
+    return rss_summary
+
+
 def extract_image(entry) -> str:
-    # Try media_thumbnail
     thumbs = getattr(entry, 'media_thumbnail', None)
     if thumbs:
         return thumbs[0].get('url', '')
-    # Try media_content
     for mc in getattr(entry, 'media_content', []):
         if mc.get('type', '').startswith('image/') or mc.get('medium') == 'image':
             return mc.get('url', '')
-    # Try enclosures
     for enc in getattr(entry, 'enclosures', []):
         if enc.get('type', '').startswith('image/'):
             return enc.get('href', '')
-    # Try content with img tag
     content = ''
     for c in getattr(entry, 'content', []):
         content += c.get('value', '')
@@ -141,22 +166,36 @@ def main():
                 continue
 
             title_en = entry.get('title', '').strip()
-            summary_raw = entry.get('summary', '') or ''
-            summary_en = clean_html(summary_raw)[:300]
+            rss_summary = clean_html(entry.get('summary', '') or '')[:300]
 
-            if not is_gaming_relevant(title_en, summary_en):
+            if not is_gaming_relevant(title_en, rss_summary):
                 print(f'  Skipping (not gaming): {title_en[:60]}')
                 continue
 
-            category = detect_category(title_en, summary_en)
+            category = detect_category(title_en, rss_summary)
             image_url = extract_image(entry)
             date_str = datetime.now().strftime('%Y-%m-%d')
 
-            print(f'  Translating: {title_en[:60]}')
+            # Fetch real article content
+            print(f'  Fetching article: {title_en[:60]}')
+            body_en = fetch_article_body(url, rss_summary)
+            time.sleep(0.5)
+
+            # Translate title, excerpt (RSS summary), and body separately
+            print(f'  Translating...')
             title_tr = translate(title_en)
-            time.sleep(0.5)
-            excerpt_tr = translate(summary_en[:250]) if summary_en else title_tr
-            time.sleep(0.5)
+            time.sleep(0.4)
+            excerpt_tr = translate(rss_summary[:250]) if rss_summary else title_tr
+            time.sleep(0.4)
+            # Translate body in chunks if needed (Google Translate limit 500 chars)
+            body_tr = ''
+            if body_en:
+                chunks = [body_en[i:i+480] for i in range(0, min(len(body_en), 1440), 480)]
+                translated_chunks = []
+                for chunk in chunks:
+                    translated_chunks.append(translate(chunk))
+                    time.sleep(0.4)
+                body_tr = '\n\n'.join(translated_chunks)
 
             # Sanitize for YAML frontmatter
             title_tr = title_tr.replace('"', "'").strip()
@@ -165,7 +204,6 @@ def main():
 
             slug = f"{date_str}-{slugify(title_en)}-{url_hash}"
             filepath = NEWS_DIR / f"{slug}.md"
-
             image_line = f'image: "{image_url}"' if image_url else ''
 
             md = f'''---
@@ -179,7 +217,7 @@ excerpt: "{excerpt_tr}"
 {image_line}
 ---
 
-{summary_en}
+{body_tr or excerpt_tr}
 
 [Kaynağı oku →]({url})
 '''
