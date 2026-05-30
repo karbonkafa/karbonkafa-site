@@ -57,13 +57,13 @@ const apps = [
 
         <!-- Radio -->
         <div class="px-window" style="border-color: #3b82f644;">
-          <div class="px-titlebar" style="border-left-color: #3b82f6;">
+          <div class="px-titlebar" style="border-left-color: #3b82f6; padding: 3px 8px;">
             <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE</span>
             <div class="px-btns">
               <span class="px-btn" id="radio-close" style="cursor:pointer;">×</span>
             </div>
           </div>
-          <div id="radio-body" style="padding: 6px 14px; display: flex; align-items: center; gap: 14px;">
+          <div id="radio-body" style="padding: 4px 10px; display: flex; align-items: center; gap: 10px;">
             <button id="radio-play"
               style="font-family:'VT323',monospace;font-size:20px;background:#0d0d12;border:2px solid #3b82f6;color:#3b82f6;padding:4px 14px;cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;flex-shrink:0;"
               onmouseover="this.style.background='#0a1020'" onmouseout="this.style.background='#0d0d12'">
@@ -80,11 +80,11 @@ const apps = [
 
         <!-- System Info -->
         <div class="px-window">
-          <div class="px-titlebar">
+          <div class="px-titlebar" style="padding: 3px 8px;">
             <span class="px-title">🖥 SİSTEM</span>
             <div class="px-btns"><span class="px-btn">─</span></div>
           </div>
-          <div style="padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+          <div style="padding: 4px 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
             <!-- Auth first -->
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
               <a id="sysLogin" href="/auth/login" style="display:none;font-family:'VT323',monospace;font-size:15px;color:#888899;border:1px solid #1e1e2e;padding:3px 8px;text-decoration:none;transition:all 0.1s;"
