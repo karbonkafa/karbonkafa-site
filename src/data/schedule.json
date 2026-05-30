@@ -2,236 +2,206 @@
   {
     "month": "2026-07",
     "label": "Temmuz 2026",
-    "tagline": "GTA Öncesi Sezon — Büyük Oyunları Bitiriyoruz",
+    "tagline": "GTA Öncesi Sezon — 7/24 Karbon TV",
     "shows": [
-      {
-        "id": "witcher",
-        "title": "Witcher Saatleri",
-        "subtitle": "Her Çarşamba",
-        "game": "the-witcher-3-wild-hunt",
-        "color": "#c6a84b",
-        "badge": "YENİ SERİ"
-      },
-      {
-        "id": "souls",
-        "title": "Souls Akşamları",
-        "subtitle": "Salı & Cuma",
-        "game": "elden-ring",
-        "color": "#e07040",
-        "badge": null
-      },
-      {
-        "id": "cyber",
-        "title": "Cyber Pazartesi",
-        "subtitle": "Her Pazartesi",
-        "game": "cyberpunk-2077",
-        "color": "#f7e700",
-        "badge": null
-      },
-      {
-        "id": "gta-history",
-        "title": "GTA Tarihi",
-        "subtitle": "Pazar Özel",
-        "game": "grand-theft-auto-v",
-        "color": "#ef4444",
-        "badge": "ÖZEL"
-      },
-      {
-        "id": "indie",
-        "title": "Bağımsız Perşembe",
-        "subtitle": "Her Perşembe",
-        "game": "hollow-knight",
-        "color": "#22c55e",
-        "badge": null
-      },
-      {
-        "id": "cuma",
-        "title": "Cuma Maratonu",
-        "subtitle": "Her Cuma",
-        "game": "baldur-s-gate-iii",
-        "color": "#9b59b6",
-        "badge": null
-      }
+      { "id": "witcher",      "title": "Witcher Saatleri",    "game": "the-witcher-3-wild-hunt", "color": "#c6a84b", "type": "OYUN",   "badge": "YENİ SERİ" },
+      { "id": "souls",        "title": "Souls Akşamları",     "game": "elden-ring",              "color": "#e07040", "type": "OYUN",   "badge": null },
+      { "id": "cyber",        "title": "Cyber Pazartesi",     "game": "cyberpunk-2077",          "color": "#f7e700", "type": "OYUN",   "badge": null },
+      { "id": "gta-history",  "title": "GTA Tarihi",          "game": "grand-theft-auto-v",      "color": "#ef4444", "type": "OYUN",   "badge": "ÖZEL" },
+      { "id": "indie",        "title": "Bağımsız Perşembe",   "game": "hollow-knight",           "color": "#22c55e", "type": "OYUN",   "badge": null },
+      { "id": "bg3",          "title": "Cuma Maratonu",       "game": "baldur-s-gate-iii",       "color": "#9b59b6", "type": "OYUN",   "badge": null },
+      { "id": "muzik",        "title": "Gece Müziği",         "game": null,                      "color": "#3b82f6", "type": "MÜZİK",  "badge": null },
+      { "id": "yemek",        "title": "Gamer Mutfağı",       "game": null,                      "color": "#f97316", "type": "YEMEK",  "badge": "YENİ" },
+      { "id": "mekan",        "title": "Sanal Mekanlar",      "game": null,                      "color": "#06b6d4", "type": "MEKAN",  "badge": null },
+      { "id": "haber",        "title": "Oyun Haberleri",      "game": null,                      "color": "#64748b", "type": "HABER",  "badge": null }
     ],
     "days": [
-      {
-        "date": "2026-07-01",
-        "slots": [
-          { "show": "cyber", "time": "20:00", "episode": "S1E01 — Night City'ye Dönüş", "new": true, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-02",
-        "slots": [
-          { "show": "souls", "time": "20:00", "episode": "E01 — Limgrave Temizlik", "new": true, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-03",
-        "slots": [
-          { "show": "witcher", "time": "20:00", "episode": "S1E01 — Beyaz Bahçe", "new": true, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-04",
-        "slots": [
-          { "show": "indie", "time": "20:00", "episode": "E01 — Forgotten Crossroads", "new": true, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-05",
-        "slots": [
-          { "show": "cuma", "time": "20:00", "episode": "S1E01 — Emerald Grove", "new": true, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-06",
-        "slots": []
-      },
-      {
-        "date": "2026-07-07",
-        "slots": [
-          { "show": "gta-history", "time": "19:00", "episode": "GTA III — Liberty City Başlangıcı", "new": true, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-08",
-        "slots": [
-          { "show": "cyber", "time": "20:00", "episode": "S1E02 — Phantom Liberty Öncesi", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-09",
-        "slots": [
-          { "show": "souls", "time": "20:00", "episode": "E02 — Stormveil Kalesi", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-10",
-        "slots": [
-          { "show": "witcher", "time": "20:00", "episode": "S1E02 — Vizima'ya Varış", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-11",
-        "slots": [
-          { "show": "indie", "time": "20:00", "episode": "E02 — Greenpath", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-12",
-        "slots": [
-          { "show": "cuma", "time": "20:00", "episode": "S1E02 — Moonrise Towers", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-13",
-        "slots": []
-      },
-      {
-        "date": "2026-07-14",
-        "slots": [
-          { "show": "gta-history", "time": "19:00", "episode": "Vice City — Işıklı Şehir", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-15",
-        "slots": [
-          { "show": "cyber", "time": "20:00", "episode": "S1E03 — Phantom Liberty Başlıyor", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-16",
-        "slots": [
-          { "show": "souls", "time": "20:00", "episode": "E03 — Rennala Karşılaşması", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-17",
-        "slots": [
-          { "show": "witcher", "time": "20:00", "episode": "S1E03 — Bloody Baron", "new": false, "live": true }
-        ]
-      },
-      {
-        "date": "2026-07-18",
-        "slots": [
-          { "show": "indie", "time": "20:00", "episode": "E03 — Fog Canyon", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-19",
-        "slots": [
-          { "show": "cuma", "time": "20:00", "episode": "S1E03 — Underdark", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-20",
-        "slots": []
-      },
-      {
-        "date": "2026-07-21",
-        "slots": [
-          { "show": "gta-history", "time": "19:00", "episode": "San Andreas — Büyük Harita", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-22",
-        "slots": [
-          { "show": "cyber", "time": "20:00", "episode": "S1E04 — Phantom Liberty Finali", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-23",
-        "slots": [
-          { "show": "souls", "time": "20:00", "episode": "E04 — Shadow of the Erdtree", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-24",
-        "slots": [
-          { "show": "witcher", "time": "20:00", "episode": "S1E04 — Hearts of Stone", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-25",
-        "slots": [
-          { "show": "indie", "time": "20:00", "episode": "E04 — Soul Sanctum", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-26",
-        "slots": [
-          { "show": "cuma", "time": "20:00", "episode": "S1E04 — Act 2 Başlıyor", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-27",
-        "slots": []
-      },
-      {
-        "date": "2026-07-28",
-        "slots": [
-          { "show": "gta-history", "time": "19:00", "episode": "GTA IV — Liberty City Yeniden", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-29",
-        "slots": [
-          { "show": "cyber", "time": "20:00", "episode": "S1 FİNAL — Cyberpunk Tamamlandı", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-30",
-        "slots": [
-          { "show": "souls", "time": "20:00", "episode": "E05 — Elden Ring %100", "new": false, "live": false }
-        ]
-      },
-      {
-        "date": "2026-07-31",
-        "slots": [
-          { "show": "witcher", "time": "20:00", "episode": "S1E05 — Blood and Wine", "new": false, "live": false }
-        ]
-      }
+      { "date": "2026-07-01", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Haziran Özeti — Öne Çıkan Haberler" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E01 — Gaming Sessionı İçin 5 Yiyecek", "new": true },
+        { "show": "cyber",  "time": "20:00", "episode": "S1E01 — Night City'ye Dönüş", "new": true },
+        { "show": "muzik",  "time": "23:00", "episode": "Cyberpunk 2077 — Akira Yamaoka Seti" }
+      ]},
+      { "date": "2026-07-02", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E01 — Night City Mahallelerine Tur", "new": true },
+        { "show": "haber",  "time": "17:00", "episode": "Haftanın Duyuruları" },
+        { "show": "souls",  "time": "20:00", "episode": "E01 — Limgrave Temizlik", "new": true },
+        { "show": "muzik",  "time": "23:00", "episode": "Elden Ring OST — Full Atmosphere Set" }
+      ]},
+      { "date": "2026-07-03", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E02 — Novigrad Sokaklarında" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E02 — Uzun Yayın İçin Atıştırmalıklar" },
+        { "show": "witcher","time": "20:00", "episode": "S1E01 — Beyaz Bahçe", "new": true },
+        { "show": "muzik",  "time": "23:00", "episode": "The Witcher 3 — Priscilla'nın Şarkıları" }
+      ]},
+      { "date": "2026-07-04", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Bağımsız Oyunlar Bu Hafta" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E03 — Ramen: Gaming Klasiği" },
+        { "show": "indie",  "time": "20:00", "episode": "E01 — Forgotten Crossroads", "new": true },
+        { "show": "muzik",  "time": "23:00", "episode": "Hollow Knight OST — Christopher Larkin" }
+      ]},
+      { "date": "2026-07-05", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E03 — Forgotten Crossroads'ta Kaybolmak" },
+        { "show": "haber",  "time": "17:00", "episode": "GTA 6 Güncel Durum" },
+        { "show": "bg3",    "time": "20:00", "episode": "S1E01 — Emerald Grove", "new": true },
+        { "show": "muzik",  "time": "23:00", "episode": "BG3 — Lute Tavern Session" }
+      ]},
+      { "date": "2026-07-06", "slots": [
+        { "show": "yemek",  "time": "14:00", "episode": "S1E04 — Hafta Sonu Brunch Gaming" },
+        { "show": "mekan",  "time": "17:00", "episode": "S1E04 — Baldur's Gate Şehri" },
+        { "show": "muzik",  "time": "21:00", "episode": "Chill Gaming Playlist — 3 Saat" },
+        { "show": "haber",  "time": "23:30", "episode": "Haftalık Oyun Haberleri Özeti" }
+      ]},
+      { "date": "2026-07-07", "slots": [
+        { "show": "gta-history", "time": "14:00", "episode": "GTA III — Liberty City Başlangıcı", "new": true },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E05 — GTA'da Yenilen Yiyecekler" },
+        { "show": "gta-history", "time": "20:00", "episode": "GTA III — 100% Tamamlama Koşusu" },
+        { "show": "muzik",  "time": "23:00", "episode": "GTA III Radio — Full Soundtrack" }
+      ]},
+      { "date": "2026-07-08", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Pazartesi Haberleri" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E06 — Pizza & FPS: Mükemmel İkili" },
+        { "show": "cyber",  "time": "20:00", "episode": "S1E02 — Phantom Liberty Öncesi" },
+        { "show": "muzik",  "time": "23:00", "episode": "Synthwave Gaming — Night Drive" }
+      ]},
+      { "date": "2026-07-09", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E05 — Stormveil Kalesinin Sırları" },
+        { "show": "haber",  "time": "17:00", "episode": "Souls Serisi Haberleri" },
+        { "show": "souls",  "time": "20:00", "episode": "E02 — Stormveil Kalesi" },
+        { "show": "muzik",  "time": "23:00", "episode": "From Software Müzikleri — Dark Souls I II III" }
+      ]},
+      { "date": "2026-07-10", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E06 — Vizima: Büyük Şehir Turu" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E07 — Witcher'dan İlham: Yaban Arısı Balı" },
+        { "show": "witcher","time": "20:00", "episode": "S1E02 — Vizima'ya Varış" },
+        { "show": "muzik",  "time": "23:00", "episode": "Celtic Gaming Music — Witcher Karışım" }
+      ]},
+      { "date": "2026-07-11", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Indie Bülteni" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E08 — Maratona Hazır Kahvaltı" },
+        { "show": "indie",  "time": "20:00", "episode": "E02 — Greenpath" },
+        { "show": "muzik",  "time": "23:00", "episode": "Indie Game OST Karışımı" }
+      ]},
+      { "date": "2026-07-12", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E07 — Baldur's Gate Underdark" },
+        { "show": "haber",  "time": "17:00", "episode": "Cuma Haberleri + GTA 6" },
+        { "show": "bg3",    "time": "20:00", "episode": "S1E02 — Moonrise Towers" },
+        { "show": "muzik",  "time": "23:00", "episode": "D&D Gaming Müzik Gecesi" }
+      ]},
+      { "date": "2026-07-13", "slots": [
+        { "show": "yemek",  "time": "14:00", "episode": "S1E09 — Cumartesi Akşam Yemeği + Oyun" },
+        { "show": "mekan",  "time": "17:00", "episode": "S1E08 — Yüksek Çözünürlükte Sanal Şehirler" },
+        { "show": "muzik",  "time": "21:00", "episode": "Lo-Fi Gaming Beats — 4 Saat" },
+        { "show": "haber",  "time": "23:30", "episode": "Haftalık Özet" }
+      ]},
+      { "date": "2026-07-14", "slots": [
+        { "show": "gta-history", "time": "14:00", "episode": "Vice City — Işıklı Şehir" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E10 — Pazar Yemeği: Retro Pizza" },
+        { "show": "gta-history", "time": "20:00", "episode": "Vice City — %100 Koşusu" },
+        { "show": "muzik",  "time": "23:00", "episode": "Vice City Radio — K-DST Full" }
+      ]},
+      { "date": "2026-07-15", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Yeni Duyurular" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E11 — Energy Drink Değerlendirme" },
+        { "show": "cyber",  "time": "20:00", "episode": "S1E03 — Phantom Liberty Başlıyor" },
+        { "show": "muzik",  "time": "23:00", "episode": "Cyberpunk Future Beats" }
+      ]},
+      { "date": "2026-07-16", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E09 — Rennala'nın Kütüphanesi" },
+        { "show": "haber",  "time": "17:00", "episode": "Fromsoft Haberleri" },
+        { "show": "souls",  "time": "20:00", "episode": "E03 — Rennala Karşılaşması" },
+        { "show": "muzik",  "time": "23:00", "episode": "Boss Battle Music Marathon" }
+      ]},
+      { "date": "2026-07-17", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E10 — Crookback Bataklığı" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E12 — Bloody Baron Gecesi: Şarap & Oyun" },
+        { "show": "witcher","time": "20:00", "episode": "S1E03 — Bloody Baron", "live": true },
+        { "show": "muzik",  "time": "23:00", "episode": "Witcher 3 Tavern Songs" }
+      ]},
+      { "date": "2026-07-18", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Perşembe Haberleri" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E13 — Hollow Knight'a Uygun Kahve" },
+        { "show": "indie",  "time": "20:00", "episode": "E03 — Fog Canyon" },
+        { "show": "muzik",  "time": "23:00", "episode": "Metroidvania OST Night" }
+      ]},
+      { "date": "2026-07-19", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E11 — Moonrise Towers Detayları" },
+        { "show": "haber",  "time": "17:00", "episode": "Cuma: Hafta Sonu Rehberi" },
+        { "show": "bg3",    "time": "20:00", "episode": "S1E03 — Underdark" },
+        { "show": "muzik",  "time": "23:00", "episode": "BG3 Full OST Dinleti" }
+      ]},
+      { "date": "2026-07-20", "slots": [
+        { "show": "yemek",  "time": "14:00", "episode": "S1E14 — Gamer Mutfağı: Hafta Sonu Özel" },
+        { "show": "mekan",  "time": "17:00", "episode": "S1E12 — En İkonik 10 Oyun Mekanı" },
+        { "show": "muzik",  "time": "21:00", "episode": "Video Game Music Awards — Top 50" },
+        { "show": "haber",  "time": "23:30", "episode": "Haftalık Oyun Haberleri" }
+      ]},
+      { "date": "2026-07-21", "slots": [
+        { "show": "gta-history", "time": "14:00", "episode": "San Andreas — Büyük Harita" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E15 — Grove Street Mutfağı" },
+        { "show": "gta-history", "time": "20:00", "episode": "San Andreas — %100 Koşusu" },
+        { "show": "muzik",  "time": "23:00", "episode": "SA Radio — Radio Los Santos Full" }
+      ]},
+      { "date": "2026-07-22", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Pazartesi Haberleri" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E16 — Cyberpunk Final Gecesi Menüsü" },
+        { "show": "cyber",  "time": "20:00", "episode": "S1E04 — Phantom Liberty Finali" },
+        { "show": "muzik",  "time": "23:00", "episode": "Night City Farewell — Son Playlist" }
+      ]},
+      { "date": "2026-07-23", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E13 — Shadow of the Erdtree Haritası" },
+        { "show": "haber",  "time": "17:00", "episode": "DLC Haberleri" },
+        { "show": "souls",  "time": "20:00", "episode": "E04 — Shadow of the Erdtree" },
+        { "show": "muzik",  "time": "23:00", "episode": "Elden Ring DLC OST Özel" }
+      ]},
+      { "date": "2026-07-24", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E14 — Hearts of Stone: Olenii Bahçesi" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E17 — Witcher Bitkisel Çayları" },
+        { "show": "witcher","time": "20:00", "episode": "S1E04 — Hearts of Stone" },
+        { "show": "muzik",  "time": "23:00", "episode": "Priscilla's Ballad Extended Mix" }
+      ]},
+      { "date": "2026-07-25", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Perşembe Haberleri" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E18 — Silk Song Bekleme Kahvesi" },
+        { "show": "indie",  "time": "20:00", "episode": "E04 — Soul Sanctum" },
+        { "show": "muzik",  "time": "23:00", "episode": "Christopher Larkin — Canlı Konseri" }
+      ]},
+      { "date": "2026-07-26", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E15 — BG3 Act 2 Gölgeli Topraklar" },
+        { "show": "haber",  "time": "17:00", "episode": "Cuma Haberleri + GTA 6 Sayacı" },
+        { "show": "bg3",    "time": "20:00", "episode": "S1E04 — Act 2 Başlıyor" },
+        { "show": "muzik",  "time": "23:00", "episode": "Shadow-Cursed Lands Ambient Mix" }
+      ]},
+      { "date": "2026-07-27", "slots": [
+        { "show": "yemek",  "time": "14:00", "episode": "S1E19 — Temmuz Final: En İyi Gaming Yemekleri" },
+        { "show": "mekan",  "time": "17:00", "episode": "S1E16 — Temmuz'un En İyi 5 Mekanı" },
+        { "show": "muzik",  "time": "21:00", "episode": "Temmuz Best Of — 5 Saat Gaming Music" },
+        { "show": "haber",  "time": "23:30", "episode": "Haftalık Özet" }
+      ]},
+      { "date": "2026-07-28", "slots": [
+        { "show": "gta-history", "time": "14:00", "episode": "GTA IV — Liberty City Yeniden" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E20 — GTA IV: Niko'nun Yemekleri" },
+        { "show": "gta-history", "time": "20:00", "episode": "GTA IV + EFLC — %100 Koşusu" },
+        { "show": "muzik",  "time": "23:00", "episode": "GTA IV — Liberty City Radio Derlemesi" }
+      ]},
+      { "date": "2026-07-29", "slots": [
+        { "show": "haber",  "time": "14:00", "episode": "Cyberpunk Final Değerlendirmesi" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E21 — Finali Kutlama Yemeği" },
+        { "show": "cyber",  "time": "20:00", "episode": "S1 FİNAL — Cyberpunk Tamamlandı" },
+        { "show": "muzik",  "time": "23:00", "episode": "Cyberpunk 2077 Final Credits + Özet" }
+      ]},
+      { "date": "2026-07-30", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E17 — Shadow of the Erdtree Son Bölge" },
+        { "show": "haber",  "time": "17:00", "episode": "Elden Ring Bitiş Değerlendirmesi" },
+        { "show": "souls",  "time": "20:00", "episode": "E05 — Elden Ring %100 Final", "live": true },
+        { "show": "muzik",  "time": "23:00", "episode": "Elden Lord Theme — Closing Ceremony" }
+      ]},
+      { "date": "2026-07-31", "slots": [
+        { "show": "mekan",  "time": "14:00", "episode": "S1E18 — Blood and Wine: Toussaint Turu" },
+        { "show": "yemek",  "time": "17:00", "episode": "S1E22 — Temmuz Final: Şarap & Witcher" },
+        { "show": "witcher","time": "20:00", "episode": "S1E05 — Blood and Wine FINAL" },
+        { "show": "muzik",  "time": "23:00", "episode": "Temmuz'a Veda — Karbon TV Final" }
+      ]}
     ]
   }
 ]

@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const meals = [
+  {
+    title: "Uzun Session Ramen",
+    category: "Ana Yemek",
+    time: "15 dakika",
+    difficulty: "Kolay",
+    color: "#f97316",
+    desc: "6+ saatlik yayın için ideal. Hazır ramen'i bir üst seviyeye çıkarmak.",
+    ingredients: ["Hazır ramen (Samyang tercih)", "1 yumurta", "Susam yağı", "Sriracha", "Yeşil soğan"],
+    tip: "Yumurtayı yarım pişir, soya sosuyla marine et. Yayın başlamadan hazırla, aranın tam orta noktasında ye.",
+    game: "Herhangi bir RPG — uzun cutscene'lerde mükemmel"
+  },
+  {
+    title: "Boss Fight Enerjisi",
+    category: "Atıştırmalık",
+    time: "0 dakika",
+    difficulty: "Hazır",
+    color: "#ef4444",
+    desc: "Zor boss öncesi kan şekerini dengede tut. Ani çarpıntı yaratmaz.",
+    ingredients: ["Bitter çikolata %70+", "Fıstık", "Muz", "Su (bol)"],
+    tip: "Energy drink boss fightında elleri titretiyor. Bitter çikolata + muz kombinasyonu daha stabil enerji verir.",
+    game: "Souls serisi, Hollow Knight, Returnal"
+  },
+  {
+    title: "Gece Yayını Kahvesi",
+    category: "İçecek",
+    time: "5 dakika",
+    difficulty: "Orta",
+    color: "#3b82f6",
+    desc: "23:00+ yayınlar için. Mide yanmasını önleyen, uzun süreli konsantrasyon sağlayan formül.",
+    ingredients: ["V60 veya French press", "Orta-koyu kavrum", "Soğuk süt (isteğe bağlı)", "Tarçın"],
+    tip: "Espresso değil filtre tercih et. Daha uzun süre etkili, daha az ani düşüş. Tuz eklemek acılığı keser.",
+    game: "Horror, Cyberpunk, Geç saat indie"
+  },
+  {
+    title: "Speedrun Sandviçi",
+    category: "Hızlı",
+    time: "3 dakika",
+    difficulty: "Çok Kolay",
+    color: "#22c55e",
+    desc: "Yayın kesmeden, bir elle yenebilen. Klavyeyi kirletmiyor.",
+    ingredients: ["Tam buğday ekmek", "Avokado", "Tuz + limon", "İsteğe bağlı yumurta"],
+    tip: "Avokadoyu önceden hazırla. Limon kararmasını önler. Compact olsun, mouse padinizin yanında duracak.",
+    game: "Rekabetçi, speedrun, zaman baskılı oyunlar"
+  },
+  {
+    title: "Witcher Dönemi Çorbası",
+    category: "Ana Yemek",
+    time: "25 dakika",
+    difficulty: "Orta",
+    color: "#c6a84b",
+    desc: "Toussaint bölgesini oynurken içilen. Sıcak, doldurur, 3 saat tok tutar.",
+    ingredients: ["Mercimek çorbası (kırmızı)", "Limon", "Kırmızı pul biber", "Ekmek"],
+    tip: "Kışın veya saatlerce oynayacağın zamanlar için ideal. Hem sıcak tutan hem de enerjini korur.",
+    game: "The Witcher 3, Baldur's Gate 3, Mass Effect"
+  },
+  {
+    title: "GTA Marathon Bundle",
+    category: "Paket",
+    time: "0 dakika",
+    difficulty: "Hazır",
+    color: "#ef4444",
+    desc: "GTA tarihi boyunca yanında bulundurman gereken temel set.",
+    ingredients: ["Cips (büyük boy)", "Dip sos", "Sodalı içecek", "Peçete (zorunlu)"],
+    tip: "Yağlı cips klavyeye felaket. Çubuklu bisküvi tercih et. GTA V heist hazırlığında ekrandan gözlerini almak zorunda kalmazsın.",
+    game: "GTA Serisi, Far Cry, Assassin's Creed"
+  },
+];
+---
+
+<Layout title="Yemek — Karbon TV">
+
+  <div style="margin-bottom: 48px;">
+    <p style="font-size: 12px; color: #f97316; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 10px;">🍜 YEMEK</p>
+    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Gamer Mutfağı</h1>
+    <p style="font-size: 15px; color: #555; margin: 0;">Yayın sırasında ne yenir, ne içilir. Performans için doğru beslenme.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px;">
+    {meals.map(meal => (
+      <div style={`background: #111; border: 1px solid ${meal.color}33; display: flex; flex-direction: column;`}>
+        <!-- Header -->
+        <div style={`padding: 16px 18px; border-bottom: 1px solid ${meal.color}22;`}>
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+            <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{meal.title}</h2>
+            <span style={`font-size: 9px; background: ${meal.color}22; border: 1px solid ${meal.color}55; color: ${meal.color}; padding: 2px 7px; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; white-space: nowrap;`}>{meal.category}</span>
+          </div>
+          <p style="font-size: 13px; color: #666; margin: 0 0 8px; line-height: 1.5;">{meal.desc}</p>
+          <div style="display: flex; gap: 12px;">
+            <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace;">⏱ {meal.time}</span>
+            <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace;">· {meal.difficulty}</span>
+          </div>
+        </div>
+
+        <!-- Ingredients -->
+        <div style="padding: 12px 18px; border-bottom: 1px solid #1a1a1a;">
+          <p style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px;">Malzemeler</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            {meal.ingredients.map(ing => (
+              <span style="font-size: 11px; background: #0d0d0d; border: 1px solid #222; color: #777; padding: 2px 8px;">{ing}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Tip -->
+        <div style="padding: 12px 18px; border-bottom: 1px solid #1a1a1a; flex: 1;">
+          <p style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono', monospace; margin: 0 0 6px;">Karbon Notu</p>
+          <p style="font-size: 12px; color: #666; margin: 0; line-height: 1.6; font-style: italic;">"{meal.tip}"</p>
+        </div>
+
+        <!-- Game pairing -->
+        <div style="padding: 10px 18px;">
+          <p style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace; margin: 0;">🎮 {meal.game}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+</Layout>

@@ -23,7 +23,24 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body style="background:#0a0a0a; color:#e5e5e5; margin:0;">
-    <nav style="border-bottom: 1px solid #222; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #0a0a0a; z-index: 100;">
+
+    <!-- TV Ticker -->
+    <div id="tvTicker" style="background: #0d0d0d; border-bottom: 1px solid #1a1a1a; height: 28px; display: flex; align-items: center; overflow: hidden; position: sticky; top: 0; z-index: 101;">
+      <div style="background: #e5c46b; color: #0a0a0a; font-size: 9px; font-weight: 800; font-family: 'JetBrains Mono', monospace; padding: 0 10px; height: 100%; display: flex; align-items: center; letter-spacing: 0.1em; flex-shrink: 0; white-space: nowrap;">
+        KARBON TV
+      </div>
+      <div style="width: 1px; height: 100%; background: #2a2a2a; flex-shrink: 0;"></div>
+      <div style="flex: 1; overflow: hidden; position: relative;">
+        <div id="tickerTrack" style="display: flex; gap: 0; white-space: nowrap; will-change: transform;">
+          <span id="tickerContent" style="font-size: 11px; color: #888; font-family: 'JetBrains Mono', monospace; padding: 0 32px;"></span>
+        </div>
+      </div>
+      <a href="/schedule" style="background: none; border: none; border-left: 1px solid #1a1a1a; color: #555; font-size: 9px; font-family: 'JetBrains Mono', monospace; padding: 0 10px; height: 100%; display: flex; align-items: center; flex-shrink: 0; text-decoration: none; letter-spacing: 0.06em; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555'">
+        PROGRAM ›
+      </a>
+    </div>
+
+    <nav style="border-bottom: 1px solid #222; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 28px; background: #0a0a0a; z-index: 100;">
       <a href="/" style="font-weight: 600; font-size: 15px; letter-spacing: -0.02em;">
         karbon<span style="color: #e5c46b;">kafa</span>
       </a>
@@ -32,6 +49,9 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
         <a href="/guides" data-i18n="nav.guides" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.guides']}</a>
         <a href="/news" data-i18n="nav.news" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.news']}</a>
         <a href="/schedule" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Akış</a>
+        <a href="/muzik" style="transition: color 0.15s; color: #3b82f655;" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='#3b82f655'">Müzik</a>
+        <a href="/yemek" style="transition: color 0.15s; color: #f9731655;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#f9731655'">Yemek</a>
+        <a href="/mekan" style="transition: color 0.15s; color: #06b6d455;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#06b6d455'">Mekan</a>
         <a href="/quiz" style="transition: color 0.15s; color: #e5c46b44;" onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5c46b44'">Quiz</a>
         <!-- Auth -->
         <div id="navAuth" style="display: flex; align-items: center; gap: 12px; position: relative;">
@@ -157,4 +177,32 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
       if (dropdownEl) dropdownEl.style.display = 'none';
     });
   });
+</script>
+
+<script>
+  // TV Ticker
+  (async () => {
+    try {
+      const res = await fetch('/api/ticker');
+      if (!res.ok) return;
+      const { text } = await res.json();
+      const content = document.getElementById('tickerContent');
+      const track = document.getElementById('tickerTrack');
+      if (!content || !track) return;
+      // Duplicate for seamless loop
+      content.textContent = text;
+      const clone = content.cloneNode(true) as HTMLElement;
+      track.appendChild(clone);
+      let x = 0;
+      const speed = 0.4;
+      const w = content.offsetWidth + 64;
+      function tick() {
+        x -= speed;
+        if (x <= -w) x = 0;
+        track.style.transform = `translateX(${x}px)`;
+        requestAnimationFrame(tick);
+      }
+      tick();
+    } catch(e) {}
+  })();
 </script>

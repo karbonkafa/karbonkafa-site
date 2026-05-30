@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import gamesData from '../data/games.json';
+
+const gmap: Record<string, any> = {};
+for (const g of gamesData as any[]) gmap[g.slug] = g;
+
+const locations = [
+  {
+    name: "Night City — Japantown",
+    game: "cyberpunk-2077",
+    region: "Westbrook, Night City",
+    type: "Şehir Mahallesi",
+    color: "#f7e700",
+    desc: "Japon kültürü ile cyberpunk estetiğinin buluştuğu yer. Neon ışıklar, izakaya barları, Tyger Claws topraği. Gece en güzel.",
+    bestTime: "Gece / Yağmurlu",
+    screenshot: null,
+    tags: ["Neon", "Japon Kültürü", "Tehlikeli", "Görsel Şölen"]
+  },
+  {
+    name: "Novigrad — Liman Bölgesi",
+    game: "the-witcher-3-wild-hunt",
+    region: "Kuzey Krallıkları, Novigrad",
+    type: "Liman Kenti",
+    color: "#c6a84b",
+    desc: "Ortaçağ limanının bütün kargaşasıyla hayat buluyor. Balıkçılar, tüccarlar, hırsızlar. Geralt burada çok iş çıkarır.",
+    bestTime: "Öğlen / Pazar Yeri",
+    screenshot: null,
+    tags: ["Ortaçağ", "Canlı", "NPC Yoğunluğu", "Görev Zengini"]
+  },
+  {
+    name: "Liurnia of the Lakes",
+    game: "elden-ring",
+    region: "The Lands Between",
+    type: "Göl Bölgesi",
+    color: "#e07040",
+    desc: "Yarı sular altında, büyük Raya Lucaria Akademisi'nin gölgesinde bir bölge. Duygusal ve görsel açıdan Elden Ring'in zirvesi.",
+    bestTime: "Altın Saat / Sisli Sabah",
+    screenshot: null,
+    tags: ["Mistik", "Açık Alan", "Tehlikeli", "Atmosferik"]
+  },
+  {
+    name: "Toussaint",
+    game: "the-witcher-3-wild-hunt",
+    region: "The Witcher 3: Blood and Wine",
+    type: "Şarap Diyarı",
+    color: "#9b59b6",
+    desc: "Tüm The Witcher 3 dünyasının en güzel köşesi. Fransız köy estetiği, bağlar, turnuvalar. Savaşın bittiği yer hissi veriyor.",
+    bestTime: "Gündüz / Şarap Hasatı",
+    screenshot: null,
+    tags: ["Huzurlu", "Renkli", "Görev Zengini", "Unique Atmosfer"]
+  },
+  {
+    name: "Forgotten Crossroads",
+    game: "hollow-knight",
+    region: "Hallownest Alt Kısmı",
+    type: "Yeraltı Hub'ı",
+    color: "#22c55e",
+    desc: "Hollow Knight dünyasına giriş noktası. Karanlık, ama yine de güvenli hissettiren. Selin şehri kalıntıları arasında ilk adımlar.",
+    bestTime: "Başlangıç / Keşif Modu",
+    screenshot: null,
+    tags: ["Melankoli", "Bağlantı Noktası", "Gizemli", "Zorlayıcı"]
+  },
+  {
+    name: "Emerald Grove",
+    game: "baldur-s-gate-iii",
+    region: "Sword Coast, Act 1",
+    type: "Druid Sığınağı",
+    color: "#22c55e",
+    desc: "BG3'ün ilk büyük merkezi. Refugee krizi, druid gerilimi, goblin tehdidi — hepsi bir arada. Oyunun tonunu burada anlıyorsun.",
+    bestTime: "İlk Oynanış",
+    screenshot: null,
+    tags: ["Karar Anı", "Kompleks NPC", "Çoklu Yol", "Atmosferik"]
+  },
+  {
+    name: "Vice City Malibu Beach",
+    game: "grand-theft-auto-v",
+    region: "Vice City / Los Santos",
+    type: "Sahil",
+    color: "#ef4444",
+    desc: "80'ler Amerikan rüyasının simgesi. Palmiyeler, neon ışıklar, spor arabalar. Rockstar'ın atmosfer yaratma sanatının zirvesi.",
+    bestTime: "Gün Batımı",
+    screenshot: null,
+    tags: ["Nostaljik", "80'ler Estetiği", "İkonik", "Sürüş Keyfi"]
+  },
+  {
+    name: "White Orchard",
+    game: "the-witcher-3-wild-hunt",
+    region: "İmparatorluk Sınırı",
+    type: "Köy",
+    color: "#c6a84b",
+    desc: "The Witcher 3'ün tutorial haritası ama hayal kırıklığı yok. Savaş sonrası Orta Doğu Avrupa köyü atmosferi kusursuz.",
+    bestTime: "Sabah / Sisli",
+    screenshot: null,
+    tags: ["Sakin", "Detaylı", "Başlangıç", "Hint Veriyor"]
+  },
+];
+---
+
+<Layout title="Mekan — Karbon TV">
+
+  <div style="margin-bottom: 48px;">
+    <p style="font-size: 12px; color: #06b6d4; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 10px;">📍 MEKAN</p>
+    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Sanal Mekanlar</h1>
+    <p style="font-size: 15px; color: #555; margin: 0;">Oyun dünyalarındaki ikonik lokasyonlar. Gitmeye değer yerler.</p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a;">
+    {locations.map(loc => {
+      const game = gmap[loc.game];
+      const cover = game?.coverUrl;
+      return (
+        <div style="display: grid; grid-template-columns: 80px 1fr; background: #111; transition: background 0.15s;"
+          onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#111'">
+          <!-- Cover -->
+          <a href={`/games/${loc.game}`} style="display: block; overflow: hidden;">
+            {cover ? (
+              <img src={cover} alt={loc.name} loading="lazy"
+                style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.7; min-height: 80px;" />
+            ) : (
+              <div style={`width: 100%; min-height: 80px; background: ${loc.color}22; display: flex; align-items: center; justify-content: center;`}>
+                <span style={`font-size: 20px; color: ${loc.color};`}>📍</span>
+              </div>
+            )}
+          </a>
+          <!-- Info -->
+          <div style="padding: 16px 20px;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 6px; flex-wrap: wrap;">
+              <div>
+                <h2 style="font-size: 16px; font-weight: 600; margin: 0 0 3px; letter-spacing: -0.01em;">{loc.name}</h2>
+                <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">{loc.region}  ·  {loc.type}</p>
+              </div>
+              <div style="display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0;">
+                {loc.tags.map(tag => (
+                  <span style={`font-size: 9px; border: 1px solid ${loc.color}44; color: ${loc.color}; padding: 1px 6px; font-family: 'JetBrains Mono', monospace;`}>{tag}</span>
+                ))}
+              </div>
+            </div>
+            <p style="font-size: 13px; color: #666; margin: 0 0 8px; line-height: 1.6;">{loc.desc}</p>
+            <p style="font-size: 11px; color: #444; margin: 0; font-family: 'JetBrains Mono', monospace;">⏰ En iyi zaman: {loc.bestTime}</p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+
+</Layout>

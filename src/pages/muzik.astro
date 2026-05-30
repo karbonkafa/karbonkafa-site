@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const playlists = [
+  {
+    title: "Night City Radio",
+    game: "Cyberpunk 2077",
+    mood: "Electro / Synthwave",
+    color: "#f7e700",
+    tracks: [
+      { name: "A Like Supreme — Refused", duration: "4:12" },
+      { name: "Chippin' In — Refused", duration: "3:48" },
+      { name: "Never Fade Away — SAMURAI", duration: "4:31" },
+      { name: "Black Dog — Rat Boy", duration: "3:22" },
+      { name: "Belly of the Beast — Grimes", duration: "3:54" },
+    ],
+    youtube: "https://www.youtube.com/watch?v=rNDoCDHBqzY"
+  },
+  {
+    title: "The Land of Wine",
+    game: "The Witcher 3: Blood and Wine",
+    mood: "Orkestral / Avrupa Folk",
+    color: "#c6a84b",
+    tracks: [
+      { name: "Priscilla's Song", duration: "2:58" },
+      { name: "Silver for Monsters", duration: "3:44" },
+      { name: "Toussaint Knights", duration: "4:02" },
+      { name: "Hunt or Be Hunted", duration: "2:31" },
+      { name: "The Wolven Storm", duration: "3:17" },
+    ],
+    youtube: "https://www.youtube.com/watch?v=SGQIWkUHjKU"
+  },
+  {
+    title: "Elden Ring — A Grim Ascent",
+    game: "Elden Ring",
+    mood: "Karanlık Orkestral / Ambient",
+    color: "#e07040",
+    tracks: [
+      { name: "Marika's Woe", duration: "3:22" },
+      { name: "God Slaying Sword", duration: "5:14" },
+      { name: "Radahn, Starscourge", duration: "4:48" },
+      { name: "Elden Beast", duration: "5:33" },
+      { name: "A Vast Golden Sky", duration: "2:55" },
+    ],
+    youtube: "https://www.youtube.com/watch?v=CnkT5iKxDXQ"
+  },
+  {
+    title: "Hollow Knight — Silksong Beklentisi",
+    game: "Hollow Knight",
+    mood: "Orkestral / Melankoli",
+    color: "#22c55e",
+    tracks: [
+      { name: "Hollow Knight", duration: "3:41" },
+      { name: "Dirtmouth", duration: "2:12" },
+      { name: "White Palace", duration: "3:55" },
+      { name: "Gods & Glory", duration: "4:08" },
+      { name: "Pale Court", duration: "5:22" },
+    ],
+    youtube: "https://www.youtube.com/watch?v=Otn_64O1GgM"
+  },
+  {
+    title: "GTA Tarihi Radyo",
+    game: "GTA Serisi",
+    mood: "Radio / Mixed",
+    color: "#ef4444",
+    tracks: [
+      { name: "K-DST — Fleetwood Mac", duration: "Sonsuz" },
+      { name: "Radio Los Santos — Dr. Dre", duration: "Sonsuz" },
+      { name: "Liberty City Radio — Deftones", duration: "Sonsuz" },
+      { name: "Vice City FM — A Flock of Seagulls", duration: "Sonsuz" },
+      { name: "BlueArk Radio — Bob Marley", duration: "Sonsuz" },
+    ],
+    youtube: "https://www.youtube.com/watch?v=_EHLjnJMGoE"
+  },
+  {
+    title: "Lo-Fi Gaming Session",
+    game: "Genel",
+    mood: "Lo-Fi / Chill",
+    color: "#3b82f6",
+    tracks: [
+      { name: "Late Night Homework", duration: "Canlı" },
+      { name: "Study & Relax", duration: "Canlı" },
+      { name: "Chilled Cow Beats", duration: "Canlı" },
+    ],
+    youtube: "https://www.youtube.com/watch?v=jfKfPfyJRdk"
+  },
+];
+---
+
+<Layout title="Müzik — Karbon TV">
+
+  <div style="margin-bottom: 48px;">
+    <p style="font-size: 12px; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 10px;">🎵 MÜZİK</p>
+    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Oyun Soundtrackları</h1>
+    <p style="font-size: 15px; color: #555; margin: 0;">Her oyunun bir sesi var. Burada en iyi olanları.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px;">
+    {playlists.map(pl => (
+      <div style={`background: #111; border: 1px solid ${pl.color}33; display: flex; flex-direction: column;`}>
+        <!-- Header -->
+        <div style={`padding: 16px 18px; border-bottom: 1px solid ${pl.color}22;`}>
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
+            <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{pl.title}</h2>
+            <a href={pl.youtube} target="_blank" rel="noopener"
+              style={`font-size: 9px; background: ${pl.color}22; border: 1px solid ${pl.color}66; color: ${pl.color}; padding: 3px 8px; font-family: 'JetBrains Mono', monospace; text-decoration: none; flex-shrink: 0; letter-spacing: 0.06em;`}
+              onmouseover={`this.style.background='${pl.color}44'`} onmouseout={`this.style.background='${pl.color}22'`}>
+              ▶ YOUTUBE
+            </a>
+          </div>
+          <p style="font-size: 11px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;">{pl.game}  ·  {pl.mood}</p>
+        </div>
+        <!-- Track list -->
+        <div style="flex: 1;">
+          {pl.tracks.map((track, i) => (
+            <div style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 18px; border-bottom: 1px solid #1a1a1a;`}>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace; min-width: 14px;">{i + 1}</span>
+                <span style="font-size: 12px; color: #888;">{track.name}</span>
+              </div>
+              <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace;">{track.duration}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+</Layout>
