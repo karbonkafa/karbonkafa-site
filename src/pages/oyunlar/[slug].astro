@@ -40,6 +40,53 @@ const hours = game.playtimeMinutes > 0
   : game.totalHours > 0
   ? game.totalHours + ' saat'
   : null;
+
+// Links
+const steamId = game.stores?.steam?.uid;
+const q = encodeURIComponent(game.title);
+const allLinks = [
+  ...(steamId ? [
+    { label: 'Steam', url: `https://store.steampowered.com/app/${steamId}/`, color: '#4a9eed' },
+    { label: 'SteamDB', url: `https://www.steamdb.info/app/${steamId}/`, color: '#e5c46b' },
+  ] : []),
+  ...(game.stores?.epic?.url ? [{ label: 'Epic', url: game.stores.epic.url, color: '#aaa' }] : []),
+  ...(game.stores?.gog?.url ? [{ label: 'GOG', url: game.stores.gog.url, color: '#a1253a' }] : []),
+  ...(game.stores?.psn?.url ? [{ label: 'PSN', url: game.stores.psn.url, color: '#0072ce' }] : []),
+  ...(game.stores?.xbox?.url ? [{ label: 'Xbox', url: game.stores.xbox.url, color: '#107c10' }] : []),
+  { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${q}`, color: '#e8a838' },
+  ...(steamId ? [{ label: 'ProtonDB', url: `https://www.protondb.com/app/${steamId}`, color: '#c06000' }] : []),
+  { label: 'IsThereAnyDeal', url: `https://isthereanydeal.com/search/?q=${q}`, color: '#60a050' },
+  { label: 'OpenCritic', url: `https://opencritic.com/search#${q}`, color: '#f0a000' },
+  ...(game.igdbId ? [{ label: 'IGDB', url: `https://www.igdb.com/games/${game.slug}`, color: '#9b59b6' }] : []),
+];
+
+// Referans tablosu satırları
+const devs = igdb.mainDevs?.length > 0 ? igdb.mainDevs : (game.developer ? [game.developer] : []);
+const pubs = igdb.publishers?.length > 0 ? igdb.publishers : (game.publisher ? [game.publisher] : []);
+const series = [...(igdb.franchises || []), ...(igdb.collections || [])].filter((v: string, i: number, a: string[]) => a.indexOf(v) === i);
+const genres = igdb.genres?.length > 0 ? igdb.genres : game.genres;
+const refRows = [
+  ...(devs.length > 0 ? [{ label: 'Ana Geliştirici', value: devs.join(', '), color: '' }] : []),
+  ...(igdb.supportingDevs?.length > 0 ? [{ label: 'Destek Geliştirici', value: igdb.supportingDevs.join(', '), color: '' }] : []),
+  ...(pubs.length > 0 ? [{ label: 'Yayıncı', value: pubs.join(', '), color: '' }] : []),
+  ...(game.releaseYear ? [{ label: 'Çıkış Yılı', value: String(game.releaseYear), color: '' }] : []),
+  ...(genres?.length > 0 ? [{ label: 'Tür', value: genres.join(', '), color: '' }] : []),
+  ...(igdb.themes?.length > 0 ? [{ label: 'Tema', value: igdb.themes.join(', '), color: '' }] : []),
+  ...(igdb.gameModes?.length > 0 ? [{ label: 'Oyun Modu', value: igdb.gameModes.join(', '), color: '' }] : []),
+  ...(igdb.perspectives?.length > 0 ? [{ label: 'Bakış Açısı', value: igdb.perspectives.join(', '), color: '' }] : []),
+  ...(series.length > 0 ? [{ label: 'Seri', value: series.join(', '), color: '' }] : []),
+  ...(igdb.parentGame ? [{ label: 'Ana Oyun', value: igdb.parentGame.name, color: '' }] : []),
+  ...(igdb.engines?.length > 0 ? [{ label: 'Motor', value: igdb.engines.join(', '), color: '' }] : []),
+  ...(igdb.totalRating ? [{ label: 'IGDB Puanı', value: String(igdb.totalRating), color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' }] : []),
+  ...(hours ? [{ label: 'Oynanan', value: hours, color: '#e5c46b' }] : []),
+  ...(review.overall ? [{ label: 'Karbon Puanı', value: `${review.overall}/10`, color: '#e5c46b' }] : []),
+];
+
+// IGDB websites
+const websiteCategories = ['official', 'wikipedia', 'reddit', 'discord', 'youtube', 'twitch'];
+const filteredWebsites = igdb.websites
+  ? Object.entries(igdb.websites).filter(([cat]) => websiteCategories.includes(cat))
+  : [];
 ---
 
 <Layout title={game.title} description={game.summary || `${game.title} — KarbonGameStudios oyun arşivi.`}>
@@ -88,54 +135,16 @@ const hours = game.playtimeMinutes > 0
 
       <!-- Referans Bilgi -->
       <div style="border: 1px solid #222; margin-bottom: 24px;">
-        {(() => {
-          const rows: Array<{label: string; value: string; color?: string}> = [];
-
-          const devs = igdb.mainDevs?.length > 0 ? igdb.mainDevs : (game.developer ? [game.developer] : []);
-          if (devs.length > 0) rows.push({ label: 'Ana Geliştirici', value: devs.join(', ') });
-          if (igdb.supportingDevs?.length > 0) rows.push({ label: 'Destek Geliştirici', value: igdb.supportingDevs.join(', ') });
-
-          const pubs = igdb.publishers?.length > 0 ? igdb.publishers : (game.publisher ? [game.publisher] : []);
-          if (pubs.length > 0) rows.push({ label: 'Yayıncı', value: pubs.join(', ') });
-
-          if (game.releaseYear) rows.push({ label: 'Çıkış Yılı', value: String(game.releaseYear) });
-
-          const genres = igdb.genres?.length > 0 ? igdb.genres : game.genres;
-          if (genres?.length > 0) rows.push({ label: 'Tür', value: genres.join(', ') });
-          if (igdb.themes?.length > 0) rows.push({ label: 'Tema', value: igdb.themes.join(', ') });
-          if (igdb.gameModes?.length > 0) rows.push({ label: 'Oyun Modu', value: igdb.gameModes.join(', ') });
-          if (igdb.perspectives?.length > 0) rows.push({ label: 'Bakış Açısı', value: igdb.perspectives.join(', ') });
-
-          const series = [...(igdb.franchises||[]), ...(igdb.collections||[])].filter((v,i,a)=>a.indexOf(v)===i);
-          if (series.length > 0) rows.push({ label: 'Seri', value: series.join(', ') });
-          if (igdb.parentGame) rows.push({ label: 'Ana Oyun', value: igdb.parentGame.name });
-          if (igdb.engines?.length > 0) rows.push({ label: 'Motor', value: igdb.engines.join(', ') });
-
-          if (igdb.totalRating) rows.push({ label: 'IGDB Puanı', value: String(igdb.totalRating), color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' });
-          if (hours) rows.push({ label: 'Oynanan', value: hours, color: '#e5c46b' });
-
-          return rows.map((row, idx) => (
-            <div style={`display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a;`}>
-              <div style="padding: 10px 14px; background: #0d0d0d; display: flex; align-items: center;">
-                <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">{row.label}</span>
-              </div>
-              <div style="padding: 10px 14px; background: #111; display: flex; align-items: center;">
-                <span style={`font-size: 13px; color: ${row.color || '#ccc'};`}>{row.value}</span>
-              </div>
-            </div>
-          ));
-        })()}
-        {/* Karbon Puanı satırı */}
-        {review.overall && (
+        {refRows.map(row => (
           <div style="display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a;">
             <div style="padding: 10px 14px; background: #0d0d0d; display: flex; align-items: center;">
-              <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">Karbon Puanı</span>
+              <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">{row.label}</span>
             </div>
             <div style="padding: 10px 14px; background: #111; display: flex; align-items: center;">
-              <span style="font-size: 13px; color: #e5c46b; font-weight: 600;">{review.overall}/10</span>
+              <span style={`font-size: 13px; color: ${row.color || '#ccc'};`}>{row.value}</span>
             </div>
           </div>
-        )}
+        ))}
         {/* Tamamlama süresi satırı */}
         <a href={`https://howlongtobeat.com/?q=${encodeURIComponent(game.title)}`} target="_blank" rel="noopener"
           style="display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a; transition: opacity 0.15s;"
@@ -161,42 +170,20 @@ const hours = game.playtimeMinutes > 0
       </div>
 
       <!-- Links -->
-      {(() => {
-        const q = encodeURIComponent(game.title);
-        const steamId = game.stores?.steam?.uid;
-        const storeLinks: Array<{label: string; url: string; color: string}> = [
-          ...(steamId ? [
-            { label: 'Steam', url: `https://store.steampowered.com/app/${steamId}/`, color: '#4a9eed' },
-            { label: 'SteamDB', url: `https://www.steamdb.info/app/${steamId}/`, color: '#e5c46b' },
-          ] : []),
-          ...(game.stores?.epic?.url ? [{ label: 'Epic', url: game.stores.epic.url, color: '#aaa' }] : []),
-          ...(game.stores?.gog?.url ? [{ label: 'GOG', url: game.stores.gog.url, color: '#a1253a' }] : []),
-          ...(game.stores?.psn?.url ? [{ label: 'PSN', url: game.stores.psn.url, color: '#0072ce' }] : []),
-          ...(game.stores?.xbox?.url ? [{ label: 'Xbox', url: game.stores.xbox.url, color: '#107c10' }] : []),
-        ];
-        const refLinks: Array<{label: string; url: string; color: string}> = [
-          { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${q}`, color: '#e8a838' },
-          ...(steamId ? [{ label: 'ProtonDB', url: `https://www.protondb.com/app/${steamId}`, color: '#c06000' }] : []),
-          { label: 'IsThereAnyDeal', url: `https://isthereanydeal.com/search/?q=${q}`, color: '#60a050' },
-          { label: 'OpenCritic', url: `https://opencritic.com/search#${q}`, color: '#f0a000' },
-          ...(game.igdbId ? [{ label: 'IGDB', url: `https://www.igdb.com/games/${game.slug}`, color: '#9b59b6' }] : []),
-        ];
-        const allLinks = [...storeLinks, ...refLinks];
-        return allLinks.length > 0 ? (
-          <div style="margin-bottom: 20px;">
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              {allLinks.map(link => (
-                <a href={link.url} target="_blank" rel="noopener"
-                  style={`font-size: 11px; border: 1px solid #222; color: #555; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;`}
-                  onmouseover={`this.style.borderColor='${link.color}';this.style.color='${link.color}'`}
-                  onmouseout="this.style.borderColor='#222';this.style.color='#555'">
-                  {link.label} ↗
-                </a>
-              ))}
-            </div>
+      {allLinks.length > 0 && (
+        <div style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            {allLinks.map(link => (
+              <a href={link.url} target="_blank" rel="noopener"
+                style={`font-size: 11px; border: 1px solid #222; color: #555; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;`}
+                onmouseover={`this.style.borderColor='${link.color}';this.style.color='${link.color}'`}
+                onmouseout="this.style.borderColor='#222';this.style.color='#555'">
+                {link.label} ↗
+              </a>
+            ))}
           </div>
-        ) : null;
-      })()}
+        </div>
+      )}
 
       <!-- Summary -->
       {game.summary && (
@@ -335,18 +322,15 @@ const hours = game.playtimeMinutes > 0
   )}
 
   <!-- Websites -->
-  {igdb.websites && Object.keys(igdb.websites).length > 0 && (
+  {filteredWebsites.length > 0 && (
     <div style="margin-bottom: 48px; display: flex; gap: 8px; flex-wrap: wrap;">
-      {Object.entries(igdb.websites as any)
-        .filter(([cat]) => ['official','wikipedia','reddit','discord','youtube','twitch'].includes(cat))
-        .map(([cat, url]) => (
-          <a href={url} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; text-transform: capitalize;"
-            onmouseover="this.style.borderColor='#444';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
-            {cat} ↗
-          </a>
-        ))
-      }
+      {filteredWebsites.map(([cat, url]) => (
+        <a href={String(url)} target="_blank" rel="noopener"
+          style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; text-transform: capitalize;"
+          onmouseover="this.style.borderColor='#444';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+          {cat} ↗
+        </a>
+      ))}
     </div>
   )}
 
