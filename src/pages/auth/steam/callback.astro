@@ -1,0 +1,116 @@
+---
+export const prerender = false;
+import { createClient } from '@supabase/supabase-js';
+
+const url = new URL(Astro.request.url);
+const params = Object.fromEntries(url.searchParams);
+
+const STEAM_KEY = import.meta.env.STEAM_API_KEY;
+const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
+const SERVICE_KEY = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
+const SITE_URL = import.meta.env.SITE_URL || 'https://www.karbonkafa.com';
+
+// 1. Verify OpenID signature with Steam
+const verifyParams = new URLSearchParams({
+  ...params,
+  'openid.mode': 'check_authentication',
+});
+
+const verifyRes = await fetch('https://steamcommunity.com/openid/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: verifyParams.toString(),
+});
+const verifyText = await verifyRes.text();
+const isValid = verifyText.includes('is_valid:true');
+
+if (!isValid) {
+  return Astro.redirect('/auth/login?error=steam_invalid');
+}
+
+// 2. Extract Steam ID from claimed_id
+// claimed_id = https://steamcommunity.com/openid/id/76561198XXXXXXXXX
+const claimedId = params['openid.claimed_id'] || '';
+const steamId = claimedId.split('/').pop() || '';
+
+if (!steamId || steamId.length < 10) {
+  return Astro.redirect('/auth/login?error=steam_id');
+}
+
+// 3. Fetch Steam profile
+const steamRes = await fetch(
+  `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${STEAM_KEY}&steamids=${steamId}`
+);
+const steamData = await steamRes.json();
+const steamProfile = steamData?.response?.players?.[0];
+
+if (!steamProfile) {
+  return Astro.redirect('/auth/login?error=steam_profile');
+}
+
+const steamUsername = steamProfile.personaname || `steam_${steamId}`;
+const steamAvatar = steamProfile.avatarfull || steamProfile.avatarmedium || '';
+
+// 4. Create/find Supabase user via admin API
+const admin = createClient(SUPABASE_URL, SERVICE_KEY, {
+  auth: { autoRefreshToken: false, persistSession: false },
+});
+
+const email = `steam_${steamId}@steam.karbonkafa.com`;
+
+// Check if user exists
+const { data: { users } } = await admin.auth.admin.listUsers();
+const existingUser = users?.find(u => u.email === email);
+
+let userId: string;
+
+if (existingUser) {
+  userId = existingUser.id;
+  // Update Steam avatar in case it changed
+  await admin.from('profiles').update({
+    avatar_url: steamAvatar,
+    display_name: steamUsername,
+  }).eq('id', userId);
+} else {
+  // Create new user
+  const { data: newUser, error } = await admin.auth.admin.createUser({
+    email,
+    email_confirm: true,
+    user_metadata: {
+      steam_id: steamId,
+      full_name: steamUsername,
+      avatar_url: steamAvatar,
+      provider: 'steam',
+    },
+  });
+
+  if (error || !newUser?.user) {
+    return Astro.redirect('/auth/login?error=steam_create');
+  }
+
+  userId = newUser.user.id;
+
+  // Create profile
+  const username = `steam_${steamId.slice(-8)}`;
+  await admin.from('profiles').upsert({
+    id: userId,
+    username,
+    display_name: steamUsername,
+    avatar_url: steamAvatar,
+    steam_id: steamId,
+  });
+}
+
+// 5. Generate magic link to create session
+const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+  type: 'magiclink',
+  email,
+  options: { redirectTo: `${SITE_URL}/auth/callback` },
+});
+
+if (linkError || !linkData?.properties?.action_link) {
+  return Astro.redirect('/auth/login?error=steam_session');
+}
+
+return Astro.redirect(linkData.properties.action_link);
+---
