@@ -357,55 +357,47 @@ const hours = game.playtimeMinutes > 0
     </div>
   )}
 
-  <!-- Trailer -->
-  {igdb.videos?.length > 0 && (
+  <!-- Media: Fragman + Görseller yan yana -->
+  {(igdb.videos?.length > 0 || igdb.screenshots?.length > 0 || igdb.artworks?.length > 0) && (
     <div style="margin-bottom: 48px;">
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">Fragman</p>
-      <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #111; border: 1px solid #222;">
-        <iframe
-          src={`https://www.youtube.com/embed/${igdb.videos[0].id}`}
-          title={igdb.videos[0].name}
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </div>
-  )}
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Medya</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid #222;">
 
-  <!-- Artworks -->
-  {igdb.artworks?.length > 0 && (
-    <div style="margin-bottom: 48px;">
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">Sanat Eserleri</p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; border: 1px solid #222;">
-        {igdb.artworks.map((id: string) => (
-          <a href={`https://images.igdb.com/igdb/image/upload/t_1080p/${id}.jpg`} target="_blank" rel="noopener" style="display: block; aspect-ratio: 16/9; overflow: hidden;">
-            <img src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${id}.jpg`} loading="lazy"
-              style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s;"
-              onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'" />
-          </a>
-        ))}
-      </div>
-    </div>
-  )}
-
-  <!-- Screenshots -->
-  {igdb.screenshots?.length > 0 && (
-    <div style="margin-bottom: 48px;">
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">Ekran Görüntüleri</p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; border: 1px solid #222;">
-        {igdb.screenshots.map((id: string) => (
-          <a href={imgUrl(id, 't_screenshot_huge')} target="_blank" rel="noopener" style="display: block; aspect-ratio: 16/9; overflow: hidden;">
-            <img
-              src={imgUrl(id)}
+        {/* Fragman */}
+        {igdb.videos?.length > 0 && (
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #0a0a0a;">
+            <iframe
+              src={`https://www.youtube.com/embed/${igdb.videos[0].id}`}
+              title={igdb.videos[0].name}
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
               loading="lazy"
-              style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s;"
-              onmouseover="this.style.opacity='0.75'"
-              onmouseout="this.style.opacity='1'"
-            />
-          </a>
-        ))}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        )}
+
+        {/* Görseller — screenshots + artworks karışık */}
+        {[...(igdb.screenshots || []).map((id: string) => ({id, type: 'screenshot'})),
+           ...(igdb.artworks || []).map((id: string) => ({id, type: 'artwork'}))]
+          .slice(0, igdb.videos?.length > 0 ? 5 : 6)
+          .map((img: any) => (
+            <a
+              href={`https://images.igdb.com/igdb/image/upload/t_screenshot_huge/${img.id}.jpg`}
+              target="_blank" rel="noopener"
+              style="display: block; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #0a0a0a;"
+            >
+              <img
+                src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${img.id}.jpg`}
+                loading="lazy"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s;"
+                onmouseover="this.style.opacity='0.75'"
+                onmouseout="this.style.opacity='1'"
+              />
+            </a>
+          ))
+        }
+
       </div>
     </div>
   )}
