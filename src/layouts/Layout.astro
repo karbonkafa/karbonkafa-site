@@ -34,12 +34,22 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
         <a href="/schedule" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Akış</a>
         <a href="/quiz" style="transition: color 0.15s; color: #e5c46b44;" onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5c46b44'">Quiz</a>
         <!-- Auth -->
-        <div id="navAuth" style="display: flex; align-items: center; gap: 12px;">
+        <div id="navAuth" style="display: flex; align-items: center; gap: 12px; position: relative;">
           <a id="navLogin" href="/auth/login" style="font-size: 12px; border: 1px solid #333; color: #555; padding: 4px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; display: none;"
             onmouseover="this.style.borderColor='#555';this.style.color='#aaa'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">Giriş</a>
-          <a id="navProfile" href="#" style="display: none; align-items: center; gap: 6px; text-decoration: none;">
-            <div id="navAvatar" style="width: 26px; height: 26px; border-radius: 50%; overflow: hidden; background: #222; border: 1px solid #333; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #e5c46b;"></div>
-          </a>
+          <div id="navProfileWrap" style="display: none; position: relative;">
+            <button id="navProfileBtn" style="display: flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; padding: 0;">
+              <div id="navAvatar" style="width: 26px; height: 26px; border-radius: 50%; overflow: hidden; background: #222; border: 1px solid #333; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #e5c46b;"></div>
+            </button>
+            <div id="navDropdown" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; background: #111; border: 1px solid #222; min-width: 140px; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+              <a id="navProfileLink" href="#" style="display: block; padding: 10px 16px; font-size: 13px; color: #ccc; text-decoration: none; border-bottom: 1px solid #1a1a1a; transition: background 0.1s;"
+                onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='none'">Profil</a>
+              <a href="/lists/create" style="display: block; padding: 10px 16px; font-size: 13px; color: #ccc; text-decoration: none; border-bottom: 1px solid #1a1a1a; transition: background 0.1s;"
+                onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='none'">+ Yeni Liste</a>
+              <a href="/auth/logout" style="display: block; padding: 10px 16px; font-size: 13px; color: #666; text-decoration: none; transition: background 0.1s;"
+                onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='none'">Çıkış Yap</a>
+            </div>
+          </div>
         </div>
         <!-- Lang toggle -->
         <button id="langToggle" style="background: none; border: 1px solid #e5c46b44; color: #e5c46b; font-size: 11px; padding: 3px 10px; cursor: pointer; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; transition: all 0.15s;"
@@ -111,8 +121,11 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
   const loginEl = document.getElementById('navLogin');
-  const profileEl = document.getElementById('navProfile') as HTMLAnchorElement | null;
+  const wrapEl = document.getElementById('navProfileWrap');
   const avatarEl = document.getElementById('navAvatar');
+  const profileLinkEl = document.getElementById('navProfileLink') as HTMLAnchorElement | null;
+  const dropdownEl = document.getElementById('navDropdown');
+  const profileBtnEl = document.getElementById('navProfileBtn');
 
   sb.auth.getUser().then(async ({ data: { user } }) => {
     if (!user) {
@@ -120,8 +133,8 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
       return;
     }
     const { data: profile } = await sb.from('profiles').select('username,display_name,avatar_url').eq('id', user.id).single();
-    if (!profile || !profileEl || !avatarEl) return;
-    profileEl.href = `/u/${profile.username}`;
+    if (!profile || !wrapEl || !avatarEl) return;
+    if (profileLinkEl) profileLinkEl.href = `/u/${profile.username}`;
     if (profile.avatar_url) {
       const img = document.createElement('img');
       img.src = profile.avatar_url;
@@ -131,6 +144,15 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     } else {
       avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
     }
-    profileEl.style.display = 'flex';
+    wrapEl.style.display = 'block';
+
+    // Toggle dropdown
+    profileBtnEl?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (dropdownEl) dropdownEl.style.display = dropdownEl.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', () => {
+      if (dropdownEl) dropdownEl.style.display = 'none';
+    });
   });
 </script>
