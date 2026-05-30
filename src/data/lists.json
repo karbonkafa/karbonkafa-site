@@ -67,5 +67,162 @@
       { "slug": "hades", "note": "Her ölüm bir ders, hiç sinir bozucu değil." },
       { "slug": "celeste", "note": "Zorluk arttıkça tatmin de artar." }
     ]
+  },
+  {
+    "slug": "90larin-efsaneleri",
+    "title": "90'ların Oyun Efsaneleri",
+    "description": "Oyun endüstrisinin temellerinin atıldığı o dönem. O monitörlerin başında geçirilen geceler.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "half-life", "note": "Valve'ın tarihi değiştiren şaheseri. FPS'e narratif anlatımı kazandırdı." },
+      { "slug": "starcraft", "note": "Rekabetçi RTS'in doğum belgesi. Güney Kore'de neredeyse ulusal spor oldu." },
+      { "slug": "fallout-2", "note": "Özgür irade RPG'sinin zirvesi. Her seçim gerçekten fark yaratır." },
+      { "slug": "quake", "note": "Online multiplayer'ın ilk büyük dalgası. id Software yine tarihe geçti." },
+      { "slug": "tomb-raider", "note": "Lara Croft bir simgeye dönüştü. 3D aksiyon-macera türünü kurdu." },
+      { "slug": "doom-ii-hell-on-earth", "note": "Shooter türünün genetik kodunu yazdı. Hız ve tasarım hâlâ ilham verir." },
+      { "slug": "age-of-empires", "note": "Tarihsel strateji sevgisini başlatan oyun. Her nesil buradan başlar." },
+      { "slug": "warcraft-orcs-humans", "note": "Warcraft evreninin temeli. Blizzard'ın ilk büyük zaferi." },
+      { "slug": "planescape-torment", "note": "'Ölümün seni değiştirdiği ne?' Oyun tarihinin en güçlü açılış sorusu." },
+      { "slug": "age-of-empires-ii-the-age-of-kings", "note": "Strateji türünün altın standardı. 25 yıl sonra hâlâ aktif oyun tabanı var." }
+    ]
+  },
+  {
+    "slug": "2000lerin-altin-cagi",
+    "title": "2000'lerin Altın Çağı",
+    "description": "PS2, Xbox ve PC'nin birlikte büyüdüğü yıllar. Oyunlar dev adımlar attı.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "half-life-2", "note": "Fizik motoru, anlatı, atmosfer. Tek oyunda her şey doğru yapıldı." },
+      { "slug": "bioshock", "note": "Rapture şehri, ahlaki seçimler ve Andrew Ryan. Nüanslı hikayenin zirvesi." },
+      { "slug": "grand-theft-auto-san-andreas", "note": "CJ'in yolculuğu bir nesli büyüttü. Açık dünya standartlarını belirledi." },
+      { "slug": "portal", "note": "Sadece iki saat. Ama hangi iki saat." },
+      { "slug": "the-elder-scrolls-iv-oblivion-game-of-the-year-edition-pc", "note": "Oblivion kapısı açıldığında oyun gözler büyüdü. Bir çağ başladı." },
+      { "slug": "world-of-warcraft", "note": "MMO tarihinin dönüm noktası. Milyonlar yıllarca içinde kayboldu." },
+      { "slug": "metal-gear-solid-3-snake-eater", "note": "Boss, EVA, The Sorrow. Oyun tasarımının şiiri gibi bir şey." },
+      { "slug": "sid-meier-s-civilization-iv", "note": "'Bir tur daha' bağımlılığını tanımlayan oyun. Sabah olmuştu." },
+      { "slug": "doom-3", "note": "Gece geç saatlerde kulaklıkla, bir daha yapılmayan bir tecrübe." },
+      { "slug": "vampire-the-masquerade-bloodlines", "note": "Kusurlu ama eşsiz. RPG tarihinin en karizmatik oyunlarından biri." }
+    ]
+  },
+  {
+    "slug": "2013-2016-ruzgari",
+    "title": "2013-2016 Rüzgarı",
+    "description": "PS4/Xbox One açılış dönemi ve bağımsız oyunların patlamasıyla unutulmaz bir çağ.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "the-last-of-us-remastered", "note": "Duygusal anlatının oyunlaştırılmış hali. Joel ve Ellie unutulmaz." },
+      { "slug": "bloodborne", "note": "FromSoftware'in en hızlı oyunu. Gotik atmosferi benzersiz." },
+      { "slug": "undertale", "note": "Bir kişi yaptı, dünyayı değiştirdi. Her NPC'nin bir hikayesi var." },
+      { "slug": "bioshock-infinite", "note": "Columbia, Elizabeth, Booker. Ahlaki paradoks üzerine nefes kesen anlatı." },
+      { "slug": "uncharted-4-a-thief-s-end", "note": "Naughty Dog'ın sinematik ustalığının son ve en olgun halkası." },
+      { "slug": "dark-souls-iii", "note": "Serinin en akıcı ve görsel başlığı. Bir veda töreni gibi hissettirdi." },
+      { "slug": "rise-of-the-tomb-raider-20-year-celebration", "note": "Yeniden doğan Lara hikayesinin en olgun, en dengeli halkası." },
+      { "slug": "batman-arkham-knight-game-of-the-year-edition", "note": "Batmobile tartışmalı ama Gotham atmosferi başyapıt seviyesinde." },
+      { "slug": "the-witcher-3-wild-hunt-blood-and-wine", "note": "Bir DLC bu kadar kapsamlı ve kaliteli olamaz. Ama oldu." },
+      { "slug": "the-last-of-us", "note": "Orijinal PS3 sürümü. Remastered'dan önce burayı oynayın." }
+    ]
+  },
+  {
+    "slug": "tum-zamanlarin-rpg-zirveleri",
+    "title": "Tüm Zamanların RPG Zirveleri",
+    "description": "Türün sınırlarını genişleten, hikaye anlatımında çıtayı yükselten, dünyasına dalıp çıkamadığınız oyunlar.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "the-witcher-3-wild-hunt-game-of-the-year-edition", "note": "GOTY edition, Blood and Wine dahil. RPG tarihinin en kapsamlı paketi." },
+      { "slug": "baldur-s-gate-iii", "note": "CRPG türünü yeniden icat etti. Her oynanışta farklı bir hikaye." },
+      { "slug": "metaphor-refantazio", "note": "Atlus'un son başyapıtı. Siyasi tema, derin sistem, epik hikaye." },
+      { "slug": "bioshock", "note": "Liberteryenizmi eleştiren, büküm anına sahip, atmosferin ta kendisi." },
+      { "slug": "disco-elysium-the-final-cut", "note": "Diyalog ağacının ötesinde bir düşünce deneyi. En özgün RPG." },
+      { "slug": "monster-hunter-world", "note": "Avcı olmak bu kadar tatmin edici mi olabilir? Evet olabilir." },
+      { "slug": "ghost-of-tsushima", "note": "Japon sinemacılığından ilham alan aksiyon-RPG. Rüzgar rehberliği dahilik." },
+      { "slug": "demon-s-souls", "note": "Soulslike türünün temeli. Boletaria'ya ilk adım attığınızda anlarsınız." },
+      { "slug": "planescape-torment", "note": "Felsefi RPG'nin kutsal kitabı. 'Ölümün seni değiştirdiği ne?'" },
+      { "slug": "fallout-2", "note": "Özgür irade, nihilizm ve çöl mizahı. Westland'ın mükemmel devamı." },
+      { "slug": "hades-ii", "note": "Roguelike ve RPG'nin mükemmel evliliği. Supergiant'ın yeni zirve noktası." }
+    ]
+  },
+  {
+    "slug": "cozy-ve-rahatlatici",
+    "title": "Cozy & Rahatlatıcı",
+    "description": "Kalp atışı yok, stres yok. Sadece hoş anlar ve saatler içinde eriyip gitmek.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "dave-the-diver", "note": "Gündüz dalmak, gece sushi bar işletmek. Oynanabilir bir tatil." },
+      { "slug": "spiritfarer", "note": "Ölümün güzelliğini anlatan yönetim oyunu. Zaman zaman göz yaşartıyor." },
+      { "slug": "against-the-storm", "note": "Yağmur altında köy kuruyorsunuz. Döngüsü sessiz sedasız bağımlılık yapıyor." },
+      { "slug": "unpacking", "note": "Bir insanın tüm hayatını kutulardan açıyorsunuz. Sessiz bir biyografi." },
+      { "slug": "planet-of-lana", "note": "Mui ve yabancı dünya. Neredeyse sözü olmayan, hissiyle anlatan bir yolculuk." },
+      { "slug": "brothers-a-tale-of-two-sons", "note": "Tek kumandayla iki kardeş. Bitiş ise sizi hazırlıksız yakalar." },
+      { "slug": "great-god-grove", "note": "Diyalog balonlarıyla bulmaca çözmek. Tuhaf, sevimli ve özgün." },
+      { "slug": "escape-simulator", "note": "Rahat bir akşam için: bir arkadaş ve kaçış odası bulmacaları." }
+    ]
+  },
+  {
+    "slug": "puzzle-bulmaca-saheserler",
+    "title": "Puzzle & Bulmaca Şaheserleri",
+    "description": "'Ama nasıl?' dedirten, çözdüğünüzde dopamin salgılatan tasarım harikaları.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "blue-prince", "note": "Oda oda ilerleyen, her çözümde dünyayı daha derin gösteren başyapıt." },
+      { "slug": "portal", "note": "Portal silahı fikrinden bu kadar derin bir oyun yaratmak zanaatkârlık." },
+      { "slug": "tunic", "note": "Rehbersiz keşif. Her köşe bir sır, her sır bir zevk. Kural kitabı bizzat oyun içinde." },
+      { "slug": "it-takes-two", "note": "İki kişi, her bölümde farklı mekanik. Birlikte oynamak için en iyi oyun." },
+      { "slug": "trine-2-complete-story", "note": "Fizik tabanlı bulmacaların görsel şöleni. Birlikte keyifli, tek başına muhteşem." },
+      { "slug": "escape-simulator", "note": "Dijital kaçış odası. Kafayı yormak isteyenler için mükemmel ev aktivitesi." },
+      { "slug": "bionic-bay", "note": "Fizik ve platformun nefes kesici buluşması. Her sevye farklı bir fikir." },
+      { "slug": "echochrome-ii", "note": "Perspektif ve gölgeyle oynayan, beynin mimarisini zorlayan deneyim." },
+      { "slug": "great-god-grove", "note": "Konuşma balonlarını fiziksel obje gibi kullanmak. Saf yaratıcılık." },
+      { "slug": "ori-and-the-will-of-the-wisps", "note": "Bulmaca demek olmasa da her hareketi bir bulmaca gibi hissettiriyor." }
+    ]
+  },
+  {
+    "slug": "korku-gerilim-klasikleri",
+    "title": "Korku & Gerilim Klasikleri",
+    "description": "Gece kulaklıkla oturun, ışıkları kapatın. Sonradan bize sormayın.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "world-of-horror-game-preview", "note": "Lovecraftian, 1-bit anime estetik ve sizi boğan varoluşsal panik." },
+      { "slug": "resident-evil-village", "note": "Lady Dimitrescu'nun gölgesinde nefes almaya çalışmak. Serinin dönüşü." },
+      { "slug": "dying-light", "note": "Parkour, zombi, gece/gündüz döngüsü. Geceleyin gerçekten ürkütücü." },
+      { "slug": "resident-evil-7-biohazard", "note": "RE serisini first-person ile yeniden icat etti. Baker ailesi unutulmaz." },
+      { "slug": "amnesia-the-dark-descent", "note": "Silah yok, çare yok, sadece karanlık. Korku türünü yeniden tanımladı." },
+      { "slug": "outlast", "note": "Kamera ve pil. Başka seçeneğin yok. Mount Massive'de sabahı beklemek." },
+      { "slug": "amnesia-rebirth", "note": "Daha kasvetli, daha kişisel. İlkinin devamcısı farklı bir perspektiften." },
+      { "slug": "the-evil-within-2-pc", "note": "Shinji Mikami'nin dönüşü. Kontrol edilemeyen korkuyu kurgulamak." }
+    ]
+  },
+  {
+    "slug": "bagimsiz-mücevherler",
+    "title": "Bağımsız Yapım Mücevherleri",
+    "description": "Küçük ekipler, büyük hayaller. Bütçeyi değil kalp atışını takip edin.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "games": [
+      { "slug": "replaced", "note": "Retro-fütürist distopya. Pixel art'ın görsel sınırlarını zorladı." },
+      { "slug": "hades-ii", "note": "Supergiant'ın ustalaşmış anlatı sistemi. Roguelike'ın en iyisi." },
+      { "slug": "planet-of-lana", "note": "Sessiz bir kahraman, yabancı bir dünya ve Mui. Görsel şiir." },
+      { "slug": "neva", "note": "Devolver ve Devs'in gücü. Duygusal ve akıcı bir aksiyon platformer." },
+      { "slug": "trine-2-complete-story", "note": "Tek bir ekibin yarattığı sihirli dünya. Frozenbyte'ın başarısı." },
+      { "slug": "undertale", "note": "Toby Fox, tek kişi. Oyun tarihinin en ikonik bağımsız yapımı." },
+      { "slug": "ori-and-the-will-of-the-wisps", "note": "Müzik, hareket, duygu. Moon Studios'un başyapıtı." },
+      { "slug": "dwarf-fortress", "note": "20 yıllık geliştirme, Steam'e geldi. Dünyanın en derin simülasyonu." },
+      { "slug": "against-the-storm", "note": "Tek kişilik Eremite Games. Şehir kurma türünde taze bir ruh." },
+      { "slug": "bionic-bay", "note": "İki kişilik ekipten fizik-platform harikası. 2025'in sürprizi." }
+    ]
   }
 ]
