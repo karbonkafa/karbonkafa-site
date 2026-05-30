@@ -86,93 +86,74 @@ const hours = game.playtimeMinutes > 0
 
       <h1 style="font-size: clamp(22px, 3vw, 36px); font-weight: 600; letter-spacing: -0.03em; margin: 0 0 20px; line-height: 1.2;">{game.title}</h1>
 
-      <!-- Meta grid -->
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 1px solid #222; margin-bottom: 24px;">
-        {game.developer && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Geliştirici</p>
-            <p style="font-size: 14px; margin: 0;">{game.developer}</p>
-          </div>
-        )}
-        {game.publisher && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Yayıncı</p>
-            <p style="font-size: 14px; margin: 0;">{game.publisher}</p>
-          </div>
-        )}
-        {game.releaseYear && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Çıkış Yılı</p>
-            <p style="font-size: 14px; margin: 0;">{game.releaseYear}</p>
-          </div>
-        )}
-        {igdb.engines?.length > 0 && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Motor</p>
-            <p style="font-size: 14px; margin: 0;">{igdb.engines.join(', ')}</p>
-          </div>
-        )}
-        {(igdb.franchises?.length > 0 || igdb.collections?.length > 0) && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Seri</p>
-            <p style="font-size: 14px; margin: 0;">{[...(igdb.franchises||[]), ...(igdb.collections||[])].filter((v,i,a)=>a.indexOf(v)===i).join(', ')}</p>
-          </div>
-        )}
-        {igdb.totalRating && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">IGDB Puanı</p>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <div style="flex: 1; height: 3px; background: #1a1a1a; border-radius: 2px;">
-                <div style={`height: 100%; border-radius: 2px; background: ${igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444'}; width: ${igdb.totalRating}%;`}></div>
+      <!-- Referans Bilgi -->
+      <div style="border: 1px solid #222; margin-bottom: 24px;">
+        {(() => {
+          type Row = { label: string; value: string; color?: string };
+          const rows: Row[] = [];
+
+          const devs = igdb.mainDevs?.length > 0 ? igdb.mainDevs : (game.developer ? [game.developer] : []);
+          if (devs.length > 0) rows.push({ label: 'Ana Geliştirici', value: devs.join(', ') });
+          if (igdb.supportingDevs?.length > 0) rows.push({ label: 'Destek Geliştirici', value: igdb.supportingDevs.join(', ') });
+
+          const pubs = igdb.publishers?.length > 0 ? igdb.publishers : (game.publisher ? [game.publisher] : []);
+          if (pubs.length > 0) rows.push({ label: 'Yayıncı', value: pubs.join(', ') });
+
+          if (game.releaseYear) rows.push({ label: 'Çıkış Yılı', value: String(game.releaseYear) });
+
+          const genres = igdb.genres?.length > 0 ? igdb.genres : game.genres;
+          if (genres?.length > 0) rows.push({ label: 'Tür', value: genres.join(', ') });
+          if (igdb.themes?.length > 0) rows.push({ label: 'Tema', value: igdb.themes.join(', ') });
+          if (igdb.gameModes?.length > 0) rows.push({ label: 'Oyun Modu', value: igdb.gameModes.join(', ') });
+          if (igdb.perspectives?.length > 0) rows.push({ label: 'Bakış Açısı', value: igdb.perspectives.join(', ') });
+
+          const series = [...(igdb.franchises||[]), ...(igdb.collections||[])].filter((v,i,a)=>a.indexOf(v)===i);
+          if (series.length > 0) rows.push({ label: 'Seri', value: series.join(', ') });
+          if (igdb.parentGame) rows.push({ label: 'Ana Oyun', value: igdb.parentGame.name });
+          if (igdb.engines?.length > 0) rows.push({ label: 'Motor', value: igdb.engines.join(', ') });
+
+          if (igdb.totalRating) rows.push({ label: 'IGDB Puanı', value: String(igdb.totalRating), color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' });
+          if (hours) rows.push({ label: 'Oynanan', value: hours, color: '#e5c46b' });
+
+          return rows.map((row, idx) => (
+            <div style={`display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a;`}>
+              <div style="padding: 10px 14px; background: #0d0d0d; display: flex; align-items: center;">
+                <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">{row.label}</span>
               </div>
-              <span style={`font-size: 14px; color: ${igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444'};`}>{igdb.totalRating}</span>
+              <div style="padding: 10px 14px; background: #111; display: flex; align-items: center;">
+                <span style={`font-size: 13px; color: ${row.color || '#ccc'};`}>{row.value}</span>
+              </div>
             </div>
-          </div>
-        )}
-        {hours && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Oynanan Süre</p>
-            <p style="font-size: 14px; margin: 0; color: #e5c46b;">{hours}</p>
-          </div>
-        )}
+          ));
+        })()}
+        {/* Karbon Puanı satırı */}
         {review.overall && (
-          <div style="padding: 12px 16px; background: #111;">
-            <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 4px; font-family: 'JetBrains Mono', monospace;">Karbon Puanı</p>
-            <p style="font-size: 14px; margin: 0; color: #e5c46b; font-weight: 600;">{review.overall}/10</p>
+          <div style="display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a;">
+            <div style="padding: 10px 14px; background: #0d0d0d; display: flex; align-items: center;">
+              <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">Karbon Puanı</span>
+            </div>
+            <div style="padding: 10px 14px; background: #111; display: flex; align-items: center;">
+              <span style="font-size: 13px; color: #e5c46b; font-weight: 600;">{review.overall}/10</span>
+            </div>
           </div>
         )}
+        {/* HLTB satırı */}
         <a href={`https://howlongtobeat.com/?q=${encodeURIComponent(game.title)}`} target="_blank" rel="noopener"
-          style="padding: 12px 16px; background: #111; display: block; grid-column: 1 / -1; transition: background 0.15s;"
-          onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
-          <p style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 6px; font-family: 'JetBrains Mono', monospace;">Tamamlama Süresi</p>
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-              <div>
-                <p style="font-size: 10px; color: #444; margin: 0 0 2px; font-family: 'JetBrains Mono', monospace;">Ana Hikaye</p>
-                <p style="font-size: 13px; color: #888; margin: 0;" id="hltb-main">—</p>
-              </div>
-              <div>
-                <p style="font-size: 10px; color: #444; margin: 0 0 2px; font-family: 'JetBrains Mono', monospace;">Ana + Yan</p>
-                <p style="font-size: 13px; color: #888; margin: 0;" id="hltb-extra">—</p>
-              </div>
-              <div>
-                <p style="font-size: 10px; color: #444; margin: 0 0 2px; font-family: 'JetBrains Mono', monospace;">%100</p>
-                <p style="font-size: 13px; color: #888; margin: 0;" id="hltb-complete">—</p>
-              </div>
+          style="display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a; transition: opacity 0.15s;"
+          onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
+          <div style="padding: 10px 14px; background: #0d0d0d; display: flex; align-items: center;">
+            <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">Tamamlama</span>
+          </div>
+          <div style="padding: 10px 14px; background: #111; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+            <div style="display: flex; gap: 16px;">
+              <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">Ana: <span style="color:#888">—</span></span>
+              <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">+Yan: <span style="color:#888">—</span></span>
+              <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">%100: <span style="color:#888">—</span></span>
             </div>
-            <span style="font-size: 11px; color: #e8a838; font-family: 'JetBrains Mono', monospace;">HowLongToBeat ↗</span>
+            <span style="font-size: 11px; color: #e8a838; font-family: 'JetBrains Mono', monospace; white-space: nowrap;">HLTB ↗</span>
           </div>
         </a>
       </div>
-
-      <!-- Genres -->
-      {game.genres?.length > 0 && (
-        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;">
-          {game.genres.map((g: string) => (
-            <span style="font-size: 12px; background: #1a1a1a; border: 1px solid #222; color: #888; padding: 3px 10px;">{g}</span>
-          ))}
-        </div>
-      )}
 
       <!-- Links -->
       {(() => {
