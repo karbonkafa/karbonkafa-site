@@ -58,7 +58,7 @@ const apps = [
         ▶ BAŞLAT
       </button>
       <div style="flex: 1; min-width: 160px;">
-        <p style="font-family:'VT323',monospace;font-size:17px;color:#aaaacc;margin:0 0 2px;letter-spacing:0.04em;">Eurodance · Pop · Rock · R&B</p>
+        <p style="font-family:'VT323',monospace;font-size:16px;color:#888899;margin:0 0 2px;letter-spacing:0.04em;">90'lar · Eurodance · Pop · Rock · R&B</p>
         <div id="radio-status" style="display:flex;align-items:center;gap:6px;">
           <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
           <span id="radio-label" style="font-family:'VT323',monospace;font-size:14px;color:#444455;letter-spacing:0.04em;">HAZIR</span>
@@ -136,35 +136,7 @@ const apps = [
       </div>
     </div>
 
-    <!-- RIGHT — clock + gta -->
-    <div class="bento-right">
-
-      <!-- World Clock + Weather -->
-      <div class="px-window" style="margin-bottom: 12px;">
-        <div class="px-titlebar" style="border-left-color: #06b6d4;">
-          <span class="px-title" style="color: #06b6d4;">🌍 DÜNYA / HAVA / SAAT</span>
-          <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">×</span></div>
-        </div>
-        <div id="worldWidget" style="display: flex; flex-direction: column;">
-          <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 16px; color: #778899; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
-        </div>
-      </div>
-
-      <!-- GTA Countdown -->
-      <div class="px-window" style="border-color: #e5c46b44;">
-        <div class="px-titlebar" style="border-left-color: #ef4444;">
-          <span class="px-title" style="color: #ef4444;">📺 GTA VI SAYAÇ</span>
-          <div class="px-btns"><span class="px-btn">×</span></div>
-        </div>
-        <div style="padding: 14px 16px; text-align: center;">
-          <p style="font-family: 'VT323', monospace; font-size: 16px; color: #666677; margin: 0 0 6px; letter-spacing: 0.04em;">19 KASIM 2026'YA</p>
-          <div id="gtaPixelCount" style="font-family: 'VT323', monospace; font-size: 36px; color: #e5c46b; line-height: 1; margin-bottom: 4px;">-- GÜN</div>
-          <p style="font-family: 'VT323', monospace; font-size: 13px; color: #555566; margin: 0; letter-spacing: 0.04em;">GTA TARİHİ SEZONU</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- LISTS — bottom left -->
+    <!-- LISTS -->
     <div class="bento-lists px-window">
       <div class="px-titlebar">
         <span class="px-title">📋 LİSTELER.EXE</span>
@@ -203,7 +175,18 @@ const apps = [
       </div>
     </div>
 
-    <!-- QUIZ — bottom right -->
+    <!-- WEATHER -->
+    <div class="bento-right px-window">
+      <div class="px-titlebar" style="border-left-color: #06b6d4;">
+        <span class="px-title" style="color: #06b6d4;">🌍 DÜNYA / HAVA</span>
+        <div class="px-btns"><span class="px-btn">×</span></div>
+      </div>
+      <div id="worldWidget" style="display: flex; flex-direction: column;">
+        <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 16px; color: #778899; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
     <a href="/quiz" class="bento-quiz px-window" style="text-decoration: none; display: block; border-color: #22c55e44; transition: border-color 0.15s;"
       onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
       <div class="px-titlebar" style="border-left-color: #22c55e;">
@@ -211,11 +194,22 @@ const apps = [
         <div class="px-btns"><span class="px-btn" style="color:#22c55e;">▶</span></div>
       </div>
       <div style="padding: 20px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 100px;">
-        <p style="font-family: 'VT323', monospace; font-size: 14px; color: #444; margin: 0; letter-spacing: 0.04em;">EKRAN GÖRÜNTÜSÜNDEN</p>
-        <p style="font-family: 'VT323', monospace; font-size: 14px; color: #444; margin: 0; letter-spacing: 0.04em;">OYUNU TAHMİN ET</p>
         <p style="font-family: 'VT323', monospace; font-size: 28px; color: #22c55e; margin: 0; letter-spacing: 0.06em;">[ BAŞLAT ]</p>
       </div>
     </a>
+
+    <!-- GTA COUNTDOWN -->
+    <div class="bento-gta px-window" style="border-color: #e5c46b44;">
+      <div class="px-titlebar" style="border-left-color: #ef4444;">
+        <span class="px-title" style="color: #ef4444;">📺 GTA VI SAYAÇ</span>
+        <div class="px-btns"><span class="px-btn">×</span></div>
+      </div>
+      <div style="padding: 16px; text-align: center;">
+        <p style="font-family: 'VT323', monospace; font-size: 15px; color: #666677; margin: 0 0 6px; letter-spacing: 0.04em;">19 KASIM 2026'YA</p>
+        <div id="gtaPixelCount" style="font-family: 'VT323', monospace; font-size: 36px; color: #e5c46b; line-height: 1; margin-bottom: 4px;">-- GÜN</div>
+        <p style="font-family: 'VT323', monospace; font-size: 12px; color: #444455; margin: 0; letter-spacing: 0.04em;">GTA TARİHİ SEZONU</p>
+      </div>
+    </div>
 
   </div>
 
@@ -224,41 +218,38 @@ const apps = [
 <style>
   .bento {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "apps   apps"
-      "right  right"
-      "news   news"
-      "lists  quiz";
+      "apps   apps   apps"
+      "lists  lists  lists"
+      "news   news   news"
+      "right  quiz   gta";
     gap: 12px;
     align-items: start;
   }
   .bento-apps  { grid-area: apps; }
-  .bento-news  { grid-area: news; }
-  .bento-right { grid-area: right; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .bento-lists { grid-area: lists; }
+  .bento-news  { grid-area: news; }
+  .bento-right { grid-area: right; }
   .bento-quiz  { grid-area: quiz; }
+  .bento-gta   { grid-area: gta; }
 
   @media (max-width: 700px) {
     .bento {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       grid-template-areas:
-        "apps"
-        "right"
-        "news"
-        "lists"
-        "quiz";
+        "apps   apps"
+        "lists  lists"
+        "news   news"
+        "right  quiz"
+        "gta    gta";
     }
-    .bento-right { grid-template-columns: 1fr; }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 480px) {
     .bento {
       grid-template-columns: 1fr;
       grid-template-areas:
-        "news"
-        "apps"
-        "lists"
-        "quiz";
+        "apps" "lists" "news" "right" "quiz" "gta";
     }
     .icon-box { width: 44px; height: 44px; font-size: 22px; }
   }
