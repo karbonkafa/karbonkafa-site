@@ -177,9 +177,9 @@ const filteredWebsites = igdb.websites
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
             {allLinks.map(link => (
               <a href={link.url} target="_blank" rel="noopener"
-                style={`font-size: 11px; border: 1px solid #222; color: #555; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;`}
-                onmouseover={`this.style.borderColor='${link.color}';this.style.color='${link.color}'`}
-                onmouseout="this.style.borderColor='#222';this.style.color='#555'">
+                style={`font-size: 11px; border: 1px solid ${link.color}66; color: ${link.color}; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;`}
+                onmouseover="this.style.borderColor='#333';this.style.color='#555'"
+                onmouseout={`this.style.borderColor='${link.color}66';this.style.color='${link.color}'`}>
                 {link.label} ↗
               </a>
             ))}
