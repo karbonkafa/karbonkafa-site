@@ -44,6 +44,22 @@ const apps = [
   <!-- Bento grid -->
   <div class="bento">
 
+    <!-- APPS — full width top row -->
+    <div class="bento-apps px-window">
+      <div class="px-titlebar">
+        <span class="px-title">💾 UYGULAMALAR</span>
+        <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+      </div>
+      <div style="padding: 8px 12px; display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto;">
+        {apps.map(app => (
+          <a href={app.href} class="app-icon" style="flex: 1; min-width: 64px;">
+            <div class="icon-box" style="width: 44px; height: 44px; font-size: 22px;">{app.icon}</div>
+            <span class="icon-label">{app.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
     <!-- NEWS — big left -->
     <div class="bento-news px-window">
       <div class="px-titlebar">
@@ -92,24 +108,8 @@ const apps = [
       </div>
     </div>
 
-    <!-- APPS — right column, full height -->
-    <div class="bento-apps">
-
-      <!-- App icons window -->
-      <div class="px-window" style="margin-bottom: 12px;">
-        <div class="px-titlebar">
-          <span class="px-title">💾 UYGULAMALAR</span>
-          <div class="px-btns"><span class="px-btn">□</span></div>
-        </div>
-        <div style="padding: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;">
-          {apps.map(app => (
-            <a href={app.href} class="app-icon">
-              <div class="icon-box">{app.icon}</div>
-              <span class="icon-label">{app.label}</span>
-            </a>
-          ))}
-        </div>
-      </div>
+    <!-- RIGHT — clock + gta -->
+    <div class="bento-right">
 
       <!-- World Clock + Weather -->
       <div class="px-window" style="margin-bottom: 12px;">
@@ -118,8 +118,7 @@ const apps = [
           <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">×</span></div>
         </div>
         <div id="worldWidget" style="display: flex; flex-direction: column;">
-          <!-- Cities injected by JS -->
-          <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 13px; color: #778899; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
+          <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 16px; color: #778899; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
         </div>
       </div>
 
@@ -130,7 +129,7 @@ const apps = [
           <div class="px-btns"><span class="px-btn">×</span></div>
         </div>
         <div style="padding: 14px 16px; text-align: center;">
-          <p style="font-family: 'VT323', monospace; font-size: 14px; color: #666677; margin: 0 0 6px; letter-spacing: 0.04em;">19 KASIM 2026'YA</p>
+          <p style="font-family: 'VT323', monospace; font-size: 16px; color: #666677; margin: 0 0 6px; letter-spacing: 0.04em;">19 KASIM 2026'YA</p>
           <div id="gtaPixelCount" style="font-family: 'VT323', monospace; font-size: 36px; color: #e5c46b; line-height: 1; margin-bottom: 4px;">-- GÜN</div>
           <p style="font-family: 'VT323', monospace; font-size: 13px; color: #555566; margin: 0; letter-spacing: 0.04em;">GTA TARİHİ SEZONU</p>
         </div>
@@ -198,15 +197,16 @@ const apps = [
   .bento {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto;
     grid-template-areas:
-      "news news apps"
-      "lists quiz apps";
+      "apps  apps  apps"
+      "news  news  right"
+      "lists quiz  right";
     gap: 12px;
     align-items: start;
   }
+  .bento-apps  { grid-area: apps; }
   .bento-news  { grid-area: news; }
-  .bento-apps  { grid-area: apps; display: flex; flex-direction: column; }
+  .bento-right { grid-area: right; display: flex; flex-direction: column; }
   .bento-lists { grid-area: lists; }
   .bento-quiz  { grid-area: quiz; }
 
@@ -214,9 +214,10 @@ const apps = [
     .bento {
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
-        "news news"
-        "lists apps"
-        "quiz apps";
+        "apps  apps"
+        "news  news"
+        "right right"
+        "lists quiz";
     }
   }
   @media (max-width: 600px) {
