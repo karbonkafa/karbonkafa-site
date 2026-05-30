@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
   const { slug, scores } = body as { slug: string; scores: Partial<Record<Category, number>> };
 
   if (!slug || !scores) {
-    return new Response(JSON.stringify({ error: 'Geçersiz istek' }), { status: 400 });
+    return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400 });
   }
 
   const token = import.meta.env.GITHUB_TOKEN;
@@ -28,13 +28,13 @@ export const POST: APIRoute = async ({ request }) => {
   const path = 'src/data/reviews.json';
   const apiBase = `https://api.github.com/repos/${repo}/contents/${path}`;
 
-  // Mevcut dosyayı çek
+  // Fetch current file
   const getRes = await fetch(apiBase, {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json' },
   });
 
   if (!getRes.ok) {
-    return new Response(JSON.stringify({ error: 'GitHub okuma hatası' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'GitHub read error' }), { status: 500 });
   }
 
   const fileData = await getRes.json();
@@ -42,7 +42,7 @@ export const POST: APIRoute = async ({ request }) => {
     Buffer.from(fileData.content, 'base64').toString('utf-8')
   );
 
-  // Puanları hesapla
+  // Calculate scores
   const existing = currentContent[slug] || {};
   const merged = { ...existing, ...scores };
   const vals = CATEGORIES.map(c => merged[c]).filter(v => v !== undefined && v > 0) as number[];
@@ -50,7 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   currentContent[slug] = { ...merged, overall, updatedAt: new Date().toISOString() };
 
-  // GitHub'a kaydet
+  // Save to GitHub
   const newContent = Buffer.from(JSON.stringify(currentContent, null, 2)).toString('base64');
   const updateRes = await fetch(apiBase, {
     method: 'PUT',
@@ -67,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (!updateRes.ok) {
-    return new Response(JSON.stringify({ error: 'GitHub yazma hatası' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'GitHub write error' }), { status: 500 });
   }
 
   return new Response(JSON.stringify({ ok: true, review: currentContent[slug] }), { status: 200 });

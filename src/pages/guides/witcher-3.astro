@@ -2,55 +2,55 @@
 import Layout from '../../layouts/Layout.astro';
 
 const missableBase = [
-  { name: 'Assassin of Kings', risk: 'cok-yuksek', aciklama: 'Radovid suikastı — "Reason of State" zinciri, Isle of Mists öncesi bitmeli' },
-  { name: 'Full Crew', risk: 'cok-yuksek', aciklama: '7 müttefiki Kaer Morhen\'e topla — Keira ve Triss en çok kaçırılan' },
-  { name: 'Card Collector', risk: 'yuksek', aciklama: '10 missable Gwent kartı var — her tüccar ve hancıyla Gwent oyna' },
-  { name: 'Gwent Master', risk: 'yuksek', aciklama: 'Novigrad Gwent turnuvasında Tybalt\'ı yen' },
-  { name: 'Friends With Benefits', risk: 'yuksek', aciklama: 'Keira Metz alt hikayesini bitir — onu öldürme' },
-  { name: 'The Doppler Effect', risk: 'yuksek', aciklama: 'Novigrad\'daki doppler sorununu çöz' },
-  { name: 'Woodland Spirit', risk: 'yuksek', aciklama: 'Woodland Spirit kontratında doğru seçimi yap' },
-  { name: 'Kingmaker', risk: 'orta', aciklama: 'Skellige kral seçimi alt hikayesini tamamla' },
-  { name: 'Brawl Master', risk: 'orta', aciklama: '3 bölgedeki tüm yumruk dövüşü görevlerini bitir' },
-  { name: 'Fast and Furious', risk: 'orta', aciklama: '11 at yarışını kazan — Crows Perch yarışı Isle of Mists öncesi yapılmalı' },
-  { name: 'Fist of the South Star', risk: 'dusuk', aciklama: 'Hasar almadan bir yumruk dövüşü kazan' },
+  { name: 'Assassin of Kings', risk: 'very-high', description: 'Radovid assassination — "Reason of State" chain must be done before Isle of Mists' },
+  { name: 'Full Crew', risk: 'very-high', description: 'Bring 7 allies to Kaer Morhen — Keira and Triss most commonly missed' },
+  { name: 'Card Collector', risk: 'high', description: '10 missable Gwent cards — play Gwent with every merchant and innkeeper' },
+  { name: 'Gwent Master', risk: 'high', description: 'Beat Tybalt at the Novigrad Gwent tournament' },
+  { name: 'Friends With Benefits', risk: 'high', description: 'Complete Keira Metz subplot — don't kill her' },
+  { name: 'The Doppler Effect', risk: 'high', description: 'Resolve the doppler problem in Novigrad' },
+  { name: 'Woodland Spirit', risk: 'high', description: 'Make the right choice in the Woodland Spirit contract' },
+  { name: 'Kingmaker', risk: 'medium', description: 'Complete the Skellige ruler selection subplot' },
+  { name: 'Brawl Master', risk: 'medium', description: 'Complete all fistfighting quests in all three regions' },
+  { name: 'Fast and Furious', risk: 'medium', description: 'Win all 11 horse races — Crows Perch race must be done before Isle of Mists' },
+  { name: 'Fist of the South Star', risk: 'low', description: 'Win a fistfight without taking damage' },
 ];
 
 const missableHoS = [
-  { name: 'Let the Good Times Roll!', risk: 'orta', aciklama: 'Belirli quest seçimi gerektirir' },
-  { name: 'Shopaholic', risk: 'dusuk', aciklama: 'Hearts of Stone tüccarlarından alışveriş yap' },
-  { name: 'Curator of Nightmares', risk: 'yuksek', aciklama: 'Quest seçimine bağlı — dikkatli oku' },
-  { name: "When It's Many Against One...", risk: 'orta', aciklama: 'Tüm kabuslara aynı anda meydan oku' },
+  { name: 'Let the Good Times Roll!', risk: 'medium', description: 'Requires specific quest choice' },
+  { name: 'Shopaholic', risk: 'low', description: 'Shop from Hearts of Stone merchants' },
+  { name: 'Curator of Nightmares', risk: 'high', description: 'Depends on quest choice — read carefully' },
+  { name: "When It's Many Against One...", risk: 'medium', description: 'Provoke all nightmares simultaneously' },
 ];
 
 const missableBaW = [
-  { name: 'Last Action Hero', risk: 'orta', aciklama: 'Belirli combat koşulu' },
-  { name: 'Kling of the Clink', risk: 'orta', aciklama: 'Hapse girme senaryosu — doğru seçim yap' },
-  { name: 'A Knight to Remember', risk: 'yuksek', aciklama: 'Şövalyelik seçimlerine bağlı' },
-  { name: 'Embodiment of the Five Virtues', risk: 'cok-yuksek', aciklama: 'Tüm oyun boyunca 5 erdemi karşıla — en çok kaçırılan BaW trophy' },
-  { name: 'The Grapes of Wrath Stomped', risk: 'dusuk', aciklama: 'Üzüm çiğneme mini oyunu' },
-  { name: 'David and Goylat', risk: 'orta', aciklama: 'Belirli düşman koşulu' },
+  { name: 'Last Action Hero', risk: 'medium', description: 'Specific combat condition' },
+  { name: 'Kling of the Clink', risk: 'medium', description: 'Prison scenario — make the right choice' },
+  { name: 'A Knight to Remember', risk: 'high', description: 'Depends on knightly choices' },
+  { name: 'Embodiment of the Five Virtues', risk: 'very-high', description: 'Meet all 5 virtues throughout the game — most commonly missed BaW trophy' },
+  { name: 'The Grapes of Wrath Stomped', risk: 'low', description: 'Grape stomping mini-game' },
+  { name: 'David and Goylat', risk: 'medium', description: 'Specific enemy condition' },
 ];
 
 const riskColor = (risk: string) => {
-  if (risk === 'cok-yuksek') return '#ef4444';
-  if (risk === 'yuksek') return '#f97316';
-  if (risk === 'orta') return '#eab308';
+  if (risk === 'very-high') return '#ef4444';
+  if (risk === 'high') return '#f97316';
+  if (risk === 'medium') return '#eab308';
   return '#22c55e';
 };
 
 const riskLabel = (risk: string) => {
-  if (risk === 'cok-yuksek') return '⛔ Çok Yüksek';
-  if (risk === 'yuksek') return '🔴 Yüksek';
-  if (risk === 'orta') return '🟡 Orta';
-  return '🟢 Düşük';
+  if (risk === 'very-high') return '⛔ Very High';
+  if (risk === 'high') return '🔴 High';
+  if (risk === 'medium') return '🟡 Medium';
+  return '🟢 Low';
 };
 ---
 
-<Layout title="Witcher 3 Platinum Rehberi" description="The Witcher 3 Wild Hunt PS5 Platinum trophy rehberi — missable trophyler, Full Crew, Assassin of Kings ve oynanış sırası.">
+<Layout title="Witcher 3 Platinum Guide" description="The Witcher 3 Wild Hunt PS5 Platinum trophy guide — missable trophies, Full Crew, Assassin of Kings and play order.">
 
   <!-- Breadcrumb -->
   <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
-    <a href="/rehberler" style="color: #444;">rehberler</a>
+    <a href="/guides" style="color: #444;">rehberler</a>
     <span style="margin: 0 8px;">/</span>
     <span style="color: #e5e5e5;">witcher-3</span>
   </div>
@@ -60,36 +60,36 @@ const riskLabel = (risk: string) => {
     <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
       <span style="font-size: 12px; color: #666; border: 1px solid #222; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">PS5 Pro</span>
       <span style="font-size: 12px; color: #e5c46b; border: 1px solid #e5c46b44; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">🏆 Platinum</span>
-      <span style="font-size: 12px; color: #666; border: 1px solid #222; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">150–200 saat</span>
+      <span style="font-size: 12px; color: #666; border: 1px solid #222; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">150–200 h</span>
       <span style="font-size: 12px; color: #22c55e; border: 1px solid #22c55e44; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">NG+ gerekmez</span>
     </div>
     <h1 style="font-size: clamp(28px, 4vw, 42px); font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">The Witcher 3: Wild Hunt</h1>
     <p style="font-size: 15px; color: #666; margin: 0; line-height: 1.6;">GOTY Edition — 78 trophy (52 base + 13 Hearts of Stone + 13 Blood and Wine). Tek playthrough yeterli.</p>
   </div>
 
-  <!-- Uyarılar -->
+  <!-- Warnings -->
   <div style="border: 1px solid #e5c46b44; background: #111; padding: 24px 28px; margin-bottom: 48px;">
-    <p style="font-size: 12px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">⚠️ Oyuna Başlamadan Önce</p>
+    <p style="font-size: 12px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">⚠️ Before You Start</p>
     <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: #aaa; line-height: 1.6;">
-      <li><strong style="color: #e5e5e5;">Zorluk: Death March</strong> — baştan seç, sonradan değiştirme. "Ran the Gauntlet" için şart.</li>
-      <li><strong style="color: #e5e5e5;">Her Gwent oyuncusuna karşı ilk maçı kazan</strong> — kaybedersen kart gider, satın alamazsın.</li>
-      <li><strong style="color: #e5e5e5;">Her tüccar, her hancıyla konuş</strong> — Gwent kartı satıyor olabilir, atla.</li>
-      <li><strong style="color: #e5e5e5;">Isle of Mists öncesi kontrol et</strong> — Full Crew ve Assassin of Kings zinciri bitmeli.</li>
-      <li><strong style="color: #e5e5e5;">Kritik anlarda manuel kayıt al</strong> — missable trophy öncesi yedekle.</li>
+      <li><strong style="color: #e5e5e5;">Difficulty: Death March</strong> — select from the start, don't change later. "Ran the Gauntlet" required.</li>
+      <li><strong style="color: #e5e5e5;">Win the first game against every Gwent opponent</strong> — if you lose, the card is gone.</li>
+      <li><strong style="color: #e5e5e5;">Talk to every merchant and innkeeper</strong> — they may sell Gwent cards.</li>
+      <li><strong style="color: #e5e5e5;">Check before Isle of Mists</strong> — Full Crew and Assassin of Kings chain must be complete.</li>
+      <li><strong style="color: #e5e5e5;">Save manually at critical points</strong> — backup before missable trophies.</li>
     </ol>
   </div>
 
-  <!-- Missable — Ana Oyun -->
+  <!-- Missable — Parent Game -->
   <div style="margin-bottom: 48px;">
     <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">
-      Missable Trophy'ler — Ana Oyun <span style="font-size: 14px; color: #666; font-weight: 400;">({missableBase.length} adet)</span>
+      Missable Trophies — Parent Game <span style="font-size: 14px; color: #666; font-weight: 400;">({missableBase.length} total)</span>
     </h2>
     <div style="display: flex; flex-direction: column; gap: 1px; border: 1px solid #222;">
       {missableBase.map(t => (
         <div style="padding: 16px 20px; background: #111; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start;">
           <div>
             <p style="font-size: 15px; font-weight: 500; margin: 0 0 4px;">{t.name}</p>
-            <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">{t.aciklama}</p>
+            <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">{t.description}</p>
           </div>
           <span style={`font-size: 11px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; color: ${riskColor(t.risk)};`}>{riskLabel(t.risk)}</span>
         </div>
@@ -100,7 +100,7 @@ const riskLabel = (risk: string) => {
   <!-- Full Crew Detay -->
   <div style="border: 1px solid #ef444444; background: #111; padding: 24px 28px; margin-bottom: 48px;">
     <p style="font-size: 12px; color: #ef4444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">Full Crew — Detay</p>
-    <p style="font-size: 14px; color: #aaa; margin: 0 0 16px; line-height: 1.6;">7 kişiyi Kaer Morhen'e toplamalısın:</p>
+    <p style="font-size: 14px; color: #aaa; margin: 0 0 16px; line-height: 1.6;">You must bring 7 people to Kaer Morhen:</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin-bottom: 16px;">
       {['Keira Metz', 'Triss Merigold', 'Vernon Roche', 'Ves', 'Zoltan Chivay', 'Hjalmar an Craite', 'Ermion'].map(k => (
         <div style="padding: 10px 14px; background: #0a0a0a; border: 1px solid #222; font-size: 13px; display: flex; align-items: center; gap: 8px;">
@@ -109,8 +109,8 @@ const riskLabel = (risk: string) => {
       ))}
     </div>
     <p style="font-size: 13px; color: #888; margin: 0; line-height: 1.6; border-top: 1px solid #222; padding-top: 12px;">
-      <strong style="color: #ef4444;">Keira:</strong> "A Favor for a Friend" görevini bitir, Kaer Morhen'e gönder — öldürme.<br />
-      <strong style="color: #ef4444;">Triss:</strong> "Now or Never" görevinde Novigrad'da bırak, gemiye bindirme.
+      <strong style="color: #ef4444;">Keira:</strong> "A Favor for a Friend" — send her to Kaer Morhen, don't kill her.<br />
+      <strong style="color: #ef4444;">Triss:</strong> "Now or Never" — leave her in Novigrad, don't put her on the boat.
     </p>
   </div>
 
@@ -118,24 +118,24 @@ const riskLabel = (risk: string) => {
   <div style="border: 1px solid #ef444444; background: #111; padding: 24px 28px; margin-bottom: 48px;">
     <p style="font-size: 12px; color: #ef4444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">Assassin of Kings — Zincir</p>
     <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-family: 'JetBrains Mono', monospace;">
-      {['1. "A Deadly Plot" — Novigrad', '2. "Redania\'s Most Wanted" — Novigrad', '3. "An Eye for an Eye" — Roche ile', '4. "Reason of State" — zincir tamamlanınca tetiklenir'].map((s, i) => (
+      {['1. "A Deadly Plot" — Novigrad', '2. "Redania\'s Most Wanted" — Novigrad', '3. "An Eye for an Eye" — with Roche', '4. "Reason of State" — triggers when chain is complete'].map((s, i) => (
         <div style={`padding: 10px 14px; background: #0a0a0a; border: 1px solid #222; font-size: 13px; color: ${i === 3 ? '#e5c46b' : '#aaa'};`}>{s}</div>
       ))}
     </div>
-    <p style="font-size: 13px; color: #ef4444; margin: 12px 0 0; line-height: 1.5;">⛔ Isle of Mists'e gitmeden önce bu zincirin tamamlanmış olması lazım — sonradan dönüş yok.</p>
+    <p style="font-size: 13px; color: #ef4444; margin: 12px 0 0; line-height: 1.5;">⛔ This chain must be complete before going to Isle of Mists — no return.</p>
   </div>
 
   <!-- Hearts of Stone -->
   <div style="margin-bottom: 48px;">
     <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">
-      Missable Trophy'ler — Hearts of Stone <span style="font-size: 14px; color: #666; font-weight: 400;">({missableHoS.length} adet)</span>
+      Missable Trophies — Hearts of Stone <span style="font-size: 14px; color: #666; font-weight: 400;">({missableHoS.length} total)</span>
     </h2>
     <div style="display: flex; flex-direction: column; gap: 1px; border: 1px solid #222;">
       {missableHoS.map(t => (
         <div style="padding: 16px 20px; background: #111; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start;">
           <div>
             <p style="font-size: 15px; font-weight: 500; margin: 0 0 4px;">{t.name}</p>
-            <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">{t.aciklama}</p>
+            <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">{t.description}</p>
           </div>
           <span style={`font-size: 11px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; color: ${riskColor(t.risk)};`}>{riskLabel(t.risk)}</span>
         </div>
@@ -146,14 +146,14 @@ const riskLabel = (risk: string) => {
   <!-- Blood and Wine -->
   <div style="margin-bottom: 48px;">
     <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">
-      Missable Trophy'ler — Blood and Wine <span style="font-size: 14px; color: #666; font-weight: 400;">({missableBaW.length} adet)</span>
+      Missable Trophies — Blood and Wine <span style="font-size: 14px; color: #666; font-weight: 400;">({missableBaW.length} total)</span>
     </h2>
     <div style="display: flex; flex-direction: column; gap: 1px; border: 1px solid #222;">
       {missableBaW.map(t => (
         <div style="padding: 16px 20px; background: #111; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start;">
           <div>
             <p style="font-size: 15px; font-weight: 500; margin: 0 0 4px;">{t.name}</p>
-            <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">{t.aciklama}</p>
+            <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">{t.description}</p>
           </div>
           <span style={`font-size: 11px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; color: ${riskColor(t.risk)};`}>{riskLabel(t.risk)}</span>
         </div>
@@ -161,22 +161,22 @@ const riskLabel = (risk: string) => {
     </div>
   </div>
 
-  <!-- Oynanış Sırası -->
+  <!-- Play Order -->
   <div style="margin-bottom: 48px;">
-    <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">Optimum Oynanış Sırası</h2>
+    <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">Optimal Play Order</h2>
     <div style="display: flex; flex-direction: column; gap: 1px; border: 1px solid #222; font-family: 'JetBrains Mono', monospace; font-size: 13px;">
       {[
-        { bolge: 'White Orchard', notlar: ['Hancıyla Gwent oyna, kartı al', 'Tüm NPC\'lerle konuş'] },
-        { bolge: 'Velen', notlar: ['Keira Metz görevlerini hemen yap → Kaer Morhen\'e gönder', 'Yumruk dövüşlerini ve at yarışlarını gördüğünde yap', 'Gwent: her tüccar / hancı kontrol'] },
-        { bolge: 'Novigrad', notlar: ['Triss → "Now or Never" → Novigrad\'da bırak', 'Gwent turnuvası → Tybalt\'ı yen', 'Radovid zinciri başlat: Deadly Plot → Redania\'s Most Wanted', 'The Doppler Effect görevini yap'] },
-        { bolge: 'Skellige', notlar: ['Kingmaker alt hikayesi', 'Hjalmar + Ermion', 'Gwent temizle'] },
-        { bolge: '⛔ Isle of Mists öncesi kontrol', notlar: ['Full Crew: 7/7 mı?', 'Reason of State zinciri bitti mi?', 'Tüm at yarışları ve yumruk dövüşleri bitti mi?'] },
-        { bolge: 'Ana hikaye finali', notlar: ['Assassin of Kings — doğru seçimler'] },
-        { bolge: 'Hearts of Stone', notlar: ['Level 32+ önerilir'] },
-        { bolge: 'Blood and Wine', notlar: ['En sona bırak', 'Embodiment of the Five Virtues için dikkatli ol'] },
+        { region: 'White Orchard', notes: ['Play Gwent with innkeeper, get card', 'Talk to all NPCs'] },
+        { region: 'Velen', notes: ['Complete Keira Metz quests → send to Kaer Morhen', 'Do fistfights and horse races as you find them', 'Gwent: check every merchant / innkeeper'] },
+        { region: 'Novigrad', notes: ['Triss → "Now or Never" → leave in Novigrad', 'Gwent tournament → beat Tybalt', 'Start Radovid chain: Deadly Plot → Redania's Most Wanted', 'Complete The Doppler Effect quest'] },
+        { region: 'Skellige', notes: ['Kingmaker subplot', 'Hjalmar + Ermion', 'Clear Gwent opponents'] },
+        { region: '⛔ Check before Isle of Mists', notes: ['Full Crew: 7/7?', 'Reason of State chain done?', 'All horse races and fistfights done?'] },
+        { region: 'Main story finale', notes: ['Assassin of Kings — correct choices'] },
+        { region: 'Hearts of Stone', notes: ['Level 32+ recommended'] },
+        { region: 'Blood and Wine', notes: ['Leave for last', 'Be careful with Embodiment of the Five Virtues'] },
       ].map((adim, i) => (
-        <div style={`padding: 16px 20px; background: #111; border-left: 2px solid ${adim.bolge.startsWith('⛔') ? '#ef4444' : '#222'};`}>
-          <p style={`font-size: 13px; font-weight: 500; margin: 0 0 8px; color: ${adim.bolge.startsWith('⛔') ? '#ef4444' : '#e5e5e5'};`}>{i + 1}. {adim.bolge}</p>
+        <div style={`padding: 16px 20px; background: #111; border-left: 2px solid ${adim.region.startsWith('⛔') ? '#ef4444' : '#222'};`}>
+          <p style={`font-size: 13px; font-weight: 500; margin: 0 0 8px; color: ${adim.region.startsWith('⛔') ? '#ef4444' : '#e5e5e5'};`}>{i + 1}. {adim.region}</p>
           <ul style="margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 4px;">
             {adim.notlar.map(n => (
               <li style="font-size: 12px; color: #666; line-height: 1.5;">{n}</li>
@@ -187,13 +187,13 @@ const riskLabel = (risk: string) => {
     </div>
   </div>
 
-  <!-- Takip Listesi -->
+  <!-- Tracking List -->
   <div style="margin-bottom: 48px;">
-    <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">Takip Listesi</h2>
+    <h2 style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid #222;">Tracking List</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
 
       <div>
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Ana Oyun</p>
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Parent Game</p>
         <div style="display: flex; flex-direction: column; gap: 6px;">
           {['Assassin of Kings', 'Full Crew', 'Card Collector', 'Gwent Master', 'Friends With Benefits', 'The Doppler Effect', 'Woodland Spirit', 'Kingmaker', 'Brawl Master', 'Fast and Furious'].map(t => (
             <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #aaa; cursor: pointer;">

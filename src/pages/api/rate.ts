@@ -6,7 +6,7 @@ export const POST: APIRoute = async ({ request }) => {
   const { slug, rating } = await request.json();
 
   if (!slug || rating === undefined || rating < 1 || rating > 10) {
-    return new Response(JSON.stringify({ error: 'Geçersiz istek' }), { status: 400 });
+    return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400 });
   }
 
   const apiKey = import.meta.env.KARBON_API_KEY;
@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (!res.ok) {
-    return new Response(JSON.stringify({ error: 'API hatası' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'API error' }), { status: 500 });
   }
 
   const data = await res.json();

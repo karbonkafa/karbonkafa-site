@@ -21,10 +21,10 @@ const imgUrl = (id: string, size = 't_screenshot_big') =>
   `https://images.igdb.com/igdb/image/upload/${size}/${id}.jpg`;
 
 const statusLabel: Record<string, string> = {
-  active: 'Aktif',
+  active: 'Active',
   backlog: 'Backlog',
-  paused: 'Duraklatıldı',
-  completed: 'Tamamlandı',
+  paused: 'Paused',
+  completed: 'Completed',
 };
 
 const statusColor: Record<string, string> = {
@@ -37,9 +37,9 @@ const statusColor: Record<string, string> = {
 const guide = guides[game.slug];
 const achievementList = achievementLists[game.slug] || [];
 const hours = game.playtimeMinutes > 0
-  ? (game.playtimeMinutes / 60).toFixed(1) + ' saat'
+  ? (game.playtimeMinutes / 60).toFixed(1) + ' h'
   : game.totalHours > 0
-  ? game.totalHours + ' saat'
+  ? game.totalHours + ' h'
   : null;
 
 // Links
@@ -61,29 +61,29 @@ const allLinks = [
   ...(game.igdbId ? [{ label: 'IGDB', url: `https://www.igdb.com/games/${game.slug}`, color: '#9b59b6' }] : []),
 ];
 
-// Referans tablosu satırları
+// Reference table rows
 const devs = igdb.mainDevs?.length > 0 ? igdb.mainDevs : (game.developer ? [game.developer] : []);
 const pubs = igdb.publishers?.length > 0 ? igdb.publishers : (game.publisher ? [game.publisher] : []);
 const series = [...(igdb.franchises || []), ...(igdb.collections || [])].filter((v: string, i: number, a: string[]) => a.indexOf(v) === i);
 const genres = igdb.genres?.length > 0 ? igdb.genres : game.genres;
 const refRows = [
-  ...(devs.length > 0 ? [{ key: 'game.developer', label: 'Ana Geliştirici', value: devs.join(', '), color: '' }] : []),
-  ...(igdb.supportingDevs?.length > 0 ? [{ key: 'game.supportingDev', label: 'Destek Geliştirici', value: igdb.supportingDevs.join(', '), color: '' }] : []),
-  ...(pubs.length > 0 ? [{ key: 'game.publisher', label: 'Yayıncı', value: pubs.join(', '), color: '' }] : []),
-  ...(game.releaseYear ? [{ key: 'game.releaseYear', label: 'Çıkış Yılı', value: String(game.releaseYear), color: '' }] : []),
-  ...(genres?.length > 0 ? [{ key: 'game.genre', label: 'Tür', value: genres.join(', '), color: '' }] : []),
-  ...(igdb.themes?.length > 0 ? [{ key: 'game.theme', label: 'Tema', value: igdb.themes.join(', '), color: '' }] : []),
-  ...(igdb.gameModes?.length > 0 ? [{ key: 'game.mode', label: 'Oyun Modu', value: igdb.gameModes.join(', '), color: '' }] : []),
-  ...(igdb.perspectives?.length > 0 ? [{ key: 'game.perspective', label: 'Bakış Açısı', value: igdb.perspectives.join(', '), color: '' }] : []),
-  ...(series.length > 0 ? [{ key: 'game.series', label: 'Seri', value: series.join(', '), color: '' }] : []),
-  ...(igdb.parentGame ? [{ key: 'game.parentGame', label: 'Ana Oyun', value: igdb.parentGame.name, color: '' }] : []),
-  ...(igdb.engines?.length > 0 ? [{ key: 'game.engine', label: 'Motor', value: igdb.engines.join(', '), color: '' }] : []),
+  ...(devs.length > 0 ? [{ key: 'game.developer', label: 'Main Developer', value: devs.join(', '), color: '' }] : []),
+  ...(igdb.supportingDevs?.length > 0 ? [{ key: 'game.supportingDev', label: 'Supporting Developer', value: igdb.supportingDevs.join(', '), color: '' }] : []),
+  ...(pubs.length > 0 ? [{ key: 'game.publisher', label: 'Publisher', value: pubs.join(', '), color: '' }] : []),
+  ...(game.releaseYear ? [{ key: 'game.releaseYear', label: 'Release Year', value: String(game.releaseYear), color: '' }] : []),
+  ...(genres?.length > 0 ? [{ key: 'game.genre', label: 'Genre', value: genres.join(', '), color: '' }] : []),
+  ...(igdb.themes?.length > 0 ? [{ key: 'game.theme', label: 'Theme', value: igdb.themes.join(', '), color: '' }] : []),
+  ...(igdb.gameModes?.length > 0 ? [{ key: 'game.mode', label: 'Game Mode', value: igdb.gameModes.join(', '), color: '' }] : []),
+  ...(igdb.perspectives?.length > 0 ? [{ key: 'game.perspective', label: 'Perspective', value: igdb.perspectives.join(', '), color: '' }] : []),
+  ...(series.length > 0 ? [{ key: 'game.series', label: 'Series', value: series.join(', '), color: '' }] : []),
+  ...(igdb.parentGame ? [{ key: 'game.parentGame', label: 'Parent Game', value: igdb.parentGame.name, color: '' }] : []),
+  ...(igdb.engines?.length > 0 ? [{ key: 'game.engine', label: 'Engine', value: igdb.engines.join(', '), color: '' }] : []),
   ...(game.metacriticScore ? [{ key: '', label: 'Metacritic', value: String(game.metacriticScore), color: game.metacriticScore >= 80 ? '#22c55e' : game.metacriticScore >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(igdb.totalRating ? [{ key: 'game.igdbRating', label: 'IGDB', value: `${igdb.totalRating} / 100`, color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(game.steamReviews?.total > 0 ? [{ key: '', label: 'Steam', value: `${game.steamReviews.percent}% · ${game.steamReviews.label} (${game.steamReviews.total.toLocaleString()})`, color: game.steamReviews.percent >= 80 ? '#22c55e' : game.steamReviews.percent >= 60 ? '#eab308' : '#ef4444' }] : []),
-  ...(game.achievementCount ? [{ key: 'game.achievements', label: 'Başarımlar', value: `${game.achievementCount} adet`, color: '#888' }] : []),
-  ...(hours ? [{ key: 'game.played', label: 'Oynanan', value: hours, color: '#e5c46b' }] : []),
-  ...(review.overall ? [{ key: 'game.karbonScore', label: 'Karbon Puanı', value: `${review.overall}/10`, color: '#e5c46b' }] : []),
+  ...(game.achievementCount ? [{ key: 'game.achievements', label: 'Achievements', value: `${game.achievementCount} total`, color: '#888' }] : []),
+  ...(hours ? [{ key: 'game.played', label: 'Played', value: hours, color: '#e5c46b' }] : []),
+  ...(review.overall ? [{ key: 'game.karbonScore', label: 'Karbon Score', value: `${review.overall}/10`, color: '#e5c46b' }] : []),
 ];
 
 // IGDB websites
@@ -93,11 +93,11 @@ const filteredWebsites = igdb.websites
   : [];
 ---
 
-<Layout title={game.title} description={game.summary || `${game.title} — KarbonGameStudios oyun arşivi.`}>
+<Layout title={game.title} description={game.summary || `${game.title} — KarbonGameStudios game archive.`}>
 
   <!-- Breadcrumb -->
   <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
-    <a href="/oyunlar" style="color: #444; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">oyunlar</a>
+    <a href="/games" style="color: #444; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">oyunlar</a>
     <span style="margin: 0 8px;">/</span>
     <span style="color: #888;">{game.title}</span>
   </div>
@@ -131,7 +131,7 @@ const filteredWebsites = igdb.websites
           <span style="font-size: 12px; border: 1px solid #222; color: #666; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">{p}</span>
         ))}
         {game.isPriorityBacklog && (
-          <span style="font-size: 12px; border: 1px solid #e5c46b44; color: #e5c46b; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">⭐ Öncelik</span>
+          <span style="font-size: 12px; border: 1px solid #e5c46b44; color: #e5c46b; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">⭐ Priority</span>
         )}
       </div>
 
@@ -149,12 +149,12 @@ const filteredWebsites = igdb.websites
             </div>
           </div>
         ))}
-        {/* Tamamlama süresi satırı */}
+        {/* Completion time row */}
         <a href={`https://howlongtobeat.com/?q=${encodeURIComponent(game.title)}`} target="_blank" rel="noopener"
           style="display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #1a1a1a; transition: opacity 0.15s;"
           onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
           <div style="padding: 10px 14px; background: #0d0d0d; display: flex; align-items: center;">
-            <span data-i18n="game.completion" style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">Tamamlama</span>
+            <span data-i18n="game.completion" style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;">Completion</span>
           </div>
           <div style="padding: 10px 14px; background: #111; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
             <div style="display: flex; gap: 16px; flex-wrap: wrap;">
@@ -201,11 +201,11 @@ const filteredWebsites = igdb.websites
     <a href={guide.path} style="display: block; border: 1px solid #e5c46b44; background: #111; padding: 24px 28px; margin-bottom: 48px; transition: background 0.15s;" onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
         <div>
-          <p style="font-size: 12px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 6px;"><span data-i18n="guide.title">🏆 Başarım Rehberi</span></p>
+          <p style="font-size: 12px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 6px;"><span data-i18n="guide.title">🏆 Achievement Guide</span></p>
           <p style="font-size: 16px; font-weight: 600; margin: 0 0 4px;">{game.title} — {guide.trophy}</p>
           <p style="font-size: 13px; color: #666; margin: 0;">{guide.missable} missable trophy · {guide.hours}</p>
         </div>
-        <span style="font-size: 13px; color: #e5c46b; font-family: 'JetBrains Mono', monospace;" data-i18n="guide.open">Rehberi aç →</span>
+        <span style="font-size: 13px; color: #e5c46b; font-family: 'JetBrains Mono', monospace;" data-i18n="guide.open">Open guide →</span>
       </div>
     </a>
   ) : null}
@@ -214,7 +214,7 @@ const filteredWebsites = igdb.websites
   <div style="border: 1px solid #222; margin-bottom: 48px;">
     <div style="padding: 20px 24px; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
       <div>
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 4px;" data-i18n="review.title">İnceleme</p>
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 4px;" data-i18n="review.title">Review</p>
         <p style="font-size: 15px; font-weight: 600; margin: 0;">{game.title}</p>
       </div>
       {review.overall && (
@@ -226,11 +226,11 @@ const filteredWebsites = igdb.websites
     </div>
 
     {[
-      { key: 'hikaye',  labelKey: 'review.story',    descKey: 'review.story.desc',    label: 'Hikaye',           desc: 'Anlatı, yazı, dünya kurgusu' },
-      { key: 'oynanis', labelKey: 'review.gameplay', descKey: 'review.gameplay.desc', label: 'Oynanış',           desc: 'Mekanikler, kontroller, derinlik' },
-      { key: 'gorsel',  labelKey: 'review.visual',   descKey: 'review.visual.desc',   label: 'Görsel / Sunum',    desc: 'Sanat yönetimi, grafik, performans' },
-      { key: 'ses',     labelKey: 'review.audio',    descKey: 'review.audio.desc',    label: 'Ses / Müzik',       desc: 'Soundtrack, seslendirme, ses tasarımı' },
-      { key: 'deger',   labelKey: 'review.value',    descKey: 'review.value.desc',    label: 'Değer / Süre',      desc: 'İçerik miktarı, yeniden oynanabilirlik' },
+      { key: 'hikaye',  labelKey: 'review.story',    descKey: 'review.story.desc',    label: 'Story',           desc: 'Narrative, writing, world-building' },
+      { key: 'oynanis', labelKey: 'review.gameplay', descKey: 'review.gameplay.desc', label: 'Gameplay',           desc: 'Mechanics, controls, depth' },
+      { key: 'gorsel',  labelKey: 'review.visual',   descKey: 'review.visual.desc',   label: 'Visual / Presentation',    desc: 'Art direction, graphics, performance' },
+      { key: 'ses',     labelKey: 'review.audio',    descKey: 'review.audio.desc',    label: 'Audio / Music',       desc: 'Soundtrack, voice acting, sound design' },
+      { key: 'deger',   labelKey: 'review.value',    descKey: 'review.value.desc',    label: 'Value / Length',      desc: 'Content amount, replayability' },
     ].map(cat => {
       const score = review[cat.key];
       return (
@@ -261,27 +261,27 @@ const filteredWebsites = igdb.websites
 
     <div style="padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;">
       <p id="reviewStatus" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">
-        {review.overall ? `güncellendi ${new Date(review.updatedAt).toLocaleDateString('tr-TR')}` : 'henüz incelenmedi'}
+        {review.overall ? `updated ${new Date(review.updatedAt).toLocaleDateString('tr-TR')}` : 'not reviewed yet'}
       </p>
       <button id="saveReview" data-slug={game.slug} style="background: #e5c46b; color: #0a0a0a; border: none; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-        Kaydet
+        Save
       </button>
     </div>
   </div>
 
 
-  <!-- Achievement List (guide olan oyunlar için) -->
+  <!-- Achievement List (for games with guides) -->
   {achievementList.length > 0 && (
     <div style="margin-bottom: 48px; border: 1px solid #222;">
       <div style="padding: 14px 20px; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.achievements">Başarımlar</p>
-        <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{achievementList.filter(a => a.missable).length} missable / {achievementList.length} toplam</span>
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.achievements">Achievements</p>
+        <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{achievementList.filter(a => a.missable).length} missable / {achievementList.length} total</span>
       </div>
-      {['Ana Oyun', 'Hearts of Stone', 'Blood and Wine'].map(section => {
+      {['Parent Game', 'Hearts of Stone', 'Blood and Wine'].map(section => {
         const items = achievementList.filter(a => a.section === section);
         return items.length > 0 ? (
           <div>
-            {section !== 'Ana Oyun' && (
+            {section !== 'Parent Game' && (
               <div style="padding: 8px 20px; background: #0d0d0d; border-bottom: 1px solid #1a1a1a;">
                 <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{section}</span>
               </div>
@@ -301,9 +301,9 @@ const filteredWebsites = igdb.websites
         ) : null;
       })}
       <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;">
-        <span id="achieveProgress" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">0 / {achievementList.length} tamamlandı</span>
+        <span id="achieveProgress" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">0 / {achievementList.length} completed</span>
         <button id="clearAchieve" style="font-size: 11px; color: #444; background: none; border: none; cursor: pointer; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
-          onmouseover="this.style.color='#666'" onmouseout="this.style.color='#444'">sıfırla</button>
+          onmouseover="this.style.color='#666'" onmouseout="this.style.color='#444'">reset</button>
       </div>
     </div>
   )}
@@ -312,7 +312,7 @@ const filteredWebsites = igdb.websites
   {igdb.keywords?.length > 0 && (
     <div style="margin-bottom: 32px; display: flex; gap: 6px; flex-wrap: wrap;">
       {igdb.keywords.map((k: string) => (
-        <a href={`/oyunlar?q=${encodeURIComponent(k)}`}
+        <a href={`/games?q=${encodeURIComponent(k)}`}
           style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px; transition: all 0.15s;"
           onmouseover="this.style.borderColor='#444';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e1e';this.style.color='#555'">
           {k}
@@ -325,7 +325,7 @@ const filteredWebsites = igdb.websites
   {(igdb.expansions?.length > 0 || igdb.dlcs?.length > 0) && (
     <div style="margin-bottom: 48px; border: 1px solid #222;">
       <div style="padding: 14px 20px; border-bottom: 1px solid #222;">
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.dlcExpansions">İçerik Genişletmeleri</p>
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.dlcExpansions">DLC & Expansions</p>
       </div>
       {igdb.expansions?.map((e: any) => (
         <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
@@ -346,17 +346,17 @@ const filteredWebsites = igdb.websites
   {(igdb.languages?.audio?.length > 0 || igdb.languages?.subtitles?.length > 0) && (
     <div style="margin-bottom: 48px; border: 1px solid #222;">
       <div style="padding: 14px 20px; border-bottom: 1px solid #222;">
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.languages">Dil Desteği</p>
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.languages">Language Support</p>
       </div>
       {igdb.languages?.audio?.length > 0 && (
         <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Seslendirme</span>
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Audio</span>
           <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.audio.join(' · ')}</p>
         </div>
       )}
       {igdb.languages?.subtitles?.length > 0 && (
         <div style="padding: 12px 20px; border-bottom: 1px solid #1a1a1a; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Altyazı</span>
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 60px;">Subtitles</span>
           <p style="font-size: 13px; color: #888; margin: 0;">{igdb.languages.subtitles.join(' · ')}</p>
         </div>
       )}
@@ -376,10 +376,10 @@ const filteredWebsites = igdb.websites
     </div>
   )}
 
-  <!-- Media: Fragman + Görseller yan yana -->
+  <!-- Media: Trailer + Screenshots side by side -->
   {(igdb.videos?.length > 0 || igdb.screenshots?.length > 0 || igdb.artworks?.length > 0) && (
     <div style="margin-bottom: 48px;">
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;" data-i18n="game.media">Medya</p>
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;" data-i18n="game.media">Media</p>
       <div style="display: flex; gap: 1px; border: 1px solid #222; align-items: flex-start;">
 
         {igdb.videos?.length > 0 && (
@@ -423,7 +423,7 @@ const filteredWebsites = igdb.websites
     </div>
   )}
 
-  <!-- Tags: Temalar, Modlar, Bakış açısı -->
+  <!-- Tags: Themes, Modes, Perspectives -->
   {(igdb.themes?.length > 0 || igdb.gameModes?.length > 0 || igdb.perspectives?.length > 0) && (
     <div style="margin-bottom: 48px; display: flex; flex-direction: column; gap: 12px;">
       {igdb.themes?.length > 0 && (
@@ -444,7 +444,7 @@ const filteredWebsites = igdb.websites
       )}
       {igdb.perspectives?.length > 0 && (
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Bakış</span>
+          <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px;">Perspective</span>
           {igdb.perspectives.map((p: string) => (
             <span style="font-size: 12px; border: 1px solid #222; color: #888; padding: 3px 10px;">{p}</span>
           ))}
@@ -457,8 +457,8 @@ const filteredWebsites = igdb.websites
   {igdb.storyline && (
     <div style="margin-bottom: 48px; border: 1px solid #222; background: #111;">
       <button id="storylineToggle" style="width: 100%; padding: 16px 20px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: #e5e5e5; font-family: inherit;">
-        <span style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace;" data-i18n="game.storyline">Hikaye Özeti</span>
-        <span id="storylineChevron" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">+ göster</span>
+        <span style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace;" data-i18n="game.storyline">Story Summary</span>
+        <span id="storylineChevron" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">+ show</span>
       </button>
       <div id="storylineContent" style="display: none; padding: 0 20px 20px; font-size: 14px; color: #888; line-height: 1.8;">
         {igdb.storyline}
@@ -469,10 +469,10 @@ const filteredWebsites = igdb.websites
   <!-- Similar Games -->
   {igdb.similarGames?.length > 0 && (
     <div style="margin-bottom: 48px;">
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;" data-i18n="game.similar">Benzer Oyunlar</p>
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;" data-i18n="game.similar">Benzer Games</p>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1px; border: 1px solid #222;">
         {igdb.similarGames.filter((s: any) => s.cover).map((similar: any) => (
-          <a href={`/oyunlar/${similar.slug}`} style="display: block; background: #111; position: relative; aspect-ratio: 3/4; overflow: hidden; group;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          <a href={`/games/${similar.slug}`} style="display: block; background: #111; position: relative; aspect-ratio: 3/4; overflow: hidden; group;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
             <img
               src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${similar.cover}.jpg`}
               alt={similar.name}
@@ -489,8 +489,8 @@ const filteredWebsites = igdb.websites
   )}
 
   <!-- Back -->
-  <a href="/oyunlar" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
-    ← oyunlar
+  <a href="/games" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
+    ← games
   </a>
 
 </Layout>
@@ -509,15 +509,15 @@ const filteredWebsites = igdb.websites
       cb.addEventListener('change', () => {
         const checked = Array.from(achieveChecks).filter(c => c.checked).map(c => c.dataset.name || '');
         localStorage.setItem(storageKey, JSON.stringify(checked));
-        if (progressEl) progressEl.textContent = `${checked.length} / ${achieveChecks.length} tamamlandı`;
+        if (progressEl) progressEl.textContent = `${checked.length} / ${achieveChecks.length} completed`;
       });
     });
     const initial = saved.length;
-    if (progressEl) progressEl.textContent = `${initial} / ${achieveChecks.length} tamamlandı`;
+    if (progressEl) progressEl.textContent = `${initial} / ${achieveChecks.length} completed`;
     clearBtn?.addEventListener('click', () => {
       achieveChecks.forEach(cb => cb.checked = false);
       localStorage.removeItem(storageKey);
-      if (progressEl) progressEl.textContent = `0 / ${achieveChecks.length} tamamlandı`;
+      if (progressEl) progressEl.textContent = `0 / ${achieveChecks.length} completed`;
     });
   }
 
@@ -529,7 +529,7 @@ const filteredWebsites = igdb.websites
     toggle.addEventListener('click', () => {
       const open = content.style.display !== 'none';
       content.style.display = open ? 'none' : 'block';
-      chevron.textContent = open ? '+ göster' : '− gizle';
+      chevron.textContent = open ? '+ show' : '− hide';
     });
   }
 
@@ -569,7 +569,7 @@ const filteredWebsites = igdb.websites
 
   saveBtn?.addEventListener('click', async () => {
     const slug = saveBtn.dataset.slug!;
-    statusEl.textContent = 'kaydediliyor...';
+    statusEl.textContent = 'saving...';
     saveBtn.disabled = true;
     try {
       const res = await fetch('/api/review', {
@@ -584,10 +584,10 @@ const filteredWebsites = igdb.websites
         const overallEl = document.querySelector('[data-overall]') as HTMLElement;
         if (overallEl) overallEl.textContent = String(overall);
       } else {
-        statusEl.textContent = 'hata oluştu';
+        statusEl.textContent = 'an error occurred';
       }
     } catch {
-      statusEl.textContent = 'bağlantı hatası';
+      statusEl.textContent = 'connection error';
     }
     saveBtn.disabled = false;
   });
