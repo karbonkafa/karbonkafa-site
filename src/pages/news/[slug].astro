@@ -60,17 +60,32 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
       {article.data.excerpt}
     </p>
 
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">Kaynak:</span>
-      {article.data.sourceUrl ? (
-        <a href={article.data.sourceUrl} target="_blank" rel="noopener"
-          style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
-          onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555'">
-          {article.data.source} ↗
-        </a>
-      ) : (
-        <span style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace;">{article.data.source}</span>
-      )}
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">Kaynak:</span>
+        {article.data.sourceUrl ? (
+          <a href={article.data.sourceUrl} target="_blank" rel="noopener"
+            style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
+            onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555'">
+            {article.data.source} ↗
+          </a>
+        ) : (
+          <span style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace;">{article.data.source}</span>
+        )}
+      </div>
+
+      <!-- Listen button -->
+      <button id="listenBtn" style="display: flex; align-items: center; gap: 7px; background: none; border: 1px solid #2a2a2a; color: #666; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 12px; cursor: pointer; transition: all 0.15s; letter-spacing: 0.04em;"
+        onmouseover="this.style.borderColor='#444'; this.style.color='#aaa';"
+        onmouseout="if(!this.dataset.active) { this.style.borderColor='#2a2a2a'; this.style.color='#666'; }">
+        <span id="listenIcon">▶</span>
+        <span id="listenLabel">Dinle</span>
+      </button>
+    </div>
+
+    <!-- Progress bar -->
+    <div id="listenProgress" style="display: none; margin-top: 12px; height: 2px; background: #1a1a1a; position: relative; overflow: hidden;">
+      <div id="listenBar" style="height: 100%; background: #e5c46b; width: 0%; transition: width 0.3s;"></div>
     </div>
   </div>
 
@@ -102,3 +117,101 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
   </div>
 
 </Layout>
+
+<script>
+  const btn = document.getElementById('listenBtn') as HTMLButtonElement;
+  const icon = document.getElementById('listenIcon')!;
+  const label = document.getElementById('listenLabel')!;
+  const progress = document.getElementById('listenProgress')!;
+  const bar = document.getElementById('listenBar')!;
+
+  if (!('speechSynthesis' in window)) {
+    btn.style.display = 'none';
+  }
+
+  const synth = window.speechSynthesis;
+  let utterance: SpeechSynthesisUtterance | null = null;
+  let progressInterval: ReturnType<typeof setInterval> | null = null;
+
+  function getReadText(): string {
+    const title = document.querySelector('h1')?.textContent?.trim() || '';
+    const excerpt = document.querySelector('p[style*="border-left"]')?.textContent?.trim() || '';
+    const body = document.querySelector('.prose')?.textContent?.trim() || '';
+    // Exclude the "Kaynağı oku →" link text
+    const bodyClean = body.replace(/Kaynağı oku →.*/s, '').trim();
+    return `${title}. ${excerpt}. ${bodyClean}`;
+  }
+
+  function getTurkishVoice(): SpeechSynthesisVoice | null {
+    const voices = synth.getVoices();
+    return voices.find(v => v.lang.startsWith('tr')) || null;
+  }
+
+  function setPlaying() {
+    icon.textContent = '■';
+    label.textContent = 'Durdur';
+    btn.style.borderColor = '#e5c46b';
+    btn.style.color = '#e5c46b';
+    btn.dataset.active = '1';
+    progress.style.display = 'block';
+  }
+
+  function setIdle() {
+    icon.textContent = '▶';
+    label.textContent = 'Dinle';
+    btn.style.borderColor = '#2a2a2a';
+    btn.style.color = '#666';
+    delete btn.dataset.active;
+    progress.style.display = 'none';
+    bar.style.width = '0%';
+    if (progressInterval) clearInterval(progressInterval);
+  }
+
+  function startProgress(duration: number) {
+    const start = Date.now();
+    progressInterval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const pct = Math.min((elapsed / (duration * 1000)) * 100, 99);
+      bar.style.width = pct + '%';
+    }, 200);
+  }
+
+  btn.addEventListener('click', () => {
+    if (synth.speaking || synth.pending) {
+      synth.cancel();
+      setIdle();
+      return;
+    }
+
+    const text = getReadText();
+    utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'tr-TR';
+    utterance.rate = 1.05;
+    utterance.pitch = 1;
+
+    // Voices may not be loaded yet on first call
+    const trySetVoice = () => {
+      const voice = getTurkishVoice();
+      if (voice) utterance!.voice = voice;
+    };
+    trySetVoice();
+    if (!utterance.voice) {
+      synth.onvoiceschanged = trySetVoice;
+    }
+
+    // Estimate duration: ~130 Turkish words per minute, ~5 chars per word
+    const estimatedSecs = (text.length / 5 / 130) * 60;
+
+    utterance.onstart = () => {
+      setPlaying();
+      startProgress(estimatedSecs);
+    };
+    utterance.onend = () => setIdle();
+    utterance.onerror = () => setIdle();
+
+    synth.speak(utterance);
+  });
+
+  // Stop on page leave
+  window.addEventListener('beforeunload', () => synth.cancel());
+</script>
