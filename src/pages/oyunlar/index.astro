@@ -110,6 +110,9 @@ const stats = {
           {game.totalHours > 0 && (
             <p style="font-size: 10px; color: #666; margin: 3px 0 0; font-family: 'JetBrains Mono', monospace;">{game.totalHours}s</p>
           )}
+          {game.genres?.slice(0,2).map((g: string) => (
+            <span style="font-size: 9px; background: #ffffff11; padding: 1px 6px; margin-top: 3px; display: inline-block; color: #aaa;">{g}</span>
+          ))}
         </div>
         <!-- Status dot -->
         <div style={`position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: ${statusColor[game.status] || '#666'};`}></div>
