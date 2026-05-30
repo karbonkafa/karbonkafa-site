@@ -47,7 +47,7 @@ const apps = [
   <!-- Radio widget -->
   <div class="px-window" style="margin-bottom: 12px; border-color: #3b82f644;">
     <div class="px-titlebar" style="border-left-color: #3b82f6;">
-      <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE — 90'lar Yabancı Radyosu</span>
+      <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE</span>
       <div class="px-btns">
         <span class="px-btn" id="radio-min">─</span>
         <span class="px-btn" id="radio-close" style="cursor:pointer;">×</span>
@@ -156,10 +156,10 @@ const apps = [
                   const g = gmap[slug];
                   const cover = g?.coverUrl;
                   return cover ? (
-                    <div style="width: 28px; height: 28px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
+                    <div style="width: 44px; height: 44px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
                       <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
                     </div>
-                  ) : <div style="width:28px;height:28px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
+                  ) : <div style="width:44px;height:44px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
                 })}
               </div>
             </a>
@@ -356,8 +356,10 @@ const apps = [
 
   // ── RADIO ──────────────────────────────────────────────────
   const STREAMS = [
-    'https://stream.onlineradiobox.com/90s',
-    'https://streams.ilovemusic.de/iloveradio17.mp3',
+    'https://ice1.somafm.com/illstreet-128-mp3',   // SomaFM Ill Street Blues
+    'https://ice4.somafm.com/beatblender-128-mp3', // SomaFM Beat Blender
+    'https://ice2.somafm.com/thetrip-128-mp3',     // SomaFM The Trip
+    'https://ice2.somafm.com/groovesalad-256-mp3', // SomaFM Groove Salad
   ];
 
   let audio: HTMLAudioElement | null = null;
