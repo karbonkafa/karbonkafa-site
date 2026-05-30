@@ -42,10 +42,10 @@ const smallNews = latestNews.slice(3);
                   const g = gmap[slug];
                   const cover = g?.coverUrl;
                   return cover ? (
-                    <div style="width: 44px; height: 44px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
+                    <div style="width: 64px; height: 64px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
                       <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
                     </div>
-                  ) : <div style="width:44px;height:44px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
+                  ) : <div style="width:64px;height:64px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
                 })}
               </div>
             </a>
