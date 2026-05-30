@@ -1,19 +1,130 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
 
 :root {
-  --bg: #0a0a0a;
-  --card: #111111;
-  --border: #222222;
+  --bg: #050508;
+  --card: #0d0d12;
+  --border: #1e1e2e;
   --text: #e5e5e5;
-  --muted: #666666;
+  --muted: #555566;
   --accent: #e5c46b;
+  --pixel: 'VT323', monospace;
+  --win-title: linear-gradient(90deg, #0a0a2a 0%, #1a1a4a 100%);
+  --win-border: #3a3a5a;
+  --win-border-light: #5a5a8a;
+  --win-border-dark: #0a0a1a;
 }
 
 html {
   background-color: var(--bg);
   color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: none;
+  image-rendering: pixelated;
+}
+
+/* CRT scanlines overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.08) 3px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Pixel window chrome */
+.px-window {
+  border: 2px solid var(--win-border);
+  box-shadow:
+    2px 2px 0 var(--win-border-dark),
+    inset 1px 1px 0 var(--win-border-light),
+    inset -1px -1px 0 var(--win-border-dark);
+  background: var(--card);
+}
+
+.px-titlebar {
+  background: var(--win-title);
+  border-bottom: 2px solid var(--win-border);
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  user-select: none;
+}
+
+.px-title {
+  font-family: var(--pixel);
+  font-size: 15px;
+  color: #c8c8e0;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.px-btns {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.px-btn {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #555;
+  background: #1a1a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-family: monospace;
+  color: #888;
+  cursor: default;
+  line-height: 1;
+}
+.px-btn:hover { background: #2a2a3a; color: #e5e5e5; }
+
+/* Desktop app icon */
+.app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.1s;
+}
+.app-icon:hover { background: rgba(229,196,107,0.08); }
+.app-icon:hover .icon-box { border-color: var(--accent); }
+
+.icon-box {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--win-border);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 2px 2px 0 var(--win-border-dark), inset 1px 1px 0 var(--win-border-light);
+  image-rendering: pixelated;
+}
+
+.icon-label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #aaa;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000;
+  line-height: 1.2;
+  max-width: 70px;
 }
 
 * {

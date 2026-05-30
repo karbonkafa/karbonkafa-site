@@ -4,7 +4,7 @@ import listsData from '../data/lists.json';
 import gamesData from '../data/games.json';
 import { getCollection } from 'astro:content';
 
-const lists = (listsData as any[]).slice(0, 3);
+const lists = (listsData as any[]).slice(0, 2);
 const games = gamesData as any[];
 const gmap: Record<string, any> = {};
 for (const g of games) gmap[g.slug] = g;
@@ -12,185 +12,217 @@ for (const g of games) gmap[g.slug] = g;
 const allNews = await getCollection('news');
 const latestNews = allNews
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+  .slice(0, 4);
 
-const categoryColors: Record<string, string> = {
-  'Duyuru': '#4a9eed', 'Çıkış': '#22c55e', 'Donanım': '#f97316',
-  'Endüstri': '#9b59b6', 'Bağımsız': '#14b8a6', 'Haftalık': '#e5c46b',
-};
-
-function getBanner(slug: string): string {
-  const g = gmap[slug];
-  if (!g) return '';
-  const sid = g.stores?.steam?.uid;
-  return sid
-    ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${sid}/header.jpg`
-    : g.coverUrl || '';
-}
+const apps = [
+  { href: '/lists',    icon: '📋', label: 'LİSTELER' },
+  { href: '/guides',   icon: '🏆', label: 'REHBERLER' },
+  { href: '/news',     icon: '📰', label: 'HABERLER' },
+  { href: '/schedule', icon: '📺', label: 'KARBON TV' },
+  { href: '/muzik',    icon: '🎵', label: 'MÜZİK' },
+  { href: '/yemek',    icon: '🍜', label: 'YEMEK' },
+  { href: '/mekan',    icon: '📍', label: 'MEKAN' },
+  { href: '/quiz',     icon: '🎮', label: 'QUİZ' },
+];
 ---
 
-<Layout title="Home">
+<Layout title="KARBON OS">
 
-  <!-- Hero -->
-  <section style="padding: 72px 0 80px;">
-    <p style="font-size: 12px; color: #e5c46b; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;">KarbonGameStudios</p>
-    <h1 style="font-size: clamp(32px, 5vw, 56px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.08; margin: 0 0 24px;">
-      <span>Oyunlar için</span><br />
-      <span style="color: #444;">bir bakış açısı.</span>
-    </h1>
-    <p style="font-size: 16px; color: #555; max-width: 520px; line-height: 1.7; margin: 0 0 32px;">
-      1.400+ oyunluk arşiv. Küratörlenmiş listeler. Başarım rehberleri.
-      Bir içerik üreticisinin oyun dünyasına bakışı.
-    </p>
-    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-      <a href="/lists" style="background: #e5c46b; color: #0a0a0a; padding: 12px 24px; font-size: 14px; font-weight: 600; font-family: 'JetBrains Mono', monospace; transition: opacity 0.15s; text-decoration: none;"
-        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-        Listeler →
-      </a>
-      <a href="/quiz" style="border: 1px solid #333; color: #666; padding: 12px 24px; font-size: 14px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; text-decoration: none;"
-        onmouseover="this.style.borderColor='#666';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#333';this.style.color='#666'">
-        Quiz Oyna
-      </a>
-    </div>
-  </section>
+  <!-- Desktop background pattern -->
+  <div style="position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 50%, #0a0a2a 0%, #050508 70%); pointer-events: none; z-index: -1;"></div>
 
-  <!-- Featured Lists -->
-  <section style="margin-bottom: 72px;">
-    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px;">
-      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;">Öne Çıkan Listeler</p>
-      <a href="/lists" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s; text-decoration: none;"
-        onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">tümü →</a>
+  <!-- Desktop grid -->
+  <div style="min-height: calc(100vh - 200px); padding-bottom: 40px;">
+
+    <!-- System bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; padding: 6px 0; border-bottom: 1px solid #1e1e2e;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: 'VT323', monospace; font-size: 20px; color: #e5c46b; letter-spacing: 0.1em;">KARBON OS</span>
+        <span style="font-family: 'VT323', monospace; font-size: 14px; color: #3a3a5a;">v2026.07</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <span id="osDate" style="font-family: 'VT323', monospace; font-size: 16px; color: #555566;"></span>
+        <span id="osClock" style="font-family: 'VT323', monospace; font-size: 18px; color: #888899;"></span>
+      </div>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      {lists.map(list => (
-        <a href={`/lists/${list.slug}`}
-          style="display: block; background: #111; border: 1px solid #1a1a1a; padding: 20px 22px; transition: border-color 0.15s;"
-          onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1a1a1a'">
-          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
-            <h3 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">{list.title}</h3>
-            <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace; flex-shrink: 0;">{list.games.length} oyun</span>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: start;">
+
+      <!-- LEFT: App icons + about window -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+        <!-- About window -->
+        <div class="px-window">
+          <div class="px-titlebar">
+            <span class="px-title">📁 HAKKINDA.TXT</span>
+            <div class="px-btns">
+              <span class="px-btn">─</span>
+              <span class="px-btn">□</span>
+              <span class="px-btn">×</span>
+            </div>
           </div>
-          <p style="font-size: 12px; color: #555; margin: 0 0 12px; line-height: 1.5;">{list.description}</p>
-          <div style="display: flex; gap: 3px; flex-wrap: wrap;">
-            {list.games.map((item: any) => {
-              const g = gmap[item.slug];
-              const cover = g?.coverUrl;
-              return cover ? (
-                <div style="width: 48px; height: 48px; overflow: hidden; border: 1px solid #1a1a1a; flex-shrink: 0;">
-                  <img src={cover} alt="" loading="lazy"
-                    style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" />
-                </div>
-              ) : <div style="width: 48px; height: 48px; background: #0d0d0d; border: 1px solid #111; flex-shrink: 0;"></div>;
+          <div style="padding: 16px 18px;">
+            <p style="font-family: 'VT323', monospace; font-size: 17px; color: #e5c46b; margin: 0 0 10px; letter-spacing: 0.04em;">KARBON GAME STUDIOS</p>
+            <p style="font-size: 13px; color: #666; margin: 0 0 10px; line-height: 1.6;">
+              1.400+ oyunluk arşiv. Küratörlenmiş listeler. Başarım rehberleri. Bir içerik üreticisinin oyun dünyasına bakışı.
+            </p>
+            <div style="border-top: 1px solid #1e1e2e; padding-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-family: 'VT323', monospace; font-size: 13px; color: #3a3a5a;">SİSTEM: Karbon OS 2026</span>
+              <span style="font-family: 'VT323', monospace; font-size: 13px; color: #3a3a5a;">DURUM: 7/24 YAYIN</span>
+              <span style="font-family: 'VT323', monospace; font-size: 13px; color: #3a3a5a;">ARŞIV: 1.481 OYUN</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- App icons -->
+        <div class="px-window">
+          <div class="px-titlebar">
+            <span class="px-title">💾 UYGULAMALAR</span>
+            <div class="px-btns">
+              <span class="px-btn">─</span>
+              <span class="px-btn">□</span>
+              <span class="px-btn">×</span>
+            </div>
+          </div>
+          <div style="padding: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+            {apps.map(app => (
+              <a href={app.href} class="app-icon">
+                <div class="icon-box">{app.icon}</div>
+                <span class="icon-label">{app.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- GTA Countdown window -->
+        <div class="px-window" style="border-color: #e5c46b55;">
+          <div class="px-titlebar" style="background: linear-gradient(90deg, #1a0a00, #3a1a00);">
+            <span class="px-title" style="color: #e5c46b;">📺 GTA VI SAYAÇ</span>
+            <div class="px-btns"><span class="px-btn">×</span></div>
+          </div>
+          <div style="padding: 14px 16px; text-align: center;">
+            <p style="font-family: 'VT323', monospace; font-size: 13px; color: #666; margin: 0 0 8px; letter-spacing: 0.06em;">19 KASIM 2026 KONSOL LANSMANINA</p>
+            <div id="gtaPixelCount" style="font-family: 'VT323', monospace; font-size: 32px; color: #e5c46b; line-height: 1; margin-bottom: 4px;">-- GÜN</div>
+            <p style="font-family: 'VT323', monospace; font-size: 12px; color: #3a3a3a; margin: 0;">GTA TARIHI SEZONU DEVAM EDIYOR</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MIDDLE: Lists window -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="px-window">
+          <div class="px-titlebar">
+            <span class="px-title">📋 LİSTELER.EXE</span>
+            <div class="px-btns">
+              <span class="px-btn">─</span>
+              <span class="px-btn">□</span>
+              <span class="px-btn">×</span>
+            </div>
+          </div>
+          <div style="padding: 0;">
+            {lists.map(list => {
+              const slugs = list.games.map((i: any) => i.slug);
+              return (
+                <a href={`/lists/${list.slug}`}
+                  style="display: block; padding: 14px 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
+                  onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
+                  <p style="font-family: 'VT323', monospace; font-size: 16px; color: #c8c8e0; margin: 0 0 4px; letter-spacing: 0.02em;">{list.title}</p>
+                  <p style="font-size: 11px; color: #555566; margin: 0 0 10px; line-height: 1.4;">{list.description}</p>
+                  <div style="display: flex; gap: 2px; flex-wrap: wrap;">
+                    {slugs.slice(0, 16).map((slug: string) => {
+                      const g = gmap[slug];
+                      const cover = g?.coverUrl;
+                      return cover ? (
+                        <div style="width: 28px; height: 28px; overflow: hidden; border: 1px solid #1e1e2e; image-rendering: pixelated;">
+                          <img src={cover} alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; image-rendering: pixelated;" loading="lazy" />
+                        </div>
+                      ) : <div style="width: 28px; height: 28px; background: #0d0d12; border: 1px solid #1e1e2e;"></div>;
+                    })}
+                  </div>
+                </a>
+              );
             })}
+            <a href="/lists" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 14px; color: #3a3a5a; transition: color 0.1s; text-align: center; letter-spacing: 0.06em;"
+              onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#3a3a5a'">
+              [ TÜM LİSTELER → ]
+            </a>
+          </div>
+        </div>
+
+        <!-- Quiz shortcut -->
+        <a href="/quiz" class="px-window" style="text-decoration: none; display: block; transition: border-color 0.15s; border-color: #22c55e44;"
+          onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
+          <div class="px-titlebar" style="background: linear-gradient(90deg, #0a1a0a, #0a2a0a);">
+            <span class="px-title" style="color: #22c55e;">🎮 QUİZ.EXE — OYUNU BİL</span>
+            <div class="px-btns"><span class="px-btn">▶</span></div>
+          </div>
+          <div style="padding: 14px 16px; text-align: center;">
+            <p style="font-family: 'VT323', monospace; font-size: 14px; color: #555566; margin: 0 0 6px; letter-spacing: 0.04em;">EKRAN GÖRÜNTÜSÜNDEN OYUNU TAHMİN ET</p>
+            <p style="font-family: 'VT323', monospace; font-size: 24px; color: #22c55e; margin: 0; letter-spacing: 0.06em;">[ BAŞLAT ]</p>
           </div>
         </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- Latest News -->
-  <section style="margin-bottom: 72px;">
-    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px;">
-      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;">Son Haberler</p>
-      <a href="/news" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s; text-decoration: none;"
-        onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">tümü →</a>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      {latestNews.map(article => {
-        const color = categoryColors[article.data.category] || '#666';
-        const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
-        return (
-          <a href={`/news/${article.id}`}
-            style="display: grid; grid-template-columns: auto 1fr; gap: 0; background: #111; border: 1px solid #1a1a1a; transition: border-color 0.15s;"
-            onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1a1a1a'">
-            {article.data.image && (
-              <div style="width: 120px; overflow: hidden; flex-shrink: 0;">
-                <img src={article.data.image} alt="" loading="lazy"
-                  style="width: 120px; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.8;" />
-              </div>
-            )}
-            <div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 6px;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style={`font-size: 9px; border: 1px solid ${color}44; color: ${color}; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;`}>
-                  {article.data.category}
-                </span>
-                <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{dateStr}</span>
-              </div>
-              <p style="font-size: 14px; font-weight: 500; margin: 0; line-height: 1.35; color: #ccc;">{article.data.title}</p>
-            </div>
-          </a>
-        );
-      })}
-    </div>
-  </section>
-
-  <!-- Quick links row -->
-  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a; margin-bottom: 72px;">
-    {[
-      { href: '/guides', label: 'Rehberler', sub: '%100 tamamlama için', icon: '🏆' },
-      { href: '/schedule', label: 'Yayın Akışı', sub: 'Bu hafta ne yayınlanıyor', icon: '📅' },
-      { href: '/quiz', label: 'Quiz', sub: 'Ekran görüntüsünden tahmin et', icon: '🎮' },
-    ].map(item => (
-      <a href={item.href}
-        style="padding: 28px 24px; background: #111; display: flex; flex-direction: column; gap: 8px; transition: background 0.15s; text-decoration: none;"
-        onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
-        <span style="font-size: 20px;">{item.icon}</span>
-        <h3 style="font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">{item.label}</h3>
-        <p style="font-size: 13px; color: #555; margin: 0;">{item.sub}</p>
-      </a>
-    ))}
-  </section>
-
-  <!-- GTA 6 countdown -->
-  <section style="border: 1px solid #2a2200; padding: 28px 32px; background: #0d0b00; margin-bottom: 48px; position: relative; overflow: hidden;">
-    <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, #e5c46b44, #e5c46b, #e5c46b44);"></div>
-    <p style="font-size: 11px; color: #e5c46b; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px; font-family: 'JetBrains Mono', monospace;">Rockstar Saati</p>
-    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; margin-bottom: 16px;">
-      <div>
-        <h2 style="font-size: 22px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.02em;">GTA 6 Konsol Lansmanı</h2>
-        <p style="font-size: 13px; color: #666; margin: 0; font-family: 'JetBrains Mono', monospace;">19 Kasım 2026</p>
       </div>
-      <!-- Countdown -->
-      <div id="gta6countdown" style="display: flex; gap: 16px; font-family: 'JetBrains Mono', monospace;">
-        {['gün', 'saat', 'dak', 'sn'].map(unit => (
-          <div style="text-align: center; min-width: 48px;">
-            <div id={`cd-${unit}`} style="font-size: 28px; font-weight: 600; color: #e5c46b; line-height: 1;">--</div>
-            <div style="font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;">{unit}</div>
+
+      <!-- RIGHT: News window -->
+      <div class="px-window">
+        <div class="px-titlebar">
+          <span class="px-title">📰 HABERLER.LOG</span>
+          <div class="px-btns">
+            <span class="px-btn">─</span>
+            <span class="px-btn">□</span>
+            <span class="px-btn">×</span>
           </div>
-        ))}
+        </div>
+        <div>
+          {latestNews.map(article => {
+            const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+            return (
+              <a href={`/news/${article.id}`}
+                style="display: block; padding: 12px 14px; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
+                onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
+                {article.data.image && (
+                  <div style="width: 100%; height: 60px; overflow: hidden; margin-bottom: 8px; border: 1px solid #1e1e2e; image-rendering: pixelated;">
+                    <img src={article.data.image} alt="" loading="lazy"
+                      style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.75; image-rendering: auto;" />
+                  </div>
+                )}
+                <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+                  <span style="font-family: 'VT323', monospace; font-size: 11px; color: #3a3a5a; letter-spacing: 0.04em;">{dateStr}</span>
+                </div>
+                <p style="font-size: 12px; color: #c8c8e0; margin: 0; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{article.data.title}</p>
+              </a>
+            );
+          })}
+          <a href="/news" style="display: block; padding: 10px 14px; font-family: 'VT323', monospace; font-size: 14px; color: #3a3a5a; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
+            onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#3a3a5a'">
+            [ TÜM HABERLER → ]
+          </a>
+        </div>
       </div>
-    </div>
-    <p style="font-size: 13px; color: #555; margin: 0; line-height: 1.5;">
-      GTA Tarihi sezonu bu güne yönelmiş. PC lansmanı sonrası tam playthrough + Karbon RP.
-    </p>
-  </section>
 
-  <script>
-    const target = new Date('2026-11-19T10:00:00Z').getTime();
-    const els = {
-      'gün': document.getElementById('cd-gün'),
-      'saat': document.getElementById('cd-saat'),
-      'dak': document.getElementById('cd-dak'),
-      'sn': document.getElementById('cd-sn'),
-    };
-    function update() {
-      const now = Date.now();
-      const diff = target - now;
-      if (diff <= 0) {
-        Object.values(els).forEach(el => { if (el) el.textContent = '00'; });
-        return;
-      }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      if (els['gün']) els['gün'].textContent = String(d);
-      if (els['saat']) els['saat'].textContent = String(h).padStart(2,'0');
-      if (els['dak']) els['dak'].textContent = String(m).padStart(2,'0');
-      if (els['sn']) els['sn'].textContent = String(s).padStart(2,'0');
-    }
-    update();
-    setInterval(update, 1000);
-  </script>
+    </div>
+  </div>
 
 </Layout>
+
+<script>
+  // System clock
+  function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const date = now.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const c = document.getElementById('osClock');
+    const d = document.getElementById('osDate');
+    if (c) c.textContent = time;
+    if (d) d.textContent = date;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // GTA countdown
+  const target = new Date('2026-11-19T10:00:00Z').getTime();
+  const days = Math.ceil((target - Date.now()) / 86400000);
+  const el = document.getElementById('gtaPixelCount');
+  if (el) el.textContent = `${Math.max(0, days)} GÜN`;
+</script>
