@@ -89,8 +89,7 @@ const hours = game.playtimeMinutes > 0
       <!-- Referans Bilgi -->
       <div style="border: 1px solid #222; margin-bottom: 24px;">
         {(() => {
-          type Row = { label: string; value: string; color?: string };
-          const rows: Row[] = [];
+          const rows: Array<{label: string; value: string; color?: string}> = [];
 
           const devs = igdb.mainDevs?.length > 0 ? igdb.mainDevs : (game.developer ? [game.developer] : []);
           if (devs.length > 0) rows.push({ label: 'Ana Geliştirici', value: devs.join(', ') });
@@ -165,8 +164,7 @@ const hours = game.playtimeMinutes > 0
       {(() => {
         const q = encodeURIComponent(game.title);
         const steamId = game.stores?.steam?.uid;
-        type LinkItem = { label: string; url: string; color: string };
-        const storeLinks: LinkItem[] = [
+        const storeLinks: Array<{label: string; url: string; color: string}> = [
           ...(steamId ? [
             { label: 'Steam', url: `https://store.steampowered.com/app/${steamId}/`, color: '#4a9eed' },
             { label: 'SteamDB', url: `https://www.steamdb.info/app/${steamId}/`, color: '#e5c46b' },
@@ -176,7 +174,7 @@ const hours = game.playtimeMinutes > 0
           ...(game.stores?.psn?.url ? [{ label: 'PSN', url: game.stores.psn.url, color: '#0072ce' }] : []),
           ...(game.stores?.xbox?.url ? [{ label: 'Xbox', url: game.stores.xbox.url, color: '#107c10' }] : []),
         ];
-        const refLinks: LinkItem[] = [
+        const refLinks: Array<{label: string; url: string; color: string}> = [
           { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${q}`, color: '#e8a838' },
           ...(steamId ? [{ label: 'ProtonDB', url: `https://www.protondb.com/app/${steamId}`, color: '#c06000' }] : []),
           { label: 'IsThereAnyDeal', url: `https://isthereanydeal.com/search/?q=${q}`, color: '#60a050' },
@@ -339,7 +337,7 @@ const hours = game.playtimeMinutes > 0
   <!-- Websites -->
   {igdb.websites && Object.keys(igdb.websites).length > 0 && (
     <div style="margin-bottom: 48px; display: flex; gap: 8px; flex-wrap: wrap;">
-      {Object.entries(igdb.websites as Record<string, string>)
+      {Object.entries(igdb.websites as any)
         .filter(([cat]) => ['official','wikipedia','reddit','discord','youtube','twitch'].includes(cat))
         .map(([cat, url]) => (
           <a href={url} target="_blank" rel="noopener"
