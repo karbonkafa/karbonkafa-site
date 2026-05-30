@@ -3332,7 +3332,8 @@
       "Steam Trading Cards"
     ],
     "igdbId": 1222690,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "thehunter-call-of-the-wild",
@@ -35973,7 +35974,8 @@
       "Family Sharing"
     ],
     "igdbId": 2478970,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "toki-tori",
@@ -39360,7 +39362,8 @@
       "Family Sharing"
     ],
     "igdbId": 2432240,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "sleeping-dogs-definitive-edition",
@@ -48080,7 +48083,8 @@
       "Family Sharing"
     ],
     "igdbId": 1590730,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "hellslave",
@@ -50339,7 +50343,8 @@
       "Family Sharing"
     ],
     "igdbId": 1360980,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "farthest-frontier",
@@ -51382,7 +51387,8 @@
       "Family Sharing"
     ],
     "igdbId": 2896430,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "dune-awakening",
@@ -58281,7 +58287,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "the-bard-s-tale-arpg-remastered-and-resnarkled",
@@ -58469,7 +58476,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "kinect-disneyland-adventures",
@@ -59135,7 +59143,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "bleeding-edge-alpha",
@@ -59182,7 +59191,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "figment-journey-into-the-mind",
