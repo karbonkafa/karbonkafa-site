@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import gamesData from '../../data/games.json';
 
-const games = gamesData as any[];
+const games = (gamesData as any[]).filter(g => !g.dlc);
 
 const statusLabel: Record<string, string> = {
   active: 'Active',
