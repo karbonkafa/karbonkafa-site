@@ -280,9 +280,7 @@ const apps = [
   }
 
   const widget = document.getElementById('worldWidget');
-  if (!widget) return;
 
-  // Render city rows (initially without weather)
   function renderCities(weatherData: Record<string, {temp: number, code: number}>) {
     if (!widget) return;
     widget.innerHTML = CITIES.map(city => {
