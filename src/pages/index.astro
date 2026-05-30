@@ -111,17 +111,15 @@ const apps = [
         </div>
       </div>
 
-      <!-- About -->
+      <!-- World Clock + Weather -->
       <div class="px-window" style="margin-bottom: 12px;">
-        <div class="px-titlebar">
-          <span class="px-title">📁 SİSTEM BİLGİSİ</span>
-          <div class="px-btns"><span class="px-btn">×</span></div>
+        <div class="px-titlebar" style="border-left-color: #06b6d4;">
+          <span class="px-title" style="color: #06b6d4;">🌍 DÜNYA / HAVA / SAAT</span>
+          <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">×</span></div>
         </div>
-        <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 5px;">
-          <span style="font-family: 'VT323', monospace; font-size: 16px; color: #e5c46b; letter-spacing: 0.04em;">KARBON GAME STUDIOS</span>
-          <span style="font-family: 'VT323', monospace; font-size: 13px; color: #333344;">ARŞIV: 1.481 OYUN</span>
-          <span style="font-family: 'VT323', monospace; font-size: 13px; color: #333344;">DURUM: 7/24 YAYIN</span>
-          <span style="font-family: 'VT323', monospace; font-size: 13px; color: #333344;">PLATFORM: KARBON OS</span>
+        <div id="worldWidget" style="display: flex; flex-direction: column;">
+          <!-- Cities injected by JS -->
+          <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 12px; color: #2a2a3a; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
         </div>
       </div>
 
@@ -235,6 +233,7 @@ const apps = [
 </style>
 
 <script>
+  // System clock
   function updateClock() {
     const now = new Date();
     const c = document.getElementById('osClock');
@@ -245,8 +244,95 @@ const apps = [
   updateClock();
   setInterval(updateClock, 1000);
 
+  // GTA countdown
   const target = new Date('2026-11-19T10:00:00Z').getTime();
   const days = Math.ceil((target - Date.now()) / 86400000);
-  const el = document.getElementById('gtaPixelCount');
-  if (el) el.textContent = `${Math.max(0, days)} GÜN`;
+  const gtaEl = document.getElementById('gtaPixelCount');
+  if (gtaEl) gtaEl.textContent = `${Math.max(0, days)} GÜN`;
+
+  // World cities config
+  const CITIES = [
+    { name: 'İSTANBUL', tz: 'Europe/Istanbul',   lat: 41.01,  lon: 28.98,  flag: '🇹🇷' },
+    { name: 'TOKYO',    tz: 'Asia/Tokyo',          lat: 35.68,  lon: 139.69, flag: '🇯🇵' },
+    { name: 'NEW YORK', tz: 'America/New_York',    lat: 40.71,  lon: -74.01, flag: '🇺🇸' },
+    { name: 'LONDRA',   tz: 'Europe/London',       lat: 51.51,  lon: -0.13,  flag: '🇬🇧' },
+    { name: 'SEUL',     tz: 'Asia/Seoul',          lat: 37.57,  lon: 126.98, flag: '🇰🇷' },
+    { name: 'MOSKOVA',  tz: 'Europe/Moscow',       lat: 55.76,  lon: 37.62,  flag: '🇷🇺' },
+    { name: 'L.A.',     tz: 'America/Los_Angeles', lat: 34.05,  lon: -118.24,flag: '🇺🇸' },
+  ];
+
+  // WMO code → pixel art icon + label
+  function getWeather(code: number) {
+    if (code === 0)              return { icon: '☀', color: '#f7e700', label: 'AÇIK' };
+    if (code <= 3)               return { icon: '⛅', color: '#aaa', label: 'PARÇALI' };
+    if (code <= 48)              return { icon: '🌫', color: '#888', label: 'SİSLİ' };
+    if (code <= 67)              return { icon: '🌧', color: '#3b82f6', label: 'YAĞMUR' };
+    if (code <= 77)              return { icon: '❄', color: '#bfdbfe', label: 'KAR' };
+    if (code <= 82)              return { icon: '🌦', color: '#60a5fa', label: 'SAĞANAK' };
+    return                              { icon: '⛈', color: '#f59e0b', label: 'FIRTINA' };
+  }
+
+  // City time formatter
+  function cityTime(tz: string) {
+    return new Intl.DateTimeFormat('tr-TR', {
+      hour: '2-digit', minute: '2-digit', timeZone: tz
+    }).format(new Date());
+  }
+
+  const widget = document.getElementById('worldWidget');
+  if (!widget) return;
+
+  // Render city rows (initially without weather)
+  function renderCities(weatherData: Record<string, {temp: number, code: number}>) {
+    if (!widget) return;
+    widget.innerHTML = CITIES.map(city => {
+      const w = weatherData[city.name];
+      const wx = w ? getWeather(w.code) : null;
+      const tempStr = w ? `${Math.round(w.temp)}°` : '---';
+      const timeStr = cityTime(city.tz);
+      return `
+        <div class="city-row" data-tz="${city.tz}"
+          style="display:grid;grid-template-columns:28px 1fr auto auto;gap:6px;align-items:center;padding:7px 12px;border-bottom:1px solid #1e1e2e;">
+          <span style="font-size:16px;line-height:1;text-align:center;">${city.flag}</span>
+          <div>
+            <div style="font-family:'VT323',monospace;font-size:14px;color:#888899;letter-spacing:0.04em;">${city.name}</div>
+            ${wx ? `<div style="font-family:'VT323',monospace;font-size:11px;color:${wx.color};">${wx.icon} ${wx.label}</div>` : ''}
+          </div>
+          <div style="font-family:'VT323',monospace;font-size:17px;color:#c8c8e0;text-align:right;white-space:nowrap;" data-city-time="${city.tz}">${timeStr}</div>
+          <div style="font-family:'VT323',monospace;font-size:17px;min-width:36px;text-align:right;white-space:nowrap;color:${wx ? getWeather(w!.code).color : '#333344'};">${tempStr}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Initial render without weather
+  renderCities({});
+
+  // Live clock update for city times
+  setInterval(() => {
+    document.querySelectorAll('[data-city-time]').forEach(el => {
+      const tz = (el as HTMLElement).dataset.cityTime!;
+      el.textContent = cityTime(tz);
+    });
+  }, 1000);
+
+  // Fetch weather for all cities
+  async function fetchWeather() {
+    const weatherData: Record<string, {temp: number, code: number}> = {};
+    await Promise.all(CITIES.map(async city => {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,weathercode&timezone=auto&forecast_days=1`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        weatherData[city.name] = {
+          temp: data.current.temperature_2m,
+          code: data.current.weathercode,
+        };
+      } catch {}
+    }));
+    renderCities(weatherData);
+  }
+
+  fetchWeather();
 </script>
