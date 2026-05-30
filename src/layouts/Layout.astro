@@ -8,6 +8,18 @@ interface Props {
 }
 
 const { title, description = 'KarbonGameStudios — game guides, news and content archive' } = Astro.props;
+
+const apps = [
+  { href: '/lists',    icon: '📋', label: 'LİSTELER' },
+  { href: '/guides',   icon: '🏆', label: 'REHBERLER' },
+  { href: '/news',     icon: '📰', label: 'HABERLER' },
+  { href: '/schedule', icon: '📺', label: 'KARBON TV' },
+  { href: '/muzik',    icon: '🎵', label: 'MÜZİK' },
+  { href: '/yemek',    icon: '🍜', label: 'YEMEK' },
+  { href: '/mekan',    icon: '📍', label: 'MEKAN' },
+  { href: '/quiz',     icon: '🎮', label: 'QUİZ' },
+  { href: '/arcade',   icon: '🕹', label: 'ARCADE' },
+];
 ---
 
 <!doctype html>
@@ -24,10 +36,91 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
   </head>
   <body style="background:#0a0a0a; color:#e5e5e5; margin:0; padding-bottom: 72px;">
 
+    <!-- Fixed background gradient -->
+    <div style="position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 50%, #0a0a1a 0%, #050508 70%); pointer-events: none; z-index: -1;"></div>
+
     <!-- Hidden lang toggle -->
     <button id="langToggle" style="display:none;">EN</button>
 
     <main style="max-width: 960px; margin: 0 auto; padding: 40px 24px;">
+
+      <!-- System bar -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 6px 0; border-bottom: 1px solid #1e1e2e;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/" style="font-family: 'VT323', monospace; font-size: 22px; color: #e5c46b; letter-spacing: 0.1em; text-decoration: none;">KARBON OS</a>
+          <span style="font-family: 'VT323', monospace; font-size: 14px; color: #333344; letter-spacing: 0.06em;">ALPHA VERSION</span>
+        </div>
+      </div>
+
+      <!-- Radio + System Info -->
+      <div class="layout-sys-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+
+        <!-- Radio -->
+        <div class="px-window" style="border-color: #3b82f644;">
+          <div class="px-titlebar" style="border-left-color: #3b82f6;">
+            <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE</span>
+            <div class="px-btns">
+              <span class="px-btn" id="radio-close" style="cursor:pointer;">×</span>
+            </div>
+          </div>
+          <div id="radio-body" style="padding: 10px 14px; display: flex; align-items: center; gap: 14px;">
+            <button id="radio-play"
+              style="font-family:'VT323',monospace;font-size:20px;background:#0d0d12;border:2px solid #3b82f6;color:#3b82f6;padding:5px 16px;cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;flex-shrink:0;"
+              onmouseover="this.style.background='#0a1020'" onmouseout="this.style.background='#0d0d12'">
+              ▶ BAŞLAT
+            </button>
+            <div id="radio-status" style="display:flex;align-items:center;gap:6px;flex:1;">
+              <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
+              <span id="radio-label" style="font-family:'VT323',monospace;font-size:15px;color:#555566;letter-spacing:0.04em;">HAZIR</span>
+            </div>
+            <input id="radio-vol" type="range" min="0" max="100" value="70"
+              style="width:70px;accent-color:#3b82f6;flex-shrink:0;" />
+          </div>
+        </div>
+
+        <!-- System Info -->
+        <div class="px-window">
+          <div class="px-titlebar">
+            <span class="px-title">🖥 SİSTEM</span>
+            <div class="px-btns"><span class="px-btn">─</span></div>
+          </div>
+          <div style="padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span id="sysDate2" style="font-family:'VT323',monospace;font-size:14px;color:#555566;"></span>
+              <span id="sysClock2" style="font-family:'VT323',monospace;font-size:22px;color:#aaaacc;"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <a id="sysLogin" href="/auth/login" style="display:none;font-family:'VT323',monospace;font-size:16px;color:#888899;border:1px solid #1e1e2e;padding:4px 10px;text-decoration:none;transition:all 0.1s;"
+                onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#888899';this.style.borderColor='#1e1e2e'">
+                👤 GİRİŞ
+              </a>
+              <span id="sysUser" style="display:none;font-family:'VT323',monospace;font-size:15px;color:#aaaacc;"></span>
+            </div>
+            <button id="langToggle2"
+              style="font-family:'VT323',monospace;font-size:16px;background:#0d0d12;border:1px solid #e5c46b44;color:#e5c46b88;padding:4px 10px;cursor:pointer;transition:all 0.1s;"
+              onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b88';this.style.borderColor='#e5c46b44'">
+              EN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apps bar -->
+      <div class="px-window" style="margin-bottom: 20px;">
+        <div class="px-titlebar">
+          <span class="px-title">💾 UYGULAMALAR</span>
+          <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+        </div>
+        <div style="padding: 8px 12px; display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto;">
+          {apps.map(app => (
+            <a href={app.href} class="app-icon" style="flex: 1; min-width: 64px;">
+              <div class="icon-box" style="width: 44px; height: 44px; font-size: 22px;">{app.icon}</div>
+              <span class="icon-label">{app.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
       <slot />
     </main>
 
@@ -42,17 +135,7 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
 
       <!-- App icons -->
       <div style="display:flex;align-items:stretch;overflow-x:auto;flex:1;min-width:0;">
-        {[
-          { href:'/lists',    icon:'📋' },
-          { href:'/guides',   icon:'🏆' },
-          { href:'/news',     icon:'📰' },
-          { href:'/schedule', icon:'📺' },
-          { href:'/muzik',    icon:'🎵' },
-          { href:'/yemek',    icon:'🍜' },
-          { href:'/mekan',    icon:'📍' },
-          { href:'/quiz',     icon:'🎮' },
-          { href:'/arcade',   icon:'🕹' },
-        ].map(app => (
+        {apps.map(app => (
           <a href={app.href}
             style="display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:16px;border-right:1px solid #1e1e2e;text-decoration:none;transition:background 0.1s;flex-shrink:0;"
             onmouseover="this.style.background='#0d0d12'" onmouseout="this.style.background='none'">
@@ -61,7 +144,7 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
         ))}
       </div>
 
-      <!-- Mini radio -->
+      <!-- Taskbar radio (mirrors panel) -->
       <div style="display:flex;align-items:center;gap:8px;padding:0 12px;border-left:1px solid #1e1e2e;flex-shrink:0;">
         <button id="taskbarRadioBtn"
           style="font-family:'VT323',monospace;font-size:16px;background:#0d0d12;border:1px solid #1e1e2e;color:#3b82f6;padding:3px 10px;cursor:pointer;transition:all 0.1s;"
@@ -91,6 +174,12 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
   </body>
 </html>
 
+<style>
+  @media (max-width: 600px) {
+    .layout-sys-row { grid-template-columns: 1fr !important; }
+  }
+</style>
+
 <script define:vars={{ translations: t }}>
   const btn = document.getElementById('langToggle');
   const html = document.getElementById('html-root');
@@ -101,27 +190,21 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     localStorage.setItem('lang', l);
     html.setAttribute('lang', l);
     btn.textContent = l === 'tr' ? 'EN' : 'TR';
+    const btn2 = document.getElementById('langToggle2');
+    if (btn2) btn2.textContent = l === 'tr' ? 'EN' : 'TR';
     const dict = translations[l];
-
-    // data-i18n key-based
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (key && dict[key]) el.textContent = dict[key];
     });
-
-    // data-i18n-tr / data-i18n-en direct text pairs
     document.querySelectorAll('[data-i18n-tr]').forEach(el => {
       const text = el.getAttribute(`data-i18n-${l}`);
       if (text) el.textContent = text;
     });
-
-    // placeholder translations
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
       const key = el.getAttribute('data-i18n-placeholder');
       if (key && dict[key]) el.placeholder = dict[key];
     });
-
-    // option translations
     document.querySelectorAll('option[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (key && dict[key]) el.textContent = dict[key];
@@ -129,10 +212,8 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
   }
 
   applyLang(lang);
-
-  btn.addEventListener('click', () => {
-    applyLang(lang === 'tr' ? 'en' : 'tr');
-  });
+  btn.addEventListener('click', () => applyLang(lang === 'tr' ? 'en' : 'tr'));
+  document.getElementById('langToggle2')?.addEventListener('click', () => btn.click());
 </script>
 
 <script>
@@ -141,17 +222,35 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
-  // Taskbar auth
+
+  // System clock
+  function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const date = now.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const c = document.getElementById('sysClock2'); if (c) c.textContent = time;
+    const d = document.getElementById('sysDate2'); if (d) d.textContent = date;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Auth — shared for taskbar + system panel
   sb.auth.getUser().then(async ({ data: { user } }) => {
     const loginEl = document.getElementById('taskbarLogin') as HTMLAnchorElement;
     const profileEl = document.getElementById('taskbarProfile') as HTMLAnchorElement;
     const avatarEl = document.getElementById('taskbarAvatar');
+    const sysLoginEl = document.getElementById('sysLogin');
+    const sysUserEl = document.getElementById('sysUser');
+
     if (!user) {
       if (loginEl) loginEl.style.display = 'flex';
+      if (sysLoginEl) sysLoginEl.style.display = 'inline-flex';
       return;
     }
+
     const { data: profile } = await sb.from('profiles').select('username,display_name,avatar_url').eq('id', user.id).single();
     if (!profile) return;
+
     if (profileEl) { profileEl.href = `/u/${profile.username}`; profileEl.style.display = 'flex'; }
     if (avatarEl) {
       if (profile.avatar_url) {
@@ -163,53 +262,75 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
         avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
       }
     }
+    if (sysUserEl) {
+      sysUserEl.textContent = '👤 ' + (profile.username || profile.display_name || '').toUpperCase();
+      sysUserEl.style.display = 'inline';
+    }
   });
 
-</script>
-
-<script>
-  // Taskbar radio — shared audio instance
+  // Radio
   const STREAMS = [
     'https://kexp-mp3-128.streamguys1.com/kexp128.mp3',
     'https://ice2.somafm.com/indiepop-128-mp3',
     'https://stream.radioparadise.com/mp3-192',
+    'https://ice4.somafm.com/u80s-256-mp3',
   ];
-  let tbAudio: HTMLAudioElement | null = null;
-  let tbPlaying = false;
-  let tbStreamIdx = 0;
 
-  const tbBtn = document.getElementById('taskbarRadioBtn');
+  let audio: HTMLAudioElement | null = null;
+  let playing = false;
+
+  const playBtn  = document.getElementById('radio-play')!;
+  const dot      = document.getElementById('radio-dot')!;
+  const lbl      = document.getElementById('radio-label')!;
+  const vol      = document.getElementById('radio-vol') as HTMLInputElement;
+  const closeBtn = document.getElementById('radio-close');
+  const tbBtn    = document.getElementById('taskbarRadioBtn') as HTMLButtonElement;
   const tbStatus = document.getElementById('taskbarRadioStatus');
 
-  function tbSetStatus(playing: boolean) {
-    if (!tbBtn || !tbStatus) return;
-    tbPlaying = playing;
-    tbBtn.textContent = playing ? '🎧 ■' : '🎧 ▶';
-    tbBtn.style.color = playing ? '#22c55e' : '#3b82f6';
-    if (tbStatus) { tbStatus.style.display = playing ? 'inline' : 'none'; tbStatus.style.color = '#22c55e'; }
+  function setStatus(state: 'playing'|'loading'|'stopped'|'error') {
+    const map = {
+      playing: { color:'#22c55e', text:'YAYIN — CANLI', btn:'■ DURDUR' },
+      loading: { color:'#f59e0b', text:'BAĞLANIYOR...', btn:'...' },
+      stopped: { color:'#333344', text:'HAZIR',          btn:'▶ BAŞLAT' },
+      error:   { color:'#ef4444', text:'HATA — YENİDEN DENE', btn:'▶ BAŞLAT' },
+    };
+    const s = map[state];
+    dot.style.background = s.color;
+    lbl.style.color = s.color;
+    lbl.textContent = s.text;
+    playBtn.textContent = s.btn;
+    const isPlaying = state === 'playing';
+    dot.style.animation = isPlaying ? 'pulse 2s infinite' : '';
+    if (tbBtn) { tbBtn.textContent = isPlaying ? '🎧 ■' : '🎧 ▶'; tbBtn.style.color = isPlaying ? '#22c55e' : '#3b82f6'; }
+    if (tbStatus) tbStatus.style.display = isPlaying ? 'inline' : 'none';
   }
 
-  function tbTryStream(idx: number) {
-    if (idx >= STREAMS.length) { tbSetStatus(false); return; }
-    if (tbAudio) { tbAudio.pause(); }
-    tbAudio = new Audio(STREAMS[idx]);
-    tbAudio.volume = 0.7;
-    tbAudio.play().then(() => tbSetStatus(true)).catch(() => tbTryStream(idx + 1));
-    tbAudio.onerror = () => tbTryStream(idx + 1);
+  function tryStream(idx: number) {
+    if (idx >= STREAMS.length) { setStatus('error'); playing = false; return; }
+    if (audio) { audio.pause(); audio.src = ''; }
+    audio = new Audio();
+    audio.crossOrigin = 'anonymous';
+    audio.volume = Number(vol.value) / 100;
+    audio.src = STREAMS[idx];
+    setStatus('loading');
+    audio.play().then(() => { setStatus('playing'); playing = true; }).catch(() => tryStream(idx + 1));
+    audio.onerror = () => tryStream(idx + 1);
   }
 
-  tbBtn?.addEventListener('click', () => {
-    if (tbPlaying) { tbAudio?.pause(); tbSetStatus(false); }
-    else tbTryStream(0);
+  playBtn?.addEventListener('click', () => {
+    if (playing) { audio?.pause(); playing = false; setStatus('stopped'); }
+    else tryStream(0);
   });
 
-  // Sync with homepage radio if it exists
-  document.addEventListener('DOMContentLoaded', () => {
-    const homePlayBtn = document.getElementById('radio-play');
-    if (homePlayBtn) {
-      homePlayBtn.addEventListener('click', () => {
-        if (tbPlaying) { tbAudio?.pause(); tbSetStatus(false); }
-      });
-    }
+  vol?.addEventListener('input', () => { if (audio) audio.volume = Number(vol.value) / 100; });
+
+  closeBtn?.addEventListener('click', () => {
+    audio?.pause(); playing = false;
+    const card = closeBtn.closest('.px-window') as HTMLElement;
+    if (card) card.style.display = 'none';
+    setStatus('stopped');
   });
+
+  // Taskbar button mirrors panel
+  tbBtn?.addEventListener('click', () => playBtn?.click());
 </script>

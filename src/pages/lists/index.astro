@@ -9,38 +9,43 @@ const gmap: Record<string, any> = {};
 for (const g of games) gmap[g.slug] = g;
 ---
 
-<Layout title="Lists" description="KarbonGameStudios curated game lists.">
+<Layout title="Listeler" description="KarbonGameStudios curated game lists.">
 
-  <p class="os-path">C:\\KARBON\\LISTELER</p>
-  <h1 class="os-title">📋 LİSTELER.EXE</h1>
+  <div class="px-window">
+    <div class="px-titlebar" style="border-left-color: #e5c46b;">
+      <span class="px-title" style="color: #e5c46b;">📋 LİSTELER.EXE — {lists.length} LİSTE</span>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+    </div>
 
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-    {lists.map(list => (
-      <a href={`/lists/${list.slug}`}
-        style="display: block; background: #111; border: 1px solid #1a1a1a; padding: 20px 22px; transition: border-color 0.15s;"
-        onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1a1a1a'">
-        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
-          <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">{list.title}</h2>
-          <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
-            <span style="font-size: 10px; color: #e5c46b; font-family: 'JetBrains Mono', monospace;">{list.author}</span>
-            <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace;">{list.games.length} oyun</span>
+    <div style="display: flex; flex-direction: column;">
+      {lists.map(list => (
+        <a href={`/lists/${list.slug}`}
+          style="display: block; padding: 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.15s;"
+          onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
+            <p style="font-family:'VT323',monospace;font-size:22px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
+            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+              <span style="font-family:'VT323',monospace;font-size:15px;color:#e5c46b;">{list.author}</span>
+              <span style="font-family:'VT323',monospace;font-size:15px;color:#444455;">{list.games.length} oyun</span>
+            </div>
           </div>
-        </div>
-        <p style="font-size: 12px; color: #555; margin: 0 0 12px; line-height: 1.5;">{list.description}</p>
-        <div style="display: flex; gap: 3px; flex-wrap: wrap;">
-          {list.games.map((item: any) => {
-            const g = gmap[item.slug];
-            const cover = g?.coverUrl;
-            return cover ? (
-              <div style="width: 48px; height: 48px; overflow: hidden; border: 1px solid #1a1a1a; flex-shrink: 0;" title={g?.title || ''}>
-                <img src={cover} alt="" loading="lazy"
-                  style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" />
-              </div>
-            ) : <div style="width: 48px; height: 48px; background: #0d0d0d; border: 1px solid #111; flex-shrink: 0;"></div>;
-          })}
-        </div>
-      </a>
-    ))}
+          {list.description && (
+            <p style="font-size:12px;color:#666677;margin:0 0 10px;line-height:1.5;">{list.description}</p>
+          )}
+          <div style="display: flex; gap: 2px; flex-wrap: wrap;">
+            {list.games.map((item: any) => {
+              const g = gmap[item.slug];
+              const cover = g?.coverUrl;
+              return cover ? (
+                <div style="width: 44px; height: 44px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
+                  <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
+                </div>
+              ) : <div style="width:44px;height:44px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
+            })}
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
 
 </Layout>

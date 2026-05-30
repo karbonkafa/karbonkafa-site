@@ -22,91 +22,107 @@ const categoryColors: Record<string, string> = {
   'Haftalık': '#e5c46b',
 };
 
-const color = categoryColors[article.data.category] || '#666';
+const color = categoryColors[article.data.category] || '#666677';
 const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <Layout title={article.data.title} description={article.data.excerpt}>
 
-  <p class="os-path">C:\KARBON\HABERLER\<span style="color:#888899;">{article.data.title.slice(0,40)}</span></p>
-
-  <!-- Hero Image -->
-  {article.data.image && (
-    <div style="margin-bottom: 40px; border: 1px solid #1a1a1a; overflow: hidden;">
-      <img src={article.data.image} alt={article.data.title} style="width: 100%; max-height: 420px; object-fit: cover; display: block;" />
-    </div>
-  )}
-
-  <!-- Header -->
-  <div style="margin-bottom: 40px;">
-    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
-      <span style={`font-size: 10px; border: 1px solid ${color}44; color: ${color}; padding: 2px 8px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;`}>
-        {article.data.category}
-      </span>
-      <span style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">{dateStr}</span>
+  <!-- Header window -->
+  <div class="px-window" style="margin-bottom: 12px; overflow: hidden;">
+    <div class="px-titlebar" style={`border-left-color: ${color};`}>
+      <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+        <span class="px-title" style={`color:${color};`}>📰 HABERLER.LOG</span>
+        <span style="font-family:'VT323',monospace;font-size:13px;color:#333344;">›</span>
+        <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title.slice(0, 50).toUpperCase()}</span>
+      </div>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
     </div>
 
-    <h1 style="font-family:'VT323',monospace;font-size:clamp(22px,3vw,36px);color:#fff;letter-spacing:0.02em;margin:0 0 16px;line-height:1.15;">
-      {article.data.title}
-    </h1>
+    <!-- Hero Image -->
+    {article.data.image && (
+      <div style="width: 100%; overflow: hidden; border-bottom: 1px solid #1e1e2e;">
+        <img src={article.data.image} alt={article.data.title} style="width: 100%; max-height: 380px; object-fit: cover; display: block; opacity: 0.9;" />
+      </div>
+    )}
 
-    <p style="font-size: 15px; color: #888; line-height: 1.7; margin: 0 0 20px; border-left: 2px solid #333; padding-left: 16px;">
-      {article.data.excerpt}
-    </p>
-
-    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">Kaynak:</span>
-        {article.data.sourceUrl ? (
-          <a href={article.data.sourceUrl} target="_blank" rel="noopener"
-            style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
-            onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555'">
-            {article.data.source} ↗
-          </a>
-        ) : (
-          <span style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace;">{article.data.source}</span>
-        )}
+    <div style="padding: 20px;">
+      <!-- Meta -->
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
+        <span style={`font-family:'VT323',monospace;font-size:14px;border:1px solid ${color}44;color:${color};padding:2px 10px;text-transform:uppercase;letter-spacing:0.06em;`}>
+          {article.data.category}
+        </span>
+        <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">{dateStr}</span>
       </div>
 
-      <!-- Listen button -->
-      <button id="listenBtn" style="display: flex; align-items: center; gap: 7px; background: none; border: 1px solid #2a2a2a; color: #666; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 12px; cursor: pointer; transition: all 0.15s; letter-spacing: 0.04em;"
-        onmouseover="this.style.borderColor='#444'; this.style.color='#aaa';"
-        onmouseout="if(!this.dataset.active) { this.style.borderColor='#2a2a2a'; this.style.color='#666'; }">
-        <span id="listenIcon">▶</span>
-        <span id="listenLabel">Dinle</span>
-      </button>
-    </div>
+      <!-- Title -->
+      <h1 style="font-family:'VT323',monospace;font-size:clamp(22px,3vw,34px);color:#ffffff;letter-spacing:0.02em;margin:0 0 14px;line-height:1.15;">
+        {article.data.title}
+      </h1>
 
-    <!-- Progress bar -->
-    <div id="listenProgress" style="display: none; margin-top: 12px; height: 2px; background: #1a1a1a; position: relative; overflow: hidden;">
-      <div id="listenBar" style="height: 100%; background: #e5c46b; width: 0%; transition: width 0.3s;"></div>
+      <!-- Excerpt -->
+      <p style="font-size:14px;color:#888899;line-height:1.7;margin:0 0 16px;border-left:2px solid #2a2a3a;padding-left:14px;">
+        {article.data.excerpt}
+      </p>
+
+      <!-- Source + listen -->
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-family:'VT323',monospace;font-size:13px;color:#333344;">KAYNAK:</span>
+          {article.data.sourceUrl ? (
+            <a href={article.data.sourceUrl} target="_blank" rel="noopener"
+              style="font-family:'VT323',monospace;font-size:13px;color:#555566;transition:color 0.15s;"
+              onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555566'">
+              {article.data.source} ↗
+            </a>
+          ) : (
+            <span style="font-family:'VT323',monospace;font-size:13px;color:#555566;">{article.data.source}</span>
+          )}
+        </div>
+
+        <button id="listenBtn"
+          style="display:flex;align-items:center;gap:7px;background:#0d0d12;border:1px solid #2a2a3a;color:#555566;font-family:'VT323',monospace;font-size:14px;padding:5px 12px;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;"
+          onmouseover="this.style.borderColor='#444455';this.style.color='#aaaacc';"
+          onmouseout="if(!this.dataset.active){this.style.borderColor='#2a2a3a';this.style.color='#555566';}">
+          <span id="listenIcon">▶</span>
+          <span id="listenLabel">DİNLE</span>
+        </button>
+      </div>
+
+      <!-- Progress bar -->
+      <div id="listenProgress" style="display:none;margin-top:10px;height:2px;background:#1e1e2e;position:relative;overflow:hidden;">
+        <div id="listenBar" style="height:100%;background:#e5c46b;width:0%;transition:width 0.3s;"></div>
+      </div>
     </div>
   </div>
-
-  <div style="border-top: 1px solid #222; margin-bottom: 40px;"></div>
 
   <!-- Article body -->
-  <div class="prose">
-    <Content />
+  <div class="px-window" style="margin-bottom: 12px;">
+    <div class="px-titlebar">
+      <span class="px-title">📄 İÇERİK</span>
+      <div class="px-btns"><span class="px-btn">─</span></div>
+    </div>
+    <div class="prose px-content">
+      <Content />
+    </div>
   </div>
 
-  <!-- Tags -->
-  {article.data.tags.length > 0 && (
-    <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #222; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
-      <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">etiketler:</span>
-      {article.data.tags.map((tag: string) => (
-        <span style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px;">
-          {tag}
-        </span>
-      ))}
-    </div>
-  )}
-
-  <!-- Back -->
-  <div style="margin-top: 48px;">
-    <a href="/news" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
-      onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
-      ← haberler
+  <!-- Tags + back -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    {article.data.tags.length > 0 && (
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <span style="font-family:'VT323',monospace;font-size:13px;color:#333344;">ETİKETLER:</span>
+        {article.data.tags.map((tag: string) => (
+          <span style="font-family:'VT323',monospace;font-size:13px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;padding:2px 8px;">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+    <a href="/news"
+      style="font-family:'VT323',monospace;font-size:15px;color:#444455;transition:color 0.1s;"
+      onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">
+      ← HABERLER
     </a>
   </div>
 
@@ -119,9 +135,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
   const progress = document.getElementById('listenProgress')!;
   const bar = document.getElementById('listenBar')!;
 
-  if (!('speechSynthesis' in window)) {
-    btn.style.display = 'none';
-  }
+  if (!('speechSynthesis' in window)) btn.style.display = 'none';
 
   const synth = window.speechSynthesis;
   let utterance: SpeechSynthesisUtterance | null = null;
@@ -131,32 +145,23 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
     const title = document.querySelector('h1')?.textContent?.trim() || '';
     const excerpt = document.querySelector('p[style*="border-left"]')?.textContent?.trim() || '';
     const body = document.querySelector('.prose')?.textContent?.trim() || '';
-    // Exclude the "Kaynağı oku →" link text
-    const bodyClean = body.replace(/Kaynağı oku →.*/s, '').trim();
-    return `${title}. ${excerpt}. ${bodyClean}`;
+    return `${title}. ${excerpt}. ${body.replace(/Kaynağı oku →.*/s, '').trim()}`;
   }
 
   function getTurkishVoice(): SpeechSynthesisVoice | null {
-    const voices = synth.getVoices();
-    return voices.find(v => v.lang.startsWith('tr')) || null;
+    return synth.getVoices().find(v => v.lang.startsWith('tr')) || null;
   }
 
   function setPlaying() {
-    icon.textContent = '■';
-    label.textContent = 'Durdur';
-    btn.style.borderColor = '#e5c46b';
-    btn.style.color = '#e5c46b';
-    btn.dataset.active = '1';
-    progress.style.display = 'block';
+    icon.textContent = '■'; label.textContent = 'DURDUR';
+    btn.style.borderColor = '#e5c46b'; btn.style.color = '#e5c46b';
+    btn.dataset.active = '1'; progress.style.display = 'block';
   }
 
   function setIdle() {
-    icon.textContent = '▶';
-    label.textContent = 'Dinle';
-    btn.style.borderColor = '#2a2a2a';
-    btn.style.color = '#666';
-    delete btn.dataset.active;
-    progress.style.display = 'none';
+    icon.textContent = '▶'; label.textContent = 'DİNLE';
+    btn.style.borderColor = '#2a2a3a'; btn.style.color = '#555566';
+    delete btn.dataset.active; progress.style.display = 'none';
     bar.style.width = '0%';
     if (progressInterval) clearInterval(progressInterval);
   }
@@ -164,48 +169,24 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
   function startProgress(duration: number) {
     const start = Date.now();
     progressInterval = setInterval(() => {
-      const elapsed = Date.now() - start;
-      const pct = Math.min((elapsed / (duration * 1000)) * 100, 99);
-      bar.style.width = pct + '%';
+      bar.style.width = Math.min(((Date.now() - start) / (duration * 1000)) * 100, 99) + '%';
     }, 200);
   }
 
   btn.addEventListener('click', () => {
-    if (synth.speaking || synth.pending) {
-      synth.cancel();
-      setIdle();
-      return;
-    }
-
+    if (synth.speaking || synth.pending) { synth.cancel(); setIdle(); return; }
     const text = getReadText();
     utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'tr-TR';
-    utterance.rate = 1.05;
-    utterance.pitch = 1;
-
-    // Voices may not be loaded yet on first call
-    const trySetVoice = () => {
-      const voice = getTurkishVoice();
-      if (voice) utterance!.voice = voice;
-    };
+    utterance.lang = 'tr-TR'; utterance.rate = 1.05; utterance.pitch = 1;
+    const trySetVoice = () => { const v = getTurkishVoice(); if (v) utterance!.voice = v; };
     trySetVoice();
-    if (!utterance.voice) {
-      synth.onvoiceschanged = trySetVoice;
-    }
-
-    // Estimate duration: ~130 Turkish words per minute, ~5 chars per word
+    if (!utterance.voice) synth.onvoiceschanged = trySetVoice;
     const estimatedSecs = (text.length / 5 / 130) * 60;
-
-    utterance.onstart = () => {
-      setPlaying();
-      startProgress(estimatedSecs);
-    };
+    utterance.onstart = () => { setPlaying(); startProgress(estimatedSecs); };
     utterance.onend = () => setIdle();
     utterance.onerror = () => setIdle();
-
     synth.speak(utterance);
   });
 
-  // Stop on page leave
   window.addEventListener('beforeunload', () => synth.cancel());
 </script>
