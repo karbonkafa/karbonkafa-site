@@ -4,6 +4,7 @@ date: 2026-05-30
 category: "Donanım"
 tags: ["steam-deck", "valve", "donanim", "fiyat"]
 source: "Valve Resmi Açıklama"
+sourceUrl: "https://store.steampowered.com/steamdeck"
 excerpt: "Valve, Steam Deck OLED modellerinin fiyatlarını artırdı. 512 GB model 789 dolara, 1 TB model ise 949 dolara çıktı. Valve bileşen ve lojistik maliyetlerini gerekçe gösteriyor."
 ---
 

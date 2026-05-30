@@ -1,0 +1,39 @@
+name: Fetch Gaming News
+
+on:
+  schedule:
+    - cron: '0 7,13,19 * * *'   # 07:00, 13:00, 19:00 UTC
+  workflow_dispatch:              # manual trigger from GitHub UI
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install feedparser requests deep-translator
+
+      - name: Fetch and create news articles
+        run: python3 scripts/fetch-news.py
+
+      - name: Commit new articles
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add src/content/news/ src/data/news-processed.json
+          git diff --staged --quiet && echo "No new articles." || (
+            git commit -m "news: automated fetch [skip ci]" &&
+            git push
+          )

@@ -11,6 +11,7 @@ const news = defineCollection({
     source: z.string(),
     sourceUrl: z.string().url().optional(),
     excerpt: z.string(),
+    image: z.string().url().optional(),
   }),
 });
 
