@@ -1,0 +1,71 @@
+[
+  {
+    "slug": "karbon-en-iyi-10",
+    "title": "Karbon'un En İyileri",
+    "description": "Şimdiye kadar oynadığım ve hâlâ konuşmaya devam ettiğim oyunlar. Sıralama önemli.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "coverGame": "the-witcher-3-wild-hunt",
+    "games": [
+      { "slug": "the-witcher-3-wild-hunt", "note": "Hikaye anlatımının referans noktası. Bloody Baron questi tek başına bir başyapıt." },
+      { "slug": "red-dead-redemption-2", "note": "Bu kadar yavaş bir oyunun bu kadar iyi olması mucize." },
+      { "slug": "elden-ring", "note": "FromSoftware'in açık dünya ile buluşması. Her köşe sürpriz." },
+      { "slug": "cyberpunk-2077", "note": "Kötü çıkışın arkasında gerçekten iyi bir oyun vardı. 2.0 ile neredeyse mükemmel." },
+      { "slug": "baldur-s-gate-iii", "note": "CRPG türünün yeniden doğuşu. Her oynanışta farklı bir oyun." },
+      { "slug": "hollow-knight", "note": "Bağımsız oyunların zirveye çıkabileceğini kanıtladı." },
+      { "slug": "sekiro-shadows-die-twice", "note": "Öğrenmek için zaman harcadım ama hiç pişman olmadım." },
+      { "slug": "disco-elysium", "note": "Bir RPG bu kadar yazılı güçlü olabilir miydi? Olabilirmiş." },
+      { "slug": "hades", "note": "Roguelite türünü masaya yatırıp yeniden kurdu." },
+      { "slug": "god-of-war", "note": "Bir serinin nasıl yeniden icat edileceğinin ders kitabı." }
+    ]
+  },
+  {
+    "slug": "beklenenden-uzun",
+    "title": "Beklenenden Uzun Sürenler",
+    "description": "Bittim sandım bitmedi. Saatleri önceden hesaplamadan girdiğim oyunlar.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "coverGame": "baldur-s-gate-3",
+    "games": [
+      { "slug": "baldur-s-gate-iii", "note": "İlk oynanışım 180 saat sürdü. Hâlâ her şeyi görmedim." },
+      { "slug": "the-witcher-3-wild-hunt", "note": "DLC'lerle birlikte 200+ saat kolay." },
+      { "slug": "red-dead-redemption-2", "note": "Sadece hikayeyi bitirmek 50 saat. Yan görevler ayrı." },
+      { "slug": "pathfinder-kingmaker-enhanced-plus-edition", "note": "Tek oynanış 80+ saat, her seçimde farklı yol." },
+      { "slug": "divinity-original-sin-ii", "note": "Sistemi öğrenmek bile başlı başına bir oyun." }
+    ]
+  },
+  {
+    "slug": "kisa-ama-etkili",
+    "title": "Kısa Ama Etkili",
+    "description": "6 saat ya da daha az. Bitmesi üzücü oldu.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "coverGame": "inside",
+    "games": [
+      { "slug": "inside", "note": "2 saat. Son 20 dakika beynime kazındı." },
+      { "slug": "firewatch", "note": "3 saat. Atmosfer tasarımının mükemmel bir dersi." },
+      { "slug": "limbo", "note": "2 saat. Atmosfer ve bulmaca dengesinin mükemmeli." },
+      { "slug": "kentucky-route-zero", "note": "Her bölüm ayrı bir deneyim." }
+    ]
+  },
+  {
+    "slug": "baslangic-icin",
+    "title": "Gaming'e Başlamak İsteyenler İçin",
+    "description": "Hiç oyun oynamayanlar veya uzun süre ara verenler için. Hoş geldin listesi.",
+    "author": "Karbon",
+    "authorRole": "KarbonGameStudios",
+    "createdAt": "2026-05-30",
+    "coverGame": "stardew-valley",
+    "games": [
+      { "slug": "stardew-valley", "note": "Zaman kavramı yok olur. Kimseyi incitmez." },
+      { "slug": "portal-2", "note": "Oyun mekaniği öğretmenliğinin şaheseri." },
+      { "slug": "the-stanley-parable", "note": "Oyun nedir sorusunu sordurtur." },
+      { "slug": "untitled-goose-game", "note": "Gülmek garantili." },
+      { "slug": "hades", "note": "Her ölüm bir ders, hiç sinir bozucu değil." },
+      { "slug": "celeste", "note": "Zorluk arttıkça tatmin de artar." }
+    ]
+  }
+]
