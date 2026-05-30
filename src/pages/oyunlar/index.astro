@@ -144,6 +144,11 @@ const stats = {
   const countEl = document.getElementById('count')!;
   const noResults = document.getElementById('noResults')!;
 
+  // URL'den q parametresini oku
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlQ = urlParams.get('q');
+  if (urlQ) search.value = urlQ;
+
   function filter() {
     const q = search.value.toLowerCase();
     const status = statusFilter.value;
