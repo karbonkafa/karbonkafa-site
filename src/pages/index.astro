@@ -34,13 +34,9 @@ const apps = [
 
   <!-- System bar -->
   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 6px 0; border-bottom: 1px solid #1e1e2e;">
-    <div style="display: flex; align-items: center; gap: 16px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
       <span style="font-family: 'VT323', monospace; font-size: 22px; color: #e5c46b; letter-spacing: 0.1em;">KARBON OS</span>
-      <span style="font-family: 'VT323', monospace; font-size: 14px; color: #555566;">v2026.07</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 20px;">
-      <span id="osDate" style="font-family: 'VT323', monospace; font-size: 16px; color: #777788;"></span>
-      <span id="osClock" style="font-family: 'VT323', monospace; font-size: 20px; color: #666677;"></span>
+      <span style="font-family: 'VT323', monospace; font-size: 14px; color: #333344; letter-spacing: 0.06em;">ALPHA VERSION</span>
     </div>
   </div>
 
@@ -298,8 +294,6 @@ const apps = [
     const now = new Date();
     const time = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const date = now.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const c = document.getElementById('osClock'); if (c) c.textContent = time;
-    const d = document.getElementById('osDate'); if (d) d.textContent = date;
     const c2 = document.getElementById('sysClock2'); if (c2) c2.textContent = time;
     const d2 = document.getElementById('sysDate2'); if (d2) d2.textContent = date;
   }
