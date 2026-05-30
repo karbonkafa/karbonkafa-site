@@ -3,121 +3,166 @@ export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
 import gamesData from '../../data/games.json';
 
-const games = (gamesData as any[]).filter(g => !g.dlc && !g.external);
-const gameIndex = games.map(g => ({
-  slug: g.slug,
-  title: g.title,
-  cover: g.coverUrl || '',
-  genres: (g.genres || []).slice(0, 2).join(', '),
-}));
+const gameIndex = (gamesData as any[])
+  .filter((g: any) => g.coverUrl && g.title)
+  .map((g: any) => ({
+    slug: g.slug,
+    title: g.title,
+    cover: g.coverUrl,
+    mc: g.metacriticScore || null,
+    year: g.releaseYear || null,
+    dev: Array.isArray(g.developer) ? g.developer[0] : (typeof g.developer === 'string' ? g.developer : null),
+  }));
 ---
 
 <Layout title="Liste Oluştur">
-  <div style="max-width: 720px; margin: 0 auto;">
-    <p class="os-path">C:\KARBON\LISTELER\OLUSTUR</p>
-    <h1 class="os-title">📋 LİSTE OLUŞTUR.EXE</h1>
+
+  <!-- Game index for client-side search -->
+  <script type="application/json" id="__gi" set:text={JSON.stringify(gameIndex)}></script>
+
+  <!-- Auth wall -->
+  <div id="authWall" style="display:none;">
+    <div class="px-window" style="text-align:center;padding:40px 24px;">
+      <div class="px-titlebar">
+        <span class="px-title">🔒 ERİŞİM REDDEDİLDİ</span>
+        <div class="px-btns"><span class="px-btn">×</span></div>
+      </div>
+      <div style="padding:32px 24px;text-align:center;">
+        <p style="font-family:'VT323',monospace;font-size:18px;color:#555566;margin:0 0 20px;letter-spacing:0.04em;">Liste oluşturmak için giriş yapman gerekiyor.</p>
+        <a href="/auth/login" style="font-family:'VT323',monospace;font-size:18px;background:#e5c46b;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">GİRİŞ YAP →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create form -->
+  <div id="createForm" style="display:none;">
+
+    <!-- Title & Description -->
+    <div class="px-window" style="margin-bottom:12px;">
+      <div class="px-titlebar" style="border-left-color:#e5c46b;">
+        <span class="px-title" style="color:#e5c46b;">📋 LİSTE OLUŞTUR.EXE</span>
+        <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+      </div>
+      <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <input id="listTitle" type="text" placeholder="Liste başlığı..."
+          autocomplete="off" maxlength="100"
+          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:10px 12px;font-family:'VT323',monospace;font-size:18px;outline:none;box-sizing:border-box;letter-spacing:0.02em;transition:border-color 0.15s;"
+          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
+        <textarea id="listDesc" placeholder="Açıklama (isteğe bağlı)..." maxlength="500" rows="2"
+          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#aaaacc;padding:10px 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;resize:vertical;transition:border-color 0.15s;"
+          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
+      </div>
     </div>
 
-    <!-- Auth check -->
-    <div id="authWall" style="display: none; background: #111; border: 1px solid #222; padding: 32px; text-align: center; margin-bottom: 32px;">
-      <p style="font-size: 15px; color: #888; margin: 0 0 20px;">Liste oluşturmak için giriş yapman gerekiyor.</p>
-      <a href="/auth/login" style="background: #e5c46b; color: #0a0a0a; padding: 10px 24px; font-size: 13px; font-weight: 600; font-family: 'JetBrains Mono', monospace; text-decoration: none;">Giriş Yap →</a>
-    </div>
-
-    <div id="createForm">
-      <!-- Title -->
-      <div style="margin-bottom: 20px;">
-        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Liste Adı</label>
-        <input id="listTitle" type="text" placeholder="Örn: Düşünmeye Zorlayanlar"
-          style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
-          onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'" />
+    <!-- Game search -->
+    <div class="px-window" style="margin-bottom:12px;">
+      <div class="px-titlebar">
+        <span class="px-title">🎮 OYUN EKLE</span>
+        <span id="gameCount" class="px-title" style="color:#444455;font-size:13px;">0 OYUN</span>
       </div>
-
-      <!-- Description -->
-      <div style="margin-bottom: 32px;">
-        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Açıklama <span style="color:#2a2a2a">(opsiyonel)</span></label>
-        <textarea id="listDesc" placeholder="Bu listeyi neden oluşturdun?"
-          rows="2"
-          style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical; transition: border-color 0.15s;"
-          onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'"></textarea>
-      </div>
-
-      <!-- Game search -->
-      <div style="margin-bottom: 20px;">
-        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Oyun Ekle</label>
-        <div style="position: relative;">
-          <input id="gameSearch" type="text" placeholder="Oyun ara..."
-            style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
-            onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'"
-            autocomplete="off" />
-          <div id="gameResults" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333; border-top: none; z-index: 20; max-height: 260px; overflow-y: auto;"></div>
+      <div style="padding:10px 12px;border-bottom:1px solid #1e1e2e;position:relative;">
+        <input id="gameSearch" type="text" placeholder="Oyun adı yaz..."
+          autocomplete="off"
+          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:8px 12px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
+          onfocus="this.style.borderColor='#3b82f644'" onblur="this.style.borderColor='#1e1e2e'" />
+        <!-- Search results dropdown -->
+        <div id="gameResults"
+          style="display:none;position:absolute;top:calc(100% - 2px);left:12px;right:12px;background:#0d0d12;border:1px solid #1e1e2e;border-top:none;z-index:50;max-height:280px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
         </div>
       </div>
 
-      <!-- Selected games -->
-      <div id="selectedGames" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; min-height: 0;"></div>
+      <!-- Selected games list -->
+      <div id="selectedList" style="display:flex;flex-direction:column;"></div>
 
-      <!-- Save -->
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <button id="saveBtn"
-          style="background: #e5c46b; border: none; color: #0a0a0a; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;"
-          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-          Listeyi Kaydet →
-        </button>
-        <p id="saveStatus" style="font-size: 12px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;"></p>
+      <!-- Empty state -->
+      <div id="emptyState" style="padding:32px 16px;text-align:center;">
+        <p style="font-family:'VT323',monospace;font-size:16px;color:#2a2a3a;letter-spacing:0.06em;margin:0;">HENÜZ OYUN EKLENMEDİ</p>
       </div>
     </div>
 
+    <!-- Actions -->
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button id="saveBtn"
+        style="font-family:'VT323',monospace;font-size:18px;background:#e5c46b;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;transition:opacity 0.15s;"
+        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        LİSTEYİ OLUŞTUR →
+      </button>
+      <span id="saveMsg" style="font-family:'VT323',monospace;font-size:15px;color:#555566;"></span>
+    </div>
+
   </div>
+
 </Layout>
 
-<script define:vars={{ gameIndex }}>
+<script>
   import { createClient } from '@supabase/supabase-js';
-  const supabase = createClient(
+
+  const sb = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
 
-  // Auth check
-  let currentUser = null;
-  let currentProfile = null;
+  // Read game index injected by server
+  const gameIndex: any[] = JSON.parse(
+    (document.getElementById('__gi') as HTMLScriptElement).textContent || '[]'
+  );
 
-  supabase.auth.getUser().then(async ({ data: { user } }) => {
+  let currentUser: any = null;
+
+  // Auth check
+  (async () => {
+    const { data: { user } } = await sb.auth.getUser();
     if (!user) {
-      document.getElementById('authWall').style.display = 'block';
-      document.getElementById('createForm').style.display = 'none';
+      (document.getElementById('authWall') as HTMLElement).style.display = 'block';
       return;
     }
     currentUser = user;
-    const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-    currentProfile = profile;
-  });
+    (document.getElementById('createForm') as HTMLElement).style.display = 'block';
+  })();
 
-  // Game search
-  const selectedSlugs = new Set();
-  const selectedItems = []; // {slug, note}
+  // State
+  const selectedSlugs = new Set<string>();
+  const selectedItems: { slug: string; note: string }[] = [];
 
-  const searchInput = document.getElementById('gameSearch');
-  const resultsEl = document.getElementById('gameResults');
-  const selectedEl = document.getElementById('selectedGames');
+  const searchInput = document.getElementById('gameSearch') as HTMLInputElement;
+  const resultsEl = document.getElementById('gameResults') as HTMLElement;
+  const selectedListEl = document.getElementById('selectedList') as HTMLElement;
+  const emptyEl = document.getElementById('emptyState') as HTMLElement;
+  const countEl = document.getElementById('gameCount') as HTMLElement;
+  const saveMsg = document.getElementById('saveMsg') as HTMLElement;
 
-  function normalize(s) {
+  function normalize(s: string) {
     return s.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
   }
 
+  function mcColor(mc: number | null): string {
+    if (!mc) return '#444455';
+    return mc >= 75 ? '#22c55e' : mc >= 50 ? '#eab308' : '#ef4444';
+  }
+
+  // ── Search ────────────────────────────────────────────────
   searchInput.addEventListener('input', () => {
     const q = normalize(searchInput.value);
     if (q.length < 2) { resultsEl.style.display = 'none'; return; }
-    const matches = gameIndex.filter(g => normalize(g.title).includes(q) && !selectedSlugs.has(g.slug)).slice(0, 8);
+    const matches = gameIndex
+      .filter(g => normalize(g.title).includes(q) && !selectedSlugs.has(g.slug))
+      .slice(0, 8);
     if (!matches.length) { resultsEl.style.display = 'none'; return; }
+
     resultsEl.innerHTML = matches.map(g => `
-      <div class="game-result" data-slug="${g.slug}"
-        style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid #1a1a1a;transition:background 0.1s;"
-        onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='none'">
-        ${g.cover ? `<img src="${g.cover}" style="width:32px;height:32px;object-fit:cover;object-position:top;flex-shrink:0;border:1px solid #222;" loading="lazy"/>` : '<div style="width:32px;height:32px;background:#0d0d0d;border:1px solid #1a1a1a;flex-shrink:0;"></div>'}
-        <div>
-          <p style="font-size:13px;margin:0;color:#e5e5e5;">${g.title}</p>
-          ${g.genres ? `<p style="font-size:10px;margin:2px 0 0;color:#555;font-family:'JetBrains Mono',monospace;">${g.genres}</p>` : ''}
+      <div class="gr" data-slug="${g.slug}"
+        style="display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:8px 12px;cursor:pointer;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
+        onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
+        <div style="width:52px;height:52px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
+          ${g.cover ? `<img src="${g.cover}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>` : '<div style="width:100%;height:100%;background:#0d0d12;"></div>'}
+        </div>
+        <div style="min-width:0;">
+          <p style="font-family:'VT323',monospace;font-size:17px;color:#e5e5e5;margin:0;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${g.title}</p>
+          <p style="font-family:'VT323',monospace;font-size:13px;color:#555566;margin:2px 0 0;">${g.dev || ''}${g.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          ${g.mc ? `<span style="font-family:'VT323',monospace;font-size:16px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
+          <span style="font-family:'VT323',monospace;font-size:20px;color:#3b82f6;padding:0 4px;">+</span>
         </div>
       </div>
     `).join('');
@@ -125,87 +170,99 @@ const gameIndex = games.map(g => ({
   });
 
   resultsEl.addEventListener('click', e => {
-    const row = e.target.closest('.game-result');
+    const row = (e.target as HTMLElement).closest('.gr') as HTMLElement;
     if (!row) return;
-    const slug = row.dataset.slug;
-    const game = gameIndex.find(g => g.slug === slug);
-    if (!game || selectedSlugs.has(slug)) return;
-    selectedSlugs.add(slug);
-    selectedItems.push({ slug, note: '' });
-    renderSelected();
+    addGame(row.dataset.slug!);
     searchInput.value = '';
     resultsEl.style.display = 'none';
+    searchInput.focus();
   });
 
   document.addEventListener('click', e => {
-    if (!resultsEl.contains(e.target) && e.target !== searchInput) resultsEl.style.display = 'none';
+    if (!resultsEl.contains(e.target as Node) && e.target !== searchInput)
+      resultsEl.style.display = 'none';
   });
 
+  // ── Add / Remove game ─────────────────────────────────────
+  function addGame(slug: string) {
+    if (selectedSlugs.has(slug)) return;
+    selectedSlugs.add(slug);
+    selectedItems.push({ slug, note: '' });
+    renderSelected();
+  }
+
+  function removeGame(slug: string) {
+    const idx = selectedItems.findIndex(i => i.slug === slug);
+    if (idx !== -1) selectedItems.splice(idx, 1);
+    selectedSlugs.delete(slug);
+    renderSelected();
+  }
+
+  function updateNote(idx: number, note: string) {
+    if (selectedItems[idx]) selectedItems[idx].note = note;
+  }
+
+  // Expose to inline onclick handlers
+  (window as any).__rmGame = removeGame;
+  (window as any).__note = updateNote;
+
   function renderSelected() {
-    if (selectedItems.length === 0) {
-      selectedEl.style.minHeight = '0';
-      selectedEl.innerHTML = '';
-      return;
-    }
-    selectedEl.innerHTML = selectedItems.map((item, i) => {
-      const game = gameIndex.find(g => g.slug === item.slug);
+    countEl.textContent = selectedItems.length + ' OYUN';
+    emptyEl.style.display = selectedItems.length === 0 ? 'block' : 'none';
+
+    selectedListEl.innerHTML = selectedItems.map((item, i) => {
+      const g = gameIndex.find(x => x.slug === item.slug);
       return `
-        <div style="display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;background:#111;border:1px solid #1a1a1a;padding:10px 14px;">
-          ${game?.cover ? `<img src="${game.cover}" style="width:36px;height:36px;object-fit:cover;object-position:top;border:1px solid #222;" loading="lazy"/>` : '<div style="width:36px;height:36px;background:#0d0d0d;border:1px solid #1a1a1a;"></div>'}
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <span style="font-size:13px;color:#e5e5e5;">${game?.title || item.slug}</span>
-            <input type="text" placeholder="Not ekle (opsiyonel)..." value="${item.note}"
-              data-idx="${i}"
-              style="background:#0a0a0a;border:1px solid #222;color:#888;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;"
-              oninput="window.__updateNote(${i}, this.value)" />
+        <div style="display:grid;grid-template-columns:32px 64px 1fr auto;gap:12px;align-items:start;padding:12px 14px;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
+          onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
+          <span style="font-family:'VT323',monospace;font-size:18px;color:#2a2a3a;padding-top:4px;text-align:right;">${String(i + 1).padStart(2, '0')}</span>
+          <a href="/games/${item.slug}" target="_blank" style="display:block;width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
+            ${g?.cover ? `<img src="${g.cover}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>` : '<div style="width:100%;height:100%;background:#0d0d12;"></div>'}
+          </a>
+          <div style="display:flex;flex-direction:column;gap:6px;padding-top:2px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-family:'VT323',monospace;font-size:18px;color:#e5e5e5;line-height:1.2;">${g?.title || item.slug}</span>
+              ${g?.mc ? `<span style="font-family:'VT323',monospace;font-size:14px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
+            </div>
+            ${g?.dev || g?.year ? `<p style="font-family:'VT323',monospace;font-size:13px;color:#555566;margin:0;">${g.dev || ''}${g?.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>` : ''}
+            <input type="text" placeholder="Not ekle..." value="${item.note.replace(/"/g, '&quot;')}"
+              oninput="window.__note(${i}, this.value)"
+              style="background:#080810;border:1px solid #1e1e2e;color:#888899;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;transition:border-color 0.1s;"
+              onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
           </div>
-          <button onclick="window.__removeGame('${item.slug}')"
-            style="background:none;border:none;color:#444;cursor:pointer;font-size:16px;padding:4px;transition:color 0.15s;"
-            onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#444'">×</button>
+          <button onclick="window.__rmGame('${item.slug}')"
+            style="background:none;border:1px solid #1e1e2e;color:#444455;cursor:pointer;font-family:'VT323',monospace;font-size:16px;padding:4px 8px;margin-top:2px;transition:all 0.1s;"
+            onmouseover="this.style.color='#ef4444';this.style.borderColor='#ef444444'" onmouseout="this.style.color='#444455';this.style.borderColor='#1e1e2e'">×</button>
         </div>
       `;
     }).join('');
   }
 
-  window.__removeGame = (slug) => {
-    const idx = selectedItems.findIndex(i => i.slug === slug);
-    if (idx !== -1) selectedItems.splice(idx, 1);
-    selectedSlugs.delete(slug);
-    renderSelected();
-  };
-
-  window.__updateNote = (idx, val) => {
-    if (selectedItems[idx]) selectedItems[idx].note = val;
-  };
-
-  // Save
-  document.getElementById('saveBtn').addEventListener('click', async () => {
+  // ── Save ─────────────────────────────────────────────────
+  document.getElementById('saveBtn')!.addEventListener('click', async () => {
     if (!currentUser) { window.location.href = '/auth/login'; return; }
-    const title = document.getElementById('listTitle').value.trim();
-    const desc = document.getElementById('listDesc').value.trim();
-    if (!title) {
-      document.getElementById('saveStatus').textContent = 'Liste adı gerekli.';
-      return;
-    }
-    if (selectedItems.length === 0) {
-      document.getElementById('saveStatus').textContent = 'En az 1 oyun ekle.';
-      return;
-    }
 
-    const btn = document.getElementById('saveBtn');
-    btn.textContent = 'Kaydediliyor...';
+    const title = (document.getElementById('listTitle') as HTMLInputElement).value.trim();
+    const desc = (document.getElementById('listDesc') as HTMLTextAreaElement).value.trim();
+
+    if (!title) { saveMsg.textContent = 'Liste başlığı gerekli.'; return; }
+    if (selectedItems.length === 0) { saveMsg.textContent = 'En az 1 oyun ekle.'; return; }
+
+    const btn = document.getElementById('saveBtn') as HTMLButtonElement;
+    btn.textContent = 'KAYDEDİLİYOR...';
     btn.disabled = true;
+    saveMsg.textContent = '';
 
-    const { data: list, error: listErr } = await supabase.from('lists').insert({
+    const { data: list, error } = await sb.from('lists').insert({
       user_id: currentUser.id,
       title,
       description: desc,
       is_public: true,
     }).select().single();
 
-    if (listErr || !list) {
-      document.getElementById('saveStatus').textContent = 'Hata: ' + (listErr?.message || 'Bilinmeyen');
-      btn.textContent = 'Listeyi Kaydet →';
+    if (error || !list) {
+      saveMsg.textContent = 'Hata: ' + (error?.message || 'Bilinmeyen hata');
+      btn.textContent = 'LİSTEYİ OLUŞTUR →';
       btn.disabled = false;
       return;
     }
@@ -216,7 +273,14 @@ const gameIndex = games.map(g => ({
       note: item.note,
       position: i,
     }));
-    await supabase.from('list_items').insert(items);
+
+    const { error: itemsErr } = await sb.from('list_items').insert(items);
+    if (itemsErr) {
+      saveMsg.textContent = 'Oyunlar kaydedilemedi: ' + itemsErr.message;
+      btn.textContent = 'LİSTEYİ OLUŞTUR →';
+      btn.disabled = false;
+      return;
+    }
 
     window.location.href = `/lists/u/${list.id}`;
   });

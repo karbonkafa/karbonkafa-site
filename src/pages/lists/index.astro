@@ -48,4 +48,80 @@ for (const g of games) gmap[g.slug] = g;
     </div>
   </div>
 
+  <!-- Community lists -->
+  <div class="px-window" style="margin-top:12px;">
+    <div class="px-titlebar" style="border-left-color:#3b82f6;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="px-title" style="color:#3b82f6;">👥 TOPLULUK LİSTELERİ</span>
+        <span id="communityCount" style="font-family:'VT323',monospace;font-size:13px;color:#333344;"></span>
+      </div>
+      <a href="/lists/create" style="font-family:'VT323',monospace;font-size:14px;background:#3b82f622;border:1px solid #3b82f644;color:#3b82f6;padding:2px 10px;text-decoration:none;transition:all 0.1s;"
+        onmouseover="this.style.background='#3b82f633'" onmouseout="this.style.background='#3b82f622'">
+        + YENİ LİSTE
+      </a>
+    </div>
+
+    <div id="communityLists" style="display:flex;flex-direction:column;">
+      <div style="padding:24px;text-align:center;font-family:'VT323',monospace;font-size:15px;color:#333344;letter-spacing:0.04em;">
+        YÜKLENİYOR...
+      </div>
+    </div>
+  </div>
+
 </Layout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const sb = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  (async () => {
+    const { data: lists } = await sb
+      .from('lists')
+      .select('id, title, description, created_at, profiles(username, display_name, avatar_url), list_items(game_slug)')
+      .eq('is_public', true)
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    const el = document.getElementById('communityLists') as HTMLElement;
+    const countEl = document.getElementById('communityCount') as HTMLElement;
+
+    if (!lists || lists.length === 0) {
+      el.innerHTML = `
+        <div style="padding:32px;text-align:center;">
+          <p style="font-family:'VT323',monospace;font-size:15px;color:#333344;margin:0 0 12px;letter-spacing:0.04em;">HENÜ İLK LİSTEYİ OLUŞTUR</p>
+          <a href="/lists/create" style="font-family:'VT323',monospace;font-size:16px;background:#e5c46b;color:#0a0a0a;padding:6px 18px;text-decoration:none;letter-spacing:0.06em;">LİSTE OLUŞTUR →</a>
+        </div>
+      `;
+      return;
+    }
+
+    countEl.textContent = lists.length + ' LİSTE';
+
+    el.innerHTML = lists.map((list: any) => {
+      const author = list.profiles;
+      const items: any[] = list.list_items || [];
+      const dateStr = new Date(list.created_at).toLocaleDateString('tr-TR', {
+        day: 'numeric', month: 'short', year: 'numeric'
+      });
+      return `
+        <a href="/lists/u/${list.id}"
+          style="display:block;padding:14px 16px;border-bottom:1px solid #1e1e2e;transition:background 0.15s;"
+          onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <p style="font-family:'VT323',monospace;font-size:20px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">${list.title}</p>
+            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+              ${author ? `<span style="font-family:'VT323',monospace;font-size:14px;color:#3b82f6;">${author.username}</span>` : ''}
+              <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">${items.length} oyun</span>
+            </div>
+          </div>
+          ${list.description ? `<p style="font-size:12px;color:#666677;margin:0 0 8px;line-height:1.5;">${list.description}</p>` : ''}
+          <div style="font-family:'VT323',monospace;font-size:12px;color:#333344;">${dateStr}</div>
+        </a>
+      `;
+    }).join('');
+  })();
+</script>
