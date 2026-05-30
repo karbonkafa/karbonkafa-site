@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import gamesData from '../../data/games.json';
 import reviewsData from '../../data/reviews.json';
 import igdbData from '../../data/igdb.json';
-import { guides } from '../../data/guides';
+import { guides, achievementLists } from '../../data/guides';
 
 export function getStaticPaths() {
   return (gamesData as any[]).map(game => ({
@@ -35,6 +35,7 @@ const statusColor: Record<string, string> = {
 };
 
 const guide = guides[game.slug];
+const achievementList = achievementLists[game.slug] || [];
 const hours = game.playtimeMinutes > 0
   ? (game.playtimeMinutes / 60).toFixed(1) + ' saat'
   : game.totalHours > 0
@@ -80,6 +81,7 @@ const refRows = [
   ...(game.metacriticScore ? [{ label: 'Metacritic', value: String(game.metacriticScore), color: game.metacriticScore >= 80 ? '#22c55e' : game.metacriticScore >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(igdb.totalRating ? [{ label: 'IGDB', value: `${igdb.totalRating} / 100`, color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(game.steamReviews?.total > 0 ? [{ label: 'Steam', value: `${game.steamReviews.percent}% · ${game.steamReviews.label} (${game.steamReviews.total.toLocaleString()})`, color: game.steamReviews.percent >= 80 ? '#22c55e' : game.steamReviews.percent >= 60 ? '#eab308' : '#ef4444' }] : []),
+  ...(game.achievementCount ? [{ label: 'Başarımlar', value: `${game.achievementCount} adet`, color: '#888' }] : []),
   ...(hours ? [{ label: 'Oynanan', value: hours, color: '#e5c46b' }] : []),
   ...(review.overall ? [{ label: 'Karbon Puanı', value: `${review.overall}/10`, color: '#e5c46b' }] : []),
 ];
@@ -267,6 +269,44 @@ const filteredWebsites = igdb.websites
     </div>
   </div>
 
+
+  <!-- Achievement List (guide olan oyunlar için) -->
+  {achievementList.length > 0 && (
+    <div style="margin-bottom: 48px; border: 1px solid #222;">
+      <div style="padding: 14px 20px; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between;">
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0;" data-i18n="game.achievements">Başarımlar</p>
+        <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{achievementList.filter(a => a.missable).length} missable / {achievementList.length} toplam</span>
+      </div>
+      {['Ana Oyun', 'Hearts of Stone', 'Blood and Wine'].map(section => {
+        const items = achievementList.filter(a => a.section === section);
+        return items.length > 0 ? (
+          <div>
+            {section !== 'Ana Oyun' && (
+              <div style="padding: 8px 20px; background: #0d0d0d; border-bottom: 1px solid #1a1a1a;">
+                <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{section}</span>
+              </div>
+            )}
+            {items.map(a => (
+              <label style="display: flex; align-items: center; gap: 12px; padding: 10px 20px; border-bottom: 1px solid #1a1a1a; cursor: pointer; transition: background 0.1s;"
+                onmouseover="this.style.background='#141414'" onmouseout="this.style.background='transparent'">
+                <input type="checkbox" class="achievement-check" data-name={a.name}
+                  style="accent-color: #e5c46b; width: 14px; height: 14px; cursor: pointer; flex-shrink: 0;" />
+                <span style={`font-size: 13px; color: ${a.missable ? '#e5e5e5' : '#888'};`}>{a.name}</span>
+                {a.missable && (
+                  <span style="font-size: 10px; color: #ef4444; font-family: 'JetBrains Mono', monospace; margin-left: auto; flex-shrink: 0;">missable</span>
+                )}
+              </label>
+            ))}
+          </div>
+        ) : null;
+      })}
+      <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;">
+        <span id="achieveProgress" style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">0 / {achievementList.length} tamamlandı</span>
+        <button id="clearAchieve" style="font-size: 11px; color: #444; background: none; border: none; cursor: pointer; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
+          onmouseover="this.style.color='#666'" onmouseout="this.style.color='#444'">sıfırla</button>
+      </div>
+    </div>
+  )}
 
   <!-- Keywords -->
   {igdb.keywords?.length > 0 && (
@@ -456,6 +496,31 @@ const filteredWebsites = igdb.websites
 </Layout>
 
 <script>
+  // Achievement checklist persistence
+  const achieveChecks = document.querySelectorAll('.achievement-check') as NodeListOf<HTMLInputElement>;
+  const progressEl = document.getElementById('achieveProgress');
+  const clearBtn = document.getElementById('clearAchieve');
+  const storageKey = `achievements-${window.location.pathname}`;
+
+  if (achieveChecks.length > 0) {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '[]') as string[];
+    achieveChecks.forEach(cb => {
+      if (saved.includes(cb.dataset.name || '')) cb.checked = true;
+      cb.addEventListener('change', () => {
+        const checked = Array.from(achieveChecks).filter(c => c.checked).map(c => c.dataset.name || '');
+        localStorage.setItem(storageKey, JSON.stringify(checked));
+        if (progressEl) progressEl.textContent = `${checked.length} / ${achieveChecks.length} tamamlandı`;
+      });
+    });
+    const initial = saved.length;
+    if (progressEl) progressEl.textContent = `${initial} / ${achieveChecks.length} tamamlandı`;
+    clearBtn?.addEventListener('click', () => {
+      achieveChecks.forEach(cb => cb.checked = false);
+      localStorage.removeItem(storageKey);
+      if (progressEl) progressEl.textContent = `0 / ${achieveChecks.length} tamamlandı`;
+    });
+  }
+
   // Storyline toggle
   const toggle = document.getElementById('storylineToggle');
   const content = document.getElementById('storylineContent');

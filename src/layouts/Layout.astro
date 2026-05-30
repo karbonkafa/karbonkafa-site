@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { t } from '../i18n';
 
 interface Props {
   title: string;
@@ -10,7 +11,7 @@ const { title, description = 'KarbonGameStudios — oyun rehberleri, haberler ve
 ---
 
 <!doctype html>
-<html lang="tr">
+<html lang="tr" id="html-root">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,10 +27,16 @@ const { title, description = 'KarbonGameStudios — oyun rehberleri, haberler ve
       <a href="/" style="font-weight: 600; font-size: 15px; letter-spacing: -0.02em;">
         karbon<span style="color: #e5c46b;">kafa</span>
       </a>
-      <div style="display: flex; gap: 32px; font-size: 14px; color: #666;">
-        <a href="/oyunlar" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Oyunlar</a>
-        <a href="/rehberler" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Rehberler</a>
-        <a href="/haberler" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Haberler</a>
+      <div style="display: flex; align-items: center; gap: 28px; font-size: 14px; color: #666;">
+        <a href="/oyunlar" data-i18n="nav.games" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.games']}</a>
+        <a href="/rehberler" data-i18n="nav.guides" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.guides']}</a>
+        <a href="/haberler" data-i18n="nav.news" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.news']}</a>
+        <!-- Lang toggle -->
+        <button id="langToggle" style="background: none; border: 1px solid #333; color: #666; font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; transition: all 0.15s;"
+          onmouseover="this.style.borderColor='#e5c46b';this.style.color='#e5c46b'"
+          onmouseout="this.style.borderColor='#333';this.style.color='#666'">
+          EN
+        </button>
       </div>
     </nav>
 
@@ -42,3 +49,27 @@ const { title, description = 'KarbonGameStudios — oyun rehberleri, haberler ve
     </footer>
   </body>
 </html>
+
+<script define:vars={{ translations: t }}>
+  const btn = document.getElementById('langToggle');
+  const html = document.getElementById('html-root');
+  let lang = localStorage.getItem('lang') || 'tr';
+
+  function applyLang(l) {
+    lang = l;
+    localStorage.setItem('lang', l);
+    html.setAttribute('lang', l);
+    btn.textContent = l === 'tr' ? 'EN' : 'TR';
+    const dict = translations[l];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
+    });
+  }
+
+  applyLang(lang);
+
+  btn.addEventListener('click', () => {
+    applyLang(lang === 'tr' ? 'en' : 'tr');
+  });
+</script>
