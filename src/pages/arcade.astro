@@ -1,0 +1,673 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="ARCADE.EXE — Karbon OS">
+
+  <div style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <p style="font-family: 'VT323', monospace; font-size: 14px; color: #444455; margin: 0 0 4px; letter-spacing: 0.08em;">C:\KARBON\ARCADE</p>
+      <h1 style="font-family: 'VT323', monospace; font-size: 32px; color: #e5c46b; margin: 0; letter-spacing: 0.06em;">ARCADE.EXE</h1>
+    </div>
+    <div style="display: flex; gap: 4px;">
+      {[
+        { id: 'pong',   label: '🏓 PONG.EXE',   color: '#e5c46b' },
+        { id: 'snake',  label: '🐍 SNAKE.EXE',  color: '#22c55e' },
+        { id: 'pacman', label: '👾 PACMAN.EXE',  color: '#f59e0b' },
+      ].map(g => (
+        <button class="game-tab" data-game={g.id}
+          style={`font-family: 'VT323', monospace; font-size: 16px; padding: 6px 14px; background: #0d0d12; border: 2px solid #1e1e2e; color: #444455; cursor: pointer; letter-spacing: 0.04em; transition: all 0.1s;`}
+          onmouseover={`this.style.borderColor='${g.color}';this.style.color='${g.color}'`}
+          onmouseout="if(!this.classList.contains('active')){this.style.borderColor='#1e1e2e';this.style.color='#444455'}">
+          {g.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Game windows -->
+  <div id="game-pong" class="game-panel" style="display:none;">
+    <div class="px-window">
+      <div class="px-titlebar">
+        <span class="px-title">🏓 PONG.EXE — Sen vs AI</span>
+        <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
+        <p style="font-family:'VT323',monospace;font-size:14px;color:#444455;margin:0;text-align:center;letter-spacing:0.04em;">MOUSE / DOKUNMA ile sol raketi kontrol et. İlk 7 puan kazanır.</p>
+        <canvas id="pong-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;cursor:none;"></canvas>
+        <div style="display:flex;gap:12px;">
+          <button id="pong-start" style="font-family:'VT323',monospace;font-size:18px;background:#0d0d12;border:2px solid #e5c46b;color:#e5c46b;padding:6px 20px;cursor:pointer;letter-spacing:0.06em;transition:all 0.1s;"
+            onmouseover="this.style.background='#1a1a00'" onmouseout="this.style.background='#0d0d12'">[ BAŞLAT ]</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-snake" class="game-panel" style="display:none;">
+    <div class="px-window">
+      <div class="px-titlebar" style="border-left-color:#22c55e;">
+        <span class="px-title" style="color:#22c55e;">🐍 SNAKE.EXE</span>
+        <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
+        <p style="font-family:'VT323',monospace;font-size:14px;color:#444455;margin:0;text-align:center;letter-spacing:0.04em;">OK TUŞ / WASD ile yönlendir. Mobil: kaydır. Duvara ya da kendine çarpma.</p>
+        <canvas id="snake-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;"></canvas>
+        <div style="display:flex;gap:12px;">
+          <button id="snake-start" style="font-family:'VT323',monospace;font-size:18px;background:#0d0d12;border:2px solid #22c55e;color:#22c55e;padding:6px 20px;cursor:pointer;letter-spacing:0.06em;transition:all 0.1s;"
+            onmouseover="this.style.background='#001a00'" onmouseout="this.style.background='#0d0d12'">[ BAŞLAT ]</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-pacman" class="game-panel" style="display:none;">
+    <div class="px-window">
+      <div class="px-titlebar" style="border-left-color:#f59e0b;">
+        <span class="px-title" style="color:#f59e0b;">👾 PACMAN.EXE</span>
+        <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
+        <p style="font-family:'VT323',monospace;font-size:14px;color:#444455;margin:0;text-align:center;letter-spacing:0.04em;">OK TUŞ / WASD. Büyük noktaları ye, hayaletler maviye döner. Mobil: kaydır.</p>
+        <canvas id="pacman-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;"></canvas>
+        <div style="display:flex;gap:12px;">
+          <button id="pacman-start" style="font-family:'VT323',monospace;font-size:18px;background:#0d0d12;border:2px solid #f59e0b;color:#f59e0b;padding:6px 20px;cursor:pointer;letter-spacing:0.06em;transition:all 0.1s;"
+            onmouseover="this.style.background='#1a0f00'" onmouseout="this.style.background='#0d0d12'">[ BAŞLAT ]</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</Layout>
+
+<script>
+// ─── TAB MANAGER ───────────────────────────────────────────────
+const tabs = document.querySelectorAll('.game-tab');
+const panels = document.querySelectorAll('.game-panel');
+const COLORS: Record<string, string> = { pong: '#e5c46b', snake: '#22c55e', pacman: '#f59e0b' };
+
+function showGame(id: string) {
+  panels.forEach(p => (p as HTMLElement).style.display = 'none');
+  tabs.forEach(t => {
+    const g = (t as HTMLElement).dataset.game!;
+    t.classList.remove('active');
+    (t as HTMLElement).style.borderColor = '#1e1e2e';
+    (t as HTMLElement).style.color = '#444455';
+  });
+  const panel = document.getElementById(`game-${id}`);
+  const tab = document.querySelector(`[data-game="${id}"]`) as HTMLElement;
+  if (panel) panel.style.display = 'block';
+  if (tab) {
+    tab.classList.add('active');
+    tab.style.borderColor = COLORS[id];
+    tab.style.color = COLORS[id];
+  }
+}
+
+tabs.forEach(t => t.addEventListener('click', () => showGame((t as HTMLElement).dataset.game!)));
+showGame('pong');
+
+// ─── PONG ──────────────────────────────────────────────────────
+const pongCanvas = document.getElementById('pong-canvas') as HTMLCanvasElement;
+const pctx = pongCanvas.getContext('2d')!;
+const PW = 560, PH = 340;
+pongCanvas.width = PW; pongCanvas.height = PH;
+
+const pong = {
+  ball: { x: PW/2, y: PH/2, vx: 0, vy: 0, r: 7 },
+  player: { y: PH/2 - 35, h: 70, w: 10, score: 0 },
+  ai: { y: PH/2 - 35, h: 70, w: 10, score: 0 },
+  running: false, started: false,
+  reset() {
+    const angle = (Math.random() * 0.6 - 0.3);
+    const dir = Math.random() > 0.5 ? 1 : -1;
+    this.ball = { x: PW/2, y: PH/2, vx: dir * 5, vy: Math.sin(angle) * 5, r: 7 };
+  },
+  mouseY: PH / 2,
+};
+
+pongCanvas.addEventListener('mousemove', e => {
+  const r = pongCanvas.getBoundingClientRect();
+  const scaleY = PH / r.height;
+  pong.mouseY = (e.clientY - r.top) * scaleY;
+});
+pongCanvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const r = pongCanvas.getBoundingClientRect();
+  const scaleY = PH / r.height;
+  pong.mouseY = (e.touches[0].clientY - r.top) * scaleY;
+}, { passive: false });
+
+document.getElementById('pong-start')!.addEventListener('click', () => {
+  pong.player.score = 0; pong.ai.score = 0;
+  pong.player.y = PH/2 - 35; pong.ai.y = PH/2 - 35;
+  pong.reset();
+  pong.running = true; pong.started = true;
+});
+
+function drawPong() {
+  pctx.fillStyle = '#050508';
+  pctx.fillRect(0, 0, PW, PH);
+
+  // Center line
+  pctx.strokeStyle = '#1e1e2e';
+  pctx.setLineDash([8, 8]);
+  pctx.lineWidth = 2;
+  pctx.beginPath(); pctx.moveTo(PW/2, 0); pctx.lineTo(PW/2, PH); pctx.stroke();
+  pctx.setLineDash([]);
+
+  if (!pong.started) {
+    pctx.fillStyle = '#333344';
+    pctx.font = '28px VT323';
+    pctx.textAlign = 'center';
+    pctx.fillText('[ BAŞLAT ] butonuna bas', PW/2, PH/2);
+    return;
+  }
+
+  // Paddles
+  pctx.fillStyle = '#e5c46b';
+  pctx.fillRect(16, pong.player.y, pong.player.w, pong.player.h);
+  pctx.fillStyle = '#ef4444';
+  pctx.fillRect(PW - 26, pong.ai.y, pong.ai.w, pong.ai.h);
+
+  // Ball
+  pctx.fillStyle = '#e5e5e5';
+  pctx.fillRect(pong.ball.x - pong.ball.r, pong.ball.y - pong.ball.r, pong.ball.r * 2, pong.ball.r * 2);
+
+  // Scores
+  pctx.fillStyle = '#444455';
+  pctx.font = '40px VT323';
+  pctx.textAlign = 'center';
+  pctx.fillText(String(pong.player.score), PW/2 - 80, 50);
+  pctx.fillText(String(pong.ai.score), PW/2 + 80, 50);
+  pctx.font = '14px VT323';
+  pctx.fillStyle = '#2a2a3a';
+  pctx.fillText('SEN', PW/2 - 80, 68);
+  pctx.fillText('AI', PW/2 + 80, 68);
+
+  if (pong.player.score >= 7 || pong.ai.score >= 7) {
+    const won = pong.player.score >= 7;
+    pctx.fillStyle = 'rgba(5,5,8,0.85)';
+    pctx.fillRect(0, 0, PW, PH);
+    pctx.fillStyle = won ? '#22c55e' : '#ef4444';
+    pctx.font = '42px VT323';
+    pctx.textAlign = 'center';
+    pctx.fillText(won ? 'KAZANDIN!' : 'KAYBETTIN', PW/2, PH/2 - 20);
+    pctx.fillStyle = '#444455';
+    pctx.font = '22px VT323';
+    pctx.fillText('Yeniden oynamak için BAŞLAT\'a bas', PW/2, PH/2 + 30);
+    pong.running = false;
+  }
+}
+
+function updatePong() {
+  if (!pong.running) return;
+  const b = pong.ball;
+
+  // Player follows mouse
+  pong.player.y = Math.max(0, Math.min(PH - pong.player.h, pong.mouseY - pong.player.h / 2));
+
+  // AI
+  const aiCenter = pong.ai.y + pong.ai.h / 2;
+  const aiSpeed = 4;
+  if (aiCenter < b.y - 5) pong.ai.y = Math.min(PH - pong.ai.h, pong.ai.y + aiSpeed);
+  else if (aiCenter > b.y + 5) pong.ai.y = Math.max(0, pong.ai.y - aiSpeed);
+
+  b.x += b.vx; b.y += b.vy;
+
+  // Wall bounce
+  if (b.y - b.r < 0) { b.y = b.r; b.vy = Math.abs(b.vy); }
+  if (b.y + b.r > PH) { b.y = PH - b.r; b.vy = -Math.abs(b.vy); }
+
+  // Player paddle
+  if (b.x - b.r < 26 && b.y > pong.player.y && b.y < pong.player.y + pong.player.h) {
+    b.x = 26 + b.r;
+    const offset = (b.y - (pong.player.y + pong.player.h / 2)) / (pong.player.h / 2);
+    b.vx = Math.min(9, Math.abs(b.vx) * 1.05);
+    b.vy = offset * 6;
+  }
+
+  // AI paddle
+  if (b.x + b.r > PW - 26 && b.y > pong.ai.y && b.y < pong.ai.y + pong.ai.h) {
+    b.x = PW - 26 - b.r;
+    const offset = (b.y - (pong.ai.y + pong.ai.h / 2)) / (pong.ai.h / 2);
+    b.vx = -Math.min(9, Math.abs(b.vx) * 1.05);
+    b.vy = offset * 6;
+  }
+
+  // Score
+  if (b.x < 0) { pong.ai.score++; pong.reset(); }
+  if (b.x > PW) { pong.player.score++; pong.reset(); }
+}
+
+// ─── SNAKE ─────────────────────────────────────────────────────
+const snakeCanvas = document.getElementById('snake-canvas') as HTMLCanvasElement;
+const sctx = snakeCanvas.getContext('2d')!;
+const SCOLS = 24, SROWS = 20, SG = 20;
+snakeCanvas.width = SCOLS * SG; snakeCanvas.height = SROWS * SG;
+
+const snake = {
+  body: [{ x: 12, y: 10 }, { x: 11, y: 10 }, { x: 10, y: 10 }],
+  dir: { x: 1, y: 0 }, nextDir: { x: 1, y: 0 },
+  food: { x: 18, y: 10 },
+  score: 0, hiScore: 0, alive: false, started: false,
+  frame: 0, speed: 8,
+  touchStartX: 0, touchStartY: 0,
+
+  randomFood() {
+    let f;
+    do { f = { x: Math.floor(Math.random() * SCOLS), y: Math.floor(Math.random() * SROWS) }; }
+    while (this.body.some(b => b.x === f.x && b.y === f.y));
+    return f;
+  },
+
+  start() {
+    this.body = [{ x: 12, y: 10 }, { x: 11, y: 10 }, { x: 10, y: 10 }];
+    this.dir = { x: 1, y: 0 }; this.nextDir = { x: 1, y: 0 };
+    this.food = this.randomFood();
+    this.score = 0; this.alive = true; this.started = true;
+    this.frame = 0; this.speed = 8;
+  },
+
+  setDir(dx: number, dy: number) {
+    if (dx === -this.dir.x && dy === -this.dir.y) return;
+    this.nextDir = { x: dx, y: dy };
+  },
+
+  update() {
+    if (!this.alive) return;
+    this.frame++;
+    if (this.frame < this.speed) return;
+    this.frame = 0;
+    this.dir = { ...this.nextDir };
+    const head = { x: this.body[0].x + this.dir.x, y: this.body[0].y + this.dir.y };
+    if (head.x < 0 || head.x >= SCOLS || head.y < 0 || head.y >= SROWS) { this.die(); return; }
+    if (this.body.some(b => b.x === head.x && b.y === head.y)) { this.die(); return; }
+    this.body.unshift(head);
+    if (head.x === this.food.x && head.y === this.food.y) {
+      this.score += 10;
+      if (this.score > this.hiScore) this.hiScore = this.score;
+      this.food = this.randomFood();
+      if (this.score % 60 === 0) this.speed = Math.max(3, this.speed - 1);
+    } else { this.body.pop(); }
+  },
+
+  die() { this.alive = false; },
+};
+
+document.getElementById('snake-start')!.addEventListener('click', () => snake.start());
+
+window.addEventListener('keydown', e => {
+  const m: Record<string, [number, number]> = { ArrowUp: [0,-1], ArrowDown: [0,1], ArrowLeft: [-1,0], ArrowRight: [1,0], w: [0,-1], s: [0,1], a: [-1,0], d: [1,0] };
+  if (m[e.key]) { e.preventDefault(); snake.setDir(...m[e.key]); }
+  if (e.key === 'r' || e.key === 'R') snake.start();
+});
+
+snakeCanvas.addEventListener('touchstart', e => {
+  snake.touchStartX = e.touches[0].clientX;
+  snake.touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+snakeCanvas.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - snake.touchStartX;
+  const dy = e.changedTouches[0].clientY - snake.touchStartY;
+  if (Math.abs(dx) > Math.abs(dy)) snake.setDir(dx > 0 ? 1 : -1, 0);
+  else snake.setDir(0, dy > 0 ? 1 : -1);
+}, { passive: true });
+
+function drawSnake() {
+  const SW = SCOLS * SG, SH = SROWS * SG;
+  sctx.fillStyle = '#050508'; sctx.fillRect(0, 0, SW, SH);
+  // Grid
+  sctx.strokeStyle = '#0d0d12'; sctx.lineWidth = 1;
+  for (let x = 0; x <= SCOLS; x++) { sctx.beginPath(); sctx.moveTo(x*SG, 0); sctx.lineTo(x*SG, SH); sctx.stroke(); }
+  for (let y = 0; y <= SROWS; y++) { sctx.beginPath(); sctx.moveTo(0, y*SG); sctx.lineTo(SW, y*SG); sctx.stroke(); }
+
+  if (!snake.started) {
+    sctx.fillStyle = '#333344'; sctx.font = '28px VT323'; sctx.textAlign = 'center';
+    sctx.fillText('[ BAŞLAT ] butonuna bas', SW/2, SH/2);
+    return;
+  }
+
+  // Food
+  sctx.fillStyle = '#ef4444';
+  sctx.fillRect(snake.food.x*SG+3, snake.food.y*SG+3, SG-6, SG-6);
+
+  // Body
+  snake.body.forEach((s, i) => {
+    sctx.fillStyle = i === 0 ? '#e5c46b' : (i % 2 === 0 ? '#c6a84b' : '#a88a3b');
+    sctx.fillRect(s.x*SG+1, s.y*SG+1, SG-2, SG-2);
+  });
+
+  // Score
+  sctx.fillStyle = '#333344'; sctx.font = '16px VT323'; sctx.textAlign = 'left';
+  sctx.fillText(`SKOR: ${snake.score}`, 8, 20);
+  sctx.textAlign = 'right';
+  sctx.fillText(`EN İYİ: ${snake.hiScore}`, SW - 8, 20);
+
+  if (!snake.alive) {
+    sctx.fillStyle = 'rgba(5,5,8,0.88)'; sctx.fillRect(0, 0, SW, SH);
+    sctx.fillStyle = '#ef4444'; sctx.font = '40px VT323'; sctx.textAlign = 'center';
+    sctx.fillText('GAME OVER', SW/2, SH/2 - 24);
+    sctx.fillStyle = '#666677'; sctx.font = '24px VT323';
+    sctx.fillText(`SKOR: ${snake.score}`, SW/2, SH/2 + 16);
+    sctx.fillStyle = '#333344'; sctx.font = '18px VT323';
+    sctx.fillText('[R] veya BAŞLAT', SW/2, SH/2 + 50);
+  }
+}
+
+// ─── PAC-MAN ───────────────────────────────────────────────────
+const PM_TILE = 18;
+const MAZE_DATA = [
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+  [1,3,1,1,2,1,1,2,2,1,2,2,1,1,2,1,1,3,1],
+  [1,2,1,1,2,1,1,2,2,1,2,2,1,1,2,1,1,2,1],
+  [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+  [1,2,1,1,2,1,2,1,1,1,1,1,1,2,1,2,1,2,1],
+  [1,2,2,2,2,1,2,2,2,2,1,2,2,2,2,1,2,2,1],
+  [1,1,1,1,2,1,1,0,0,0,0,0,0,1,1,2,1,1,1],
+  [0,0,0,1,2,1,0,1,4,4,4,4,1,0,1,2,1,0,0],
+  [1,1,1,1,2,1,0,1,4,4,4,4,1,0,1,2,1,1,1],
+  [0,0,0,0,2,0,0,1,4,4,4,4,1,0,0,2,0,0,0],
+  [1,1,1,1,2,1,0,1,1,1,0,1,1,0,1,2,1,1,1],
+  [0,0,0,1,2,1,0,0,0,0,0,0,0,0,1,2,1,0,0],
+  [1,1,1,1,2,1,0,1,1,1,1,1,1,0,1,2,1,1,1],
+  [1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1],
+  [1,2,1,1,2,1,1,2,1,1,1,1,2,1,1,2,1,2,1],
+  [1,3,2,1,2,2,2,2,2,2,0,2,2,2,2,2,1,3,1],
+  [1,1,2,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,1],
+  [1,2,2,2,2,1,2,2,2,2,1,2,2,2,2,1,2,2,1],
+  [1,2,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1],
+  [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+];
+const PM_ROWS = MAZE_DATA.length, PM_COLS = MAZE_DATA[0].length;
+const PM_W = PM_COLS * PM_TILE, PM_H = PM_ROWS * PM_TILE;
+
+const pacCanvas = document.getElementById('pacman-canvas') as HTMLCanvasElement;
+const pactx = pacCanvas.getContext('2d')!;
+pacCanvas.width = PM_W; pacCanvas.height = PM_H;
+
+const GHOST_COLORS = ['#ef4444', '#f97316', '#22d3ee', '#ec4899'];
+const GHOST_NAMES = ['BLINKY', 'PINKY', 'INKY', 'CLYDE'];
+
+function initMaze() {
+  return MAZE_DATA.map(row => [...row]);
+}
+
+const pm = {
+  maze: initMaze(),
+  pacman: { x: 9.5, y: 16.5, dx: 0, dy: 0, nextDx: 0, nextDy: 0, mouth: 0, mouthDir: 1 },
+  ghosts: [
+    { x: 8.5, y: 9.5, dx: -1, dy: 0, frightened: 0, dead: false, color: GHOST_COLORS[0] },
+    { x: 9.5, y: 9.5, dx: 1,  dy: 0, frightened: 0, dead: false, color: GHOST_COLORS[1] },
+    { x: 10.5,y: 9.5, dx: 0, dy: -1, frightened: 0, dead: false, color: GHOST_COLORS[2] },
+    { x: 8.5, y:10.5, dx: 0, dy: 1,  frightened: 0, dead: false, color: GHOST_COLORS[3] },
+  ],
+  score: 0, hiScore: 0, lives: 3, pelletsLeft: 0,
+  running: false, started: false, gameOver: false, won: false,
+  frame: 0, frightenTimer: 0,
+  touchStartX: 0, touchStartY: 0,
+
+  countPellets() {
+    let n = 0;
+    for (const row of this.maze) for (const cell of row) if (cell === 2 || cell === 3) n++;
+    return n;
+  },
+
+  start() {
+    this.maze = initMaze();
+    this.pelletsLeft = this.countPellets();
+    this.pacman = { x: 9.5, y: 16.5, dx: 1, dy: 0, nextDx: 1, nextDy: 0, mouth: 0, mouthDir: 1 };
+    this.ghosts = [
+      { x: 8.5, y: 9.5,  dx: -1, dy: 0,  frightened: 0, dead: false, color: GHOST_COLORS[0] },
+      { x: 9.5, y: 9.5,  dx: 1,  dy: 0,  frightened: 0, dead: false, color: GHOST_COLORS[1] },
+      { x: 10.5,y: 9.5,  dx: 0,  dy: -1, frightened: 0, dead: false, color: GHOST_COLORS[2] },
+      { x: 8.5, y: 10.5, dx: 0,  dy: 1,  frightened: 0, dead: false, color: GHOST_COLORS[3] },
+    ];
+    this.lives = 3; this.score = 0; this.frightenTimer = 0;
+    this.running = true; this.started = true; this.gameOver = false; this.won = false;
+  },
+
+  canMove(x: number, y: number) {
+    const col = Math.floor(x), row = Math.floor(y);
+    if (row < 0 || row >= PM_ROWS || col < 0 || col >= PM_COLS) return true; // tunnel
+    const cell = this.maze[row][col];
+    return cell !== 1;
+  },
+
+  wrapX(x: number) {
+    if (x < 0) return PM_COLS - 0.5;
+    if (x >= PM_COLS) return 0.5;
+    return x;
+  },
+
+  update() {
+    if (!this.running) return;
+    this.frame++;
+    const SPEED = 0.08;
+
+    // Pacman mouth animation
+    this.pacman.mouth += this.pacman.mouthDir * 0.15;
+    if (this.pacman.mouth > 0.8 || this.pacman.mouth < 0.05) this.pacman.mouthDir *= -1;
+
+    // Try to turn
+    const p = this.pacman;
+    const nx = p.x + p.nextDx * SPEED * 2;
+    const ny = p.y + p.nextDy * SPEED * 2;
+    if (this.canMove(nx, p.y) && this.canMove(nx, p.y + 0.9) || p.nextDy !== 0) {
+      if (this.canMove(p.x + p.nextDx * SPEED, p.y) && this.canMove(p.x + p.nextDx * SPEED, p.y + 0.9)) {
+        p.dx = p.nextDx; p.dy = p.nextDy;
+      }
+    }
+
+    // Move
+    const newX = this.wrapX(p.x + p.dx * SPEED);
+    const newY = p.y + p.dy * SPEED;
+    if (this.canMove(newX, newY) && this.canMove(newX, newY + 0.9)) {
+      p.x = newX; p.y = newY;
+    }
+
+    // Eat pellets
+    const col = Math.round(p.x - 0.5), row = Math.round(p.y - 0.5);
+    if (row >= 0 && row < PM_ROWS && col >= 0 && col < PM_COLS) {
+      const cell = this.maze[row][col];
+      if (cell === 2) { this.maze[row][col] = 0; this.score += 10; this.pelletsLeft--; }
+      if (cell === 3) {
+        this.maze[row][col] = 0; this.score += 50; this.pelletsLeft--;
+        this.frightenTimer = 300;
+        this.ghosts.forEach(g => { g.frightened = 300; g.dead = false; });
+      }
+    }
+    if (this.score > this.hiScore) this.hiScore = this.score;
+    if (this.pelletsLeft === 0) { this.won = true; this.running = false; return; }
+
+    // Frighten timer
+    if (this.frightenTimer > 0) {
+      this.frightenTimer--;
+      this.ghosts.forEach(g => { if (g.frightened > 0) g.frightened--; });
+    }
+
+    // Move ghosts
+    this.ghosts.forEach(g => {
+      if (this.frame % 2 !== 0) return; // ghosts slower
+      const gs = g.frightened > 0 ? SPEED * 0.5 : SPEED * 1.1;
+      const possibleDirs = [[1,0],[-1,0],[0,1],[0,-1]].filter(([dx,dy]) => {
+        if (dx === -g.dx && dy === -g.dy) return false; // no reverse
+        const nx2 = g.x + dx * gs * 2, ny2 = g.y + dy * gs * 2;
+        return this.canMove(nx2, g.y) && this.canMove(nx2, g.y + 0.9) &&
+               this.canMove(g.x, ny2) && this.canMove(g.x, ny2 + 0.9);
+      });
+
+      if (possibleDirs.length > 0) {
+        let chosen;
+        if (g.frightened > 0) {
+          chosen = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
+        } else {
+          // Chase pacman
+          chosen = possibleDirs.reduce((best, d) => {
+            const dx = (g.x + d[0]) - p.x, dy = (g.y + d[1]) - p.y;
+            const bx = (g.x + best[0]) - p.x, by = (g.y + best[1]) - p.y;
+            return dx*dx + dy*dy < bx*bx + by*by ? d : best;
+          });
+        }
+        [g.dx, g.dy] = chosen;
+      }
+
+      const ngx = this.wrapX(g.x + g.dx * gs);
+      const ngy = g.y + g.dy * gs;
+      if (this.canMove(ngx, g.y) && this.canMove(ngx, g.y + 0.9)) g.x = ngx;
+      if (this.canMove(g.x, ngy) && this.canMove(g.x, ngy + 0.9)) g.y = ngy;
+
+      // Collision with pacman
+      const dist = Math.hypot(g.x - p.x, g.y - p.y);
+      if (dist < 0.8) {
+        if (g.frightened > 0) {
+          // Eat ghost
+          g.frightened = 0; g.dead = true;
+          g.x = 9.5; g.y = 9.5;
+          this.score += 200;
+        } else if (!g.dead) {
+          this.lives--;
+          if (this.lives <= 0) { this.gameOver = true; this.running = false; }
+          else {
+            p.x = 9.5; p.y = 16.5; p.dx = 1; p.dy = 0;
+            this.ghosts.forEach(gh => { gh.x = [8.5,9.5,10.5,8.5][this.ghosts.indexOf(gh)]; gh.y = [9.5,9.5,9.5,10.5][this.ghosts.indexOf(gh)]; gh.frightened = 0; });
+          }
+        }
+      }
+    });
+  },
+};
+
+document.getElementById('pacman-start')!.addEventListener('click', () => pm.start());
+
+window.addEventListener('keydown', e => {
+  const dirs: Record<string, [number,number]> = {
+    ArrowUp:[0,-1], ArrowDown:[0,1], ArrowLeft:[-1,0], ArrowRight:[1,0],
+    w:[0,-1], s:[0,1], a:[-1,0], d:[1,0]
+  };
+  if (dirs[e.key]) {
+    e.preventDefault();
+    [pm.pacman.nextDx, pm.pacman.nextDy] = dirs[e.key];
+    if (!pm.running && !pm.gameOver && !pm.won) pm.start();
+  }
+});
+
+pacCanvas.addEventListener('touchstart', e => { pm.touchStartX = e.touches[0].clientX; pm.touchStartY = e.touches[0].clientY; }, { passive: true });
+pacCanvas.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - pm.touchStartX;
+  const dy = e.changedTouches[0].clientY - pm.touchStartY;
+  if (Math.abs(dx) > Math.abs(dy)) { pm.pacman.nextDx = dx > 0 ? 1 : -1; pm.pacman.nextDy = 0; }
+  else { pm.pacman.nextDx = 0; pm.pacman.nextDy = dy > 0 ? 1 : -1; }
+}, { passive: true });
+
+function drawPacman() {
+  pactx.fillStyle = '#050508'; pactx.fillRect(0, 0, PM_W, PM_H);
+
+  // Maze
+  for (let r = 0; r < PM_ROWS; r++) {
+    for (let c = 0; c < PM_COLS; c++) {
+      const cell = pm.maze[r][c];
+      const x = c * PM_TILE, y = r * PM_TILE;
+      if (cell === 1) {
+        pactx.fillStyle = '#1e1e4a';
+        pactx.fillRect(x, y, PM_TILE, PM_TILE);
+        pactx.strokeStyle = '#2a2a6a';
+        pactx.lineWidth = 1;
+        pactx.strokeRect(x + 0.5, y + 0.5, PM_TILE - 1, PM_TILE - 1);
+      } else if (cell === 2) {
+        pactx.fillStyle = '#c6a84b';
+        pactx.beginPath();
+        pactx.arc(x + PM_TILE/2, y + PM_TILE/2, 2, 0, Math.PI*2);
+        pactx.fill();
+      } else if (cell === 3) {
+        const pulse = 0.7 + 0.3 * Math.sin(pm.frame * 0.15);
+        pactx.fillStyle = `rgba(229,196,107,${pulse})`;
+        pactx.beginPath();
+        pactx.arc(x + PM_TILE/2, y + PM_TILE/2, 5, 0, Math.PI*2);
+        pactx.fill();
+      } else if (cell === 4) {
+        pactx.fillStyle = '#0d0d1a';
+        pactx.fillRect(x, y, PM_TILE, PM_TILE);
+      }
+    }
+  }
+
+  if (!pm.started) {
+    pactx.fillStyle = '#333344'; pactx.font = '22px VT323'; pactx.textAlign = 'center';
+    pactx.fillText('[ BAŞLAT ] veya yön tuşuna bas', PM_W/2, PM_H/2);
+    return;
+  }
+
+  // Ghosts
+  pm.ghosts.forEach(g => {
+    if (g.dead) return;
+    const gx = g.x * PM_TILE, gy = g.y * PM_TILE;
+    const half = PM_TILE / 2;
+    const flicker = pm.frightenTimer > 0 && pm.frightenTimer < 80 && pm.frame % 8 < 4;
+    pactx.fillStyle = g.frightened > 0 ? (flicker ? '#ffffff' : '#3b82f6') : g.color;
+    pactx.beginPath();
+    pactx.arc(gx, gy, half - 1, Math.PI, 0, false);
+    pactx.lineTo(gx + half - 1, gy + half);
+    for (let i = 3; i >= 0; i--) {
+      const bx = gx - half + 1 + i * (2*(half-1)/3);
+      pactx.arc(bx, gy + half, (half-1)/3, 0, Math.PI, true);
+    }
+    pactx.lineTo(gx - half + 1, gy);
+    pactx.closePath(); pactx.fill();
+    if (g.frightened > 0 && !flicker) {
+      pactx.fillStyle = '#fff';
+      pactx.fillRect(gx - 5, gy - 3, 3, 3);
+      pactx.fillRect(gx + 2, gy - 3, 3, 3);
+    }
+  });
+
+  // Pac-Man
+  const p = pm.pacman;
+  const px = p.x * PM_TILE, py = p.y * PM_TILE;
+  const angle = p.mouth * Math.PI;
+  let startAngle = angle, endAngle = Math.PI * 2 - angle;
+  if (p.dx === -1) { startAngle += Math.PI; endAngle += Math.PI; }
+  else if (p.dy === -1) { startAngle += Math.PI * 1.5; endAngle += Math.PI * 1.5; }
+  else if (p.dy === 1) { startAngle += Math.PI * 0.5; endAngle += Math.PI * 0.5; }
+  pactx.fillStyle = '#e5c46b';
+  pactx.beginPath();
+  pactx.moveTo(px, py);
+  pactx.arc(px, py, PM_TILE/2 - 1, startAngle, endAngle);
+  pactx.closePath(); pactx.fill();
+
+  // HUD
+  pactx.fillStyle = '#333344'; pactx.font = '16px VT323'; pactx.textAlign = 'left';
+  pactx.fillText(`SKOR: ${pm.score}`, 4, PM_H - 4);
+  pactx.textAlign = 'center';
+  pactx.fillStyle = '#e5c46b';
+  for (let i = 0; i < pm.lives; i++) pactx.fillText('●', PM_W/2 - 20 + i*20, PM_H - 4);
+  pactx.textAlign = 'right'; pactx.fillStyle = '#333344';
+  pactx.fillText(`EN İYİ: ${pm.hiScore}`, PM_W - 4, PM_H - 4);
+
+  // Overlays
+  if (pm.gameOver || pm.won) {
+    pactx.fillStyle = 'rgba(5,5,8,0.88)'; pactx.fillRect(0, 0, PM_W, PM_H);
+    pactx.fillStyle = pm.won ? '#22c55e' : '#ef4444';
+    pactx.font = '36px VT323'; pactx.textAlign = 'center';
+    pactx.fillText(pm.won ? 'KAZANDIN!' : 'GAME OVER', PM_W/2, PM_H/2 - 20);
+    pactx.fillStyle = '#666677'; pactx.font = '22px VT323';
+    pactx.fillText(`SKOR: ${pm.score}`, PM_W/2, PM_H/2 + 16);
+    pactx.fillStyle = '#333344'; pactx.font = '18px VT323';
+    pactx.fillText('BAŞLAT\'a bas', PM_W/2, PM_H/2 + 50);
+  }
+}
+
+// ─── GAME LOOP ──────────────────────────────────────────────────
+function loop() {
+  updatePong();
+  drawPong();
+  snake.update();
+  drawSnake();
+  pm.update();
+  drawPacman();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
