@@ -6,114 +6,163 @@ import gamesData from '../../data/games.json';
 
 const { username } = Astro.params;
 
-// Fetch profile
 const { data: profile } = await supabase
   .from('profiles')
   .select('*')
   .eq('username', username)
   .single();
 
-if (!profile) {
-  return Astro.redirect('/lists');
-}
+if (!profile) return Astro.redirect('/lists');
 
-// Fetch user's public lists with item counts
 const { data: lists } = await supabase
   .from('lists')
-  .select('*, list_items(count)')
+  .select('*')
   .eq('user_id', profile.id)
   .eq('is_public', true)
   .order('updated_at', { ascending: false });
 
-// Fetch list items for cover icons
 const listIds = (lists || []).map(l => l.id);
 const { data: allItems } = listIds.length > 0
   ? await supabase.from('list_items').select('list_id, game_slug, position').in('list_id', listIds).order('position')
   : { data: [] };
 
-// Group items by list
 const itemsByList: Record<string, string[]> = {};
 for (const item of (allItems || [])) {
   if (!itemsByList[item.list_id]) itemsByList[item.list_id] = [];
   itemsByList[item.list_id].push(item.game_slug);
 }
 
-// Game cover lookup
 const gmap: Record<string, any> = {};
 for (const g of gamesData as any[]) gmap[g.slug] = g;
 
+const totalGames = new Set(Object.values(itemsByList).flat()).size;
 const joinDate = new Date(profile.created_at).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
+const displayName = profile.display_name || profile.username;
+const initials = displayName[0].toUpperCase();
+
+// Hero background: first cover from first list
+const heroCoverSlug = Object.values(itemsByList)[0]?.[0];
+const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
 ---
 
-<Layout title={`${profile.display_name || profile.username} — Listeler`}>
+<Layout title={`${displayName} — Profil`}>
 
-  <!-- Profile header -->
-  <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 48px; padding-bottom: 40px; border-bottom: 1px solid #1a1a1a;">
-    <div style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; background: #111; border: 2px solid #222; flex-shrink: 0;">
-      {profile.avatar_url ? (
-        <img src={profile.avatar_url} alt={profile.username} style="width: 100%; height: 100%; object-fit: cover;" />
-      ) : (
-        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: #e5c46b;">
-          {(profile.display_name || profile.username)[0].toUpperCase()}
+  <!-- Hero -->
+  <div style="position: relative; margin: -40px -40px 0; padding: 60px 40px 40px; overflow: hidden; min-height: 240px; display: flex; align-items: flex-end;">
+    <!-- Background blur -->
+    {heroCover && (
+      <div style={`position: absolute; inset: 0; background-image: url('${heroCover}'); background-size: cover; background-position: center; filter: blur(40px) brightness(0.25); transform: scale(1.1);`}></div>
+    )}
+    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.7) 60%, #0a0a0a 100%);"></div>
+
+    <!-- Profile info -->
+    <div style="position: relative; display: flex; align-items: flex-end; gap: 28px; width: 100%; flex-wrap: wrap;">
+      <!-- Avatar -->
+      <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; background: #111; border: 3px solid rgba(255,255,255,0.1); flex-shrink: 0; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+        {profile.avatar_url ? (
+          <img src={profile.avatar_url} alt={displayName} style="width: 100%; height: 100%; object-fit: cover;" />
+        ) : (
+          <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 700; color: #e5c46b; background: #111;">
+            {initials}
+          </div>
+        )}
+      </div>
+      <!-- Name + stats -->
+      <div style="flex: 1; min-width: 200px;">
+        <p style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.12em; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px;">Profil</p>
+        <h1 style="font-size: clamp(28px, 5vw, 52px); font-weight: 700; letter-spacing: -0.04em; margin: 0 0 12px; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.5);">{displayName}</h1>
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <span style="font-size: 13px; color: #aaa;">
+            <strong style="color: #e5e5e5;">{(lists || []).length}</strong> liste
+          </span>
+          {totalGames > 0 && (
+            <span style="font-size: 13px; color: #aaa;">
+              <strong style="color: #e5e5e5;">{totalGames}</strong> oyun
+            </span>
+          )}
+          <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">{joinDate}'dan beri</span>
         </div>
-      )}
-    </div>
-    <div>
-      <h1 style="font-size: 22px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.02em;">{profile.display_name || profile.username}</h1>
-      <p style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px;">@{profile.username}</p>
-      <p style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">{(lists || []).length} liste · {joinDate}'dan beri</p>
-    </div>
-    <div id="ownActions" style="display: none; margin-left: auto;">
-      <a href="/lists/create"
-        style="background: #e5c46b; color: #0a0a0a; padding: 10px 20px; font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace; text-decoration: none; transition: opacity 0.15s;"
-        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-        + Yeni Liste
-      </a>
+      </div>
+      <!-- Own profile actions -->
+      <div id="ownActions" style="display: none; align-self: center; gap: 10px; flex-wrap: wrap;">
+        <a href="/lists/create"
+          style="background: #e5c46b; color: #0a0a0a; padding: 10px 22px; font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.15s;"
+          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          + Yeni Liste
+        </a>
+        <a href="/auth/logout"
+          style="border: 1px solid #333; color: #555; padding: 10px 16px; font-size: 12px; font-family: 'JetBrains Mono', monospace; text-decoration: none; transition: all 0.15s;"
+          onmouseover="this.style.borderColor='#555';this.style.color='#888'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">
+          Çıkış
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Lists -->
-  {(!lists || lists.length === 0) ? (
-    <div style="text-align: center; padding: 64px 0; color: #444; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
-      Henüz liste yok.
-    </div>
-  ) : (
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      {lists.map(list => {
-        const slugs = itemsByList[list.id] || [];
-        const count = slugs.length;
-        return (
-          <a href={`/lists/u/${list.id}`}
-            style="display: block; background: #111; border: 1px solid #1a1a1a; padding: 20px 22px; transition: border-color 0.15s;"
-            onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1a1a1a'">
-            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
-              <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">{list.title}</h2>
-              <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace; flex-shrink: 0;">{count} oyun</span>
-            </div>
-            {list.description && (
-              <p style="font-size: 12px; color: #555; margin: 0 0 12px; line-height: 1.5;">{list.description}</p>
-            )}
-            {slugs.length > 0 && (
-              <div style="display: flex; gap: 3px; flex-wrap: wrap;">
-                {slugs.slice(0, 20).map(slug => {
-                  const g = gmap[slug];
-                  const cover = g?.coverUrl;
-                  return cover ? (
-                    <div style="width: 36px; height: 36px; overflow: hidden; border: 1px solid #1a1a1a; flex-shrink: 0;">
-                      <img src={cover} alt="" loading="lazy"
-                        style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" />
-                    </div>
-                  ) : <div style="width: 36px; height: 36px; background: #0d0d0d; border: 1px solid #111;"></div>;
-                })}
+  <!-- Lists section -->
+  <div style="margin-top: 48px;">
+    <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 20px;">
+      Genel Listeler
+    </p>
+
+    {(!lists || lists.length === 0) ? (
+      <div style="text-align: center; padding: 80px 0; color: #333; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+        Henüz liste yok.
+      </div>
+    ) : (
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
+        {lists.map(list => {
+          const slugs = itemsByList[list.id] || [];
+          const covers = slugs.slice(0, 4).map(s => gmap[s]?.coverUrl).filter(Boolean);
+          const updatedStr = new Date(list.updated_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+          return (
+            <a href={`/lists/u/${list.id}`}
+              style="display: flex; flex-direction: column; gap: 0; background: #111; transition: background 0.15s; text-decoration: none;"
+              onmouseover="this.style.background='#161616'" onmouseout="this.style.background='#111'">
+
+              <!-- Mosaic cover (2x2) -->
+              <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+                {covers.length === 0 ? (
+                  <div style="width: 100%; height: 100%; background: #0d0d0d; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 32px; color: #222;">♟</span>
+                  </div>
+                ) : covers.length === 1 ? (
+                  <img src={covers[0]} alt="" loading="lazy"
+                    style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" />
+                ) : (
+                  <div style={`display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1px; background: #0a0a0a; width: 100%; height: 100%;`}>
+                    {[0,1,2,3].map(i => (
+                      covers[i] ? (
+                        <img src={covers[i]} alt="" loading="lazy"
+                          style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" />
+                      ) : (
+                        <div style="background: #0d0d0d;"></div>
+                      )
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </a>
-        );
-      })}
-    </div>
-  )}
+
+              <!-- Info -->
+              <div style="padding: 12px 14px 14px;">
+                <h3 style="font-size: 13px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; line-height: 1.3; color: #e5e5e5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{list.title}</h3>
+                <p style="font-size: 11px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;">{slugs.length} oyun · {updatedStr}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+  </div>
 
 </Layout>
+
+<style>
+  /* Compensate for Layout padding to make hero full-bleed */
+  :global(main) {
+    padding-top: 0 !important;
+  }
+</style>
 
 <script define:vars={{ profileId: profile.id }}>
   import { createClient } from '@supabase/supabase-js';
@@ -122,8 +171,9 @@ const joinDate = new Date(profile.created_at).toLocaleDateString('tr-TR', { mont
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
   supabase.auth.getUser().then(({ data: { user } }) => {
-    if (user && user.id === profileId) {
-      document.getElementById('ownActions')!.style.display = 'block';
+    if (user?.id === profileId) {
+      const el = document.getElementById('ownActions');
+      if (el) el.style.display = 'flex';
     }
   });
 </script>
