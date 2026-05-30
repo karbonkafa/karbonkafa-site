@@ -44,29 +44,69 @@ const apps = [
     </div>
   </div>
 
-  <!-- Radio widget -->
-  <div class="px-window" style="margin-bottom: 12px; border-color: #3b82f644;">
-    <div class="px-titlebar" style="border-left-color: #3b82f6;">
-      <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE</span>
-      <div class="px-btns">
-        <span class="px-btn" id="radio-min">─</span>
-        <span class="px-btn" id="radio-close" style="cursor:pointer;">×</span>
+  <!-- Radio + System Info bar -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+
+    <!-- Radio -->
+    <div class="px-window" style="border-color: #3b82f644;">
+      <div class="px-titlebar" style="border-left-color: #3b82f6;">
+        <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE</span>
+        <div class="px-btns">
+          <span class="px-btn" id="radio-close" style="cursor:pointer;">×</span>
+        </div>
+      </div>
+      <div id="radio-body" style="padding: 10px 14px; display: flex; align-items: center; gap: 14px;">
+        <button id="radio-play"
+          style="font-family:'VT323',monospace;font-size:20px;background:#0d0d12;border:2px solid #3b82f6;color:#3b82f6;padding:5px 16px;cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;flex-shrink:0;"
+          onmouseover="this.style.background='#0a1020'" onmouseout="this.style.background='#0d0d12'">
+          ▶ BAŞLAT
+        </button>
+        <div id="radio-status" style="display:flex;align-items:center;gap:6px;flex:1;">
+          <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
+          <span id="radio-label" style="font-family:'VT323',monospace;font-size:15px;color:#555566;letter-spacing:0.04em;">HAZIR</span>
+        </div>
+        <input id="radio-vol" type="range" min="0" max="100" value="70"
+          style="width:70px;accent-color:#3b82f6;flex-shrink:0;" />
       </div>
     </div>
-    <div id="radio-body" style="padding: 12px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-      <button id="radio-play"
-        style="font-family:'VT323',monospace;font-size:22px;background:#0d0d12;border:2px solid #3b82f6;color:#3b82f6;padding:6px 18px;cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;flex-shrink:0;"
-        onmouseover="this.style.background='#0a1020'" onmouseout="this.style.background='#0d0d12'">
-        ▶ BAŞLAT
-      </button>
-      <div id="radio-status" style="display:flex;align-items:center;gap:6px;">
-        <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
-        <span id="radio-label" style="font-family:'VT323',monospace;font-size:15px;color:#555566;letter-spacing:0.04em;">HAZIR</span>
+
+    <!-- System Info -->
+    <div class="px-window">
+      <div class="px-titlebar">
+        <span class="px-title">🖥 SİSTEM</span>
+        <div class="px-btns"><span class="px-btn">─</span></div>
       </div>
-      <input id="radio-vol" type="range" min="0" max="100" value="70"
-        style="width:80px;accent-color:#3b82f6;flex-shrink:0;" />
+      <div style="padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+        <!-- Clock -->
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span id="sysDate2" style="font-family:'VT323',monospace;font-size:14px;color:#555566;"></span>
+          <span id="sysClock2" style="font-family:'VT323',monospace;font-size:22px;color:#aaaacc;"></span>
+        </div>
+        <!-- Auth -->
+        <div style="display:flex;align-items:center;gap:8px;">
+          <a id="sysLogin" href="/auth/login" style="display:none;font-family:'VT323',monospace;font-size:16px;color:#888899;border:1px solid #1e1e2e;padding:4px 10px;text-decoration:none;transition:all 0.1s;"
+            onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#888899';this.style.borderColor='#1e1e2e'">
+            👤 GİRİŞ
+          </a>
+          <span id="sysUser" style="display:none;font-family:'VT323',monospace;font-size:15px;color:#aaaacc;"></span>
+        </div>
+        <!-- Lang -->
+        <button id="langToggle2"
+          style="font-family:'VT323',monospace;font-size:16px;background:#0d0d12;border:1px solid #e5c46b44;color:#e5c46b88;padding:4px 10px;cursor:pointer;transition:all 0.1s;"
+          onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b88';this.style.borderColor='#e5c46b44'">
+          EN
+        </button>
+      </div>
     </div>
+
   </div>
+
+  <!-- Mobile: stack -->
+  <style>
+    @media (max-width: 600px) {
+      .radio-sys-row { grid-template-columns: 1fr !important; }
+    }
+  </style>
 
   <!-- Bento grid -->
   <div class="bento">
@@ -253,16 +293,33 @@ const apps = [
 </style>
 
 <script>
-  // System clock
+  // System clock (top bar + sys panel)
   function updateClock() {
     const now = new Date();
-    const c = document.getElementById('osClock');
-    const d = document.getElementById('osDate');
-    if (c) c.textContent = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    if (d) d.textContent = now.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const time = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const date = now.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const c = document.getElementById('osClock'); if (c) c.textContent = time;
+    const d = document.getElementById('osDate'); if (d) d.textContent = date;
+    const c2 = document.getElementById('sysClock2'); if (c2) c2.textContent = time;
+    const d2 = document.getElementById('sysDate2'); if (d2) d2.textContent = date;
   }
   updateClock();
   setInterval(updateClock, 1000);
+
+  // Sys panel lang toggle (mirrors main)
+  document.getElementById('langToggle2')?.addEventListener('click', () => {
+    document.getElementById('langToggle')?.click();
+  });
+
+  // Sys panel auth
+  import { createClient as sbCreate } from '@supabase/supabase-js';
+  const sbSys = sbCreate(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_ANON_KEY);
+  sbSys.auth.getUser().then(async ({ data: { user } }) => {
+    if (!user) { document.getElementById('sysLogin')!.style.display = 'inline-flex'; return; }
+    const { data: p } = await sbSys.from('profiles').select('username').eq('id', user.id).single();
+    const el = document.getElementById('sysUser');
+    if (el && p) { el.textContent = '👤 ' + p.username.toUpperCase(); el.style.display = 'inline'; }
+  });
 
   // GTA countdown
   const target = new Date('2026-11-19T10:00:00Z').getTime();
