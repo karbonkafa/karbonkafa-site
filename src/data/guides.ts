@@ -1,5 +1,5 @@
 export const guides: Record<string, { path: string; trophy: string; missable: number; hours: string }> = {
-  'the-witcher-3-wild-hunt-game-of-the-year-edition': {
+  "the-witcher-3-wild-hunt-game-of-the-year-edition': {
     path: '/guides/witcher-3',
     trophy: 'Platinum',
     missable: 19,
@@ -50,6 +50,6 @@ export const achievementLists: Record<string, Array<{ name: string; missable: bo
     { name: 'Brawl Master', missable: true, section: 'Parent Game' },
     { name: 'Fast and Furious', missable: true, section: 'Parent Game' },
     { name: 'Fist of the South Star', missable: false, section: 'Parent Game' },
-    { name: 'Ran the Gauntlet', missable: false, section: 'Parent Game' },
+    { name: 'Ran the Gauntlet', missable: false, section: 'Parent Game" },
   ],
 };

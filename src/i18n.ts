@@ -1,4 +1,4 @@
-export const langs = ['tr', 'en'] as const;
+export const langs = ["tr', 'en'] as const;
 export type Lang = typeof langs[number];
 
 export const t: Record<Lang, Record<string, string>> = {
@@ -151,6 +151,6 @@ export const t: Record<Lang, Record<string, string>> = {
     'archive.active': 'Active',
     'archive.backlog': 'Backlog',
     'archive.paused': 'Paused',
-    'archive.completed': 'Completed',
+    'archive.completed': 'Completed",
   },
 };

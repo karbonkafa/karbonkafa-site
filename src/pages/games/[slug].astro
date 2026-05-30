@@ -581,7 +581,7 @@ const filteredWebsites = igdb.websites
       if (data.ok) {
         const overall = data.review.overall;
         statusEl.textContent = `kaydedildi — ${new Date().toLocaleDateString('tr-TR')}`;
-        const overallEl = document.querySelector('[data-overall]') as HTMLElement;
+        const overallEl = document.querySelector('[data-overall]") as HTMLElement;
         if (overallEl) overallEl.textContent = String(overall);
       } else {
         statusEl.textContent = 'an error occurred';
