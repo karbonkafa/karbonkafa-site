@@ -33,10 +33,10 @@ const apps = [
   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 6px 0; border-bottom: 1px solid #1e1e2e;">
     <div style="display: flex; align-items: center; gap: 16px;">
       <span style="font-family: 'VT323', monospace; font-size: 22px; color: #e5c46b; letter-spacing: 0.1em;">KARBON OS</span>
-      <span style="font-family: 'VT323', monospace; font-size: 14px; color: #2a2a3a;">v2026.07</span>
+      <span style="font-family: 'VT323', monospace; font-size: 14px; color: #555566;">v2026.07</span>
     </div>
     <div style="display: flex; align-items: center; gap: 20px;">
-      <span id="osDate" style="font-family: 'VT323', monospace; font-size: 16px; color: #444455;"></span>
+      <span id="osDate" style="font-family: 'VT323', monospace; font-size: 16px; color: #777788;"></span>
       <span id="osClock" style="font-family: 'VT323', monospace; font-size: 20px; color: #666677;"></span>
     </div>
   </div>
@@ -63,10 +63,10 @@ const apps = [
                     style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.8;" />
                 </div>
               )}
-              <span style="font-family: 'VT323', monospace; font-size: 12px; color: #3a3a5a; letter-spacing: 0.04em; display: block; margin-bottom: 5px;">{dateStr}</span>
+              <span style="font-family: 'VT323', monospace; font-size: 14px; color: #666677; letter-spacing: 0.04em; display: block; margin-bottom: 5px;">{dateStr}</span>
               <p style="font-size: 14px; font-weight: 500; color: #d0d0e0; margin: 0 0 6px; line-height: 1.4;">{article.data.title}</p>
               {article.data.excerpt && (
-                <p style="font-size: 12px; color: #555566; margin: 0; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">{article.data.excerpt}</p>
+                <p style="font-size: 13px; color: #778899; margin: 0; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">{article.data.excerpt}</p>
               )}
             </a>
           );
@@ -80,13 +80,13 @@ const apps = [
             <a href={`/news/${article.id}`}
               style="display: flex; align-items: baseline; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.1s;"
               onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
-              <span style="font-family: 'VT323', monospace; font-size: 12px; color: #2a2a3a; white-space: nowrap;">{dateStr}</span>
+              <span style="font-family: 'VT323', monospace; font-size: 13px; color: #778899; white-space: nowrap;">{dateStr}</span>
               <p style="font-size: 13px; color: #aaa; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">{article.data.title}</p>
             </a>
           );
         })}
-        <a href="/news" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 15px; color: #333344; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
-          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#333344'">
+        <a href="/news" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 15px; color: #666677; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
+          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#666677'">
           [ TÜM HABERLER → ]
         </a>
       </div>
@@ -119,7 +119,7 @@ const apps = [
         </div>
         <div id="worldWidget" style="display: flex; flex-direction: column;">
           <!-- Cities injected by JS -->
-          <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 12px; color: #2a2a3a; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
+          <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 13px; color: #778899; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
         </div>
       </div>
 
@@ -130,9 +130,9 @@ const apps = [
           <div class="px-btns"><span class="px-btn">×</span></div>
         </div>
         <div style="padding: 14px 16px; text-align: center;">
-          <p style="font-family: 'VT323', monospace; font-size: 12px; color: #444; margin: 0 0 6px; letter-spacing: 0.04em;">19 KASIM 2026'YA</p>
+          <p style="font-family: 'VT323', monospace; font-size: 14px; color: #666677; margin: 0 0 6px; letter-spacing: 0.04em;">19 KASIM 2026'YA</p>
           <div id="gtaPixelCount" style="font-family: 'VT323', monospace; font-size: 36px; color: #e5c46b; line-height: 1; margin-bottom: 4px;">-- GÜN</div>
-          <p style="font-family: 'VT323', monospace; font-size: 11px; color: #2a2a2a; margin: 0; letter-spacing: 0.04em;">GTA TARİHİ SEZONU</p>
+          <p style="font-family: 'VT323', monospace; font-size: 13px; color: #555566; margin: 0; letter-spacing: 0.04em;">GTA TARİHİ SEZONU</p>
         </div>
       </div>
     </div>
@@ -152,9 +152,9 @@ const apps = [
               onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">
               <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
                 <p style="font-family: 'VT323', monospace; font-size: 17px; color: #c8c8e0; margin: 0; letter-spacing: 0.02em;">{list.title}</p>
-                <span style="font-family: 'VT323', monospace; font-size: 12px; color: #333344; flex-shrink: 0;">{list.games.length} oyun</span>
+                <span style="font-family: 'VT323', monospace; font-size: 12px; color: #666677; flex-shrink: 0;">{list.games.length} oyun</span>
               </div>
-              <p style="font-size: 12px; color: #555566; margin: 0 0 8px; line-height: 1.45;">{list.description}</p>
+              <p style="font-size: 13px; color: #778899; margin: 0 0 8px; line-height: 1.45;">{list.description}</p>
               <div style="display: flex; gap: 2px; flex-wrap: wrap;">
                 {slugs.slice(0, 20).map((slug: string) => {
                   const g = gmap[slug];
@@ -169,8 +169,8 @@ const apps = [
             </a>
           );
         })}
-        <a href="/lists" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 15px; color: #333344; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
-          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#333344'">
+        <a href="/lists" style="display: block; padding: 10px 16px; font-family: 'VT323', monospace; font-size: 15px; color: #666677; text-align: center; letter-spacing: 0.06em; transition: color 0.1s;"
+          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#666677'">
           [ TÜM LİSTELER → ]
         </a>
       </div>
@@ -299,7 +299,7 @@ const apps = [
             ${wx ? `<div style="font-family:'VT323',monospace;font-size:11px;color:${wx.color};">${wx.icon} ${wx.label}</div>` : ''}
           </div>
           <div style="font-family:'VT323',monospace;font-size:17px;color:#c8c8e0;text-align:right;white-space:nowrap;" data-city-time="${city.tz}">${timeStr}</div>
-          <div style="font-family:'VT323',monospace;font-size:17px;min-width:36px;text-align:right;white-space:nowrap;color:${wx ? getWeather(w!.code).color : '#333344'};">${tempStr}</div>
+          <div style="font-family:'VT323',monospace;font-size:17px;min-width:36px;text-align:right;white-space:nowrap;color:${wx ? getWeather(w!.code).color : '#666677'};">${tempStr}</div>
         </div>
       `;
     }).join('');
