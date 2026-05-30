@@ -24,64 +24,10 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
   </head>
   <body style="background:#0a0a0a; color:#e5e5e5; margin:0;">
 
-    <!-- TV Ticker — OS style -->
-    <div id="tvTicker" style="background: #050508; border-bottom: 2px solid #1e1e2e; height: 26px; display: flex; align-items: center; overflow: hidden; position: sticky; top: 0; z-index: 101; box-shadow: 0 2px 0 #080810;">
-      <div style="background: #e5c46b; color: #0a0a0a; font-size: 10px; font-weight: 900; font-family: 'VT323', monospace; padding: 0 10px; height: 100%; display: flex; align-items: center; letter-spacing: 0.12em; flex-shrink: 0; white-space: nowrap;">
-        ▶ KARBON TV
-      </div>
-      <div style="width: 2px; height: 100%; background: #1e1e2e; flex-shrink: 0;"></div>
-      <div style="flex: 1; overflow: hidden; position: relative;">
-        <div id="tickerTrack" style="display: flex; gap: 0; white-space: nowrap; will-change: transform;">
-          <span id="tickerContent" style="font-size: 16px; color: #777788; font-family: 'VT323', monospace; padding: 0 32px; letter-spacing: 0.03em;"></span>
-        </div>
-      </div>
-      <a href="/schedule" style="border-left: 1px solid #1e1e2e; color: #666677; font-size: 16px; font-family: 'VT323', monospace; padding: 0 14px; height: 100%; display: flex; align-items: center; flex-shrink: 0; text-decoration: none; letter-spacing: 0.08em; transition: all 0.15s;"
-        onmouseover="this.style.color='#e5c46b';this.style.background='#0d0d12'" onmouseout="this.style.color='#666677';this.style.background='none'">
-        PROGRAM ›
-      </a>
-      <!-- Auth in ticker -->
-      <div style="border-left: 1px solid #1e1e2e; display: flex; align-items: center; height: 100%; flex-shrink: 0;">
-        <a id="tickerLogin" href="/auth/login"
-          style="display: none; align-items: center; padding: 0 12px; font-family: 'VT323', monospace; font-size: 15px; color: #666677; height: 100%; text-decoration: none; transition: all 0.1s;"
-          onmouseover="this.style.color='#e5c46b';this.style.background='#0d0d12'" onmouseout="this.style.color='#666677';this.style.background='none'">
-          👤 GİR
-        </a>
-        <div id="tickerUser" style="display: none; position: relative; height: 100%;">
-          <button id="tickerUserBtn" style="display: flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; padding: 0 10px; height: 100%;"
-            onmouseover="this.style.background='#0d0d12'" onmouseout="this.style.background='none'">
-            <div id="tickerAvatar" style="width: 18px; height: 18px; background: #1a1a2a; border: 1px solid #2a2a3a; display: flex; align-items: center; justify-content: center; font-family: 'VT323', monospace; font-size: 12px; color: #e5c46b; overflow: hidden; flex-shrink: 0;"></div>
-            <span id="tickerUname" style="font-family: 'VT323', monospace; font-size: 14px; color: #888899; white-space: nowrap;"></span>
-          </button>
-          <div id="tickerDropdown" style="display: none; position: absolute; top: 100%; right: 0; background: #080810; border: 2px solid #1e1e2e; min-width: 160px; z-index: 200; box-shadow: 4px 4px 0 #000;">
-            <a id="tickerProfileLink" href="#" style="display: block; padding: 9px 14px; font-family: 'VT323', monospace; font-size: 16px; color: #aaaacc; text-decoration: none; border-bottom: 1px solid #1e1e2e; transition: all 0.1s;"
-              onmouseover="this.style.background='#0d0d1a';this.style.color='#e5e5e5'" onmouseout="this.style.background='none';this.style.color='#aaaacc'">👤 PROFİL</a>
-            <a href="/lists/create" style="display: block; padding: 9px 14px; font-family: 'VT323', monospace; font-size: 16px; color: #aaaacc; text-decoration: none; border-bottom: 1px solid #1e1e2e; transition: all 0.1s;"
-              onmouseover="this.style.background='#0d0d1a';this.style.color='#e5e5e5'" onmouseout="this.style.background='none';this.style.color='#aaaacc'">📋 YENİ LİSTE</a>
-            <a href="/u/edit" style="display: block; padding: 9px 14px; font-family: 'VT323', monospace; font-size: 16px; color: #aaaacc; text-decoration: none; border-bottom: 1px solid #1e1e2e; transition: all 0.1s;"
-              onmouseover="this.style.background='#0d0d1a';this.style.color='#e5e5e5'" onmouseout="this.style.background='none';this.style.color='#aaaacc'">⚙ DÜZENLE</a>
-            <a href="/auth/logout" style="display: block; padding: 9px 14px; font-family: 'VT323', monospace; font-size: 16px; color: #886666; text-decoration: none; transition: all 0.1s;"
-              onmouseover="this.style.background='#1a0808';this.style.color='#ef4444'" onmouseout="this.style.background='none';this.style.color='#886666'">✕ ÇIKIŞ</a>
-          </div>
-        </div>
-      </div>
-      <!-- Lang in ticker -->
-      <button id="langToggle"
-        style="border-left: 1px solid #1e1e2e; background: none; border-top: none; border-bottom: none; border-right: none; color: #e5c46b88; font-family: 'VT323', monospace; font-size: 15px; padding: 0 12px; height: 100%; cursor: pointer; flex-shrink: 0; transition: all 0.1s;"
-        onmouseover="this.style.background='#0d0d12';this.style.color='#e5c46b'"
-        onmouseout="this.style.background='none';this.style.color='#e5c46b88'">
-        EN
-      </button>
-    </div>
+    <!-- Hidden lang toggle (used by homepage system panel) -->
+    <button id="langToggle" style="display:none;">EN</button>
 
-    <!-- Minimal nav — logo only -->
-    <nav style="border-bottom: 2px solid #1e1e2e; background: #080810; position: sticky; top: 26px; z-index: 100; height: 40px; display: flex; align-items: center; padding: 0 16px;">
-      <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
-        <div style="width: 20px; height: 20px; background: #e5c46b; display: flex; align-items: center; justify-content: center; font-family: 'VT323', monospace; font-size: 13px; color: #000; font-weight: 900;">K</div>
-        <span style="font-family: 'VT323', monospace; font-size: 18px; color: #e5c46b; letter-spacing: 0.06em; line-height: 1;">KARBON<span style="color: #555566;">OS</span></span>
-      </a>
-    </nav>
-
-    <main style="max-width: 960px; margin: 0 auto; padding: 48px 24px;">
+    <main style="max-width: 960px; margin: 0 auto; padding: 40px 24px;">
       <slot />
     </main>
 
@@ -141,69 +87,6 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
-  // Auth — ticker elements
-  const loginEl = document.getElementById('tickerLogin');
-  const wrapEl = document.getElementById('tickerUser');
-  const avatarEl = document.getElementById('tickerAvatar');
-  const profileLinkEl = document.getElementById('tickerProfileLink') as HTMLAnchorElement | null;
-  const dropdownEl = document.getElementById('tickerDropdown');
-  const profileBtnEl = document.getElementById('tickerUserBtn');
+  // Auth removed from global layout — handled by homepage system panel
 
-  sb.auth.getUser().then(async ({ data: { user } }) => {
-    if (!user) {
-      if (loginEl) loginEl.style.display = 'flex';
-      return;
-    }
-    const { data: profile } = await sb.from('profiles').select('username,display_name,avatar_url').eq('id', user.id).single();
-    if (!profile || !wrapEl || !avatarEl) return;
-    if (profileLinkEl) profileLinkEl.href = `/u/${profile.username}`;
-    if (profile.avatar_url) {
-      const img = document.createElement('img');
-      img.src = profile.avatar_url;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-      avatarEl.innerHTML = '';
-      avatarEl.appendChild(img);
-    } else {
-      avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
-    }
-    const unEl = document.getElementById('tickerUname');
-    if (unEl) unEl.textContent = profile.username.toUpperCase();
-    wrapEl.style.display = 'block';
-
-    profileBtnEl?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (dropdownEl) dropdownEl.style.display = dropdownEl.style.display === 'none' ? 'block' : 'none';
-    });
-    document.addEventListener('click', () => {
-      if (dropdownEl) dropdownEl.style.display = 'none';
-    });
-  });
-</script>
-
-<script>
-  // TV Ticker
-  (async () => {
-    try {
-      const res = await fetch('/api/ticker');
-      if (!res.ok) return;
-      const { text } = await res.json();
-      const content = document.getElementById('tickerContent');
-      const track = document.getElementById('tickerTrack');
-      if (!content || !track) return;
-      // Duplicate for seamless loop
-      content.textContent = text;
-      const clone = content.cloneNode(true) as HTMLElement;
-      track.appendChild(clone);
-      let x = 0;
-      const speed = 0.4;
-      const w = content.offsetWidth + 64;
-      function tick() {
-        x -= speed;
-        if (x <= -w) x = 0;
-        track.style.transform = `translateX(${x}px)`;
-        requestAnimationFrame(tick);
-      }
-      tick();
-    } catch(e) {}
-  })();
 </script>
