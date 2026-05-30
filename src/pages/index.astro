@@ -23,6 +23,7 @@ const apps = [
   { href: '/yemek',    icon: '🍜', label: 'YEMEK' },
   { href: '/mekan',    icon: '📍', label: 'MEKAN' },
   { href: '/quiz',     icon: '🎮', label: 'QUİZ' },
+  { href: '/arcade',   icon: '🕹', label: 'ARCADE' },
 ];
 ---
 
@@ -196,29 +197,32 @@ const apps = [
 <style>
   .bento {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-areas:
-      "apps  apps  apps"
-      "news  news  right"
-      "lists quiz  right";
+      "apps   apps"
+      "right  right"
+      "news   news"
+      "lists  quiz";
     gap: 12px;
     align-items: start;
   }
   .bento-apps  { grid-area: apps; }
   .bento-news  { grid-area: news; }
-  .bento-right { grid-area: right; display: flex; flex-direction: column; }
+  .bento-right { grid-area: right; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .bento-lists { grid-area: lists; }
   .bento-quiz  { grid-area: quiz; }
 
-  @media (max-width: 900px) {
+  @media (max-width: 700px) {
     .bento {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       grid-template-areas:
-        "apps  apps"
-        "news  news"
-        "right right"
-        "lists quiz";
+        "apps"
+        "right"
+        "news"
+        "lists"
+        "quiz";
     }
+    .bento-right { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
     .bento {
