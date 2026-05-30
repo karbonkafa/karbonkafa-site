@@ -35,11 +35,11 @@ for (const g of games) gmap[g.slug] = g;
             const g = gmap[item.slug];
             const cover = g?.coverUrl;
             return cover ? (
-              <div style="width: 36px; height: 36px; overflow: hidden; border: 1px solid #1a1a1a; flex-shrink: 0;" title={g?.title || ''}>
+              <div style="width: 48px; height: 48px; overflow: hidden; border: 1px solid #1a1a1a; flex-shrink: 0;" title={g?.title || ''}>
                 <img src={cover} alt="" loading="lazy"
                   style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" />
               </div>
-            ) : <div style="width: 36px; height: 36px; background: #0d0d0d; border: 1px solid #111; flex-shrink: 0;"></div>;
+            ) : <div style="width: 48px; height: 48px; background: #0d0d0d; border: 1px solid #111; flex-shrink: 0;"></div>;
           })}
         </div>
       </a>
