@@ -82,6 +82,14 @@ const refRows = [
   ...(igdb.totalRating ? [{ key: 'game.igdbRating', label: 'IGDB', value: `${igdb.totalRating} / 100`, color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(game.steamReviews?.total > 0 ? [{ key: '', label: 'Steam', value: `${game.steamReviews.percent}% · ${game.steamReviews.label} (${game.steamReviews.total.toLocaleString()})`, color: game.steamReviews.percent >= 80 ? '#22c55e' : game.steamReviews.percent >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(game.achievementCount ? [{ key: 'game.achievements', label: 'Achievements', value: `${game.achievementCount} total`, color: '#888' }] : []),
+  ...(game.price ? [{
+    key: '',
+    label: 'Fiyat',
+    value: game.price.discount > 0
+      ? `${game.price.current} (-%${game.price.discount})`
+      : (game.price.current || 'Ücretsiz'),
+    color: game.price.discount > 0 ? '#22c55e' : '#888'
+  }] : []),
   ...(hours ? [{ key: 'game.played', label: 'Played', value: hours, color: '#e5c46b' }] : []),
   ...(review.overall ? [{ key: 'game.karbonScore', label: 'Karbon Score', value: `${review.overall}/10`, color: '#e5c46b' }] : []),
 ];
@@ -189,9 +197,45 @@ const filteredWebsites = igdb.websites
         </div>
       )}
 
+      <!-- Buy buttons -->
+      {(game.stores?.steam || game.stores?.epic || game.stores?.psn || game.stores?.gog || game.stores?.xbox) && (
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          {game.stores?.steam?.uid && (
+            <a href={`https://store.steampowered.com/app/${game.stores.steam.uid}/`} target="_blank" rel="noopener"
+              style="font-size: 13px; background: #4a9eed22; border: 1px solid #4a9eed66; color: #4a9eed; padding: 8px 16px; font-weight: 500; transition: all 0.15s; display: flex; align-items: center; gap: 6px;"
+              onmouseover="this.style.background='#4a9eed33'" onmouseout="this.style.background='#4a9eed22'">
+              Steam'de Satın Al →
+            </a>
+          )}
+          {game.stores?.psn?.url && (
+            <a href={game.stores.psn.url} target="_blank" rel="noopener"
+              style="font-size: 13px; background: #0072ce22; border: 1px solid #0072ce66; color: #0072ce; padding: 8px 16px; font-weight: 500; transition: all 0.15s;"
+              onmouseover="this.style.background='#0072ce33'" onmouseout="this.style.background='#0072ce22'">
+              PS Store'da Satın Al →
+            </a>
+          )}
+          {game.stores?.epic?.url && (
+            <a href={game.stores.epic.url} target="_blank" rel="noopener"
+              style="font-size: 13px; background: #33333366; border: 1px solid #555; color: #ccc; padding: 8px 16px; font-weight: 500; transition: all 0.15s;"
+              onmouseover="this.style.background='#44444466'" onmouseout="this.style.background='#33333366'">
+              Epic'te Satın Al →
+            </a>
+          )}
+          {game.stores?.gog?.url && (
+            <a href={game.stores.gog.url} target="_blank" rel="noopener"
+              style="font-size: 13px; background: #a1253a22; border: 1px solid #a1253a66; color: #a1253a; padding: 8px 16px; font-weight: 500; transition: all 0.15s;"
+              onmouseover="this.style.background='#a1253a33'" onmouseout="this.style.background='#a1253a22'">
+              GOG'da Satın Al →
+            </a>
+          )}
+        </div>
+      )}
+
       <!-- Summary -->
-      {game.summary && (
-        <p style="font-size: 14px; color: #888; line-height: 1.7; margin: 0;">{game.summary}</p>
+      {(game.summaryTr || game.summary) && (
+        <p style="font-size: 14px; color: #888; line-height: 1.7; margin: 0;">
+          {game.summaryTr || game.summary}
+        </p>
       )}
     </div>
   </div>
