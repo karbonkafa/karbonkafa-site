@@ -33,6 +33,14 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
         <a href="/news" data-i18n="nav.news" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">{t.tr['nav.news']}</a>
         <a href="/schedule" style="transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#666'">Akış</a>
         <a href="/quiz" style="transition: color 0.15s; color: #e5c46b44;" onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5c46b44'">Quiz</a>
+        <!-- Auth -->
+        <div id="navAuth" style="display: flex; align-items: center; gap: 12px;">
+          <a id="navLogin" href="/auth/login" style="font-size: 12px; border: 1px solid #333; color: #555; padding: 4px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; display: none;"
+            onmouseover="this.style.borderColor='#555';this.style.color='#aaa'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">Giriş</a>
+          <a id="navProfile" href="#" style="display: none; align-items: center; gap: 6px; text-decoration: none;">
+            <div id="navAvatar" style="width: 26px; height: 26px; border-radius: 50%; overflow: hidden; background: #222; border: 1px solid #333; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #e5c46b;"></div>
+          </a>
+        </div>
         <!-- Lang toggle -->
         <button id="langToggle" style="background: none; border: 1px solid #e5c46b44; color: #e5c46b; font-size: 11px; padding: 3px 10px; cursor: pointer; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; transition: all 0.15s;"
           onmouseover="this.style.background='#e5c46b22'"
@@ -93,5 +101,36 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
 
   btn.addEventListener('click', () => {
     applyLang(lang === 'tr' ? 'en' : 'tr');
+  });
+</script>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+  const sb = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+  const loginEl = document.getElementById('navLogin');
+  const profileEl = document.getElementById('navProfile') as HTMLAnchorElement | null;
+  const avatarEl = document.getElementById('navAvatar');
+
+  sb.auth.getUser().then(async ({ data: { user } }) => {
+    if (!user) {
+      if (loginEl) loginEl.style.display = 'inline-flex';
+      return;
+    }
+    const { data: profile } = await sb.from('profiles').select('username,display_name,avatar_url').eq('id', user.id).single();
+    if (!profile || !profileEl || !avatarEl) return;
+    profileEl.href = `/u/${profile.username}`;
+    if (profile.avatar_url) {
+      const img = document.createElement('img');
+      img.src = profile.avatar_url;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      avatarEl.innerHTML = '';
+      avatarEl.appendChild(img);
+    } else {
+      avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
+    }
+    profileEl.style.display = 'flex';
   });
 </script>

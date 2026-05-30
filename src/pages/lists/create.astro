@@ -1,0 +1,225 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import gamesData from '../../data/games.json';
+
+const games = (gamesData as any[]).filter(g => !g.dlc && !g.external);
+const gameIndex = games.map(g => ({
+  slug: g.slug,
+  title: g.title,
+  cover: g.coverUrl || '',
+  genres: (g.genres || []).slice(0, 2).join(', '),
+}));
+---
+
+<Layout title="Liste Oluştur">
+  <div style="max-width: 720px; margin: 0 auto;">
+
+    <div style="margin-bottom: 40px;">
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 10px;">Yeni Liste</p>
+      <h1 style="font-size: 28px; font-weight: 600; letter-spacing: -0.03em; margin: 0;">Listeni Oluştur</h1>
+    </div>
+
+    <!-- Auth check -->
+    <div id="authWall" style="display: none; background: #111; border: 1px solid #222; padding: 32px; text-align: center; margin-bottom: 32px;">
+      <p style="font-size: 15px; color: #888; margin: 0 0 20px;">Liste oluşturmak için giriş yapman gerekiyor.</p>
+      <a href="/auth/login" style="background: #e5c46b; color: #0a0a0a; padding: 10px 24px; font-size: 13px; font-weight: 600; font-family: 'JetBrains Mono', monospace; text-decoration: none;">Giriş Yap →</a>
+    </div>
+
+    <div id="createForm">
+      <!-- Title -->
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Liste Adı</label>
+        <input id="listTitle" type="text" placeholder="Örn: Düşünmeye Zorlayanlar"
+          style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
+          onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'" />
+      </div>
+
+      <!-- Description -->
+      <div style="margin-bottom: 32px;">
+        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Açıklama <span style="color:#2a2a2a">(opsiyonel)</span></label>
+        <textarea id="listDesc" placeholder="Bu listeyi neden oluşturdun?"
+          rows="2"
+          style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical; transition: border-color 0.15s;"
+          onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'"></textarea>
+      </div>
+
+      <!-- Game search -->
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Oyun Ekle</label>
+        <div style="position: relative;">
+          <input id="gameSearch" type="text" placeholder="Oyun ara..."
+            style="width: 100%; background: #111; border: 1px solid #333; color: #e5e5e5; padding: 12px 14px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.15s;"
+            onfocus="this.style.borderColor='#555'" onblur="this.style.borderColor='#333'"
+            autocomplete="off" />
+          <div id="gameResults" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333; border-top: none; z-index: 20; max-height: 260px; overflow-y: auto;"></div>
+        </div>
+      </div>
+
+      <!-- Selected games -->
+      <div id="selectedGames" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; min-height: 0;"></div>
+
+      <!-- Save -->
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="saveBtn"
+          style="background: #e5c46b; border: none; color: #0a0a0a; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;"
+          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Listeyi Kaydet →
+        </button>
+        <p id="saveStatus" style="font-size: 12px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;"></p>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<script define:vars={{ gameIndex }}>
+  import { createClient } from '@supabase/supabase-js';
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  // Auth check
+  let currentUser = null;
+  let currentProfile = null;
+
+  supabase.auth.getUser().then(async ({ data: { user } }) => {
+    if (!user) {
+      document.getElementById('authWall').style.display = 'block';
+      document.getElementById('createForm').style.display = 'none';
+      return;
+    }
+    currentUser = user;
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+    currentProfile = profile;
+  });
+
+  // Game search
+  const selectedSlugs = new Set();
+  const selectedItems = []; // {slug, note}
+
+  const searchInput = document.getElementById('gameSearch');
+  const resultsEl = document.getElementById('gameResults');
+  const selectedEl = document.getElementById('selectedGames');
+
+  function normalize(s) {
+    return s.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  searchInput.addEventListener('input', () => {
+    const q = normalize(searchInput.value);
+    if (q.length < 2) { resultsEl.style.display = 'none'; return; }
+    const matches = gameIndex.filter(g => normalize(g.title).includes(q) && !selectedSlugs.has(g.slug)).slice(0, 8);
+    if (!matches.length) { resultsEl.style.display = 'none'; return; }
+    resultsEl.innerHTML = matches.map(g => `
+      <div class="game-result" data-slug="${g.slug}"
+        style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid #1a1a1a;transition:background 0.1s;"
+        onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='none'">
+        ${g.cover ? `<img src="${g.cover}" style="width:32px;height:32px;object-fit:cover;object-position:top;flex-shrink:0;border:1px solid #222;" loading="lazy"/>` : '<div style="width:32px;height:32px;background:#0d0d0d;border:1px solid #1a1a1a;flex-shrink:0;"></div>'}
+        <div>
+          <p style="font-size:13px;margin:0;color:#e5e5e5;">${g.title}</p>
+          ${g.genres ? `<p style="font-size:10px;margin:2px 0 0;color:#555;font-family:'JetBrains Mono',monospace;">${g.genres}</p>` : ''}
+        </div>
+      </div>
+    `).join('');
+    resultsEl.style.display = 'block';
+  });
+
+  resultsEl.addEventListener('click', e => {
+    const row = e.target.closest('.game-result');
+    if (!row) return;
+    const slug = row.dataset.slug;
+    const game = gameIndex.find(g => g.slug === slug);
+    if (!game || selectedSlugs.has(slug)) return;
+    selectedSlugs.add(slug);
+    selectedItems.push({ slug, note: '' });
+    renderSelected();
+    searchInput.value = '';
+    resultsEl.style.display = 'none';
+  });
+
+  document.addEventListener('click', e => {
+    if (!resultsEl.contains(e.target) && e.target !== searchInput) resultsEl.style.display = 'none';
+  });
+
+  function renderSelected() {
+    if (selectedItems.length === 0) {
+      selectedEl.style.minHeight = '0';
+      selectedEl.innerHTML = '';
+      return;
+    }
+    selectedEl.innerHTML = selectedItems.map((item, i) => {
+      const game = gameIndex.find(g => g.slug === item.slug);
+      return `
+        <div style="display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;background:#111;border:1px solid #1a1a1a;padding:10px 14px;">
+          ${game?.cover ? `<img src="${game.cover}" style="width:36px;height:36px;object-fit:cover;object-position:top;border:1px solid #222;" loading="lazy"/>` : '<div style="width:36px;height:36px;background:#0d0d0d;border:1px solid #1a1a1a;"></div>'}
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <span style="font-size:13px;color:#e5e5e5;">${game?.title || item.slug}</span>
+            <input type="text" placeholder="Not ekle (opsiyonel)..." value="${item.note}"
+              data-idx="${i}"
+              style="background:#0a0a0a;border:1px solid #222;color:#888;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;"
+              oninput="window.__updateNote(${i}, this.value)" />
+          </div>
+          <button onclick="window.__removeGame('${item.slug}')"
+            style="background:none;border:none;color:#444;cursor:pointer;font-size:16px;padding:4px;transition:color 0.15s;"
+            onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#444'">×</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.__removeGame = (slug) => {
+    const idx = selectedItems.findIndex(i => i.slug === slug);
+    if (idx !== -1) selectedItems.splice(idx, 1);
+    selectedSlugs.delete(slug);
+    renderSelected();
+  };
+
+  window.__updateNote = (idx, val) => {
+    if (selectedItems[idx]) selectedItems[idx].note = val;
+  };
+
+  // Save
+  document.getElementById('saveBtn').addEventListener('click', async () => {
+    if (!currentUser) { window.location.href = '/auth/login'; return; }
+    const title = document.getElementById('listTitle').value.trim();
+    const desc = document.getElementById('listDesc').value.trim();
+    if (!title) {
+      document.getElementById('saveStatus').textContent = 'Liste adı gerekli.';
+      return;
+    }
+    if (selectedItems.length === 0) {
+      document.getElementById('saveStatus').textContent = 'En az 1 oyun ekle.';
+      return;
+    }
+
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = 'Kaydediliyor...';
+    btn.disabled = true;
+
+    const { data: list, error: listErr } = await supabase.from('lists').insert({
+      user_id: currentUser.id,
+      title,
+      description: desc,
+      is_public: true,
+    }).select().single();
+
+    if (listErr || !list) {
+      document.getElementById('saveStatus').textContent = 'Hata: ' + (listErr?.message || 'Bilinmeyen');
+      btn.textContent = 'Listeyi Kaydet →';
+      btn.disabled = false;
+      return;
+    }
+
+    const items = selectedItems.map((item, i) => ({
+      list_id: list.id,
+      game_slug: item.slug,
+      note: item.note,
+      position: i,
+    }));
+    await supabase.from('list_items').insert(items);
+
+    window.location.href = `/lists/u/${list.id}`;
+  });
+</script>
