@@ -3,68 +3,162 @@ import Layout from '../layouts/Layout.astro';
 import scheduleData from '../data/schedule.json';
 import gamesData from '../data/games.json';
 
-const schedule = scheduleData as any[];
-const games = gamesData as any[];
+const months = scheduleData as any[];
 const gmap: Record<string, any> = {};
-for (const g of games) gmap[g.slug] = g;
+for (const g of gamesData as any[]) gmap[g.slug] = g;
 
-const days = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
-const todayIdx = (new Date().getDay() + 6) % 7; // 0=Mon
+// Active month (first one for now)
+const month = months[0];
 
-function getBanner(slug: string): string {
-  const g = gmap[slug];
-  if (!g) return '';
-  const sid = g.stores?.steam?.uid;
-  if (sid) return `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${sid}/header.jpg`;
-  return g.coverUrl || '';
+const showMap: Record<string, any> = {};
+for (const s of month.shows) showMap[s.id] = s;
+
+// Build calendar grid (weeks starting Monday)
+const [year, mon] = month.month.split('-').map(Number);
+const firstDay = new Date(year, mon - 1, 1);
+const lastDay = new Date(year, mon, 0);
+const totalDays = lastDay.getDate();
+
+// Offset: Monday=0 ... Sunday=6
+const startOffset = (firstDay.getDay() + 6) % 7;
+
+// Build day lookup
+const dayMap: Record<string, any[]> = {};
+for (const d of month.days) {
+  dayMap[d.date] = d.slots || [];
 }
+
+const today = new Date().toISOString().slice(0, 10);
+
+// Days of week labels
+const DOW = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+
+// Build weeks array
+const cells: (number | null)[] = [
+  ...Array(startOffset).fill(null),
+  ...Array.from({ length: totalDays }, (_, i) => i + 1),
+];
+while (cells.length % 7 !== 0) cells.push(null);
+const weeks: (number | null)[][] = [];
+for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
 ---
 
-<Layout title="Yayın Akışı" description="Bu hafta ne yayınlanıyor.">
+<Layout title="Yayın Akışı — Karbon TV">
 
-  <div style="margin-bottom: 48px;">
-    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Yayın Akışı</p>
-    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Bu Hafta</h1>
-    <p style="font-size: 15px; color: #666; margin: 0;">Her gün hangi oyun, hangi saat.</p>
+  <!-- Channel header -->
+  <div style="border: 1px solid #2a2a2a; background: #0d0d0d; margin-bottom: 2px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div style="border: 2px solid #e5c46b; padding: 4px 10px; display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 10px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.15em; font-weight: 700;">CH</span>
+        <span style="font-size: 18px; font-weight: 700; color: #e5c46b; font-family: 'JetBrains Mono', monospace; line-height: 1;">01</span>
+      </div>
+      <div>
+        <p style="font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.08em; text-transform: uppercase;">KARBON TV</p>
+        <p style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; margin: 2px 0 0; letter-spacing: 0.04em;">{month.tagline}</p>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse 2s infinite;"></div>
+      <span style="font-size: 12px; color: #ef4444; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em;">ON AIR</span>
+      <span style="font-size: 14px; font-weight: 600; color: #888; font-family: 'JetBrains Mono', monospace;">{month.label}</span>
+    </div>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a;">
-    {schedule.map((entry, i) => {
-      const isToday = i === todayIdx;
-      const banner = getBanner(entry.game);
+  <!-- Legend / Shows -->
+  <div style="border: 1px solid #2a2a2a; border-top: none; background: #0a0a0a; padding: 14px 24px; display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
+    {month.shows.map((show: any) => {
+      const game = gmap[show.game];
       return (
-        <div style={`display: grid; grid-template-columns: 100px 160px 1fr; gap: 0; background: ${isToday ? '#131310' : '#111'}; ${isToday ? 'border-left: 2px solid #e5c46b;' : ''}`}>
-          <!-- Day / Time -->
-          <div style="padding: 20px 16px; display: flex; flex-direction: column; justify-content: center; gap: 4px; border-right: 1px solid #1a1a1a;">
-            <span style={`font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: ${isToday ? '#e5c46b' : '#555'};`}>{entry.day}</span>
-            <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{entry.time}</span>
-            {isToday && <span style="font-size: 9px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px;">Bugün</span>}
-          </div>
-          <!-- Banner -->
-          <a href={`/games/${entry.game}`} style="display: block; overflow: hidden; border-right: 1px solid #1a1a1a;">
-            {banner ? (
-              <img src={banner} alt={entry.title} loading="lazy"
-                style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.75; transition: opacity 0.15s;"
-                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'" />
-            ) : (
-              <div style="width: 100%; height: 100%; background: #0d0d0d; display: flex; align-items: center; justify-content: center; padding: 8px;">
-                <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace; text-align: center;">{entry.title}</span>
-              </div>
-            )}
-          </a>
-          <!-- Info -->
-          <div style="padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px;">
-            <a href={`/games/${entry.game}`}
-              style={`font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: ${isToday ? '#e5e5e5' : '#ccc'}; transition: color 0.15s; text-decoration: none;`}
-              onmouseover="this.style.color='#e5c46b'" onmouseout={`this.style.color='${isToday ? '#e5e5e5' : '#ccc'}'`}>
-              {entry.title}
-            </a>
-            <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">{entry.episode}</span>
-            {entry.note && <p style="font-size: 12px; color: #444; margin: 2px 0 0; line-height: 1.5; font-style: italic;">"{entry.note}"</p>}
-          </div>
+        <div style={`display: flex; align-items: center; gap: 7px; background: ${show.color}18; border: 1px solid ${show.color}55; padding: 4px 10px;`}>
+          {game?.coverUrl && (
+            <div style="width: 18px; height: 18px; overflow: hidden; flex-shrink: 0;">
+              <img src={game.coverUrl} alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;" loading="lazy" />
+            </div>
+          )}
+          <span style={`font-size: 10px; color: ${show.color}; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; font-weight: 600;`}>{show.title}</span>
+          {show.badge && (
+            <span style={`font-size: 8px; background: ${show.color}; color: #000; padding: 1px 4px; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.06em;`}>{show.badge}</span>
+          )}
         </div>
       );
     })}
   </div>
 
+  <!-- Calendar grid -->
+  <div style="border: 1px solid #2a2a2a; border-top: none; overflow: hidden;">
+
+    <!-- Day headers -->
+    <div style="display: grid; grid-template-columns: repeat(7, 1fr); background: #111; border-bottom: 2px solid #2a2a2a;">
+      {DOW.map(d => (
+        <div style="padding: 10px 8px; text-align: center; font-size: 11px; font-weight: 700; color: #555; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase;">
+          {d}
+        </div>
+      ))}
+    </div>
+
+    <!-- Weeks -->
+    {weeks.map((week, wi) => (
+      <div style="display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid #1a1a1a;">
+        {week.map((day, di) => {
+          if (!day) {
+            return <div style="background: #080808; min-height: 90px; border-right: 1px solid #1a1a1a;"></div>;
+          }
+          const dateStr = `${year}-${String(mon).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+          const slots = dayMap[dateStr] || [];
+          const isToday = dateStr === today;
+          const isPast = dateStr < today;
+          return (
+            <div style={`min-height: 90px; border-right: 1px solid #1a1a1a; padding: 6px; background: ${isToday ? '#111008' : isPast ? '#090909' : '#0d0d0d'}; position: relative;`}>
+              <!-- Day number -->
+              <div style={`font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; color: ${isToday ? '#e5c46b' : isPast ? '#333' : '#444'};`}>
+                {String(day).padStart(2,'0')}
+                {isToday && <span style="font-size: 7px; background: #e5c46b; color: #000; padding: 1px 4px; font-weight: 700; letter-spacing: 0.06em;">BUGÜN</span>}
+              </div>
+              <!-- Slots -->
+              {slots.map((slot: any) => {
+                const show = showMap[slot.show];
+                if (!show) return null;
+                return (
+                  <div style={`background: ${show.color}22; border-left: 2px solid ${show.color}; padding: 4px 6px; margin-bottom: 3px; position: relative;`}>
+                    {slot.live && (
+                      <div style="position: absolute; top: 3px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #ef4444;"></div>
+                    )}
+                    <p style={`font-size: 9px; color: ${show.color}; font-family: 'JetBrains Mono', monospace; font-weight: 700; margin: 0 0 2px; letter-spacing: 0.03em; text-transform: uppercase;`}>{slot.time}</p>
+                    <p style={`font-size: 10px; color: ${isPast ? '#444' : '#ccc'}; margin: 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;`}>{slot.episode}</p>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    ))}
+  </div>
+
+  <!-- Bottom bar -->
+  <div style="border: 1px solid #2a2a2a; border-top: none; background: #0d0d0d; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+    <p style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace; margin: 0; letter-spacing: 0.04em;">KARBON TV © 2026 — Tüm yayın saatleri TSİ (UTC+3)</p>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace;">GTA 6 Konsol Lansmanına</span>
+      <span id="gtaCountdownSmall" style="font-size: 10px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; font-weight: 700;"></span>
+      <span style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace;">gün kaldı</span>
+    </div>
+  </div>
+
 </Layout>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+
+<script>
+  const el = document.getElementById('gtaCountdownSmall');
+  if (el) {
+    const target = new Date('2026-11-19T10:00:00Z').getTime();
+    const days = Math.ceil((target - Date.now()) / 86400000);
+    el.textContent = String(Math.max(0, days));
+  }
+</script>

@@ -1,65 +1,237 @@
 [
   {
-    "day": "Pazartesi",
-    "time": "20:00",
-    "game": "the-witcher-3-wild-hunt",
-    "title": "The Witcher 3: Wild Hunt",
-    "episode": "Bölüm 12 — Bloody Baron",
-    "status": "upcoming",
-    "note": "Missable questler için dikkatli ilerliyoruz."
-  },
-  {
-    "day": "Salı",
-    "time": "21:00",
-    "game": "elden-ring",
-    "title": "Elden Ring",
-    "episode": "Bölüm 8 — Limgrave Temizlik",
-    "status": "upcoming",
-    "note": "Tüm katakombları bitirip bir sonraki bölgeye geçiyoruz."
-  },
-  {
-    "day": "Çarşamba",
-    "time": "20:00",
-    "game": "hades",
-    "title": "Hades",
-    "episode": "Heat Run — Pact of Punishment",
-    "status": "upcoming",
-    "note": "32 heat çalışıyoruz."
-  },
-  {
-    "day": "Perşembe",
-    "time": "21:00",
-    "game": "cyberpunk-2077",
-    "title": "Cyberpunk 2077",
-    "episode": "Phantom Liberty — Act 2",
-    "status": "upcoming",
-    "note": ""
-  },
-  {
-    "day": "Cuma",
-    "time": "20:00",
-    "game": "baldur-s-gate-iii",
-    "title": "Baldur's Gate III",
-    "episode": "Bölüm 15 — Act 3 Başlangıç",
-    "status": "upcoming",
-    "note": "Bu haftadan itibaren her cuma BG3."
-  },
-  {
-    "day": "Cumartesi",
-    "time": "15:00",
-    "game": "hollow-knight",
-    "title": "Hollow Knight",
-    "episode": "%100 Run — Pantheon of Hollownest",
-    "status": "upcoming",
-    "note": "Son boss arena. Muhtemelen uzun sürecek."
-  },
-  {
-    "day": "Pazar",
-    "time": "19:00",
-    "game": "sekiro-shadows-die-twice",
-    "title": "Sekiro: Shadows Die Twice",
-    "episode": "NG+ — Shura Ending",
-    "status": "upcoming",
-    "note": "Alternatif bitiş için ikinci oynanış."
+    "month": "2026-07",
+    "label": "Temmuz 2026",
+    "tagline": "GTA Öncesi Sezon — Büyük Oyunları Bitiriyoruz",
+    "shows": [
+      {
+        "id": "witcher",
+        "title": "Witcher Saatleri",
+        "subtitle": "Her Çarşamba",
+        "game": "the-witcher-3-wild-hunt",
+        "color": "#c6a84b",
+        "badge": "YENİ SERİ"
+      },
+      {
+        "id": "souls",
+        "title": "Souls Akşamları",
+        "subtitle": "Salı & Cuma",
+        "game": "elden-ring",
+        "color": "#e07040",
+        "badge": null
+      },
+      {
+        "id": "cyber",
+        "title": "Cyber Pazartesi",
+        "subtitle": "Her Pazartesi",
+        "game": "cyberpunk-2077",
+        "color": "#f7e700",
+        "badge": null
+      },
+      {
+        "id": "gta-history",
+        "title": "GTA Tarihi",
+        "subtitle": "Pazar Özel",
+        "game": "grand-theft-auto-v",
+        "color": "#ef4444",
+        "badge": "ÖZEL"
+      },
+      {
+        "id": "indie",
+        "title": "Bağımsız Perşembe",
+        "subtitle": "Her Perşembe",
+        "game": "hollow-knight",
+        "color": "#22c55e",
+        "badge": null
+      },
+      {
+        "id": "cuma",
+        "title": "Cuma Maratonu",
+        "subtitle": "Her Cuma",
+        "game": "baldur-s-gate-iii",
+        "color": "#9b59b6",
+        "badge": null
+      }
+    ],
+    "days": [
+      {
+        "date": "2026-07-01",
+        "slots": [
+          { "show": "cyber", "time": "20:00", "episode": "S1E01 — Night City'ye Dönüş", "new": true, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-02",
+        "slots": [
+          { "show": "souls", "time": "20:00", "episode": "E01 — Limgrave Temizlik", "new": true, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-03",
+        "slots": [
+          { "show": "witcher", "time": "20:00", "episode": "S1E01 — Beyaz Bahçe", "new": true, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-04",
+        "slots": [
+          { "show": "indie", "time": "20:00", "episode": "E01 — Forgotten Crossroads", "new": true, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-05",
+        "slots": [
+          { "show": "cuma", "time": "20:00", "episode": "S1E01 — Emerald Grove", "new": true, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-06",
+        "slots": []
+      },
+      {
+        "date": "2026-07-07",
+        "slots": [
+          { "show": "gta-history", "time": "19:00", "episode": "GTA III — Liberty City Başlangıcı", "new": true, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-08",
+        "slots": [
+          { "show": "cyber", "time": "20:00", "episode": "S1E02 — Phantom Liberty Öncesi", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-09",
+        "slots": [
+          { "show": "souls", "time": "20:00", "episode": "E02 — Stormveil Kalesi", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-10",
+        "slots": [
+          { "show": "witcher", "time": "20:00", "episode": "S1E02 — Vizima'ya Varış", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-11",
+        "slots": [
+          { "show": "indie", "time": "20:00", "episode": "E02 — Greenpath", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-12",
+        "slots": [
+          { "show": "cuma", "time": "20:00", "episode": "S1E02 — Moonrise Towers", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-13",
+        "slots": []
+      },
+      {
+        "date": "2026-07-14",
+        "slots": [
+          { "show": "gta-history", "time": "19:00", "episode": "Vice City — Işıklı Şehir", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-15",
+        "slots": [
+          { "show": "cyber", "time": "20:00", "episode": "S1E03 — Phantom Liberty Başlıyor", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-16",
+        "slots": [
+          { "show": "souls", "time": "20:00", "episode": "E03 — Rennala Karşılaşması", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-17",
+        "slots": [
+          { "show": "witcher", "time": "20:00", "episode": "S1E03 — Bloody Baron", "new": false, "live": true }
+        ]
+      },
+      {
+        "date": "2026-07-18",
+        "slots": [
+          { "show": "indie", "time": "20:00", "episode": "E03 — Fog Canyon", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-19",
+        "slots": [
+          { "show": "cuma", "time": "20:00", "episode": "S1E03 — Underdark", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-20",
+        "slots": []
+      },
+      {
+        "date": "2026-07-21",
+        "slots": [
+          { "show": "gta-history", "time": "19:00", "episode": "San Andreas — Büyük Harita", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-22",
+        "slots": [
+          { "show": "cyber", "time": "20:00", "episode": "S1E04 — Phantom Liberty Finali", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-23",
+        "slots": [
+          { "show": "souls", "time": "20:00", "episode": "E04 — Shadow of the Erdtree", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "slots": [
+          { "show": "witcher", "time": "20:00", "episode": "S1E04 — Hearts of Stone", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-25",
+        "slots": [
+          { "show": "indie", "time": "20:00", "episode": "E04 — Soul Sanctum", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-26",
+        "slots": [
+          { "show": "cuma", "time": "20:00", "episode": "S1E04 — Act 2 Başlıyor", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-27",
+        "slots": []
+      },
+      {
+        "date": "2026-07-28",
+        "slots": [
+          { "show": "gta-history", "time": "19:00", "episode": "GTA IV — Liberty City Yeniden", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-29",
+        "slots": [
+          { "show": "cyber", "time": "20:00", "episode": "S1 FİNAL — Cyberpunk Tamamlandı", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-30",
+        "slots": [
+          { "show": "souls", "time": "20:00", "episode": "E05 — Elden Ring %100", "new": false, "live": false }
+        ]
+      },
+      {
+        "date": "2026-07-31",
+        "slots": [
+          { "show": "witcher", "time": "20:00", "episode": "S1E05 — Blood and Wine", "new": false, "live": false }
+        ]
+      }
+    ]
   }
 ]
