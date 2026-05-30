@@ -28,13 +28,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
 
 <Layout title={article.data.title} description={article.data.excerpt}>
 
-  <!-- Breadcrumb -->
-  <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
-    <a href="/news" style="color: #444; transition: color 0.15s;"
-      onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">haberler</a>
-    <span style="margin: 0 8px;">/</span>
-    <span style="color: #888;">{article.data.title}</span>
-  </div>
+  <p class="os-path">C:\KARBON\HABERLER\<span style="color:#888899;">{article.data.title.slice(0,40)}</span></p>
 
   <!-- Hero Image -->
   {article.data.image && (
@@ -52,7 +46,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
       <span style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">{dateStr}</span>
     </div>
 
-    <h1 style="font-size: clamp(22px, 3vw, 36px); font-weight: 600; letter-spacing: -0.03em; margin: 0 0 20px; line-height: 1.2;">
+    <h1 style="font-family:'VT323',monospace;font-size:clamp(22px,3vw,36px);color:#fff;letter-spacing:0.02em;margin:0 0 16px;line-height:1.15;">
       {article.data.title}
     </h1>
 

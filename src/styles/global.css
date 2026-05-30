@@ -228,3 +228,46 @@ a {
   border-top: 1px solid #222;
   margin: 32px 0;
 }
+
+/* ── OS PAGE CHROME ─────────────────── */
+.os-path {
+  font-family: var(--pixel);
+  font-size: 14px;
+  color: #555566;
+  letter-spacing: 0.06em;
+  margin: 0 0 6px;
+}
+
+.os-title {
+  font-family: var(--pixel);
+  font-size: 28px;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  margin: 0 0 20px;
+  line-height: 1.1;
+}
+
+.os-section {
+  margin-bottom: 24px;
+}
+
+/* Prose inside px-window */
+.px-content {
+  padding: 20px 22px;
+}
+
+.px-content p {
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.75;
+  margin: 0 0 14px;
+}
+
+.px-content h2 {
+  font-family: var(--pixel);
+  font-size: 20px;
+  color: #ccc;
+  margin: 24px 0 10px;
+  border-bottom: 1px solid #1e1e2e;
+  padding-bottom: 6px;
+}

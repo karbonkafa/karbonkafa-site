@@ -73,13 +73,10 @@ const meals = [
 
 <Layout title="Yemek — Karbon TV">
 
-  <div style="margin-bottom: 48px;">
-    <p style="font-size: 12px; color: #f97316; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 10px;">🍜 YEMEK</p>
-    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Gamer Mutfağı</h1>
-    <p style="font-size: 15px; color: #555; margin: 0;">Yayın sırasında ne yenir, ne içilir. Performans için doğru beslenme.</p>
-  </div>
+  <p class="os-path">C:\\KARBON\\YEMEK</p>
+  <h1 class="os-title">🍜 YEMEK.EXE</h1>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px;">
     {meals.map(meal => (
       <div style={`background: #111; border: 1px solid ${meal.color}33; display: flex; flex-direction: column;`}>
         <!-- Header -->

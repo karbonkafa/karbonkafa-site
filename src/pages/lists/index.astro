@@ -11,13 +11,10 @@ for (const g of games) gmap[g.slug] = g;
 
 <Layout title="Lists" description="KarbonGameStudios curated game lists.">
 
-  <div style="margin-bottom: 48px;">
-    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Koleksiyonlar</p>
-    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Listeler</h1>
-    <p style="font-size: 15px; color: #666; margin: 0;">Küratörlenmiş oyun koleksiyonları. Veritabanı değil, bakış açısı.</p>
-  </div>
+  <p class="os-path">C:\\KARBON\\LISTELER</p>
+  <h1 class="os-title">📋 LİSTELER.EXE</h1>
 
-  <div style="display: flex; flex-direction: column; gap: 8px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
     {lists.map(list => (
       <a href={`/lists/${list.slug}`}
         style="display: block; background: #111; border: 1px solid #1a1a1a; padding: 20px 22px; transition: border-color 0.15s;"
