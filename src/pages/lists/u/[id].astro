@@ -31,6 +31,9 @@ const author = list.profiles;
 
 <Layout title={list.title}>
 
+  <p class="os-path">C:\\KARBON\\LISTELER\\USER</p>
+
+
   <!-- Breadcrumb -->
   <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
     <a href="/lists" style="color: #444; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">listeler</a>
@@ -40,7 +43,7 @@ const author = list.profiles;
 
   <!-- Header -->
   <div style="margin-bottom: 40px;">
-    <h1 style="font-size: clamp(22px, 3vw, 36px); font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">{list.title}</h1>
+    <h1 class="os-title">{list.title}</h1>
     {list.description && <p style="font-size: 15px; color: #888; margin: 0 0 16px; line-height: 1.65; max-width: 600px;">{list.description}</p>}
     <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
       {author && (

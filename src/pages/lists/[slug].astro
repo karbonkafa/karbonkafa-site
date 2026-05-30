@@ -35,6 +35,8 @@ function getMetacritic(slug: string): number | null {
 
 <Layout title={list.title} description={list.description}>
 
+  <p class="os-path">C:\KARBON\LISTELER\{list.slug?.toUpperCase()}</p>
+
   <!-- Breadcrumb -->
   <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
     <a href="/lists" style="color: #444; transition: color 0.15s;"
@@ -45,7 +47,7 @@ function getMetacritic(slug: string): number | null {
 
   <!-- Header -->
   <div style="margin-bottom: 48px;">
-    <h1 style="font-size: clamp(24px, 3vw, 40px); font-weight: 600; letter-spacing: -0.03em; margin: 0 0 16px; line-height: 1.15;">{list.title}</h1>
+    <h1 class="os-title">{list.title}</h1>
     <p style="font-size: 15px; color: #888; line-height: 1.7; margin: 0 0 20px; max-width: 640px;">{list.description}</p>
     <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 8px;">
