@@ -22,17 +22,71 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body style="background:#0a0a0a; color:#e5e5e5; margin:0;">
+  <body style="background:#0a0a0a; color:#e5e5e5; margin:0; padding-bottom: 72px;">
 
-    <!-- Hidden lang toggle (used by homepage system panel) -->
+    <!-- Hidden lang toggle -->
     <button id="langToggle" style="display:none;">EN</button>
 
     <main style="max-width: 960px; margin: 0 auto; padding: 40px 24px;">
       <slot />
     </main>
 
-    <footer style="border-top: 1px solid #222; padding: 24px; text-align: center; font-size: 13px; color: #444; margin-top: 80px;">
-      KarbonGameStudios © {new Date().getFullYear()}
+    <!-- Sticky Bottom Taskbar -->
+    <div style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:#050508;border-top:2px solid #1e1e2e;display:flex;align-items:stretch;height:48px;box-shadow:0 -4px 0 #020205;">
+
+      <!-- Home -->
+      <a href="/" style="display:flex;align-items:center;gap:6px;padding:0 14px;border-right:1px solid #1e1e2e;text-decoration:none;transition:background 0.1s;flex-shrink:0;"
+        onmouseover="this.style.background='#0d0d12'" onmouseout="this.style.background='none'">
+        <div style="width:16px;height:16px;background:#e5c46b;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:11px;color:#000;font-weight:900;flex-shrink:0;">K</div>
+      </a>
+
+      <!-- App icons -->
+      <div style="display:flex;align-items:stretch;overflow-x:auto;flex:1;min-width:0;">
+        {[
+          { href:'/lists',    icon:'📋' },
+          { href:'/guides',   icon:'🏆' },
+          { href:'/news',     icon:'📰' },
+          { href:'/schedule', icon:'📺' },
+          { href:'/muzik',    icon:'🎵' },
+          { href:'/yemek',    icon:'🍜' },
+          { href:'/mekan',    icon:'📍' },
+          { href:'/quiz',     icon:'🎮' },
+          { href:'/arcade',   icon:'🕹' },
+        ].map(app => (
+          <a href={app.href}
+            style="display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:16px;border-right:1px solid #1e1e2e;text-decoration:none;transition:background 0.1s;flex-shrink:0;"
+            onmouseover="this.style.background='#0d0d12'" onmouseout="this.style.background='none'">
+            {app.icon}
+          </a>
+        ))}
+      </div>
+
+      <!-- Mini radio -->
+      <div style="display:flex;align-items:center;gap:8px;padding:0 12px;border-left:1px solid #1e1e2e;flex-shrink:0;">
+        <button id="taskbarRadioBtn"
+          style="font-family:'VT323',monospace;font-size:16px;background:#0d0d12;border:1px solid #1e1e2e;color:#3b82f6;padding:3px 10px;cursor:pointer;transition:all 0.1s;"
+          onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#1e1e2e'">
+          🎧 ▶
+        </button>
+        <span id="taskbarRadioStatus" style="font-family:'VT323',monospace;font-size:13px;color:#333344;white-space:nowrap;display:none;">●</span>
+      </div>
+
+      <!-- Auth mini -->
+      <div style="display:flex;align-items:center;border-left:1px solid #1e1e2e;flex-shrink:0;">
+        <a id="taskbarLogin" href="/auth/login" style="display:none;align-items:center;padding:0 12px;font-family:'VT323',monospace;font-size:14px;color:#555566;text-decoration:none;transition:all 0.1s;height:100%;"
+          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#555566'">
+          👤
+        </a>
+        <a id="taskbarProfile" href="#" style="display:none;align-items:center;padding:0 12px;font-family:'VT323',monospace;font-size:14px;color:#aaaacc;text-decoration:none;transition:all 0.1s;height:100%;"
+          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#aaaacc'">
+          <div id="taskbarAvatar" style="width:20px;height:20px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:11px;color:#e5c46b;"></div>
+        </a>
+      </div>
+
+    </div>
+
+    <footer style="border-top: 1px solid #1e1e2e; padding: 16px 24px; text-align: center; font-family:'VT323',monospace; font-size: 16px; color: #333344; letter-spacing:0.04em;">
+      KARBONGAMESTUDIOS © {new Date().getFullYear()} — KARBON OS ALPHA
     </footer>
   </body>
 </html>
@@ -87,6 +141,75 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
-  // Auth removed from global layout — handled by homepage system panel
+  // Taskbar auth
+  sb.auth.getUser().then(async ({ data: { user } }) => {
+    const loginEl = document.getElementById('taskbarLogin') as HTMLAnchorElement;
+    const profileEl = document.getElementById('taskbarProfile') as HTMLAnchorElement;
+    const avatarEl = document.getElementById('taskbarAvatar');
+    if (!user) {
+      if (loginEl) loginEl.style.display = 'flex';
+      return;
+    }
+    const { data: profile } = await sb.from('profiles').select('username,display_name,avatar_url').eq('id', user.id).single();
+    if (!profile) return;
+    if (profileEl) { profileEl.href = `/u/${profile.username}`; profileEl.style.display = 'flex'; }
+    if (avatarEl) {
+      if (profile.avatar_url) {
+        const img = document.createElement('img');
+        img.src = profile.avatar_url;
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        avatarEl.appendChild(img);
+      } else {
+        avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
+      }
+    }
+  });
 
+</script>
+
+<script>
+  // Taskbar radio — shared audio instance
+  const STREAMS = [
+    'https://kexp-mp3-128.streamguys1.com/kexp128.mp3',
+    'https://ice2.somafm.com/indiepop-128-mp3',
+    'https://stream.radioparadise.com/mp3-192',
+  ];
+  let tbAudio: HTMLAudioElement | null = null;
+  let tbPlaying = false;
+  let tbStreamIdx = 0;
+
+  const tbBtn = document.getElementById('taskbarRadioBtn');
+  const tbStatus = document.getElementById('taskbarRadioStatus');
+
+  function tbSetStatus(playing: boolean) {
+    if (!tbBtn || !tbStatus) return;
+    tbPlaying = playing;
+    tbBtn.textContent = playing ? '🎧 ■' : '🎧 ▶';
+    tbBtn.style.color = playing ? '#22c55e' : '#3b82f6';
+    if (tbStatus) { tbStatus.style.display = playing ? 'inline' : 'none'; tbStatus.style.color = '#22c55e'; }
+  }
+
+  function tbTryStream(idx: number) {
+    if (idx >= STREAMS.length) { tbSetStatus(false); return; }
+    if (tbAudio) { tbAudio.pause(); }
+    tbAudio = new Audio(STREAMS[idx]);
+    tbAudio.volume = 0.7;
+    tbAudio.play().then(() => tbSetStatus(true)).catch(() => tbTryStream(idx + 1));
+    tbAudio.onerror = () => tbTryStream(idx + 1);
+  }
+
+  tbBtn?.addEventListener('click', () => {
+    if (tbPlaying) { tbAudio?.pause(); tbSetStatus(false); }
+    else tbTryStream(0);
+  });
+
+  // Sync with homepage radio if it exists
+  document.addEventListener('DOMContentLoaded', () => {
+    const homePlayBtn = document.getElementById('radio-play');
+    if (homePlayBtn) {
+      homePlayBtn.addEventListener('click', () => {
+        if (tbPlaying) { tbAudio?.pause(); tbSetStatus(false); }
+      });
+    }
+  });
 </script>

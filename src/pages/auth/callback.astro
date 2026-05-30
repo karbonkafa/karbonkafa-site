@@ -5,49 +5,75 @@ export const prerender = false;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
-  <title>Yönlendiriliyor...</title>
+  <title>Giriş yapılıyor...</title>
 </head>
-<body style="background:#0a0a0a;color:#e5e5e5;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:16px;">
-  <p style="font-size:14px;color:#666;margin:0;">Giriş yapılıyor...</p>
+<body style="background:#050508;color:#e5e5e5;font-family:'VT323',monospace;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:16px;">
+  <p style="font-size:22px;color:#666677;letter-spacing:0.08em;">GİRİŞ YAPILIYOR...</p>
+  <p id="msg" style="font-size:14px;color:#333344;font-family:monospace;"></p>
 </body>
 </html>
 
 <script>
   import { createClient } from '@supabase/supabase-js';
-
   const supabase = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
+  const msg = document.getElementById('msg');
 
   async function handleCallback() {
+    // Handle code exchange (OAuth / magic link PKCE flow)
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+      if (msg) msg.textContent = 'Oturum açılıyor...';
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      if (error) {
+        if (msg) msg.textContent = 'Hata: ' + error.message;
+        setTimeout(() => { window.location.href = '/auth/login'; }, 2000);
+        return;
+      }
+    }
+
+    // Get session (handles hash-based magic links too)
     const { data: { session } } = await supabase.auth.getSession();
 
-    if (session?.user) {
-      // Ensure profile exists
-      const user = session.user;
-      const meta = user.user_metadata || {};
-      const username = meta.user_name || meta.preferred_username || user.email?.split('@')[0] || user.id.slice(0, 8);
-
-      const { data: existing } = await supabase
-        .from('profiles')
-        .select('username')
-        .eq('id', user.id)
-        .single();
-
-      if (!existing) {
-        await supabase.from('profiles').insert({
-          id: user.id,
-          username,
-          display_name: meta.full_name || meta.name || username,
-          avatar_url: meta.avatar_url || meta.picture || null,
+    if (!session?.user) {
+      // Try waiting for auth state change
+      await new Promise<void>(resolve => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
+          if (s) { subscription.unsubscribe(); resolve(); }
         });
-      }
-
-      window.location.href = `/u/${existing?.username || username}`;
-    } else {
-      window.location.href = '/auth/login';
+        setTimeout(() => { subscription.unsubscribe(); resolve(); }, 3000);
+      });
     }
+
+    const { data: { session: s2 } } = await supabase.auth.getSession();
+    if (!s2?.user) {
+      window.location.href = '/auth/login';
+      return;
+    }
+
+    const user = s2.user;
+    const meta = user.user_metadata || {};
+    const fallbackUsername = meta.user_name || meta.preferred_username
+      || meta.name?.toLowerCase().replace(/\s+/g, '_')
+      || user.email?.split('@')[0]?.replace(/[^a-z0-9_]/g, '')
+      || user.id.slice(0, 8);
+
+    const { data: existing } = await supabase
+      .from('profiles').select('username').eq('id', user.id).single();
+
+    if (!existing) {
+      await supabase.from('profiles').insert({
+        id: user.id,
+        username: fallbackUsername,
+        display_name: meta.full_name || meta.name || fallbackUsername,
+        avatar_url: meta.avatar_url || meta.picture || null,
+      });
+    }
+
+    window.location.href = `/u/${existing?.username || fallbackUsername}`;
   }
 
   handleCallback();
