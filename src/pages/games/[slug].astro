@@ -114,7 +114,7 @@ const filteredWebsites = igdb.websites
 
   <!-- Breadcrumb -->
   <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
-    <a href="/games" style="color: #444; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">oyunlar</a>
+    <a href="/lists" style="color: #444; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">listeler</a>
     <span style="margin: 0 8px;">/</span>
     <span style="color: #888;">{game.title}</span>
   </div>
@@ -303,7 +303,7 @@ const filteredWebsites = igdb.websites
           <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; min-width: 80px; padding-top: 3px;">Etiket</span>
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
             {igdb.keywords.map((k: string) => (
-              <a href={`/games?q=${encodeURIComponent(k)}`}
+              <a href={`/lists`}
                 style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px; transition: all 0.15s;"
                 onmouseover="this.style.borderColor='#444';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e1e';this.style.color='#555'">
                 {k}
@@ -570,8 +570,8 @@ const filteredWebsites = igdb.websites
 
 
   <!-- Back -->
-  <a href="/games" data-i18n="game.back" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
-    ← oyunlar
+  <a id="backBtn" href="/lists" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
+    ← geri
   </a>
 
 </Layout>
@@ -684,4 +684,13 @@ const filteredWebsites = igdb.websites
     }
     saveBtn.disabled = false;
   });
+
+  // Back button: return to referrer if it's a list or guide, else /lists
+  const backBtn = document.getElementById('backBtn') as HTMLAnchorElement;
+  const ref = document.referrer;
+  if (ref && (ref.includes('/lists/') || ref.includes('/guides/'))) {
+    backBtn.href = ref;
+    const label = ref.includes('/lists/') ? '← liste' : '← rehber';
+    backBtn.textContent = label;
+  }
 </script>
