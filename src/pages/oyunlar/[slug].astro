@@ -371,13 +371,12 @@ const hours = game.playtimeMinutes > 0
       <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Medya</p>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid #222;">
 
-        {/* Fragman */}
         {igdb.videos?.length > 0 && (
-          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #0a0a0a;">
+          <div style="aspect-ratio: 16/9; overflow: hidden; background: #0a0a0a;">
             <iframe
               src={`https://www.youtube.com/embed/${igdb.videos[0].id}`}
               title={igdb.videos[0].name}
-              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+              style="width: 100%; height: 100%; border: 0; display: block;"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -385,20 +384,19 @@ const hours = game.playtimeMinutes > 0
           </div>
         )}
 
-        {/* Görseller — screenshots + artworks karışık */}
-        {[...(igdb.screenshots || []).map((id: string) => ({id, type: 'screenshot'})),
-           ...(igdb.artworks || []).map((id: string) => ({id, type: 'artwork'}))]
+        {[...(igdb.screenshots || []).map((id: string) => ({id})),
+           ...(igdb.artworks || []).map((id: string) => ({id}))]
           .slice(0, igdb.videos?.length > 0 ? 5 : 6)
           .map((img: any) => (
             <a
               href={`https://images.igdb.com/igdb/image/upload/t_screenshot_huge/${img.id}.jpg`}
               target="_blank" rel="noopener"
-              style="display: block; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #0a0a0a;"
+              style="aspect-ratio: 16/9; overflow: hidden; display: block; background: #0a0a0a;"
             >
               <img
                 src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${img.id}.jpg`}
                 loading="lazy"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s;"
+                style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s;"
                 onmouseover="this.style.opacity='0.75'"
                 onmouseout="this.style.opacity='1'"
               />
