@@ -77,7 +77,7 @@ const { title, description = 'KarbonGameStudios — game guides, news and conten
     // placeholder translations
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
       const key = el.getAttribute('data-i18n-placeholder');
-      if (key && dict[key]) (el as HTMLInputElement).placeholder = dict[key];
+      if (key && dict[key]) el.placeholder = dict[key];
     });
 
     // option translations
