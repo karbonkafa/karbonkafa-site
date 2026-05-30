@@ -178,7 +178,7 @@ const riskLabel = (risk: string) => {
         <div style={`padding: 16px 20px; background: #111; border-left: 2px solid ${adim.region.startsWith('⛔') ? '#ef4444' : '#222'};`}>
           <p style={`font-size: 13px; font-weight: 500; margin: 0 0 8px; color: ${adim.region.startsWith('⛔') ? '#ef4444' : '#e5e5e5'};`}>{i + 1}. {adim.region}</p>
           <ul style="margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 4px;">
-            {adim.notlar.map(n => (
+            {adim.notes.map(n => (
               <li style="font-size: 12px; color: #666; line-height: 1.5;">{n}</li>
             ))}
           </ul>
