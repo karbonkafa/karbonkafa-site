@@ -96,7 +96,9 @@ const pong = {
   reset() {
     const a = (Math.random()*0.5-0.25);
     const d = Math.random()>0.5?1:-1;
-    this.ball = { x:PW/2, y:PH/2, vx:d*4, vy:Math.tan(a)*4, r:9 };
+    // Speed based on total score (starts slow, gets faster)
+    const spd = 3 + Math.min(5, Math.floor((this.player.score + this.ai.score) / 3));
+    this.ball = { x:PW/2, y:PH/2, vx:d*spd, vy:Math.tan(a)*spd, r:9 };
   },
   start() {
     this.player.score = 0; this.ai.score = 0;
@@ -194,7 +196,7 @@ const snake = {
   dir:{x:1,y:0}, next:{x:1,y:0},
   food:{x:18,y:10},
   score:0, hi:0, alive:false, started:false,
-  frame:0, speed:9,
+  frame:0, speed:12,
   ts:{x:0,y:0},
 
   food_() {
@@ -205,7 +207,7 @@ const snake = {
     this.body=[{x:13,y:10},{x:12,y:10},{x:11,y:10}];
     this.dir={x:1,y:0}; this.next={x:1,y:0};
     this.food=this.food_(); this.score=0; this.alive=true; this.started=true;
-    this.frame=0; this.speed=9;
+    this.frame=0; this.speed=14; // starts slow, speeds up
   },
   setDir(dx:number,dy:number) {
     if(dx===-this.dir.x&&dy===-this.dir.y) return;
@@ -223,7 +225,7 @@ const snake = {
     if(h.x===this.food.x&&h.y===this.food.y){
       this.score+=10; if(this.score>this.hi) this.hi=this.score;
       this.food=this.food_();
-      if(this.score%70===0) this.speed=Math.max(4,this.speed-1);
+      if(this.score%50===0) this.speed=Math.max(5,this.speed-1);
     } else this.body.pop();
   },
 };
@@ -349,8 +351,11 @@ const pac = {
     this.px.mouth += this.px.md * 0.2;
     if(this.px.mouth>0.85||this.px.mouth<0.05) this.px.md*=-1;
 
-    // Move pacman every 4 ticks
-    if(this.tick % 4 === 0) {
+    // Speed up pac-man as pellets decrease
+    const pacSpeed = this.pellets > 150 ? 6 : this.pellets > 80 ? 5 : 4;
+
+    // Move pacman
+    if(this.tick % pacSpeed === 0) {
       const p = this.px;
 
       // Try next direction first
@@ -381,14 +386,21 @@ const pac = {
     // Frighten countdown
     if(this.fTimer>0) { this.fTimer--; this.ghosts.forEach(g=>{ if(g.fright>0) g.fright--; }); }
 
-    // Move ghosts every 6 ticks
-    if(this.tick % 6 === 0) {
+    // Ghost speed also increases
+    const ghostSpeed = this.pellets > 150 ? 8 : this.pellets > 80 ? 7 : 6;
+
+    if(this.tick % ghostSpeed === 0) {
       this.ghosts.forEach(g => {
-        const dirs = [[1,0],[-1,0],[0,1],[0,-1]].filter(([dc,dr]) => {
+        // Try without reversing first
+        let dirs = [[1,0],[-1,0],[0,1],[0,-1]].filter(([dc,dr]) => {
           if(dc===-g.dc&&dr===-g.dr) return false;
           const nc=this.wrapCol(g.col+dc), nr=g.row+dr;
           return this.canWalk(nc,nr);
         });
+        // If stuck, allow reverse
+        if(!dirs.length) {
+          dirs = [[g.dc*-1, g.dr*-1]].filter(([dc,dr]) => this.canWalk(this.wrapCol(g.col+dc), g.row+dr));
+        }
         if(!dirs.length) return;
 
         let chosen: number[];
