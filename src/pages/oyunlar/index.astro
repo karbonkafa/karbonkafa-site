@@ -18,7 +18,7 @@ const statusColor: Record<string, string> = {
   completed: '#e5c46b',
 };
 
-const platforms = ['PC', 'XBOX', 'PS4', 'PS5', 'RETRO'];
+const storePlatforms = ['Steam', 'Epic', 'GOG', 'PSN', 'Xbox'];
 
 const stats = {
   total: games.length,
@@ -70,7 +70,7 @@ const stats = {
     </select>
     <select id="platformFilter" style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; font-family: inherit;">
       <option value="">Tüm Platformlar</option>
-      {platforms.map(p => <option value={p}>{p}</option>)}
+      {storePlatforms.map(p => <option value={p.toLowerCase()}>{p}</option>)}
     </select>
     <span id="count" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; white-space: nowrap;">{games.length} oyun</span>
   </div>
@@ -83,7 +83,7 @@ const stats = {
         class="game-card"
         data-title={game.title.toLowerCase()}
         data-status={game.status}
-        data-platform={game.platform}
+        data-stores={Object.keys(game.stores || {}).join(',')}
         style="background: #111; position: relative; aspect-ratio: 3/4; overflow: hidden; display: block; cursor: pointer;"
       >
         {game.coverUrl ? (
@@ -153,7 +153,8 @@ const stats = {
     cards.forEach(card => {
       const matchTitle = card.dataset.title?.includes(q) ?? true;
       const matchStatus = !status || card.dataset.status === status;
-      const matchPlatform = !platform || card.dataset.platform === platform;
+      const stores = card.dataset.stores || '';
+      const matchPlatform = !platform || stores.split(',').includes(platform);
       const show = matchTitle && matchStatus && matchPlatform;
       card.style.display = show ? 'block' : 'none';
       if (show) visible++;

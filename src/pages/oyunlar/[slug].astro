@@ -140,22 +140,50 @@ const hours = game.playtimeMinutes > 0
 
       <!-- External Links -->
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
-        {game.steamAppId && (
-          <a href={`https://www.steamdb.info/app/${game.steamAppId}/`} target="_blank" rel="noopener"
-            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s; display: flex; align-items: center; gap: 6px;"
+        {game.stores?.steam && (
+          <a href={`https://www.steamdb.info/app/${game.stores.steam.uid}/`} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
             onmouseover="this.style.borderColor='#e5c46b';this.style.color='#e5c46b'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
             SteamDB ↗
           </a>
         )}
-        {game.steamAppId && (
-          <a href={`https://store.steampowered.com/app/${game.steamAppId}/`} target="_blank" rel="noopener"
+        {game.stores?.steam && (
+          <a href={`https://store.steampowered.com/app/${game.stores.steam.uid}/`} target="_blank" rel="noopener"
             style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
             onmouseover="this.style.borderColor='#4a9eed';this.style.color='#4a9eed'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
             Steam ↗
           </a>
         )}
+        {game.stores?.epic?.url && (
+          <a href={game.stores.epic.url} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
+            onmouseover="this.style.borderColor='#333';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            Epic ↗
+          </a>
+        )}
+        {game.stores?.gog?.url && (
+          <a href={game.stores.gog.url} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
+            onmouseover="this.style.borderColor='#a1253a';this.style.color='#a1253a'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            GOG ↗
+          </a>
+        )}
+        {game.stores?.psn?.url && (
+          <a href={game.stores.psn.url} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
+            onmouseover="this.style.borderColor='#0072ce';this.style.color='#0072ce'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            PSN ↗
+          </a>
+        )}
+        {game.stores?.xbox?.url && (
+          <a href={game.stores.xbox.url} target="_blank" rel="noopener"
+            style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
+            onmouseover="this.style.borderColor='#107c10';this.style.color='#107c10'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
+            Xbox ↗
+          </a>
+        )}
         {game.igdbId && (
-          <a href={`https://www.igdb.com/games/${game.slug.replace(/-+/g, '-')}`} target="_blank" rel="noopener"
+          <a href={`https://www.igdb.com/games/${game.slug}`} target="_blank" rel="noopener"
             style="font-size: 12px; border: 1px solid #222; color: #666; padding: 5px 12px; font-family: 'JetBrains Mono', monospace; transition: all 0.15s;"
             onmouseover="this.style.borderColor='#9b59b6';this.style.color='#9b59b6'" onmouseout="this.style.borderColor='#222';this.style.color='#666'">
             IGDB ↗
