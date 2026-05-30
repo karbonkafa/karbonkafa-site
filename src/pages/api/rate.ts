@@ -3,10 +3,14 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
-  const { slug, rating } = await request.json();
+  const { slug, rating, password } = await request.json();
 
   if (!slug || rating === undefined || rating < 1 || rating > 10) {
     return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400 });
+  }
+
+  if (password !== import.meta.env.ADMIN_PASSWORD) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
   const apiKey = import.meta.env.KARBON_API_KEY;

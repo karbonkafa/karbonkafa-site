@@ -17,10 +17,14 @@ interface SubReview {
 
 export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();
-  const { slug, scores } = body as { slug: string; scores: Partial<Record<Category, number>> };
+  const { slug, scores, password } = body as { slug: string; scores: Partial<Record<Category, number>>; password: string };
 
   if (!slug || !scores) {
     return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400 });
+  }
+
+  if (password !== import.meta.env.ADMIN_PASSWORD) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
   const token = import.meta.env.GITHUB_TOKEN;

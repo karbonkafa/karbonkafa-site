@@ -613,22 +613,34 @@ const filteredWebsites = igdb.websites
 
   saveBtn?.addEventListener('click', async () => {
     const slug = saveBtn.dataset.slug!;
-    statusEl.textContent = 'saving...';
+
+    // Get admin password (cached in sessionStorage)
+    let password = sessionStorage.getItem('admin_pw');
+    if (!password) {
+      password = prompt('Admin şifre:');
+      if (!password) return;
+    }
+
+    statusEl.textContent = 'kaydediliyor...';
     saveBtn.disabled = true;
     try {
       const res = await fetch('/api/review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, scores }),
+        body: JSON.stringify({ slug, scores, password }),
       });
       const data = await res.json();
       if (data.ok) {
+        sessionStorage.setItem('admin_pw', password);
         const overall = data.review.overall;
-        statusEl.textContent = `saved — ${new Date().toLocaleDateString('en-US')}`;
-        const overallEl = document.querySelector('[data-overall]') as HTMLElement;
+        statusEl.textContent = `kaydedildi — ${new Date().toLocaleDateString('tr-TR')}`;
+        const overallEl = document.querySelector('[data-overall]');
         if (overallEl) overallEl.textContent = String(overall);
+      } else if (res.status === 401) {
+        sessionStorage.removeItem('admin_pw');
+        statusEl.textContent = 'yanlış şifre';
       } else {
-        statusEl.textContent = 'an error occurred';
+        statusEl.textContent = 'hata oluştu';
       }
     } catch {
       statusEl.textContent = 'connection error';
