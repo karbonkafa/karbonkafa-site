@@ -425,7 +425,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 365702,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "doom-eternal-battlemode-pc",
@@ -485,7 +486,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "core-keeper-xbox-series-x-s",
@@ -540,7 +542,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 139615,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "commandos-origins-win",
@@ -1691,7 +1694,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "watch-dogs-legion",
@@ -2034,7 +2038,8 @@
       "positive": 71063,
       "total": 83038,
       "percent": 86
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "the-evil-within-2-pc",
@@ -2147,7 +2152,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 25683,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "starcraft-ii-campaign-collection",
@@ -2173,7 +2179,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 356059,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "spiritfarer",
@@ -2279,7 +2286,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "rollercoaster-tycoon-deluxe",
@@ -2462,7 +2470,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "lego-star-wars-the-skywalker-saga",
@@ -2513,7 +2522,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 315367,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "lego-dc-super-villains",
@@ -2597,7 +2607,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 6188,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "goat-simulator-remastered-windows-edition",
@@ -2821,7 +2832,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "diablo-iv",
@@ -3283,7 +3295,8 @@
       "Family Sharing"
     ],
     "igdbId": 200510,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "dragon-age-inquisition-digital-deluxe",
@@ -3464,7 +3477,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 135881,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "zoo-tycoon-ultimate-animal-collection",
@@ -3958,7 +3972,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "wolfenstein-the-new-order-pc",
@@ -4019,7 +4034,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "wolfenstein-ii-the-new-colossus",
@@ -5667,7 +5683,8 @@
         "uid": "1207660353",
         "url": "https://www.gog.com/en/game/trine_2_complete_story"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "trine-2",
@@ -6230,7 +6247,8 @@
       "original": "$9.99",
       "discount": 85,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "tomb-raider-definitive-edition",
@@ -6685,7 +6703,8 @@
         "url": "https://store.steampowered.com/app/499450"
       }
     },
-    "achievementCount": 78
+    "achievementCount": 78,
+    "dlc": true
   },
   {
     "slug": "the-unfinished-swan",
@@ -6849,7 +6868,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 181486,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "the-outer-worlds-2",
@@ -6987,7 +7007,8 @@
         "uid": "228638",
         "url": "https://store.playstation.com/en-us/concept/228638"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "the-last-of-us-part-ii",
@@ -7416,7 +7437,8 @@
       "original": "$23.99",
       "discount": 75,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "the-elder-scrolls-v-skyrim-anniversary-edition",
@@ -7499,7 +7521,8 @@
         "uid": "223049dd081b41f6a9f62e0021662108",
         "url": "https://store.epicgames.com/en-US/p/oblivion-f77be8"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "the-elder-scrolls-iii-morrowind-game-of-the-year-edition-pc",
@@ -7944,7 +7967,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "the-bard-s-tale-iv-director-s-cut",
@@ -10621,7 +10645,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "sid-meier-s-civilization-iv-beyond-the-sword",
@@ -10666,7 +10691,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "sid-meier-s-ace-patrol-pacific-skies",
@@ -12484,7 +12510,8 @@
         "uid": "1926077727",
         "url": "https://www.gog.com/en/game/rise_of_the_tomb_raider_20_year_celebration"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "rise-of-the-tomb-raider",
@@ -12890,7 +12917,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 142740,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "resident-evil-bundle",
@@ -12916,7 +12944,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 336206,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "resident-evil-7-biohazard",
@@ -13663,7 +13692,8 @@
       "original": "",
       "discount": 0,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "quarantine-zone-the-last-check",
@@ -13776,7 +13806,8 @@
       "positive": 267,
       "total": 292,
       "percent": 91
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "quake-mission-pack-1-scourge-of-armagon",
@@ -13813,7 +13844,8 @@
       "positive": 359,
       "total": 384,
       "percent": 93
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "quake-iii-team-arena",
@@ -13838,7 +13870,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 6634,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "quake-ii-mission-pack-the-reckoning",
@@ -13875,7 +13908,8 @@
       "positive": 142,
       "total": 170,
       "percent": 84
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "quake-ii-mission-pack-ground-zero",
@@ -13912,7 +13946,8 @@
       "positive": 116,
       "total": 190,
       "percent": 61
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "quake-4",
@@ -14859,7 +14894,8 @@
         "uid": "1344895033",
         "url": "https://www.gog.com/en/game/pillars_of_eternity_definitive_edition"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "pigeon-simulator",
@@ -15235,7 +15271,8 @@
         "uid": "1223053864",
         "url": "https://www.gog.com/en/game/overcooked_gourmet_edition"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "overcooked-all-you-can-eat",
@@ -18023,7 +18060,8 @@
       "original": "$14.99",
       "discount": 90,
       "currency": "TRY"
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "metro-exodus-enhanced-edition",
@@ -18049,7 +18087,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 143292,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "metro-2033",
@@ -18665,7 +18704,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 134071,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "mafia-ii",
@@ -19284,7 +19324,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 350903,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "little-nightmares",
@@ -20603,7 +20644,8 @@
       "positive": 207,
       "total": 299,
       "percent": 69
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "just-cause-4",
@@ -21449,7 +21491,8 @@
       "total": 208529,
       "percent": 75
     },
-    "achievementCount": 36
+    "achievementCount": 36,
+    "dlc": true
   },
   {
     "slug": "hungry-shark-world",
@@ -22094,7 +22137,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 360141,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "herdling",
@@ -22422,7 +22466,8 @@
       "total": 235781,
       "percent": 92
     },
-    "achievementCount": 700
+    "achievementCount": 700,
+    "dlc": true
   },
   {
     "slug": "halo-spartan-strike",
@@ -24995,7 +25040,8 @@
         "uid": "1312824873",
         "url": "https://www.gog.com/en/game/fallout_new_vegas_ultimate_edition"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "fallout-shelter",
@@ -26772,7 +26818,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 386593,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "driveclub",
@@ -27089,7 +27136,8 @@
         "uid": "1521801184",
         "url": "https://www.gog.com/en/game/dishonored_complete_collection"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "dishonored-definitive-edition",
@@ -27128,7 +27176,8 @@
         "uid": "73735e4f-ee9e-4c78-92ff-b5bc0ea394ae",
         "url": "https://www.epicgames.com/store/p/dishonored-definitive-edition"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "disco-elysium-the-final-cut",
@@ -28271,7 +28320,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 313126,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "demon-s-tilt",
@@ -30004,7 +30054,8 @@
       "total": 51140,
       "percent": 83
     },
-    "achievementCount": 65
+    "achievementCount": 65,
+    "dlc": true
   },
   {
     "slug": "bioshock-infinite",
@@ -30102,7 +30153,8 @@
       "total": 23545,
       "percent": 72
     },
-    "achievementCount": 53
+    "achievementCount": 53,
+    "dlc": true
   },
   {
     "slug": "betrayer",
@@ -30740,7 +30792,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 41611,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "batman-arkham-knight-game-of-the-year-edition",
@@ -30766,7 +30819,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 42929,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "batman-arkham-collection",
@@ -30797,7 +30851,8 @@
         "uid": "C4H36B87SVL1",
         "url": "https://www.xbox.com/en-us/games/store/batman-arkham-collection/C4H36B87SVL1"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "batman-arkham-city-the-arkham-bundle",
@@ -30823,7 +30878,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": 138112,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "batman-arkham-city",
@@ -31060,7 +31116,8 @@
         "uid": "232399",
         "url": "https://store.playstation.com/en-us/concept/232399"
       }
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "baldur-s-gate-iii",
@@ -31638,7 +31695,8 @@
       "total": 568,
       "percent": 84
     },
-    "achievementCount": 24
+    "achievementCount": 24,
+    "dlc": true
   },
   {
     "slug": "astro-s-playroom",
@@ -33113,7 +33171,8 @@
       "total": 18820,
       "percent": 91
     },
-    "achievementCount": 35
+    "achievementCount": 35,
+    "dlc": true
   },
   {
     "slug": "a-game-about-digging-a-hole",
@@ -34677,7 +34736,8 @@
       "Family Sharing"
     ],
     "igdbId": 3265700,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "vambrace-cold-soul",
@@ -35396,7 +35456,8 @@
       "Partial Controller Support"
     ],
     "igdbId": 1099490,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "treasure-of-nadia",
@@ -36481,7 +36542,8 @@
       "Family Sharing"
     ],
     "igdbId": 378649,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "the-witcher-3-wild-hunt-expansion-pass",
@@ -36567,7 +36629,8 @@
       "Family Sharing"
     ],
     "igdbId": 378648,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "the-witcher-3-wild-hunt",
@@ -36652,7 +36715,8 @@
       "Includes level editor"
     ],
     "igdbId": 2684660,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "the-witcher-2-assassins-of-kings-enhanced-edition",
@@ -38337,7 +38401,8 @@
       "Family Sharing"
     ],
     "igdbId": 3215050,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "surroundead",
@@ -40018,7 +40083,8 @@
       "Family Sharing"
     ],
     "igdbId": 750920,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "shadow-tactics-blades-of-the-shogun",
@@ -40407,7 +40473,8 @@
       "Family Sharing"
     ],
     "igdbId": 978300,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "superhot",
@@ -40894,7 +40961,8 @@
       "Steam Cloud"
     ],
     "igdbId": 1173690,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "relicta",
@@ -44356,7 +44424,8 @@
       "Family Sharing"
     ],
     "igdbId": 360430,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "mafia-ii-definitive-edition",
@@ -44388,7 +44457,8 @@
       "Family Sharing"
     ],
     "igdbId": 1030830,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "mafia-ii-classic",
@@ -44418,7 +44488,8 @@
       "Family Sharing"
     ],
     "igdbId": 50130,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "mad-games-tycoon-2",
@@ -47128,7 +47199,8 @@
       "Full controller support"
     ],
     "igdbId": 1691050,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "hunt-the-night",
@@ -47644,7 +47716,8 @@
       "Family Sharing"
     ],
     "igdbId": 1151640,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "horace",
@@ -48972,7 +49045,8 @@
       "Remote Play on Tablet"
     ],
     "igdbId": 3240220,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "gothic-3",
@@ -50326,7 +50400,8 @@
       "Single-player"
     ],
     "igdbId": 1460540,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "far-lone-sails",
@@ -51937,7 +52012,8 @@
       "Steam Cloud"
     ],
     "igdbId": 3043710,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "diplomacy-is-not-an-option",
@@ -53334,7 +53410,8 @@
       "Family Sharing"
     ],
     "igdbId": 870780,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "cloudpunk",
@@ -55297,7 +55374,8 @@
       "Family Sharing"
     ],
     "igdbId": 200260,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "batman-arkham-asylum-game-of-the-year-edition",
@@ -55342,7 +55420,8 @@
       "positive": 2,
       "total": 10,
       "percent": 20
-    }
+    },
+    "dlc": true
   },
   {
     "slug": "batbarian-testament-of-the-primordials",
@@ -56307,7 +56386,8 @@
       "Playable without Timed Input"
     ],
     "igdbId": 1172470,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "ape-out",
@@ -57560,7 +57640,8 @@
       "Captions available"
     ],
     "igdbId": 916440,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "aer-memories-of-old",
@@ -57820,7 +57901,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "galactic-civilizations-iii-test-branch",
@@ -57843,7 +57925,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "killingfloor2beta",
@@ -57866,7 +57949,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "desperados-iii-ost",
@@ -57889,7 +57973,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "desperados-iii-digital-artbook",
@@ -57936,7 +58021,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "nioh-the-complete-edition",
@@ -57982,7 +58068,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "summer-s-heartbeat",
@@ -58051,7 +58138,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "rollercoaster-tycoon-bundle",
@@ -58074,7 +58162,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "the-witcher-3-wild-hunt-free-dlc-program",
@@ -58121,7 +58210,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "cyberpunk-2077-phantom-liberty-bundle",
@@ -58144,7 +58234,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "battle-isle-3",
@@ -58259,7 +58350,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "dishonored-definitive-edition-pc",
@@ -58282,7 +58374,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "insects-an-xbox-one-x-enhanced-experience",
@@ -58305,7 +58398,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "thehunter-call-of-the-wild-windows-10",
@@ -58328,7 +58422,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "lego-star-wars-tcs",
@@ -58443,7 +58538,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "heroes-of-might-and-magic-olden-era-game-preview",
@@ -58490,7 +58586,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "call-of-duty-ghosts-multiplayer",
@@ -58513,7 +58610,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "genesis-noir-windows-edition",
@@ -58559,7 +58657,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "minecraft-windows-10-edition",
@@ -58582,7 +58681,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "watch-dogs2",
@@ -58605,7 +58705,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "fifa-15-demo",
@@ -58628,7 +58729,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "overwatch-origins-edition",
@@ -58651,7 +58753,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "h1z1-battle-royale",
@@ -58674,7 +58777,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "pillars-of-eternity-2-deadfire-ultimate-edition-pc",
@@ -58697,7 +58801,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "monsters-are-coming-rock-road",
@@ -58743,7 +58848,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "wreckfest-throw-a-santa-sneak-peek-2-0",
@@ -58766,7 +58872,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "to-a-t",
@@ -58860,7 +58967,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "retro-classics",
@@ -58883,7 +58991,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "vampire-survivors-game-preview",
@@ -58930,7 +59039,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "leap-of-faith-official-walkthrough",
@@ -58953,7 +59063,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "cyberpunk-2077-digital-goodies",
@@ -59000,7 +59111,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "black-desert-turkiye-and-mena",
@@ -59046,7 +59158,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "death-s-door-x1",
@@ -59162,7 +59275,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "below",
@@ -59208,7 +59322,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "next-car-game-wreckfest",
@@ -59254,7 +59369,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "efootball-pes-2021",
@@ -59277,7 +59393,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "fifa-21-xbox-one",
@@ -59300,7 +59417,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "pinball-fx-midnight",
@@ -59323,7 +59441,8 @@
     "rating": null,
     "steamTags": [],
     "igdbId": null,
-    "stores": {}
+    "stores": {},
+    "dlc": true
   },
   {
     "slug": "littlebigplanet-vita",
