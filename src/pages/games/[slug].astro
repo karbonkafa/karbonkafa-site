@@ -124,14 +124,14 @@ const filteredWebsites = igdb.websites
     <div>
       <!-- Tags -->
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span style={`font-size: 12px; border: 1px solid ${statusColor[game.status] || '#222'}44; color: ${statusColor[game.status] || '#666'}; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;`}>
+        <span data-i18n={`game.status.${game.status}`} style={`font-size: 12px; border: 1px solid ${statusColor[game.status] || '#222'}44; color: ${statusColor[game.status] || '#666'}; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;`}>
           {statusLabel[game.status] || game.status}
         </span>
         {game.libraryPlatforms?.map((p: string) => (
           <span style="font-size: 12px; border: 1px solid #222; color: #666; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">{p}</span>
         ))}
         {game.isPriorityBacklog && (
-          <span style="font-size: 12px; border: 1px solid #e5c46b44; color: #e5c46b; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">⭐ Priority</span>
+          <span data-i18n="game.priority" style="font-size: 12px; border: 1px solid #e5c46b44; color: #e5c46b; padding: 3px 10px; font-family: 'JetBrains Mono', monospace;">⭐ Priority</span>
         )}
       </div>
 
@@ -264,7 +264,7 @@ const filteredWebsites = igdb.websites
         {review.overall ? `updated ${new Date(review.updatedAt).toLocaleDateString('en-US')}` : 'not reviewed yet'}
       </p>
       <button id="saveReview" data-slug={game.slug} style="background: #e5c46b; color: #0a0a0a; border: none; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-        Save
+        <span data-i18n="review.save">Save</span>
       </button>
     </div>
   </div>
@@ -469,7 +469,7 @@ const filteredWebsites = igdb.websites
   <!-- Similar Games -->
   {igdb.similarGames?.length > 0 && (
     <div style="margin-bottom: 48px;">
-      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;" data-i18n="game.similar">Benzer Games</p>
+      <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;" data-i18n="game.similar">Similar Games</p>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1px; border: 1px solid #222;">
         {igdb.similarGames.filter((s: any) => s.cover).map((similar: any) => (
           <a href={`/games/${similar.slug}`} style="display: block; background: #111; position: relative; aspect-ratio: 3/4; overflow: hidden; group;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
@@ -489,7 +489,7 @@ const filteredWebsites = igdb.websites
   )}
 
   <!-- Back -->
-  <a href="/games" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
+  <a href="/games" data-i18n="game.back" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;" onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
     ← games
   </a>
 

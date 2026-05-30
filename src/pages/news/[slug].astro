@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('news');
+  return articles.map(article => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+const categoryColors: Record<string, string> = {
+  'Duyuru':   '#4a9eed',
+  'Çıkış':    '#22c55e',
+  'Donanım':  '#f97316',
+  'Endüstri': '#9b59b6',
+  'Bağımsız': '#14b8a6',
+  'Haftalık': '#e5c46b',
+};
+
+const color = categoryColors[article.data.category] || '#666';
+const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout title={article.data.title} description={article.data.excerpt}>
+
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: 40px; font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace;">
+    <a href="/news" style="color: #444; transition: color 0.15s;"
+      onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">haberler</a>
+    <span style="margin: 0 8px;">/</span>
+    <span style="color: #888;">{article.data.title}</span>
+  </div>
+
+  <!-- Header -->
+  <div style="margin-bottom: 40px;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+      <span style={`font-size: 10px; border: 1px solid ${color}44; color: ${color}; padding: 2px 8px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em;`}>
+        {article.data.category}
+      </span>
+      <span style="font-size: 12px; color: #444; font-family: 'JetBrains Mono', monospace;">{dateStr}</span>
+    </div>
+
+    <h1 style="font-size: clamp(22px, 3vw, 36px); font-weight: 600; letter-spacing: -0.03em; margin: 0 0 20px; line-height: 1.2;">
+      {article.data.title}
+    </h1>
+
+    <p style="font-size: 15px; color: #888; line-height: 1.7; margin: 0 0 20px; border-left: 2px solid #333; padding-left: 16px;">
+      {article.data.excerpt}
+    </p>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">Kaynak:</span>
+      {article.data.sourceUrl ? (
+        <a href={article.data.sourceUrl} target="_blank" rel="noopener"
+          style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
+          onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555'">
+          {article.data.source} ↗
+        </a>
+      ) : (
+        <span style="font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace;">{article.data.source}</span>
+      )}
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #222; margin-bottom: 40px;"></div>
+
+  <!-- Article body -->
+  <div class="prose">
+    <Content />
+  </div>
+
+  <!-- Tags -->
+  {article.data.tags.length > 0 && (
+    <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #222; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+      <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">etiketler:</span>
+      {article.data.tags.map((tag: string) => (
+        <span style="font-size: 11px; background: #0f0f0f; border: 1px solid #1e1e1e; color: #555; padding: 2px 8px;">
+          {tag}
+        </span>
+      ))}
+    </div>
+  )}
+
+  <!-- Back -->
+  <div style="margin-top: 48px;">
+    <a href="/news" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; transition: color 0.15s;"
+      onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#444'">
+      ← haberler
+    </a>
+  </div>
+
+</Layout>

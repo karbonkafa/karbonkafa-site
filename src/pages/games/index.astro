@@ -70,10 +70,10 @@ const stats = {
       <option value="completed" data-i18n="archive.completed">Completed</option>
     </select>
     <select id="platformFilter" style="background: #111; border: 1px solid #222; color: #e5e5e5; padding: 8px 14px; font-size: 14px; outline: none; font-family: inherit;">
-      <option value="">All Platforms</option>
+      <option value="" data-i18n="archive.allPlatforms">All Platforms</option>
       {storePlatforms.map(p => <option value={p.toLowerCase()}>{p}</option>)}
     </select>
-    <span id="count" style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; white-space: nowrap;">{games.length} oyun</span>
+    <span style="font-size: 13px; color: #444; font-family: 'JetBrains Mono', monospace; white-space: nowrap;"><span id="count">{games.length}</span> <span data-i18n="archive.gamesCount">games</span></span>
   </div>
 
   <!-- Game Grid -->
@@ -123,7 +123,7 @@ const stats = {
 
   <!-- No results -->
   <div id="noResults" style="display: none; border: 1px solid #222; padding: 48px; text-align: center; color: #444; font-family: 'JetBrains Mono', monospace; font-size: 14px; margin-top: 1px;">
-    no results found
+    <span data-i18n="archive.noResults">no results found</span>
   </div>
 
 </Layout>
@@ -166,7 +166,7 @@ const stats = {
       if (show) visible++;
     });
 
-    countEl.textContent = `${visible} games`;
+    countEl.textContent = String(visible);
     noResults.style.display = visible === 0 ? 'block' : 'none';
   }
 

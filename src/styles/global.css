@@ -33,3 +33,86 @@ a {
 .mono {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
+
+.prose {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.prose h2 {
+  font-size: 19px;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin: 36px 0 14px;
+  letter-spacing: -0.02em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #222;
+}
+
+.prose h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin: 28px 0 10px;
+}
+
+.prose p {
+  margin: 0 0 18px;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 18px;
+  padding-left: 22px;
+}
+
+.prose li {
+  margin-bottom: 6px;
+}
+
+.prose strong {
+  color: #e5e5e5;
+  font-weight: 600;
+}
+
+.prose em {
+  color: #aaa;
+  font-style: italic;
+}
+
+.prose a {
+  color: #e5c46b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: #f0d488;
+}
+
+.prose blockquote {
+  border-left: 2px solid #e5c46b;
+  margin: 24px 0;
+  padding: 8px 16px;
+  color: #888;
+}
+
+.prose code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: #111;
+  border: 1px solid #222;
+  padding: 1px 6px;
+  color: #e5c46b;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid #222;
+  margin: 32px 0;
+}
