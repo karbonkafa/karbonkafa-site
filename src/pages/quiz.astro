@@ -89,41 +89,36 @@ const titles = pool.map(g => g.title);
 </Layout>
 
 <script define:vars={{ pool, titles }}>
-// ── CONFIG ──────────────────────────────────────────────────
 const MAX_LIVES = 5;
-// Crop fractions: how much of the image to show (smaller = more zoomed in)
 const CROPS = [0.15, 0.22, 0.32, 0.45, 0.62, 1.0];
 const IMG_BASE = 'https://images.igdb.com/igdb/image/upload/t_screenshot_big/';
 
-// ── STATE ───────────────────────────────────────────────────
 let shuffled = [...pool].sort(() => Math.random() - 0.5);
 let idx = 0;
 let score = 0, streak = 0, totalCount = 0;
 let lives = MAX_LIVES;
-let level = 0; // which crop we're on
+let level = 0;
 let revealed = false;
-let wrongGuesses: string[] = [];
+let wrongGuesses = [];
 
-// ── DOM ─────────────────────────────────────────────────────
-const canvas = document.getElementById('quizCanvas') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d')!;
+const canvas = document.getElementById('quizCanvas');
+const ctx = canvas.getContext('2d');
 canvas.width = 800; canvas.height = 450;
 
-const guessInput = document.getElementById('guessInput') as HTMLInputElement;
-const suggestionsEl = document.getElementById('suggestions')!;
-const hintBtn = document.getElementById('hintBtn') as HTMLButtonElement;
-const skipBtn = document.getElementById('skipBtn') as HTMLButtonElement;
-const nextBtn = document.getElementById('nextBtn') as HTMLButtonElement;
-const levelDots = document.getElementById('levelDots')!;
-const livesEl = document.getElementById('livesDisplay')!;
-const wrongEl = document.getElementById('wrongGuesses')!;
-const overlay = document.getElementById('revealOverlay')!;
-const historyEl = document.getElementById('historyDots')!;
+const guessInput = document.getElementById('guessInput');
+const suggestionsEl = document.getElementById('suggestions');
+const hintBtn = document.getElementById('hintBtn');
+const skipBtn = document.getElementById('skipBtn');
+const nextBtn = document.getElementById('nextBtn');
+const levelDots = document.getElementById('levelDots');
+const livesEl = document.getElementById('livesDisplay');
+const wrongEl = document.getElementById('wrongGuesses');
+const overlay = document.getElementById('revealOverlay');
+const historyEl = document.getElementById('historyDots');
 
-// ── HELPERS ─────────────────────────────────────────────────
 function game() { return shuffled[idx % shuffled.length]; }
 
-function normalize(s: string) {
+function normalize(s) {
   return s.toLowerCase().replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim();
 }
 
@@ -145,37 +140,30 @@ function renderWrong() {
   ).join('');
 }
 
-function addHistory(result: 'correct'|'wrong'|'skip') {
+function addHistory(result) {
   const colors = { correct:'#22c55e', wrong:'#ef4444', skip:'#444455' };
   const dot = document.createElement('div');
   dot.style.cssText = `width:9px;height:9px;border-radius:50%;background:${colors[result]};flex-shrink:0;`;
   historyEl.appendChild(dot);
 }
 
-// ── DRAW CROP ───────────────────────────────────────────────
-function drawCrop(screenshotId: string, cropFrac: number) {
+function drawCrop(screenshotId, cropFrac) {
   const img = new Image();
   img.crossOrigin = 'anonymous';
   img.onload = () => {
     const sw = img.width * cropFrac;
     const sh = img.height * cropFrac;
-    const maxSx = Math.max(0, img.width - sw);
-    const maxSy = Math.max(0, img.height - sh);
-    const sx = Math.random() * maxSx;
-    const sy = Math.random() * maxSy;
+    const sx = Math.random() * Math.max(0, img.width - sw);
+    const sy = Math.random() * Math.max(0, img.height - sh);
 
     ctx.fillStyle = '#050508';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.imageSmoothingEnabled = cropFrac > 0.5;
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
 
-    // Add scanline overlay for pixel feel
     ctx.fillStyle = 'rgba(0,0,0,0.12)';
-    for (let y = 0; y < canvas.height; y += 4) {
-      ctx.fillRect(0, y, canvas.width, 1);
-    }
+    for (let y = 0; y < canvas.height; y += 4) ctx.fillRect(0, y, canvas.width, 1);
 
-    // Level label
     ctx.fillStyle = 'rgba(5,5,8,0.7)';
     ctx.fillRect(0, canvas.height - 28, canvas.width, 28);
     ctx.fillStyle = '#333344';
@@ -194,7 +182,6 @@ function drawCrop(screenshotId: string, cropFrac: number) {
   img.src = IMG_BASE + screenshotId + '.jpg';
 }
 
-// ── LOAD GAME ───────────────────────────────────────────────
 function loadGame() {
   revealed = false;
   lives = MAX_LIVES;
@@ -210,14 +197,12 @@ function loadGame() {
   skipBtn.style.display = '';
 
   const g = game();
-  const screens = g.screenshots;
-  drawCrop(screens[0], CROPS[0]);
+  drawCrop(g.screenshots[0], CROPS[0]);
   renderLives();
   renderLevelDots();
   renderWrong();
 }
 
-// ── HINT ────────────────────────────────────────────────────
 function giveHint() {
   if (revealed || level >= CROPS.length - 2) {
     hintBtn.textContent = '— İPUCU KALMADI —';
@@ -226,27 +211,18 @@ function giveHint() {
   }
   level++;
   const g = game();
-  const screens = g.screenshots;
-  const screenIdx = Math.min(level, screens.length - 1);
-  drawCrop(screens[screenIdx], CROPS[level]);
+  drawCrop(g.screenshots[Math.min(level, g.screenshots.length - 1)], CROPS[level]);
   renderLevelDots();
-  if (level >= CROPS.length - 2) {
-    hintBtn.textContent = '— İPUCU KALMADI —';
-    hintBtn.disabled = true;
-  }
+  if (level >= CROPS.length - 2) { hintBtn.textContent = '— İPUCU KALMADI —'; hintBtn.disabled = true; }
 }
 
-// ── REVEAL ──────────────────────────────────────────────────
-function reveal(correct: boolean) {
+function reveal(correct) {
   if (revealed) return;
   revealed = true;
   totalCount++;
 
   const g = game();
-
-  // Draw full screenshot
-  const screens = g.screenshots;
-  drawCrop(screens[screens.length - 1], 1.0);
+  drawCrop(g.screenshots[g.screenshots.length - 1], 1.0);
 
   guessInput.disabled = true;
   suggestionsEl.style.display = 'none';
@@ -257,24 +233,24 @@ function reveal(correct: boolean) {
   if (correct) { score++; streak++; addHistory('correct'); }
   else { streak = 0; addHistory('skip'); }
 
-  document.getElementById('scoreVal')!.textContent = String(score);
-  document.getElementById('streakVal')!.textContent = String(streak);
-  document.getElementById('totalVal')!.textContent = String(totalCount);
+  document.getElementById('scoreVal').textContent = String(score);
+  document.getElementById('streakVal').textContent = String(streak);
+  document.getElementById('totalVal').textContent = String(totalCount);
 
   overlay.style.display = 'flex';
-  const icon = document.getElementById('revealIcon')!;
-  const title = document.getElementById('revealTitle')!;
-  const meta = document.getElementById('revealMeta')!;
-  const cta = document.getElementById('revealCta')!;
+  const icon = document.getElementById('revealIcon');
+  const titleEl = document.getElementById('revealTitle');
+  const meta = document.getElementById('revealMeta');
+  const cta = document.getElementById('revealCta');
 
   icon.textContent = correct ? '✓' : '?';
   icon.style.color = correct ? '#22c55e' : '#e5c46b';
   icon.style.fontSize = '56px';
-  title.textContent = g.title;
-  title.style.color = correct ? '#22c55e' : '#e5e5e5';
+  titleEl.textContent = g.title;
+  titleEl.style.color = correct ? '#22c55e' : '#e5e5e5';
   meta.textContent = [
-    g.developer?.[0],
-    g.genres?.slice(0,2).join(' / '),
+    g.developer && g.developer[0],
+    g.genres && g.genres.slice(0,2).join(' / '),
   ].filter(Boolean).join('  ·  ');
 
   cta.innerHTML = '';
@@ -292,8 +268,7 @@ function reveal(correct: boolean) {
   cta.appendChild(infoBtn);
 }
 
-// ── CHECK GUESS ─────────────────────────────────────────────
-function checkGuess(val: string) {
+function checkGuess(val) {
   if (revealed || !val.trim()) return;
   const g = game();
   if (normalize(val) === normalize(g.title)) {
@@ -308,18 +283,16 @@ function checkGuess(val: string) {
     guessInput.value = '';
     setTimeout(() => { guessInput.style.borderColor = '#1e1e2e'; }, 600);
     if (lives <= 0) { reveal(false); return; }
-    // Auto hint on wrong guess
     if (!revealed) giveHint();
   }
 }
 
-// ── AUTOCOMPLETE ────────────────────────────────────────────
 guessInput.addEventListener('input', () => {
   const q = normalize(guessInput.value);
   if (q.length < 2) { suggestionsEl.style.display = 'none'; return; }
-  const matches = titles.filter((t: string) => normalize(t).includes(q)).slice(0, 6);
+  const matches = titles.filter(t => normalize(t).includes(q)).slice(0, 6);
   if (!matches.length) { suggestionsEl.style.display = 'none'; return; }
-  suggestionsEl.innerHTML = matches.map((t: string) =>
+  suggestionsEl.innerHTML = matches.map(t =>
     `<div class="sug" data-title="${t.replace(/"/g,'&quot;')}"
       style="padding:10px 14px;cursor:pointer;font-size:14px;color:#ccc;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
       onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">${t}</div>`
@@ -328,11 +301,11 @@ guessInput.addEventListener('input', () => {
 });
 
 suggestionsEl.addEventListener('click', e => {
-  const item = (e.target as HTMLElement).closest('.sug') as HTMLElement;
+  const item = e.target.closest('.sug');
   if (!item) return;
-  guessInput.value = item.dataset.title!;
+  guessInput.value = item.dataset.title;
   suggestionsEl.style.display = 'none';
-  checkGuess(item.dataset.title!);
+  checkGuess(item.dataset.title);
 });
 
 guessInput.addEventListener('keydown', e => {
@@ -341,7 +314,7 @@ guessInput.addEventListener('keydown', e => {
 });
 
 document.addEventListener('click', e => {
-  if (!(suggestionsEl.contains(e.target as Node)) && e.target !== guessInput)
+  if (!suggestionsEl.contains(e.target) && e.target !== guessInput)
     suggestionsEl.style.display = 'none';
 });
 
@@ -349,6 +322,5 @@ hintBtn.addEventListener('click', giveHint);
 skipBtn.addEventListener('click', () => reveal(false));
 nextBtn.addEventListener('click', () => { idx++; hintBtn.textContent = '💡 İPUCU'; hintBtn.disabled = false; loadGame(); });
 
-// Start
 loadGame();
 </script>
