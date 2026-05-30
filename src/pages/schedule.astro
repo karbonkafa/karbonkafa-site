@@ -1,0 +1,70 @@
+---
+import Layout from '../layouts/Layout.astro';
+import scheduleData from '../data/schedule.json';
+import gamesData from '../data/games.json';
+
+const schedule = scheduleData as any[];
+const games = gamesData as any[];
+const gmap: Record<string, any> = {};
+for (const g of games) gmap[g.slug] = g;
+
+const days = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+const todayIdx = (new Date().getDay() + 6) % 7; // 0=Mon
+
+function getBanner(slug: string): string {
+  const g = gmap[slug];
+  if (!g) return '';
+  const sid = g.stores?.steam?.uid;
+  if (sid) return `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${sid}/header.jpg`;
+  return g.coverUrl || '';
+}
+---
+
+<Layout title="Yayın Akışı" description="Bu hafta ne yayınlanıyor.">
+
+  <div style="margin-bottom: 48px;">
+    <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 12px;">Yayın Akışı</p>
+    <h1 style="font-size: 36px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 12px;">Bu Hafta</h1>
+    <p style="font-size: 15px; color: #666; margin: 0;">Her gün hangi oyun, hangi saat.</p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a;">
+    {schedule.map((entry, i) => {
+      const isToday = i === todayIdx;
+      const banner = getBanner(entry.game);
+      return (
+        <div style={`display: grid; grid-template-columns: 100px 160px 1fr; gap: 0; background: ${isToday ? '#131310' : '#111'}; ${isToday ? 'border-left: 2px solid #e5c46b;' : ''}`}>
+          <!-- Day / Time -->
+          <div style="padding: 20px 16px; display: flex; flex-direction: column; justify-content: center; gap: 4px; border-right: 1px solid #1a1a1a;">
+            <span style={`font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: ${isToday ? '#e5c46b' : '#555'};`}>{entry.day}</span>
+            <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace;">{entry.time}</span>
+            {isToday && <span style="font-size: 9px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px;">Bugün</span>}
+          </div>
+          <!-- Banner -->
+          <a href={`/games/${entry.game}`} style="display: block; overflow: hidden; border-right: 1px solid #1a1a1a;">
+            {banner ? (
+              <img src={banner} alt={entry.title} loading="lazy"
+                style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0.75; transition: opacity 0.15s;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'" />
+            ) : (
+              <div style="width: 100%; height: 100%; background: #0d0d0d; display: flex; align-items: center; justify-content: center; padding: 8px;">
+                <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace; text-align: center;">{entry.title}</span>
+              </div>
+            )}
+          </a>
+          <!-- Info -->
+          <div style="padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px;">
+            <a href={`/games/${entry.game}`}
+              style={`font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: ${isToday ? '#e5e5e5' : '#ccc'}; transition: color 0.15s; text-decoration: none;`}
+              onmouseover="this.style.color='#e5c46b'" onmouseout={`this.style.color='${isToday ? '#e5e5e5' : '#ccc'}'`}>
+              {entry.title}
+            </a>
+            <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">{entry.episode}</span>
+            {entry.note && <p style="font-size: 12px; color: #444; margin: 2px 0 0; line-height: 1.5; font-style: italic;">"{entry.note}"</p>}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+
+</Layout>

@@ -1,0 +1,65 @@
+[
+  {
+    "day": "Pazartesi",
+    "time": "20:00",
+    "game": "the-witcher-3-wild-hunt",
+    "title": "The Witcher 3: Wild Hunt",
+    "episode": "Bölüm 12 — Bloody Baron",
+    "status": "upcoming",
+    "note": "Missable questler için dikkatli ilerliyoruz."
+  },
+  {
+    "day": "Salı",
+    "time": "21:00",
+    "game": "elden-ring",
+    "title": "Elden Ring",
+    "episode": "Bölüm 8 — Limgrave Temizlik",
+    "status": "upcoming",
+    "note": "Tüm katakombları bitirip bir sonraki bölgeye geçiyoruz."
+  },
+  {
+    "day": "Çarşamba",
+    "time": "20:00",
+    "game": "hades",
+    "title": "Hades",
+    "episode": "Heat Run — Pact of Punishment",
+    "status": "upcoming",
+    "note": "32 heat çalışıyoruz."
+  },
+  {
+    "day": "Perşembe",
+    "time": "21:00",
+    "game": "cyberpunk-2077",
+    "title": "Cyberpunk 2077",
+    "episode": "Phantom Liberty — Act 2",
+    "status": "upcoming",
+    "note": ""
+  },
+  {
+    "day": "Cuma",
+    "time": "20:00",
+    "game": "baldur-s-gate-iii",
+    "title": "Baldur's Gate III",
+    "episode": "Bölüm 15 — Act 3 Başlangıç",
+    "status": "upcoming",
+    "note": "Bu haftadan itibaren her cuma BG3."
+  },
+  {
+    "day": "Cumartesi",
+    "time": "15:00",
+    "game": "hollow-knight",
+    "title": "Hollow Knight",
+    "episode": "%100 Run — Pantheon of Hollownest",
+    "status": "upcoming",
+    "note": "Son boss arena. Muhtemelen uzun sürecek."
+  },
+  {
+    "day": "Pazar",
+    "time": "19:00",
+    "game": "sekiro-shadows-die-twice",
+    "title": "Sekiro: Shadows Die Twice",
+    "episode": "NG+ — Shura Ending",
+    "status": "upcoming",
+    "note": "Alternatif bitiş için ikinci oynanış."
+  }
+]
