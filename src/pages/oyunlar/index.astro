@@ -78,12 +78,13 @@ const stats = {
   <!-- Game Grid -->
   <div id="gameGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1px; border: 1px solid #222;">
     {games.map(game => (
-      <div
+      <a
+        href={`/oyunlar/${game.slug}`}
         class="game-card"
         data-title={game.title.toLowerCase()}
         data-status={game.status}
         data-platform={game.platform}
-        style="background: #111; position: relative; aspect-ratio: 3/4; overflow: hidden; cursor: default;"
+        style="background: #111; position: relative; aspect-ratio: 3/4; overflow: hidden; display: block; cursor: pointer;"
       >
         {game.coverUrl ? (
           <img
@@ -112,7 +113,7 @@ const stats = {
         </div>
         <!-- Status dot -->
         <div style={`position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: ${statusColor[game.status] || '#666'};`}></div>
-      </div>
+      </a>
     ))}
   </div>
 
