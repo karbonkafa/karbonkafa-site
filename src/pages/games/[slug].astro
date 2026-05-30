@@ -40,6 +40,7 @@ const achievementList = achievementLists[game.slug] || [];
 // Lookup maps for similar games
 const metacriticMap: Record<string, number | null> = {};
 const steamMap: Record<string, string> = {};
+const librarySlugSet = new Set((gamesData as any[]).filter(g => !g.dlc).map((g: any) => g.slug));
 for (const g of gamesData as any[]) {
   if (g.metacriticScore) metacriticMap[g.slug] = g.metacriticScore;
   if (g.stores?.steam?.uid) steamMap[g.slug] = g.stores.steam.uid;
@@ -337,17 +338,18 @@ const filteredWebsites = igdb.websites
   ) : null}
 
   <!-- Similar Games -->
-  {igdb.similarGames?.length > 0 && (
+  {igdb.similarGames?.filter((s: any) => s.cover && librarySlugSet.has(s.slug)).length > 0 && (
     <div style="margin-bottom: 48px;">
       <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;" data-i18n="game.similar">Benzer Oyunlar</p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;">
-        {igdb.similarGames.filter((s: any) => s.cover).map((similar: any) => {
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;">
+        {igdb.similarGames.filter((s: any) => s.cover && librarySlugSet.has(s.slug)).map((similar: any) => {
           const mc = metacriticMap[similar.slug];
           const mcColor = mc >= 75 ? '#22c55e' : mc >= 50 ? '#eab308' : '#ef4444';
           const steamId = steamMap[similar.slug];
           const bannerUrl = steamId
             ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${steamId}/header.jpg`
             : `https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${similar.cover}.jpg`;
+          const isPortrait = !steamId;
           return (
             <a href={`/games/${similar.slug}`}
               style="display: flex; flex-direction: column; background: #111; border: 1px solid #1a1a1a; overflow: hidden; transition: border-color 0.15s;"
@@ -357,14 +359,14 @@ const filteredWebsites = igdb.websites
                   src={bannerUrl}
                   alt={similar.name}
                   loading="lazy"
-                  style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s;"
+                  style={`width: 100%; height: 100%; object-fit: cover; object-position: ${isPortrait ? 'top center' : 'center'}; display: block; transition: transform 0.2s;`}
                   onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"
                 />
               </div>
-              <div style="padding: 8px 9px; display: flex; align-items: flex-start; justify-content: space-between; gap: 6px;">
-                <p style="font-size: 11px; color: #ccc; margin: 0; line-height: 1.35; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{similar.name}</p>
+              <div style="padding: 7px 8px; display: flex; align-items: flex-start; justify-content: space-between; gap: 4px;">
+                <p style="font-size: 10px; color: #ccc; margin: 0; line-height: 1.3; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{similar.name}</p>
                 {mc && (
-                  <span style={`font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 600; color: ${mcColor}; flex-shrink: 0; padding-top: 1px;`}>{mc}</span>
+                  <span style={`font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 600; color: ${mcColor}; flex-shrink: 0; padding-top: 1px;`}>{mc}</span>
                 )}
               </div>
             </a>
