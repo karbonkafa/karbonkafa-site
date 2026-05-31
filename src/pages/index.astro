@@ -12,7 +12,7 @@ for (const g of games) gmap[g.slug] = g;
 const allNews = await getCollection('news');
 const sorted = allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const newsWithImage    = sorted.filter(a => a.data.image).slice(0, 6);
-const newsWithoutImage = sorted.filter(a => !a.data.image).slice(0, 9);
+const newsWithoutImage = sorted.filter(a => !a.data.image).slice(0, 20);
 
 const categoryColors: Record<string, string> = {
   'Duyuru':   '#4a9eed',
@@ -35,7 +35,7 @@ const categoryColors: Record<string, string> = {
       onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#555566'">TÜM LİSTELER →</a>
   </div>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;margin-bottom:28px;">
+  <div class="list-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-bottom:24px;">
     {lists.map(list => {
       const slugs = list.games.map((i: any) => i.slug);
       return (
@@ -78,7 +78,7 @@ const categoryColors: Record<string, string> = {
   </div>
 
   <!-- Görselli haberler -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;margin-bottom:6px;">
+  <div class="news-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-bottom:6px;">
     {newsWithImage.map(article => {
       const color = categoryColors[article.data.category] || '#666677';
       const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
@@ -130,9 +130,9 @@ const categoryColors: Record<string, string> = {
     </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:28px;">
+  <div class="bottom-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:28px;align-items:stretch;">
     <!-- GTA -->
-    <div id="gtaPanel" style="background:#0d0d12;border:1px solid #ef444422;text-align:center;padding:16px 12px;">
+    <div id="gtaPanel" style="background:#0d0d12;border:1px solid #ef444422;text-align:center;padding:16px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
       <p style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#666677;margin:0 0 4px;letter-spacing:0.04em;">📺 GTA VI — 19 KASIM 2026</p>
       <div id="gtaPixelCount" style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#e5c46b;line-height:1;margin-bottom:2px;font-weight:300;">-- GÜN</div>
       <p style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#444455;margin:0;">GTA TARİHİ SEZONU</p>
@@ -152,6 +152,20 @@ const categoryColors: Record<string, string> = {
   </div>
 
 </Layout>
+
+<style>
+  /* Font küçült */
+  h2 { font-size: 11px !important; }
+  .section-link { font-size: 10px; }
+
+  /* Mobil */
+  @media (max-width: 640px) {
+    .news-grid { grid-template-columns: 1fr !important; }
+    .list-grid  { grid-template-columns: 1fr !important; }
+    .bottom-row { grid-template-columns: 1fr !important; }
+    .weather-cities { flex-direction: column !important; }
+  }
+</style>
 
 <script>
   import { createClient } from '@supabase/supabase-js';

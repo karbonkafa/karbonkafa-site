@@ -175,6 +175,10 @@ const apps = [
 <style>
   @media (max-width: 600px) {
     .layout-sys-row { grid-template-columns: 1fr !important; }
+    main { padding: 12px 14px !important; }
+  }
+  @media (max-width: 480px) {
+    .layout-sys-row { display: flex !important; flex-direction: column !important; }
   }
   .app-icon { padding: 2px 6px; }
 </style>
