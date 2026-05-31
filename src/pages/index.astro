@@ -39,6 +39,13 @@ const smallNews = latestNews.slice(3);
                 <p style="font-family:'VT323',monospace;font-size:18px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
                 <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
               </div>
+              <div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;">
+                <div class="list-avatar" data-username={list.author.toLowerCase()}
+                  style="width:18px;height:18px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:10px;color:#e5c46b;flex-shrink:0;">
+                  {list.author[0].toUpperCase()}
+                </div>
+                <span style="font-family:'VT323',monospace;font-size:13px;color:#555566;">{list.author}</span>
+              </div>
               <div style="display: flex; gap: 2px; flex-wrap: wrap;">
                 {slugs.slice(0, 18).map((slug: string) => {
                   const g = gmap[slug];
@@ -199,6 +206,23 @@ const smallNews = latestNews.slice(3);
 </style>
 
 <script>
+  import { createClient } from '@supabase/supabase-js';
+  const _sb = createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_ANON_KEY);
+
+  (async () => {
+    const els = document.querySelectorAll<HTMLElement>('.list-avatar');
+    const usernames = [...new Set([...els].map(el => el.dataset.username!).filter(Boolean))];
+    if (!usernames.length) return;
+    const { data: profiles } = await _sb.from('profiles').select('username,avatar_url').in('username', usernames);
+    if (!profiles) return;
+    profiles.forEach(p => {
+      if (!p.avatar_url) return;
+      document.querySelectorAll<HTMLElement>(`.list-avatar[data-username="${p.username}"]`).forEach(el => {
+        el.innerHTML = `<img src="${p.avatar_url}" style="width:100%;height:100%;object-fit:cover;" />`;
+      });
+    });
+  })();
+
   // GTA countdown
   const target = new Date('2026-11-19T10:00:00Z').getTime();
   const days = Math.ceil((target - Date.now()) / 86400000);

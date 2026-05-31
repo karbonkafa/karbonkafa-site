@@ -24,10 +24,14 @@ for (const g of games) gmap[g.slug] = g;
           onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
           <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
             <p style="font-family:'VT323',monospace;font-size:22px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
-            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-              <span style="font-family:'VT323',monospace;font-size:15px;color:#e5c46b;">{list.author}</span>
-              <span style="font-family:'VT323',monospace;font-size:15px;color:#444455;">{list.games.length} oyun</span>
+            <span style="font-family:'VT323',monospace;font-size:15px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+            <div class="list-avatar" data-username={list.author.toLowerCase()}
+              style="width:20px;height:20px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:11px;color:#e5c46b;flex-shrink:0;">
+              {list.author[0].toUpperCase()}
             </div>
+            <span style="font-family:'VT323',monospace;font-size:14px;color:#e5c46b;">{list.author}</span>
           </div>
           {list.description && (
             <p style="font-size:12px;color:#666677;margin:0 0 10px;line-height:1.5;">{list.description}</p>
@@ -123,5 +127,20 @@ for (const g of games) gmap[g.slug] = g;
         </a>
       `;
     }).join('');
+  })();
+
+  // Populate list-avatar elements from Supabase profiles
+  (async () => {
+    const els = document.querySelectorAll<HTMLElement>('.list-avatar');
+    const usernames = [...new Set([...els].map(el => el.dataset.username!).filter(Boolean))];
+    if (!usernames.length) return;
+    const { data: profiles } = await sb.from('profiles').select('username,avatar_url').in('username', usernames);
+    if (!profiles) return;
+    profiles.forEach(p => {
+      if (!p.avatar_url) return;
+      document.querySelectorAll<HTMLElement>(`.list-avatar[data-username="${p.username}"]`).forEach(el => {
+        el.innerHTML = `<img src="${p.avatar_url}" style="width:100%;height:100%;object-fit:cover;" />`;
+      });
+    });
   })();
 </script>
