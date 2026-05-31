@@ -39,15 +39,12 @@ const smallNews = latestNews.slice(3);
                 <p style="font-family:'VT323',monospace;font-size:18px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
                 <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
               </div>
-              <div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;">
+              <div style="display: flex; gap: 2px; flex-wrap: wrap; align-items:flex-start;">
                 <div class="list-avatar" data-username={list.author.toLowerCase()}
-                  style="width:18px;height:18px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:10px;color:#e5c46b;flex-shrink:0;">
+                  style="width:40px;height:40px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:14px;color:#e5c46b;flex-shrink:0;">
                   {list.author[0].toUpperCase()}
                 </div>
-                <span style="font-family:'VT323',monospace;font-size:13px;color:#555566;">{list.author}</span>
-              </div>
-              <div style="display: flex; gap: 2px; flex-wrap: wrap;">
-                {slugs.slice(0, 18).map((slug: string) => {
+                {slugs.slice(0, 17).map((slug: string) => {
                   const g = gmap[slug];
                   const cover = g?.coverUrl;
                   return cover ? (

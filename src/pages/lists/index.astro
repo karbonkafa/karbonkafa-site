@@ -26,17 +26,14 @@ for (const g of games) gmap[g.slug] = g;
             <p style="font-family:'VT323',monospace;font-size:22px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
             <span style="font-family:'VT323',monospace;font-size:15px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          {list.description && (
+            <p style="font-size:12px;color:#666677;margin:0 0 8px;line-height:1.5;">{list.description}</p>
+          )}
+          <div style="display: flex; gap: 2px; flex-wrap: wrap; align-items:flex-start;">
             <div class="list-avatar" data-username={list.author.toLowerCase()}
-              style="width:20px;height:20px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:11px;color:#e5c46b;flex-shrink:0;">
+              style="width:64px;height:64px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:20px;color:#e5c46b;flex-shrink:0;">
               {list.author[0].toUpperCase()}
             </div>
-            <span style="font-family:'VT323',monospace;font-size:14px;color:#e5c46b;">{list.author}</span>
-          </div>
-          {list.description && (
-            <p style="font-size:12px;color:#666677;margin:0 0 10px;line-height:1.5;">{list.description}</p>
-          )}
-          <div style="display: flex; gap: 2px; flex-wrap: wrap;">
             {list.games.map((item: any) => {
               const g = gmap[item.slug];
               const cover = g?.coverUrl;
