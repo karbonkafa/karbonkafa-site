@@ -83,34 +83,34 @@ const meals = [
         <div style={`padding: 16px 18px; border-bottom: 1px solid ${meal.color}22;`}>
           <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
             <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{meal.title}</h2>
-            <span style={`font-size: 9px; background: ${meal.color}22; border: 1px solid ${meal.color}55; color: ${meal.color}; padding: 2px 7px; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; white-space: nowrap;`}>{meal.category}</span>
+            <span style={`font-size: 14px; background: ${meal.color}22; border: 1px solid ${meal.color}55; color: ${meal.color}; padding: 1px 8px; font-family: 'VT323', monospace; flex-shrink: 0; white-space: nowrap; letter-spacing: 0.04em;`}>{meal.category}</span>
           </div>
-          <p style="font-size: 13px; color: #666; margin: 0 0 8px; line-height: 1.5;">{meal.desc}</p>
+          <p style="font-size: 13px; color: #888; margin: 0 0 8px; line-height: 1.5;">{meal.desc}</p>
           <div style="display: flex; gap: 12px;">
-            <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace;">⏱ {meal.time}</span>
-            <span style="font-size: 10px; color: #444; font-family: 'JetBrains Mono', monospace;">· {meal.difficulty}</span>
+            <span style="font-size: 14px; color: #555566; font-family: 'VT323', monospace;">⏱ {meal.time}</span>
+            <span style="font-size: 14px; color: #555566; font-family: 'VT323', monospace;">· {meal.difficulty}</span>
           </div>
         </div>
 
         <!-- Ingredients -->
-        <div style="padding: 12px 18px; border-bottom: 1px solid #1a1a1a;">
-          <p style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px;">Malzemeler</p>
+        <div style="padding: 10px 16px; border-bottom: 1px solid #1a1a1a;">
+          <p style="font-size: 13px; color: #444455; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'VT323', monospace; margin: 0 0 6px;">MALZEMELER</p>
           <div style="display: flex; flex-wrap: wrap; gap: 4px;">
             {meal.ingredients.map(ing => (
-              <span style="font-size: 11px; background: #0d0d0d; border: 1px solid #222; color: #777; padding: 2px 8px;">{ing}</span>
+              <span style="font-size: 12px; background: #0d0d12; border: 1px solid #1e1e2e; color: #888899; padding: 2px 8px;">{ing}</span>
             ))}
           </div>
         </div>
 
         <!-- Tip -->
-        <div style="padding: 12px 18px; border-bottom: 1px solid #1a1a1a; flex: 1;">
-          <p style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono', monospace; margin: 0 0 6px;">Karbon Notu</p>
-          <p style="font-size: 12px; color: #666; margin: 0; line-height: 1.6; font-style: italic;">"{meal.tip}"</p>
+        <div style="padding: 10px 16px; border-bottom: 1px solid #1a1a1a; flex: 1;">
+          <p style="font-size: 13px; color: #444455; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'VT323', monospace; margin: 0 0 5px;">KARBON NOTU</p>
+          <p style="font-size: 13px; color: #778899; margin: 0; line-height: 1.6; font-style: italic;">"{meal.tip}"</p>
         </div>
 
         <!-- Game pairing -->
-        <div style="padding: 10px 18px;">
-          <p style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace; margin: 0;">🎮 {meal.game}</p>
+        <div style="padding: 8px 16px;">
+          <p style="font-size: 14px; color: #444455; font-family: 'VT323', monospace; margin: 0; letter-spacing: 0.02em;">🎮 {meal.game}</p>
         </div>
       </div>
     ))}

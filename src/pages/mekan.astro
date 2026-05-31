@@ -125,16 +125,16 @@ const locations = [
             <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 6px; flex-wrap: wrap;">
               <div>
                 <h2 style="font-size: 16px; font-weight: 600; margin: 0 0 3px; letter-spacing: -0.01em;">{loc.name}</h2>
-                <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">{loc.region}  ·  {loc.type}</p>
+                <p style="font-size: 15px; color: #555566; font-family: 'VT323', monospace; margin: 0;">{loc.region}  ·  {loc.type}</p>
               </div>
               <div style="display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0;">
                 {loc.tags.map(tag => (
-                  <span style={`font-size: 9px; border: 1px solid ${loc.color}44; color: ${loc.color}; padding: 1px 6px; font-family: 'JetBrains Mono', monospace;`}>{tag}</span>
+                  <span style={`font-size: 14px; border: 1px solid ${loc.color}44; color: ${loc.color}; padding: 1px 7px; font-family: 'VT323', monospace; letter-spacing: 0.04em;`}>{tag}</span>
                 ))}
               </div>
             </div>
             <p style="font-size: 13px; color: #666; margin: 0 0 8px; line-height: 1.6;">{loc.desc}</p>
-            <p style="font-size: 11px; color: #444; margin: 0; font-family: 'JetBrains Mono', monospace;">⏰ En iyi zaman: {loc.bestTime}</p>
+            <p style="font-size: 15px; color: #555566; margin: 0; font-family: 'VT323', monospace;">⏰ En iyi zaman: {loc.bestTime}</p>
           </div>
         </div>
       );

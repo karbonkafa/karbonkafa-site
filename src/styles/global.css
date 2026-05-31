@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 :root {
   --bg: #050508;
@@ -119,14 +119,14 @@ body::after {
 }
 
 .icon-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-family: var(--pixel);
+  font-size: 13px;
   color: #ffffff;
   text-align: center;
-  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000;
+  text-shadow: 1px 1px 0 #000;
   line-height: 1.2;
   max-width: 70px;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
 }
 
 * {
