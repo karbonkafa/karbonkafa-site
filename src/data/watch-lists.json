@@ -1,0 +1,87 @@
+[
+  {
+    "slug": "bilim-kurgu-saheserler",
+    "title": "Bilim Kurgu Şaheserleri",
+    "description": "Sadece uzay gemileri ve lazor tabancaları değil. Aklı zorlayan, insanı anlatan bilim kurgu.",
+    "author": "Karbon",
+    "items": [
+      { "tmdbId": 157336, "type": "movie", "note": "Kara delik sahnesi gerçek fiziğe dayanıyor. Nolan bunu bilerek yaptı." },
+      { "tmdbId": 27205,  "type": "movie", "note": "Rüya katmanları ve son sahne hâlâ tartışılıyor." },
+      { "tmdbId": 329865, "type": "movie", "note": "İletişim üzerine en derin bilim kurgu. Villeneuve ustalığı." },
+      { "tmdbId": 335984, "type": "movie", "note": "Görsel tasarımın doruk noktası. Her karesini durup izle." },
+      { "tmdbId": 438631, "type": "movie", "note": "Herbert'ın dünyası sonunda hak ettiği uyarlamayı buldu." },
+      { "tmdbId": 264660, "type": "movie", "note": "Yapay zeka ve bilinç üzerine en sade ve keskin film." },
+      { "tmdbId": 281957, "type": "movie", "note": "Alex Garland'ın en rahatsız edici filmi. Sonu gösteri şov." },
+      { "tmdbId": 152601, "type": "movie", "note": "Spike Jonze'un aşk ve yapay zeka üzerine şiiri." },
+      { "tmdbId": 603,    "type": "movie", "note": "Matrix'in felsefesi hâlâ geçerli, ilk film şaheser." },
+      { "tmdbId": 70523,  "type": "tv",    "note": "Zaman döngüsü anlatısını bir dizi için bu kadar iyi yazmak." }
+    ]
+  },
+  {
+    "slug": "nolan-evreni",
+    "title": "Nolan Evreni",
+    "description": "Christopher Nolan'ın şekillendirdiği sinema. Kronoloji değil, his sırası.",
+    "author": "Karbon",
+    "items": [
+      { "tmdbId": 872585, "type": "movie", "note": "3 saat boyunca nefes almak zor. Cillian Murphy zirveye ulaştı." },
+      { "tmdbId": 157336, "type": "movie", "note": "Bilimsel doğruluk ve duygusal derinliğin buluşması." },
+      { "tmdbId": 27205,  "type": "movie", "note": "Nolan'ın yapı itibarıyla en ustaca kurgulanmış filmi." },
+      { "tmdbId": 155,    "type": "movie", "note": "Süper kahraman filmlerinin ötesine geçen bir şaheser." },
+      { "tmdbId": 37799,  "type": "movie", "note": "Gerçek zamanlı gerilim. İkinci perdenin inanılmaz yapısı." }
+    ]
+  },
+  {
+    "slug": "distopik-evrenler",
+    "title": "Distopik Evrenler",
+    "description": "Yakın gelecek, bozulmuş sistemler ve insanın sınırları. Rahatsız edecek ama düşündürecek.",
+    "author": "Karbon",
+    "items": [
+      { "tmdbId": 42009,  "type": "tv",    "note": "Teknoloji eleştirisi bu kadar yaratıcı olmaz. Her bölüm ayrı bir film." },
+      { "tmdbId": 70523,  "type": "tv",    "note": "Totalitarizm ve zaman paradoksunun mükemmel birleşimi." },
+      { "tmdbId": 62560,  "type": "tv",    "note": "Hacktivist anlatısının en zekice yazılmış örneği." },
+      { "tmdbId": 87108,  "type": "tv",    "note": "5 bölümde tarihin en korkutucu felaketi. Craig Mazin harika iş." },
+      { "tmdbId": 603,    "type": "movie", "note": "Simülasyon teorisi bu filmden önce bu kadar popüler değildi." },
+      { "tmdbId": 4522,   "type": "movie", "note": "Doğurganlığın kaybolduğu dünya. Alfonso Cuarón ustalık eseri." },
+      { "tmdbId": 76341,  "type": "movie", "note": "Post-apokaliptik sinema bu filmden önce ve sonra diye ayrılır." }
+    ]
+  },
+  {
+    "slug": "suc-ve-gerilim",
+    "title": "Suç & Gerilim",
+    "description": "Ahlaki çöküş, güç, ve insan doğası. Bu listeden sonra kendinize farklı bakabilirsiniz.",
+    "author": "Karbon",
+    "items": [
+      { "tmdbId": 1396,   "type": "tv",    "note": "Walter White'ın dönüşümü televizyon tarihinin en iyi karakter yolculuğu." },
+      { "tmdbId": 496243, "type": "movie", "note": "Sınıf farkı eleştirisi bu kadar sinematik anlatılmamıştı." },
+      { "tmdbId": 155,    "type": "movie", "note": "Heath Ledger'ın Joker'i filmi farklı bir boyuta taşıdı." },
+      { "tmdbId": 76331,  "type": "tv",    "note": "Güç, miras ve hırs. Diyaloglar mükemmel." },
+      { "tmdbId": 1399,   "type": "tv",    "note": "Politik güç savaşlarının en kapsamlı anlatısı." }
+    ]
+  },
+  {
+    "slug": "gece-yari-izlenecekler",
+    "title": "Gece Yarısı İzlenecekler",
+    "description": "Işıkları kapat, telefonu bırak. Bu yapımlar tam konsantrasyon ister.",
+    "author": "Karbon",
+    "items": [
+      { "tmdbId": 87108,  "type": "tv",    "note": "Chernobyl felaketi. Ses tasarımı başlı başına bir ödül." },
+      { "tmdbId": 100088, "type": "tv",    "note": "Korku ve duygu iç içe. Joel ve Ellie sahne sahne sizi eziyor." },
+      { "tmdbId": 281957, "type": "movie", "note": "Alex Garland seni rahatsız etmek için elinden geleni yapıyor." },
+      { "tmdbId": 264660, "type": "movie", "note": "Ex Machina'nın gerilimi yavaş yavaş yükseliyor. Nefes kesici bitiş." },
+      { "tmdbId": 95396,  "type": "tv",    "note": "Her bölüm sonu seni bir sonrakine hapsolmuş bırakıyor." }
+    ]
+  },
+  {
+    "slug": "gorsel-sol",
+    "title": "Görsel Şölen",
+    "description": "Sadece senaryo değil, her karesinde sanat. Büyük ekranda izlenmeli.",
+    "author": "Karbon",
+    "items": [
+      { "tmdbId": 335984, "type": "movie", "note": "Blade Runner 2049'un görüntü yönetimi Roger Deakins ustalığının zirvesi." },
+      { "tmdbId": 438631, "type": "movie", "note": "Arrakis çölü sahneleri neredeyse fiziksel hissettiriyor." },
+      { "tmdbId": 76341,  "type": "movie", "note": "George Miller'ın aksiyon choreography'si ders kitabı." },
+      { "tmdbId": 157336, "type": "movie", "note": "Her sahnesi astronomik hassasiyetle tasarlandı." },
+      { "tmdbId": 872585, "type": "movie", "note": "Trinity test sahnesi sinema tarihine geçti." }
+    ]
+  }
+]

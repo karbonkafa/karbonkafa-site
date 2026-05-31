@@ -2,6 +2,7 @@
 export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
 import watchData from '../../data/watch.json';
+import watchListsData from '../../data/watch-lists.json';
 
 const TMDB_KEY = import.meta.env.PUBLIC_TMDB_KEY;
 const IMG = 'https://image.tmdb.org/t/p/w300';
@@ -41,6 +42,18 @@ const combined = [
   ...shows.map((e, i) => ({ entry: e, tmdb: showsData[i] })),
   ...movies.map((e, i) => ({ entry: e, tmdb: moviesData[i] })),
 ].filter(x => x.tmdb);
+
+const watchLists = watchListsData as any[];
+// Fetch first 4 poster images for each list (for the collage)
+const listPosters = await Promise.all(
+  watchLists.map(async list => {
+    const first4 = list.items.slice(0, 4);
+    const posters = await Promise.all(
+      first4.map((item: any) => fetchTmdb(item.tmdbId, item.type))
+    );
+    return posters.map(t => t?.poster_path ? 'https://image.tmdb.org/t/p/w92' + t.poster_path : null);
+  })
+);
 ---
 
 <Layout title="Dizi & Film">
@@ -52,8 +65,8 @@ const combined = [
     </div>
 
     <!-- Tabs -->
-    <div style="display:flex;border-bottom:1px solid #1e1e2e;">
-      {(['Tümü', 'Diziler', 'Filmler', 'İzliyorum', 'Tamamlandı', 'Listede'] as const).map((tab, i) => (
+    <div style="display:flex;flex-wrap:wrap;border-bottom:1px solid #1e1e2e;">
+      {(['Tümü', 'Diziler', 'Filmler', 'İzliyorum', 'Tamamlandı', 'Listede', 'Listeler'] as const).map((tab, i) => (
         <button class="watch-tab" data-tab={tab}
           style={`font-family:'VT323',monospace;font-size:16px;padding:8px 14px;background:none;border:none;cursor:pointer;letter-spacing:0.04em;border-bottom:2px solid ${i===0?'#e879f9':'transparent'};color:${i===0?'#e879f9':'#555566'};transition:all 0.1s;`}>
           {tab.toUpperCase()}
@@ -102,6 +115,31 @@ const combined = [
       })}
     </div>
 
+    <!-- Lists section (hidden by default, shown on Listeler tab) -->
+    <div id="watchLists" style="display:none;flex-direction:column;">
+      {watchLists.map((list, li) => (
+        <a href={`/dizi-film/liste/${list.slug}`}
+          style="display:block;padding:14px 16px;border-bottom:1px solid #1e1e2e;transition:background 0.15s;"
+          onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;">
+            <p style="font-family:'VT323',monospace;font-size:20px;color:#fff;margin:0;letter-spacing:0.02em;">{list.title}</p>
+            <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;flex-shrink:0;">{list.items.length} yapım</span>
+          </div>
+          {list.description && <p style="font-size:12px;color:#666677;margin:0 0 8px;line-height:1.5;">{list.description}</p>}
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+            <div style="display:flex;gap:2px;">
+              {(listPosters[li] || []).filter(Boolean).map((p: string | null) => p && (
+                <div style="width:44px;height:66px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
+                  <img src={p} alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+                </div>
+              ))}
+            </div>
+            <span style="font-family:'VT323',monospace;font-size:14px;color:#e879f9;">GİT →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
     {!TMDB_KEY && (
       <div style="padding:32px;text-align:center;">
         <p style="font-family:'VT323',monospace;font-size:16px;color:#ef4444;margin:0 0 8px;letter-spacing:0.04em;">PUBLIC_TMDB_KEY TANIMLI DEĞİL</p>
@@ -121,12 +159,23 @@ const combined = [
 <script>
   const tabs = document.querySelectorAll<HTMLElement>('.watch-tab');
   const cards = document.querySelectorAll<HTMLElement>('.watch-card');
+  const grid = document.getElementById('watchGrid')!;
+  const listsSection = document.getElementById('watchLists')!;
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const t = tab.dataset.tab!;
       tabs.forEach(b => { b.style.color='#555566'; b.style.borderBottomColor='transparent'; });
       tab.style.color='#e879f9'; tab.style.borderBottomColor='#e879f9';
+
+      if (t === 'Listeler') {
+        grid.style.display = 'none';
+        listsSection.style.display = 'flex';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      listsSection.style.display = 'none';
 
       cards.forEach(card => {
         const type = card.dataset.type!;
