@@ -30,22 +30,22 @@ const tmdbResults = await Promise.all(
   <div class="px-window" style="margin-bottom:12px;">
     <div class="px-titlebar" style="border-left-color:#e879f9;">
       <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-        <a href="/dizi-film" style="font-family:'Space Mono', monospace;font-size:14px;color:#555566;text-decoration:none;transition:color 0.1s;"
+        <a href="/dizi-film" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;text-decoration:none;transition:color 0.1s;"
           onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#555566'">DİZİ & FİLM</a>
-        <span style="font-family:'Space Mono', monospace;font-size:13px;color:#333344;">›</span>
-        <a href="/dizi-film#listeler" style="font-family:'Space Mono', monospace;font-size:14px;color:#555566;text-decoration:none;transition:color 0.1s;"
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">›</span>
+        <a href="/dizi-film#listeler" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;text-decoration:none;transition:color 0.1s;"
           onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#555566'">LİSTELER</a>
-        <span style="font-family:'Space Mono', monospace;font-size:13px;color:#333344;">›</span>
-        <span style="font-family:'Space Mono', monospace;font-size:13px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{list.title.toUpperCase()}</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">›</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{list.title.toUpperCase()}</span>
       </div>
       <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
     </div>
     <div style="padding:16px;">
-      <h1 style="font-family:'Space Mono', monospace;font-size:30px;color:#fff;margin:0 0 8px;letter-spacing:0.02em;">{list.title}</h1>
-      {list.description && <p style="font-size:14px;color:#888899;margin:0 0 12px;line-height:1.7;max-width:640px;">{list.description}</p>}
+      <h1 style="font-family:'IBM Plex Mono', monospace;font-size:30px;color:#fff;margin:0 0 8px;letter-spacing:0.02em;">{list.title}</h1>
+      {list.description && <p style="font-size:11px;color:#888899;margin:0 0 12px;line-height:1.7;max-width:640px;">{list.description}</p>}
       <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-family:'Space Mono', monospace;font-size:15px;color:#e879f9;">{list.author}</span>
-        <span style="font-family:'Space Mono', monospace;font-size:14px;color:#444455;">{list.items.length} yapım</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e879f9;">{list.author}</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{list.items.length} yapım</span>
       </div>
     </div>
   </div>
@@ -68,32 +68,32 @@ const tmdbResults = await Promise.all(
         return (
           <div style="border-bottom:1px solid #1e1e2e;padding:12px 16px;display:grid;grid-template-columns:28px 60px 1fr;gap:12px;align-items:start;transition:background 0.1s;"
             onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
-            <div style="font-family:'Space Mono', monospace;font-size:18px;color:#2a2a3a;padding-top:4px;text-align:right;">
+            <div style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#2a2a3a;padding-top:4px;text-align:right;">
               {String(idx + 1).padStart(2, '0')}
             </div>
             <a href={`/dizi-film/${item.type}-${item.tmdbId}`} style="display:block;width:60px;height:90px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;transition:border-color 0.15s;"
               onmouseover="this.style.borderColor='#e879f9'" onmouseout="this.style.borderColor='#2a2a3a'">
               {poster
                 ? <img src={poster} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
-                : <div style="width:100%;height:100%;background:#0d0d12;display:flex;align-items:center;justify-content:center;font-size:20px;">{item.type === 'tv' ? '📺' : '🎬'}</div>
+                : <div style="width:100%;height:100%;background:#0d0d12;display:flex;align-items:center;justify-content:center;font-size:11px;">{item.type === 'tv' ? '📺' : '🎬'}</div>
               }
             </a>
             <div style="display:flex;flex-direction:column;gap:4px;padding-top:2px;">
               <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
                 <a href={`/dizi-film/${item.type}-${item.tmdbId}`}
-                  style="font-size:15px;font-weight:600;color:#e5e5e5;line-height:1.3;transition:color 0.15s;text-decoration:none;"
+                  style="font-size:11px;font-weight:600;color:#e5e5e5;line-height:1.3;transition:color 0.15s;text-decoration:none;"
                   onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#e5e5e5'">
                   {title}
                 </a>
                 {tmdbScore && (
-                  <span style="font-family:'Space Mono', monospace;font-size:15px;color:#aaaacc;flex-shrink:0;">{tmdbScore}</span>
+                  <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#aaaacc;flex-shrink:0;">{tmdbScore}</span>
                 )}
               </div>
-              <p style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;margin:0;">
+              <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:0;">
                 {item.type === 'tv' ? 'DİZİ' : 'FİLM'}{year ? ' · ' + year : ''}{genres ? ' · ' + genres : ''}
               </p>
               {item.note && (
-                <p style="font-size:13px;color:#778899;margin:4px 0 0;line-height:1.6;border-left:2px solid #e879f933;padding-left:10px;font-style:italic;">
+                <p style="font-size:11px;color:#778899;margin:4px 0 0;line-height:1.6;border-left:2px solid #e879f933;padding-left:10px;font-style:italic;">
                   "{item.note}"
                 </p>
               )}
@@ -105,7 +105,7 @@ const tmdbResults = await Promise.all(
   </div>
 
   <div style="margin-top:12px;">
-    <a href="/dizi-film" style="font-family:'Space Mono', monospace;font-size:15px;color:#444455;transition:color 0.1s;"
+    <a href="/dizi-film" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;transition:color 0.1s;"
       onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#444455'">← DİZİ & FİLM</a>
   </div>
 

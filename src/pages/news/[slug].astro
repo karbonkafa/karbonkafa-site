@@ -33,8 +33,8 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
     <div class="px-titlebar" style={`border-left-color: ${color};`}>
       <div style="display:flex;align-items:center;gap:8px;min-width:0;">
         <span class="px-title" style={`color:${color};`}>📰 HABERLER.LOG</span>
-        <span style="font-family:'Space Mono', monospace;font-size:13px;color:#333344;">›</span>
-        <span style="font-family:'Space Mono', monospace;font-size:13px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title.slice(0, 50).toUpperCase()}</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">›</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title.slice(0, 50).toUpperCase()}</span>
       </div>
       <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
     </div>
@@ -49,39 +49,39 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
     <div style="padding: 20px;">
       <!-- Meta -->
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
-        <span style={`font-family:'Space Mono', monospace;font-size:14px;border:1px solid ${color}44;color:${color};padding:2px 10px;text-transform:uppercase;letter-spacing:0.06em;`}>
+        <span style={`font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid ${color}44;color:${color};padding:2px 10px;text-transform:uppercase;letter-spacing:0.06em;`}>
           {article.data.category}
         </span>
-        <span style="font-family:'Space Mono', monospace;font-size:14px;color:#444455;">{dateStr}</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{dateStr}</span>
       </div>
 
       <!-- Title -->
-      <h1 style="font-family:'Space Mono', monospace;font-size:clamp(22px,3vw,34px);color:#ffffff;letter-spacing:0.02em;margin:0 0 14px;line-height:1.15;">
+      <h1 style="font-family:'IBM Plex Mono', monospace;font-size:clamp(22px,3vw,34px);color:#ffffff;letter-spacing:0.02em;margin:0 0 14px;line-height:1.15;">
         {article.data.title}
       </h1>
 
       <!-- Excerpt -->
-      <p style="font-size:14px;color:#888899;line-height:1.7;margin:0 0 16px;border-left:2px solid #2a2a3a;padding-left:14px;">
+      <p style="font-size:11px;color:#888899;line-height:1.7;margin:0 0 16px;border-left:2px solid #2a2a3a;padding-left:14px;">
         {article.data.excerpt}
       </p>
 
       <!-- Source + listen -->
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-family:'Space Mono', monospace;font-size:13px;color:#333344;">KAYNAK:</span>
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">KAYNAK:</span>
           {article.data.sourceUrl ? (
             <a href={article.data.sourceUrl} target="_blank" rel="noopener"
-              style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;transition:color 0.15s;"
+              style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;transition:color 0.15s;"
               onmouseover="this.style.color='#e5e5e5'" onmouseout="this.style.color='#555566'">
               {article.data.source} ↗
             </a>
           ) : (
-            <span style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;">{article.data.source}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;">{article.data.source}</span>
           )}
         </div>
 
         <button id="listenBtn"
-          style="display:flex;align-items:center;gap:7px;background:#0d0d12;border:1px solid #2a2a3a;color:#555566;font-family:'Space Mono', monospace;font-size:14px;padding:5px 12px;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;"
+          style="display:flex;align-items:center;gap:7px;background:#0d0d12;border:1px solid #2a2a3a;color:#555566;font-family:'IBM Plex Mono', monospace;font-size:11px;padding:5px 12px;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;"
           onmouseover="this.style.borderColor='#444455';this.style.color='#aaaacc';"
           onmouseout="if(!this.dataset.active){this.style.borderColor='#2a2a3a';this.style.color='#555566';}">
           <span id="listenIcon">▶</span>
@@ -111,16 +111,16 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
     {article.data.tags.length > 0 && (
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
-        <span style="font-family:'Space Mono', monospace;font-size:13px;color:#333344;">ETİKETLER:</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">ETİKETLER:</span>
         {article.data.tags.map((tag: string) => (
-          <span style="font-family:'Space Mono', monospace;font-size:13px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;padding:2px 8px;">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;padding:2px 8px;">
             {tag}
           </span>
         ))}
       </div>
     )}
     <a href="/news"
-      style="font-family:'Space Mono', monospace;font-size:15px;color:#444455;transition:color 0.1s;"
+      style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;transition:color 0.1s;"
       onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">
       ← HABERLER
     </a>

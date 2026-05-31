@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap');
 
 :root {
   --bg: #050508;
@@ -8,7 +8,7 @@
   --text: #e5e5e5;
   --muted: #555566;
   --accent: #e5c46b;
-  --pixel: 'Space Mono', monospace;
+  --pixel: 'IBM Plex Mono', monospace;
   --win-title: #0d0d0d;
   --win-border: #2a2a2a;
   --win-border-light: #333333;

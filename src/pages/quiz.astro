@@ -13,7 +13,7 @@ const titles = pool.map(g => g.title);
   <!-- Header -->
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
     <h1 class="os-title" style="margin:0;">🎮 QUİZ.EXE</h1>
-    <div style="display:flex;align-items:center;gap:16px;font-family:'Space Mono', monospace;">
+    <div style="display:flex;align-items:center;gap:16px;font-family:'IBM Plex Mono', monospace;">
       <div style="text-align:center;">
         <div id="scoreVal" style="font-size:28px;font-weight:600;color:#22c55e;">0</div>
         <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">DOĞRU</div>
@@ -41,12 +41,12 @@ const titles = pool.map(g => g.title);
       <!-- Level indicator -->
       <div style="position:absolute;top:10px;left:10px;display:flex;gap:4px;" id="levelDots"></div>
       <!-- Lives -->
-      <div style="position:absolute;top:10px;right:10px;font-family:'Space Mono', monospace;font-size:20px;" id="livesDisplay"></div>
+      <div style="position:absolute;top:10px;right:10px;font-family:'IBM Plex Mono', monospace;font-size:11px;" id="livesDisplay"></div>
       <!-- Reveal overlay -->
       <div id="revealOverlay" style="display:none;position:absolute;inset:0;background:rgba(5,5,8,0.88);flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
         <div id="revealIcon" style="font-size:52px;"></div>
-        <div id="revealTitle" style="font-family:'Space Mono', monospace;font-size:28px;color:#fff;letter-spacing:0.04em;"></div>
-        <div id="revealMeta" style="font-family:'Space Mono', monospace;font-size:16px;color:#666677;"></div>
+        <div id="revealTitle" style="font-family:'IBM Plex Mono', monospace;font-size:28px;color:#fff;letter-spacing:0.04em;"></div>
+        <div id="revealMeta" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#666677;"></div>
         <div id="revealCta" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;"></div>
       </div>
     </div>
@@ -57,23 +57,23 @@ const titles = pool.map(g => g.title);
       <div style="position:relative;">
         <input id="guessInput" type="text" placeholder="Oyun adını yaz..."
           autocomplete="off" spellcheck="false"
-          style="width:100%;background:#0d0d12;border:2px solid #1e1e2e;color:#e5e5e5;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
+          style="width:100%;background:#0d0d12;border:2px solid #1e1e2e;color:#e5e5e5;padding:12px 14px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
           onfocus="this.style.borderColor='#444'" onblur="this.style.borderColor='#1e1e2e'" />
         <div id="suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#0d0d12;border:2px solid #1e1e2e;border-top:none;z-index:20;max-height:200px;overflow-y:auto;"></div>
       </div>
       <!-- Buttons row -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <button id="hintBtn"
-          style="font-family:'Space Mono', monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
           onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
           💡 İPUCU
         </button>
         <button id="skipBtn"
-          style="font-family:'Space Mono', monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
           onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
           ✕ BİLMİYORUM
         </button>
-        <button id="nextBtn" style="display:none;font-family:'Space Mono', monospace;font-size:17px;background:#e5c46b;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
+        <button id="nextBtn" style="display:none;font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
           onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           SONRAKI →
         </button>
@@ -136,7 +136,7 @@ function renderLevelDots() {
 
 function renderWrong() {
   wrongEl.innerHTML = wrongGuesses.map(w =>
-    `<span style="font-family:'Space Mono', monospace;font-size:13px;color:#ef444466;background:#1a0808;border:1px solid #ef444433;padding:1px 6px;text-decoration:line-through;">${w}</span>`
+    `<span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ef444466;background:#1a0808;border:1px solid #ef444433;padding:1px 6px;text-decoration:line-through;">${w}</span>`
   ).join('');
 }
 
@@ -258,13 +258,13 @@ function reveal(correct) {
     const btn = document.createElement('a');
     btn.href = `/games/${g.slug}`;
     btn.textContent = 'OYNAMALISIN →';
-    btn.style.cssText = 'background:#e5c46b;color:#0a0a0a;padding:8px 18px;font-family:"VT323",monospace;font-size:18px;font-weight:700;text-decoration:none;letter-spacing:0.06em;';
+    btn.style.cssText = 'background:#e5c46b;color:#0a0a0a;padding:8px 18px;font-family:"VT323",monospace;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:0.06em;';
     cta.appendChild(btn);
   }
   const infoBtn = document.createElement('a');
   infoBtn.href = `/games/${g.slug}`;
   infoBtn.textContent = 'OYUN SAYFASI';
-  infoBtn.style.cssText = 'border:2px solid #1e1e2e;color:#888899;padding:8px 18px;font-family:"VT323",monospace;font-size:18px;text-decoration:none;letter-spacing:0.06em;';
+  infoBtn.style.cssText = 'border:2px solid #1e1e2e;color:#888899;padding:8px 18px;font-family:"VT323",monospace;font-size:12px;text-decoration:none;letter-spacing:0.06em;';
   cta.appendChild(infoBtn);
 }
 
@@ -294,7 +294,7 @@ guessInput.addEventListener('input', () => {
   if (!matches.length) { suggestionsEl.style.display = 'none'; return; }
   suggestionsEl.innerHTML = matches.map(t =>
     `<div class="sug" data-title="${t.replace(/"/g,'&quot;')}"
-      style="padding:10px 14px;cursor:pointer;font-size:14px;color:#ccc;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
+      style="padding:10px 14px;cursor:pointer;font-size:11px;color:#ccc;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
       onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">${t}</div>`
   ).join('');
   suggestionsEl.style.display = 'block';

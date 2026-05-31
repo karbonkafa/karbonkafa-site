@@ -83,18 +83,18 @@ const meals = [
         <div style={`padding: 16px 18px; border-bottom: 1px solid ${meal.color}22;`}>
           <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
             <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{meal.title}</h2>
-            <span style={`font-size: 14px; background: ${meal.color}22; border: 1px solid ${meal.color}55; color: ${meal.color}; padding: 1px 8px; font-family: 'Space Mono', monospace; flex-shrink: 0; white-space: nowrap; letter-spacing: 0.04em;`}>{meal.category}</span>
+            <span style={`font-size: 14px; background: ${meal.color}22; border: 1px solid ${meal.color}55; color: ${meal.color}; padding: 1px 8px; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; white-space: nowrap; letter-spacing: 0.04em;`}>{meal.category}</span>
           </div>
           <p style="font-size: 13px; color: #888; margin: 0 0 8px; line-height: 1.5;">{meal.desc}</p>
           <div style="display: flex; gap: 12px;">
-            <span style="font-size: 14px; color: #555566; font-family: 'Space Mono', monospace;">⏱ {meal.time}</span>
-            <span style="font-size: 14px; color: #555566; font-family: 'Space Mono', monospace;">· {meal.difficulty}</span>
+            <span style="font-size: 14px; color: #555566; font-family: 'IBM Plex Mono', monospace;">⏱ {meal.time}</span>
+            <span style="font-size: 14px; color: #555566; font-family: 'IBM Plex Mono', monospace;">· {meal.difficulty}</span>
           </div>
         </div>
 
         <!-- Ingredients -->
         <div style="padding: 10px 16px; border-bottom: 1px solid #1a1a1a;">
-          <p style="font-size: 13px; color: #444455; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'Space Mono', monospace; margin: 0 0 6px;">MALZEMELER</p>
+          <p style="font-size: 13px; color: #444455; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 6px;">MALZEMELER</p>
           <div style="display: flex; flex-wrap: wrap; gap: 4px;">
             {meal.ingredients.map(ing => (
               <span style="font-size: 12px; background: #0d0d12; border: 1px solid #1e1e2e; color: #888899; padding: 2px 8px;">{ing}</span>
@@ -104,13 +104,13 @@ const meals = [
 
         <!-- Tip -->
         <div style="padding: 10px 16px; border-bottom: 1px solid #1a1a1a; flex: 1;">
-          <p style="font-size: 13px; color: #444455; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'Space Mono', monospace; margin: 0 0 5px;">KARBON NOTU</p>
+          <p style="font-size: 13px; color: #444455; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 5px;">KARBON NOTU</p>
           <p style="font-size: 13px; color: #778899; margin: 0; line-height: 1.6; font-style: italic;">"{meal.tip}"</p>
         </div>
 
         <!-- Game pairing -->
         <div style="padding: 8px 16px;">
-          <p style="font-size: 14px; color: #444455; font-family: 'Space Mono', monospace; margin: 0; letter-spacing: 0.02em;">🎮 {meal.game}</p>
+          <p style="font-size: 14px; color: #444455; font-family: 'IBM Plex Mono', monospace; margin: 0; letter-spacing: 0.02em;">🎮 {meal.game}</p>
         </div>
       </div>
     ))}

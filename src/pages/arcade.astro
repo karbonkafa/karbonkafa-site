@@ -6,8 +6,8 @@ import Layout from '../layouts/Layout.astro';
 
   <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
     <div>
-      <p style="font-family:'Space Mono', monospace;font-size:16px;color:#666677;margin:0 0 4px;letter-spacing:0.08em;">C:\KARBON\ARCADE</p>
-      <h1 style="font-family:'Space Mono', monospace;font-size:32px;color:#e5c46b;margin:0;letter-spacing:0.06em;">ARCADE.EXE</h1>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#666677;margin:0 0 4px;letter-spacing:0.08em;">C:\KARBON\ARCADE</p>
+      <h1 style="font-family:'IBM Plex Mono', monospace;font-size:32px;color:#e5c46b;margin:0;letter-spacing:0.06em;">ARCADE.EXE</h1>
     </div>
     <div style="display:flex;gap:4px;">
       {[
@@ -16,7 +16,7 @@ import Layout from '../layouts/Layout.astro';
         { id:'pacman', label:'👾 PACMAN',  color:'#f59e0b' },
       ].map(g => (
         <button class="game-tab" data-game={g.id}
-          style={`font-family:'Space Mono', monospace;font-size:18px;padding:8px 18px;background:#0d0d12;border:2px solid #1e1e2e;color:#777788;cursor:pointer;letter-spacing:0.04em;transition:all 0.1s;`}
+          style={`font-family:'IBM Plex Mono', monospace;font-size:12px;padding:8px 18px;background:#0d0d12;border:2px solid #1e1e2e;color:#777788;cursor:pointer;letter-spacing:0.04em;transition:all 0.1s;`}
           onmouseover={`this.style.borderColor='${g.color}';this.style.color='${g.color}'`}
           onmouseout="if(!this.classList.contains('active')){this.style.borderColor='#1e1e2e';this.style.color='#777788'}">
           {g.label}
@@ -29,9 +29,9 @@ import Layout from '../layouts/Layout.astro';
     <div class="px-window">
       <div class="px-titlebar"><span class="px-title">🏓 PONG.EXE — Sen vs AI</span><div class="px-btns"><span class="px-btn">×</span></div></div>
       <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
-        <p style="font-family:'Space Mono', monospace;font-size:16px;color:#777788;margin:0;text-align:center;">MOUSE / DOKUNMA → sol raket. İlk 7 puan kazanır.</p>
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#777788;margin:0;text-align:center;">MOUSE / DOKUNMA → sol raket. İlk 7 puan kazanır.</p>
         <canvas id="pong-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;cursor:none;image-rendering:pixelated;"></canvas>
-        <button id="pong-start" style="font-family:'Space Mono', monospace;font-size:20px;background:#0d0d12;border:2px solid #e5c46b;color:#e5c46b;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
+        <button id="pong-start" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:2px solid #e5c46b;color:#e5c46b;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
       </div>
     </div>
   </div>
@@ -40,9 +40,9 @@ import Layout from '../layouts/Layout.astro';
     <div class="px-window">
       <div class="px-titlebar" style="border-left-color:#22c55e;"><span class="px-title" style="color:#22c55e;">🐍 SNAKE.EXE</span><div class="px-btns"><span class="px-btn">×</span></div></div>
       <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
-        <p style="font-family:'Space Mono', monospace;font-size:16px;color:#777788;margin:0;text-align:center;">OK TUŞLARI / WASD. Mobil: kaydır.</p>
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#777788;margin:0;text-align:center;">OK TUŞLARI / WASD. Mobil: kaydır.</p>
         <canvas id="snake-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;image-rendering:pixelated;"></canvas>
-        <button id="snake-start" style="font-family:'Space Mono', monospace;font-size:20px;background:#0d0d12;border:2px solid #22c55e;color:#22c55e;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
+        <button id="snake-start" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:2px solid #22c55e;color:#22c55e;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
       </div>
     </div>
   </div>
@@ -51,9 +51,9 @@ import Layout from '../layouts/Layout.astro';
     <div class="px-window">
       <div class="px-titlebar" style="border-left-color:#f59e0b;"><span class="px-title" style="color:#f59e0b;">👾 PACMAN.EXE</span><div class="px-btns"><span class="px-btn">×</span></div></div>
       <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
-        <p style="font-family:'Space Mono', monospace;font-size:16px;color:#777788;margin:0;text-align:center;">OK TUŞLARI / WASD. Büyük noktayı ye → hayaletler mavi olur. Mobil: kaydır.</p>
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#777788;margin:0;text-align:center;">OK TUŞLARI / WASD. Büyük noktayı ye → hayaletler mavi olur. Mobil: kaydır.</p>
         <canvas id="pacman-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;image-rendering:pixelated;"></canvas>
-        <button id="pacman-start" style="font-family:'Space Mono', monospace;font-size:20px;background:#0d0d12;border:2px solid #f59e0b;color:#f59e0b;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
+        <button id="pacman-start" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:2px solid #f59e0b;color:#f59e0b;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
       </div>
     </div>
   </div>

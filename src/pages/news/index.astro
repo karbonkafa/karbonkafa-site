@@ -31,7 +31,7 @@ const categoryColors: Record<string, string> = {
         <button
           class="cat-btn"
           data-cat={cat}
-          style={`font-family:'Space Mono', monospace; font-size: 16px; padding: 4px 12px; border: 1px solid ${i === 0 ? '#e5c46b' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#e5c46b' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
+          style={`font-family:'IBM Plex Mono', monospace; font-size: 16px; padding: 4px 12px; border: 1px solid ${i === 0 ? '#e5c46b' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#e5c46b' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
         >
           {cat}
         </button>
@@ -39,7 +39,7 @@ const categoryColors: Record<string, string> = {
     </div>
 
     {sorted.length === 0 ? (
-      <div style="padding: 48px; text-align: center; color: #444455; font-family: 'Space Mono', monospace; font-size: 16px; letter-spacing: 0.04em;">
+      <div style="padding: 48px; text-align: center; color: #444455; font-family: 'IBM Plex Mono', monospace; font-size: 16px; letter-spacing: 0.04em;">
         İÇERİK HAZIRLANIYOR...
       </div>
     ) : (
@@ -68,23 +68,23 @@ const categoryColors: Record<string, string> = {
                 </div>
               ) : (
                 <div style={`width: 100%; aspect-ratio: 16/9; background: #080810; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #1e1e2e;`}>
-                  <span style={`font-family:'Space Mono', monospace;font-size:13px;color:${color};text-transform:uppercase;letter-spacing:0.1em;`}>{article.data.category}</span>
+                  <span style={`font-family:'IBM Plex Mono', monospace;font-size:11px;color:${color};text-transform:uppercase;letter-spacing:0.1em;`}>{article.data.category}</span>
                 </div>
               )}
               <div style="padding: 16px; display: flex; flex-direction: column; flex: 1;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
-                  <span style={`font-family:'Space Mono', monospace;font-size:13px;border:1px solid ${color}44;color:${color};padding:2px 8px;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;`}>
+                  <span style={`font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid ${color}44;color:${color};padding:2px 8px;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;`}>
                     {article.data.category}
                   </span>
-                  <span style="font-family:'Space Mono', monospace;font-size:13px;color:#444455;">{dateStr}</span>
+                  <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{dateStr}</span>
                 </div>
-                <h2 style="font-size:15px;font-weight:600;margin:0 0 8px;letter-spacing:-0.02em;line-height:1.35;color:#e5e5e5;flex:1;">{article.data.title}</h2>
+                <h2 style="font-size:11px;font-weight:600;margin:0 0 8px;letter-spacing:-0.02em;line-height:1.35;color:#e5e5e5;flex:1;">{article.data.title}</h2>
                 <p style="font-size:12px;color:#666677;margin:0 0 12px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{article.data.excerpt}</p>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;">
-                  <span style="font-family:'Space Mono', monospace;font-size:13px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                  <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                     {article.data.source}
                   </span>
-                  <span style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;flex-shrink:0;">OKU →</span>
+                  <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;flex-shrink:0;">OKU →</span>
                 </div>
               </div>
             </a>

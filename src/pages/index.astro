@@ -30,8 +30,8 @@ const categoryColors: Record<string, string> = {
 
   <!-- ── LİSTELER ─────────────────────────── -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-    <h2 style="font-family:'Space Mono', monospace;font-size:22px;color:#e5c46b;margin:0;letter-spacing:0.06em;">📋 LİSTELER.EXE</h2>
-    <a href="/lists" style="font-family:'Space Mono', monospace;font-size:15px;color:#555566;transition:color 0.1s;"
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;margin:0;letter-spacing:0.06em;">📋 LİSTELER.EXE</h2>
+    <a href="/lists" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;transition:color 0.1s;"
       onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#555566'">TÜM LİSTELER →</a>
   </div>
 
@@ -44,8 +44,8 @@ const categoryColors: Record<string, string> = {
           onmouseover="this.style.borderColor='#e5c46b66'" onmouseout="this.style.borderColor='#e5c46b22'">
           <div style="padding:14px 16px;border-bottom:1px solid #1e1e2e;">
             <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px;">
-              <p style="font-family:'Space Mono', monospace;font-size:19px;color:#ffffff;margin:0;line-height:1.2;">{list.title}</p>
-              <span style="font-family:'Space Mono', monospace;font-size:13px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
+              <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffffff;margin:0;line-height:1.2;">{list.title}</p>
+              <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
             </div>
             {list.description && <p style="font-size:11px;color:#555566;margin:0;line-height:1.5;">{list.description}</p>}
           </div>
@@ -61,7 +61,7 @@ const categoryColors: Record<string, string> = {
               })}
             </div>
             <div class="list-avatar" data-username={list.author.toLowerCase()}
-              style="width:32px;height:32px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Space Mono', monospace;font-size:13px;color:#e5c46b;flex-shrink:0;">
+              style="width:32px;height:32px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;flex-shrink:0;">
               {list.author[0].toUpperCase()}
             </div>
           </div>
@@ -72,8 +72,8 @@ const categoryColors: Record<string, string> = {
 
   <!-- ── SON HABERLER ────────────────────── -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-    <h2 style="font-family:'Space Mono', monospace;font-size:22px;color:#aaaacc;margin:0;letter-spacing:0.06em;">📰 HABERLER.LOG</h2>
-    <a href="/news" style="font-family:'Space Mono', monospace;font-size:15px;color:#555566;transition:color 0.1s;"
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#aaaacc;margin:0;letter-spacing:0.06em;">📰 HABERLER.LOG</h2>
+    <a href="/news" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;transition:color 0.1s;"
       onmouseover="this.style.color='#aaaacc'" onmouseout="this.style.color='#555566'">TÜM HABERLER →</a>
   </div>
 
@@ -92,10 +92,10 @@ const categoryColors: Record<string, string> = {
           </div>
           <div style="padding:10px 12px;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
-              <span style={`font-family:'Space Mono', monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:1px 6px;`}>{article.data.category}</span>
-              <span style="font-family:'Space Mono', monospace;font-size:12px;color:#444455;">{dateStr}</span>
+              <span style={`font-family:'IBM Plex Mono', monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:1px 6px;`}>{article.data.category}</span>
+              <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#444455;">{dateStr}</span>
             </div>
-            <p style="font-family:'Space Mono', monospace;font-size:19px;color:#ffffff;margin:0;line-height:1.2;letter-spacing:0.02em;">{article.data.title}</p>
+            <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffffff;margin:0;line-height:1.2;letter-spacing:0.02em;">{article.data.title}</p>
           </div>
         </a>
       );
@@ -111,9 +111,9 @@ const categoryColors: Record<string, string> = {
         <a href={`/news/${article.id}`}
           style={`display:flex;align-items:baseline;gap:10px;padding:7px 12px;background:#0d0d12;border:1px solid ${color}11;border-top:none;text-decoration:none;transition:background 0.15s;`}
           onmouseover="this.style.background='#111118'" onmouseout="this.style.background='#0d0d12'">
-          <span style={`font-family:'Space Mono', monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:0px 5px;flex-shrink:0;`}>{article.data.category}</span>
-          <span style="font-family:'Space Mono', monospace;font-size:12px;color:#444455;flex-shrink:0;">{dateStr}</span>
-          <p style="font-family:'Space Mono', monospace;font-size:18px;color:#ffffff;margin:0;line-height:1.2;letter-spacing:0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title}</p>
+          <span style={`font-family:'IBM Plex Mono', monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:0px 5px;flex-shrink:0;`}>{article.data.category}</span>
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#444455;flex-shrink:0;">{dateStr}</span>
+          <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#ffffff;margin:0;line-height:1.2;letter-spacing:0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title}</p>
         </a>
       );
     })}
@@ -121,33 +121,33 @@ const categoryColors: Record<string, string> = {
 
   <!-- ── ALT SATIR: Dünya/Hava + Kısayollar ── -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-    <h2 style="font-family:'Space Mono', monospace;font-size:22px;color:#06b6d4;margin:0;letter-spacing:0.06em;">🌍 DÜNYA / HAVA</h2>
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#06b6d4;margin:0;letter-spacing:0.06em;">🌍 DÜNYA / HAVA</h2>
   </div>
 
   <div id="weatherPanel" style="background:#0d0d12;border:1px solid #06b6d422;margin-bottom:6px;">
     <div id="worldWidget" style="display:flex;flex-wrap:wrap;gap:0;">
-      <div style="padding:8px 12px;font-family:'Space Mono', monospace;font-size:15px;color:#778899;">YÜKLENİYOR...</div>
+      <div style="padding:8px 12px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#778899;">YÜKLENİYOR...</div>
     </div>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:28px;">
     <!-- GTA -->
     <div id="gtaPanel" style="background:#0d0d12;border:1px solid #ef444422;text-align:center;padding:16px 12px;">
-      <p style="font-family:'Space Mono', monospace;font-size:13px;color:#666677;margin:0 0 4px;letter-spacing:0.04em;">📺 GTA VI — 19 KASIM 2026</p>
-      <div id="gtaPixelCount" style="font-family:'Space Mono', monospace;font-size:34px;color:#e5c46b;line-height:1;margin-bottom:2px;">-- GÜN</div>
-      <p style="font-family:'Space Mono', monospace;font-size:11px;color:#444455;margin:0;">GTA TARİHİ SEZONU</p>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#666677;margin:0 0 4px;letter-spacing:0.04em;">📺 GTA VI — 19 KASIM 2026</p>
+      <div id="gtaPixelCount" style="font-family:'IBM Plex Mono', monospace;font-size:34px;color:#e5c46b;line-height:1;margin-bottom:2px;">-- GÜN</div>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;margin:0;">GTA TARİHİ SEZONU</p>
     </div>
     <!-- QUIZ -->
     <a id="quizPanel" href="/quiz" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0d12;border:1px solid #22c55e22;text-decoration:none;padding:16px;transition:border-color 0.15s;"
       onmouseover="this.style.borderColor='#22c55e66'" onmouseout="this.style.borderColor='#22c55e22'">
-      <p style="font-family:'Space Mono', monospace;font-size:15px;color:#22c55e;margin:0 0 6px;letter-spacing:0.06em;">🎮 QUİZ.EXE</p>
-      <p style="font-family:'Space Mono', monospace;font-size:24px;color:#22c55e;margin:0;">[ BAŞLAT ]</p>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#22c55e;margin:0 0 6px;letter-spacing:0.06em;">🎮 QUİZ.EXE</p>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#22c55e;margin:0;">[ BAŞLAT ]</p>
     </a>
     <!-- ARCADE -->
     <a id="arcadePanel" href="/arcade" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0d12;border:1px solid #f9731622;text-decoration:none;padding:16px;transition:border-color 0.15s;"
       onmouseover="this.style.borderColor='#f9731666'" onmouseout="this.style.borderColor='#f9731622'">
-      <p style="font-family:'Space Mono', monospace;font-size:15px;color:#f97316;margin:0 0 6px;letter-spacing:0.06em;">🕹 ARCADE.EXE</p>
-      <p style="font-family:'Space Mono', monospace;font-size:24px;color:#f97316;margin:0;">[ OYNA ]</p>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#f97316;margin:0 0 6px;letter-spacing:0.06em;">🕹 ARCADE.EXE</p>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#f97316;margin:0;">[ OYNA ]</p>
     </a>
   </div>
 
@@ -226,14 +226,14 @@ const categoryColors: Record<string, string> = {
         <div class="city-row" data-tz="${city.tz}"
           style="display:flex;flex-direction:column;gap:3px;padding:8px 12px;border-right:1px solid #1e1e2e;border-bottom:1px solid #1e1e2e;flex:1;min-width:90px;">
           <div style="display:flex;align-items:center;gap:5px;">
-            <span style="font-size:13px;">${city.flag}</span>
-            <span style="font-family:'Space Mono', monospace;font-size:13px;color:#888899;">${city.name}</span>
+            <span style="font-size:11px;">${city.flag}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#888899;">${city.name}</span>
           </div>
           <div style="display:flex;align-items:baseline;gap:5px;">
-            <span style="font-family:'Space Mono', monospace;font-size:11px;color:#444455;" data-city-day="${city.tz}">${cityDay(city.tz)}</span>
-            <span style="font-family:'Space Mono', monospace;font-size:18px;color:#c8c8e0;" data-city-time="${city.tz}">${cityTime(city.tz)}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;" data-city-day="${city.tz}">${cityDay(city.tz)}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#c8c8e0;" data-city-time="${city.tz}">${cityTime(city.tz)}</span>
           </div>
-          <span style="font-family:'Space Mono', monospace;font-size:15px;color:${wx ? wx.color : '#666677'};">${wx ? wx.icon + ' ' + tempStr : '---'}</span>
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:${wx ? wx.color : '#666677'};">${wx ? wx.icon + ' ' + tempStr : '---'}</span>
         </div>`;
     }).join('');
   }
@@ -279,14 +279,14 @@ const categoryColors: Record<string, string> = {
         const card = `<div class="city-row" data-tz="${tz}"
           style="display:flex;flex-direction:column;gap:3px;padding:8px 12px;border-right:1px solid #1e1e2e;border-bottom:1px solid #1e1e2e;flex:1;min-width:90px;">
           <div style="display:flex;align-items:center;gap:5px;">
-            <span style="font-size:13px;">📍</span>
-            <span style="font-family:'Space Mono', monospace;font-size:13px;color:#888899;">${cityName}</span>
+            <span style="font-size:11px;">📍</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#888899;">${cityName}</span>
           </div>
           <div style="display:flex;align-items:baseline;gap:5px;">
-            <span style="font-family:'Space Mono', monospace;font-size:11px;color:#444455;" data-city-day="${tz}">${cityDay(tz)}</span>
-            <span style="font-family:'Space Mono', monospace;font-size:18px;color:#c8c8e0;" data-city-time="${tz}">${cityTime(tz)}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;" data-city-day="${tz}">${cityDay(tz)}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#c8c8e0;" data-city-time="${tz}">${cityTime(tz)}</span>
           </div>
-          <span style="font-family:'Space Mono', monospace;font-size:15px;color:${wx.color};">${wx.icon} ${Math.round(wxData.current.temperature_2m)}°</span>
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:${wx.color};">${wx.icon} ${Math.round(wxData.current.temperature_2m)}°</span>
         </div>`;
         if (widget) { widget.insertAdjacentHTML('afterbegin', card); requestAnimationFrame(syncPanelHeights); }
       } catch {}
