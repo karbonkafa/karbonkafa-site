@@ -113,7 +113,7 @@ const smallNews = latestNews.slice(3);
         <span class="px-title" style="color: #06b6d4;">🌍 DÜNYA / HAVA</span>
         <div class="px-btns"><span class="px-btn">×</span></div>
       </div>
-      <div id="worldWidget" style="display: flex; flex-direction: column;">
+      <div id="worldWidget" style="display: flex; flex-wrap: wrap; gap: 0;">
         <div style="padding: 8px 12px; font-family: 'VT323', monospace; font-size: 16px; color: #778899; letter-spacing: 0.04em;">YÜKLENİYOR...</div>
       </div>
     </div>
@@ -150,35 +150,26 @@ const smallNews = latestNews.slice(3);
 <style>
   .bento {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      "lists  lists  lists"
-      "news   news   news"
-      "right  quiz   gta";
+      "lists  lists"
+      "news   news"
+      "weather weather"
+      "quiz   gta";
     gap: 12px;
     align-items: start;
   }
-  .bento-lists { grid-area: lists; }
-  .bento-news  { grid-area: news; margin-top: 8px; }
-  .bento-right { grid-area: right; }
-  .bento-quiz  { grid-area: quiz; }
-  .bento-gta   { grid-area: gta; }
+  .bento-lists   { grid-area: lists; }
+  .bento-news    { grid-area: news; margin-top: 8px; }
+  .bento-right   { grid-area: weather; }
+  .bento-quiz    { grid-area: quiz; }
+  .bento-gta     { grid-area: gta; }
 
-  @media (max-width: 700px) {
-    .bento {
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "lists  lists"
-        "news   news"
-        "right  quiz"
-        "gta    gta";
-    }
-  }
   @media (max-width: 480px) {
     .bento {
       grid-template-columns: 1fr;
       grid-template-areas:
-        "lists" "news" "right" "quiz" "gta";
+        "lists" "news" "weather" "quiz" "gta";
     }
     .icon-box { width: 44px; height: 44px; font-size: 22px; }
   }
@@ -229,14 +220,15 @@ const smallNews = latestNews.slice(3);
       const timeStr = cityTime(city.tz);
       return `
         <div class="city-row" data-tz="${city.tz}"
-          style="display:grid;grid-template-columns:28px 1fr auto auto;gap:6px;align-items:center;padding:7px 12px;border-bottom:1px solid #1e1e2e;">
-          <span style="font-size:16px;line-height:1;text-align:center;">${city.flag}</span>
-          <div>
-            <div style="font-family:'VT323',monospace;font-size:14px;color:#888899;letter-spacing:0.04em;">${city.name}</div>
-            ${wx ? `<div style="font-family:'VT323',monospace;font-size:11px;color:${wx.color};">${wx.icon} ${wx.label}</div>` : ''}
+          style="display:flex;flex-direction:column;justify-content:space-between;gap:4px;padding:8px 12px;border-right:1px solid #1e1e2e;border-bottom:1px solid #1e1e2e;flex:1;min-width:100px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:14px;line-height:1;">${city.flag}</span>
+            <span style="font-family:'VT323',monospace;font-size:14px;color:#888899;letter-spacing:0.04em;">${city.name}</span>
           </div>
-          <div style="font-family:'VT323',monospace;font-size:17px;color:#c8c8e0;text-align:right;white-space:nowrap;" data-city-time="${city.tz}">${timeStr}</div>
-          <div style="font-family:'VT323',monospace;font-size:17px;min-width:36px;text-align:right;white-space:nowrap;color:${wx ? getWeather(w!.code).color : '#666677'};">${tempStr}</div>
+          <div style="font-family:'VT323',monospace;font-size:18px;color:#c8c8e0;white-space:nowrap;" data-city-time="${city.tz}">${timeStr}</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-family:'VT323',monospace;font-size:16px;color:${wx ? wx.color : '#666677'};">${wx ? wx.icon + ' ' + tempStr : '---'}</span>
+          </div>
         </div>
       `;
     }).join('');
