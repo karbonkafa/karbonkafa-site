@@ -73,7 +73,7 @@ const apps = [
               <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
               <span id="radio-label" style="font-family:'VT323',monospace;font-size:15px;color:#555566;letter-spacing:0.04em;">HAZIR</span>
             </div>
-            <input id="radio-vol" type="range" min="0" max="100" value="70"
+            <input id="radio-vol" type="range" min="0" max="100" value="25"
               style="width:60px;accent-color:#3b82f6;flex-shrink:0;" />
           </div>
         </div>
@@ -327,9 +327,9 @@ const apps = [
 
   // Global state persists across View Transitions navigations
   if (!(window as any).kbRadio) {
-    (window as any).kbRadio = { audio: null as HTMLAudioElement | null, playing: false, streamIdx: 0 };
+    (window as any).kbRadio = { audio: null as HTMLAudioElement | null, playing: false, streamIdx: 0, autoStarted: false };
   }
-  const rs = (window as any).kbRadio as { audio: HTMLAudioElement | null; playing: boolean; streamIdx: number };
+  const rs = (window as any).kbRadio as { audio: HTMLAudioElement | null; playing: boolean; streamIdx: number; autoStarted: boolean };
 
   function bindRadio() {
     const playBtn  = document.getElementById('radio-play') as HTMLButtonElement;
@@ -379,9 +379,14 @@ const apps = [
       rs.audio.onerror = () => tryStream(rs.streamIdx + 1);
     } else {
       setStatus('stopped');
+      if (!rs.autoStarted) {
+        rs.autoStarted = true;
+        if (vol) vol.value = '25';
+        tryStream(0);
+      }
     }
 
-    if (vol && rs.audio) vol.value = String(Math.round(rs.audio.volume * 100));
+    if (vol && rs.audio && rs.autoStarted) vol.value = String(Math.round(rs.audio.volume * 100));
 
     playBtn.addEventListener('click', () => {
       if (rs.playing) { rs.audio?.pause(); rs.playing = false; setStatus('stopped'); }
