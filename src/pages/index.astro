@@ -39,16 +39,18 @@ const smallNews = latestNews.slice(3);
                 <p style="font-family:'VT323',monospace;font-size:18px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
                 <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
               </div>
-              <div style="display: flex; gap: 2px; flex-wrap: wrap; align-items:flex-start;">
-                {slugs.slice(0, 17).map((slug: string) => {
-                  const g = gmap[slug];
-                  const cover = g?.coverUrl;
-                  return cover ? (
-                    <div style="width: 40px; height: 40px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
-                      <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
-                    </div>
-                  ) : <div style="width:40px;height:40px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
-                })}
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
+                <div style="display:flex;gap:2px;flex-wrap:wrap;">
+                  {slugs.slice(0, 17).map((slug: string) => {
+                    const g = gmap[slug];
+                    const cover = g?.coverUrl;
+                    return cover ? (
+                      <div style="width:40px;height:40px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
+                        <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
+                      </div>
+                    ) : <div style="width:40px;height:40px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
+                  })}
+                </div>
                 <div class="list-avatar" data-username={list.author.toLowerCase()}
                   style="width:40px;height:40px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:14px;color:#e5c46b;flex-shrink:0;">
                   {list.author[0].toUpperCase()}
