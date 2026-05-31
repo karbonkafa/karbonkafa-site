@@ -120,13 +120,12 @@ body::after {
 
 .icon-label {
   font-family: var(--pixel);
-  font-size: 13px;
-  color: #ffffff;
+  font-size: 9px;
+  color: #aaaacc;
   text-align: center;
-  text-shadow: 1px 1px 0 #000;
   line-height: 1.2;
   max-width: 70px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 * {
