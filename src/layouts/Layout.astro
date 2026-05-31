@@ -34,7 +34,8 @@ const apps = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <ClientRouter />
   </head>
   <body style="background:#0a0a0a; color:#e5e5e5; margin:0; padding-bottom: 72px;">
@@ -48,7 +49,10 @@ const apps = [
       <!-- System bar -->
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding: 4px 0; border-bottom: 1px solid #1e1e2e;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <a href="/" style="font-family: 'VT323', monospace; font-size: 22px; color: #e5c46b; letter-spacing: 0.1em; text-decoration: none;">KARBON OS</a>
+          <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+            <img src="/logo.png" alt="Karbon OS" style="width:24px;height:24px;image-rendering:pixelated;" />
+            <span style="font-family:'VT323',monospace;font-size:22px;color:#e5c46b;letter-spacing:0.1em;">KARBON OS</span>
+          </a>
           <span style="font-family: 'VT323', monospace; font-size: 14px; color: #ef4444; letter-spacing: 0.06em;">ALPHA VERSION</span>
         </div>
       </div>
