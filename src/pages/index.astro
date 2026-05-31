@@ -25,7 +25,7 @@ const smallNews = latestNews.slice(3);
     <!-- LISTS -->
     <div class="bento-lists px-window">
       <div class="px-titlebar" style="border-left-color: #e5c46b;">
-        <span class="px-title" style="color: #e5c46b;">📋 LİSTELER.EXE</span>
+        <a class="px-title" href="/lists" style="color:#e5c46b;text-decoration:none;transition:opacity 0.1s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">📋 LİSTELER.EXE</a>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
       <div style="display: flex; flex-direction: column;">
@@ -69,7 +69,7 @@ const smallNews = latestNews.slice(3);
     <!-- NEWS -->
     <div class="bento-news px-window">
       <div class="px-titlebar">
-        <span class="px-title">📰 HABERLER.LOG</span>
+        <a class="px-title" href="/news" style="text-decoration:none;transition:opacity 0.1s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">📰 HABERLER.LOG</a>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-bottom: 1px solid #1e1e2e;">
@@ -128,7 +128,7 @@ const smallNews = latestNews.slice(3);
     <a id="quizPanel" href="/quiz" class="bento-quiz px-window" style="text-decoration:none;display:flex;flex-direction:column;border-color:#22c55e44;transition:border-color 0.15s;"
       onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
       <div class="px-titlebar" style="border-left-color:#22c55e;">
-        <span class="px-title" style="color:#22c55e;">🎮 QUİZ.EXE</span>
+        <a class="px-title" href="/quiz" style="color:#22c55e;text-decoration:none;transition:opacity 0.1s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">🎮 QUİZ.EXE</a>
         <div class="px-btns"><span class="px-btn" style="color:#22c55e;">▶</span></div>
       </div>
       <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
@@ -153,7 +153,7 @@ const smallNews = latestNews.slice(3);
     <a id="arcadePanel" href="/arcade" class="bento-arcade px-window" style="text-decoration:none;display:flex;flex-direction:column;border-color:#f9731644;transition:border-color 0.15s;"
       onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#f9731644'">
       <div class="px-titlebar" style="border-left-color:#f97316;">
-        <span class="px-title" style="color:#f97316;">🕹 ARCADE.EXE</span>
+        <a class="px-title" href="/arcade" style="color:#f97316;text-decoration:none;transition:opacity 0.1s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">🕹 ARCADE.EXE</a>
         <div class="px-btns"><span class="px-btn" style="color:#f97316;">▶</span></div>
       </div>
       <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
@@ -229,14 +229,15 @@ const smallNews = latestNews.slice(3);
   if (gtaEl) gtaEl.textContent = `${Math.max(0, days)} GÜN`;
 
   // World cities
+  // Sorted west→east by UTC offset
   const CITIES = [
-    { name: 'İSTANBUL', tz: 'Europe/Istanbul',   lat: 41.01,  lon: 28.98,  flag: '🇹🇷' },
-    { name: 'TOKYO',    tz: 'Asia/Tokyo',          lat: 35.68,  lon: 139.69, flag: '🇯🇵' },
-    { name: 'NEW YORK', tz: 'America/New_York',    lat: 40.71,  lon: -74.01, flag: '🇺🇸' },
-    { name: 'LONDRA',   tz: 'Europe/London',       lat: 51.51,  lon: -0.13,  flag: '🇬🇧' },
-    { name: 'SEUL',     tz: 'Asia/Seoul',          lat: 37.57,  lon: 126.98, flag: '🇰🇷' },
-    { name: 'MOSKOVA',  tz: 'Europe/Moscow',       lat: 55.76,  lon: 37.62,  flag: '🇷🇺' },
-    { name: 'L.A.',     tz: 'America/Los_Angeles', lat: 34.05,  lon: -118.24,flag: '🇺🇸' },
+    { name: 'L.A.',     tz: 'America/Los_Angeles', lat: 34.05,  lon: -118.24, flag: '🇺🇸' },
+    { name: 'NEW YORK', tz: 'America/New_York',    lat: 40.71,  lon: -74.01,  flag: '🇺🇸' },
+    { name: 'LONDRA',   tz: 'Europe/London',       lat: 51.51,  lon: -0.13,   flag: '🇬🇧' },
+    { name: 'MOSKOVA',  tz: 'Europe/Moscow',       lat: 55.76,  lon: 37.62,   flag: '🇷🇺' },
+    { name: 'BANGKOK',  tz: 'Asia/Bangkok',        lat: 13.75,  lon: 100.52,  flag: '🇹🇭' },
+    { name: 'SEUL',     tz: 'Asia/Seoul',          lat: 37.57,  lon: 126.98,  flag: '🇰🇷' },
+    { name: 'TOKYO',    tz: 'Asia/Tokyo',          lat: 35.68,  lon: 139.69,  flag: '🇯🇵' },
   ];
 
   function getWeather(code: number) {
