@@ -34,20 +34,20 @@ function getMetacritic(slug: string): number | null {
       <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
     </div>
     <div style="padding: 16px;">
-      <div style="font-family:'VT323',monospace;font-size:13px;color:#444455;letter-spacing:0.06em;margin-bottom:8px;">
+      <div style="font-family:'Space Mono', monospace;font-size:13px;color:#444455;letter-spacing:0.06em;margin-bottom:8px;">
         <a href="/lists" style="color:#444455;transition:color 0.1s;" onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">LİSTELER</a>
         <span style="margin:0 6px;color:#2a2a3a;">›</span>
         <span style="color:#888899;">{list.title.toUpperCase()}</span>
       </div>
-      <h1 style="font-family:'VT323',monospace;font-size:30px;color:#ffffff;margin:0 0 8px;letter-spacing:0.02em;line-height:1.15;">{list.title}</h1>
+      <h1 style="font-family:'Space Mono', monospace;font-size:30px;color:#ffffff;margin:0 0 8px;letter-spacing:0.02em;line-height:1.15;">{list.title}</h1>
       {list.description && (
         <p style="font-size:14px;color:#888899;line-height:1.7;margin:0 0 12px;max-width:640px;">{list.description}</p>
       )}
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-        <span style="font-family:'VT323',monospace;font-size:16px;color:#e5c46b;">{list.author}</span>
-        {list.authorRole && <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">· {list.authorRole}</span>}
-        <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">{dateStr}</span>
-        <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">{list.games.length} oyun</span>
+        <span style="font-family:'Space Mono', monospace;font-size:16px;color:#e5c46b;">{list.author}</span>
+        {list.authorRole && <span style="font-family:'Space Mono', monospace;font-size:14px;color:#444455;">· {list.authorRole}</span>}
+        <span style="font-family:'Space Mono', monospace;font-size:14px;color:#444455;">{dateStr}</span>
+        <span style="font-family:'Space Mono', monospace;font-size:14px;color:#444455;">{list.games.length} oyun</span>
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@ function getMetacritic(slug: string): number | null {
           <div style="border-bottom: 1px solid #1e1e2e; padding: 14px 16px; display: grid; grid-template-columns: 32px 64px 1fr; gap: 14px; align-items: start; transition: background 0.1s;"
             onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
             <!-- Number -->
-            <div style="font-family:'VT323',monospace;font-size:18px;color:#2a2a3a;padding-top:4px;text-align:right;">
+            <div style="font-family:'Space Mono', monospace;font-size:18px;color:#2a2a3a;padding-top:4px;text-align:right;">
               {String(idx + 1).padStart(2, '0')}
             </div>
             <!-- Cover -->
@@ -93,11 +93,11 @@ function getMetacritic(slug: string): number | null {
                   {game.title}
                 </a>
                 {mc && (
-                  <span style={`font-family:'VT323',monospace;font-size:15px;font-weight:600;color:${mcColor};flex-shrink:0;padding-top:2px;`}>{mc}</span>
+                  <span style={`font-family:'Space Mono', monospace;font-size:15px;font-weight:600;color:${mcColor};flex-shrink:0;padding-top:2px;`}>{mc}</span>
                 )}
               </div>
               {devs.length > 0 && (
-                <p style="font-family:'VT323',monospace;font-size:13px;color:#555566;margin:0;">{devs.join(', ')}{game.releaseYear ? ` · ${game.releaseYear}` : ''}</p>
+                <p style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;margin:0;">{devs.join(', ')}{game.releaseYear ? ` · ${game.releaseYear}` : ''}</p>
               )}
               {item.note && (
                 <p style="font-size:13px;color:#778899;margin:4px 0 0;line-height:1.6;border-left:2px solid #e5c46b33;padding-left:10px;font-style:italic;">

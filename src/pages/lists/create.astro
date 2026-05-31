@@ -28,8 +28,8 @@ const gameIndex = (gamesData as any[])
         <div class="px-btns"><span class="px-btn">×</span></div>
       </div>
       <div style="padding:32px 24px;text-align:center;">
-        <p style="font-family:'VT323',monospace;font-size:18px;color:#555566;margin:0 0 20px;letter-spacing:0.04em;">Liste oluşturmak için giriş yapman gerekiyor.</p>
-        <a href="/auth/login" style="font-family:'VT323',monospace;font-size:18px;background:#e5c46b;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">GİRİŞ YAP →</a>
+        <p style="font-family:'Space Mono', monospace;font-size:18px;color:#555566;margin:0 0 20px;letter-spacing:0.04em;">Liste oluşturmak için giriş yapman gerekiyor.</p>
+        <a href="/auth/login" style="font-family:'Space Mono', monospace;font-size:18px;background:#e5c46b;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">GİRİŞ YAP →</a>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@ const gameIndex = (gamesData as any[])
       <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
         <input id="listTitle" type="text" placeholder="Liste başlığı..."
           autocomplete="off" maxlength="100"
-          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:10px 12px;font-family:'VT323',monospace;font-size:18px;outline:none;box-sizing:border-box;letter-spacing:0.02em;transition:border-color 0.15s;"
+          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:10px 12px;font-family:'Space Mono', monospace;font-size:18px;outline:none;box-sizing:border-box;letter-spacing:0.02em;transition:border-color 0.15s;"
           onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
         <textarea id="listDesc" placeholder="Açıklama (isteğe bağlı)..." maxlength="500" rows="2"
           style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#aaaacc;padding:10px 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;resize:vertical;transition:border-color 0.15s;"
@@ -76,18 +76,18 @@ const gameIndex = (gamesData as any[])
 
       <!-- Empty state -->
       <div id="emptyState" style="padding:32px 16px;text-align:center;">
-        <p style="font-family:'VT323',monospace;font-size:16px;color:#2a2a3a;letter-spacing:0.06em;margin:0;">HENÜZ OYUN EKLENMEDİ</p>
+        <p style="font-family:'Space Mono', monospace;font-size:16px;color:#2a2a3a;letter-spacing:0.06em;margin:0;">HENÜZ OYUN EKLENMEDİ</p>
       </div>
     </div>
 
     <!-- Actions -->
     <div style="display:flex;align-items:center;gap:12px;">
       <button id="saveBtn"
-        style="font-family:'VT323',monospace;font-size:18px;background:#e5c46b;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;transition:opacity 0.15s;"
+        style="font-family:'Space Mono', monospace;font-size:18px;background:#e5c46b;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;transition:opacity 0.15s;"
         onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
         LİSTEYİ OLUŞTUR →
       </button>
-      <span id="saveMsg" style="font-family:'VT323',monospace;font-size:15px;color:#555566;"></span>
+      <span id="saveMsg" style="font-family:'Space Mono', monospace;font-size:15px;color:#555566;"></span>
     </div>
 
   </div>
@@ -157,12 +157,12 @@ const gameIndex = (gamesData as any[])
           ${g.cover ? `<img src="${g.cover}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>` : '<div style="width:100%;height:100%;background:#0d0d12;"></div>'}
         </div>
         <div style="min-width:0;">
-          <p style="font-family:'VT323',monospace;font-size:17px;color:#e5e5e5;margin:0;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${g.title}</p>
-          <p style="font-family:'VT323',monospace;font-size:13px;color:#555566;margin:2px 0 0;">${g.dev || ''}${g.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>
+          <p style="font-family:'Space Mono', monospace;font-size:17px;color:#e5e5e5;margin:0;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${g.title}</p>
+          <p style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;margin:2px 0 0;">${g.dev || ''}${g.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-          ${g.mc ? `<span style="font-family:'VT323',monospace;font-size:16px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
-          <span style="font-family:'VT323',monospace;font-size:20px;color:#3b82f6;padding:0 4px;">+</span>
+          ${g.mc ? `<span style="font-family:'Space Mono', monospace;font-size:16px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
+          <span style="font-family:'Space Mono', monospace;font-size:20px;color:#3b82f6;padding:0 4px;">+</span>
         </div>
       </div>
     `).join('');
@@ -215,23 +215,23 @@ const gameIndex = (gamesData as any[])
       return `
         <div style="display:grid;grid-template-columns:32px 64px 1fr auto;gap:12px;align-items:start;padding:12px 14px;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
           onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
-          <span style="font-family:'VT323',monospace;font-size:18px;color:#2a2a3a;padding-top:4px;text-align:right;">${String(i + 1).padStart(2, '0')}</span>
+          <span style="font-family:'Space Mono', monospace;font-size:18px;color:#2a2a3a;padding-top:4px;text-align:right;">${String(i + 1).padStart(2, '0')}</span>
           <a href="/games/${item.slug}" target="_blank" style="display:block;width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
             ${g?.cover ? `<img src="${g.cover}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>` : '<div style="width:100%;height:100%;background:#0d0d12;"></div>'}
           </a>
           <div style="display:flex;flex-direction:column;gap:6px;padding-top:2px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-family:'VT323',monospace;font-size:18px;color:#e5e5e5;line-height:1.2;">${g?.title || item.slug}</span>
-              ${g?.mc ? `<span style="font-family:'VT323',monospace;font-size:14px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
+              <span style="font-family:'Space Mono', monospace;font-size:18px;color:#e5e5e5;line-height:1.2;">${g?.title || item.slug}</span>
+              ${g?.mc ? `<span style="font-family:'Space Mono', monospace;font-size:14px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
             </div>
-            ${g?.dev || g?.year ? `<p style="font-family:'VT323',monospace;font-size:13px;color:#555566;margin:0;">${g.dev || ''}${g?.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>` : ''}
+            ${g?.dev || g?.year ? `<p style="font-family:'Space Mono', monospace;font-size:13px;color:#555566;margin:0;">${g.dev || ''}${g?.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>` : ''}
             <input type="text" placeholder="Not ekle..." value="${item.note.replace(/"/g, '&quot;')}"
               oninput="window.__note(${i}, this.value)"
               style="background:#080810;border:1px solid #1e1e2e;color:#888899;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;transition:border-color 0.1s;"
               onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
           </div>
           <button onclick="window.__rmGame('${item.slug}')"
-            style="background:none;border:1px solid #1e1e2e;color:#444455;cursor:pointer;font-family:'VT323',monospace;font-size:16px;padding:4px 8px;margin-top:2px;transition:all 0.1s;"
+            style="background:none;border:1px solid #1e1e2e;color:#444455;cursor:pointer;font-family:'Space Mono', monospace;font-size:16px;padding:4px 8px;margin-top:2px;transition:all 0.1s;"
             onmouseover="this.style.color='#ef4444';this.style.borderColor='#ef444444'" onmouseout="this.style.color='#444455';this.style.borderColor='#1e1e2e'">×</button>
         </div>
       `;

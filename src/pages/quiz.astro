@@ -13,7 +13,7 @@ const titles = pool.map(g => g.title);
   <!-- Header -->
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
     <h1 class="os-title" style="margin:0;">🎮 QUİZ.EXE</h1>
-    <div style="display:flex;align-items:center;gap:16px;font-family:'VT323',monospace;">
+    <div style="display:flex;align-items:center;gap:16px;font-family:'Space Mono', monospace;">
       <div style="text-align:center;">
         <div id="scoreVal" style="font-size:28px;font-weight:600;color:#22c55e;">0</div>
         <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">DOĞRU</div>
@@ -41,12 +41,12 @@ const titles = pool.map(g => g.title);
       <!-- Level indicator -->
       <div style="position:absolute;top:10px;left:10px;display:flex;gap:4px;" id="levelDots"></div>
       <!-- Lives -->
-      <div style="position:absolute;top:10px;right:10px;font-family:'VT323',monospace;font-size:20px;" id="livesDisplay"></div>
+      <div style="position:absolute;top:10px;right:10px;font-family:'Space Mono', monospace;font-size:20px;" id="livesDisplay"></div>
       <!-- Reveal overlay -->
       <div id="revealOverlay" style="display:none;position:absolute;inset:0;background:rgba(5,5,8,0.88);flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
         <div id="revealIcon" style="font-size:52px;"></div>
-        <div id="revealTitle" style="font-family:'VT323',monospace;font-size:28px;color:#fff;letter-spacing:0.04em;"></div>
-        <div id="revealMeta" style="font-family:'VT323',monospace;font-size:16px;color:#666677;"></div>
+        <div id="revealTitle" style="font-family:'Space Mono', monospace;font-size:28px;color:#fff;letter-spacing:0.04em;"></div>
+        <div id="revealMeta" style="font-family:'Space Mono', monospace;font-size:16px;color:#666677;"></div>
         <div id="revealCta" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;"></div>
       </div>
     </div>
@@ -64,16 +64,16 @@ const titles = pool.map(g => g.title);
       <!-- Buttons row -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <button id="hintBtn"
-          style="font-family:'VT323',monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          style="font-family:'Space Mono', monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
           onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
           💡 İPUCU
         </button>
         <button id="skipBtn"
-          style="font-family:'VT323',monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          style="font-family:'Space Mono', monospace;font-size:17px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
           onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
           ✕ BİLMİYORUM
         </button>
-        <button id="nextBtn" style="display:none;font-family:'VT323',monospace;font-size:17px;background:#e5c46b;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
+        <button id="nextBtn" style="display:none;font-family:'Space Mono', monospace;font-size:17px;background:#e5c46b;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
           onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           SONRAKI →
         </button>
@@ -136,7 +136,7 @@ function renderLevelDots() {
 
 function renderWrong() {
   wrongEl.innerHTML = wrongGuesses.map(w =>
-    `<span style="font-family:'VT323',monospace;font-size:13px;color:#ef444466;background:#1a0808;border:1px solid #ef444433;padding:1px 6px;text-decoration:line-through;">${w}</span>`
+    `<span style="font-family:'Space Mono', monospace;font-size:13px;color:#ef444466;background:#1a0808;border:1px solid #ef444433;padding:1px 6px;text-decoration:line-through;">${w}</span>`
   ).join('');
 }
 
