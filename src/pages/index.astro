@@ -28,12 +28,12 @@ const smallNews = latestNews.slice(3);
         <span class="px-title" style="color: #e5c46b;">📋 LİSTELER.EXE</span>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0;">
+      <div style="display: flex; flex-direction: column;">
         {lists.map(list => {
           const slugs = list.games.map((i: any) => i.slug);
           return (
             <a href={`/lists/${list.slug}`}
-              style="display: block; padding: 16px; border-right: 1px solid #1e1e2e; border-bottom: 1px solid #1e1e2e; transition: background 0.15s;"
+              style="display: block; padding: 14px 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.15s;"
               onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
               <p style="font-family:'VT323',monospace;font-size:20px;color:#ffffff;margin:0 0 3px;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
               <p style="font-size:12px;color:#666677;margin:0 0 10px;line-height:1.4;font-family:'VT323',monospace;">{list.author} · {list.games.length} oyun</p>
