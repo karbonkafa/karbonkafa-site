@@ -6,25 +6,22 @@ import watchListsData from '../../data/watch-lists.json';
 
 const TMDB_KEY = import.meta.env.PUBLIC_TMDB_KEY;
 const IMG = 'https://image.tmdb.org/t/p/w300';
+const IMG_S = 'https://image.tmdb.org/t/p/w92';
 
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  watching:  { label: 'İZLİYORUM',   color: '#3b82f6' },
-  completed: { label: 'TAMAMLANDI',  color: '#22c55e' },
-  watchlist: { label: 'LİSTEDE',     color: '#e5c46b' },
-  dropped:   { label: 'BIRAKTI',     color: '#ef4444' },
+  watching:  { label: 'İZLİYORUM',  color: '#3b82f6' },
+  completed: { label: 'TAMAMLANDI', color: '#22c55e' },
+  watchlist: { label: 'LİSTEDE',    color: '#e5c46b' },
+  dropped:   { label: 'BIRAKTI',    color: '#ef4444' },
 };
 
 type Entry = { tmdbId: number; type: string; status: string; rating: number | null; note: string | null };
-type TmdbItem = any;
 
-async function fetchTmdb(id: number, type: string): Promise<TmdbItem | null> {
+async function fetchTmdb(id: number, type: string) {
   if (!TMDB_KEY) return null;
   try {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/${type}/${id}?api_key=${TMDB_KEY}&language=tr-TR`
-    );
-    if (!res.ok) return null;
-    return await res.json();
+    const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${TMDB_KEY}&language=tr-TR`);
+    return res.ok ? await res.json() : null;
   } catch { return null; }
 }
 
@@ -32,7 +29,6 @@ const entries = watchData as Entry[];
 const shows  = entries.filter(e => e.type === 'tv');
 const movies = entries.filter(e => e.type === 'movie');
 
-// Fetch TMDB data in parallel
 const [showsData, moviesData] = await Promise.all([
   Promise.all(shows.map(e => fetchTmdb(e.tmdbId, 'tv'))),
   Promise.all(movies.map(e => fetchTmdb(e.tmdbId, 'movie'))),
@@ -44,92 +40,37 @@ const combined = [
 ].filter(x => x.tmdb);
 
 const watchLists = watchListsData as any[];
-// Fetch first 4 poster images for each list (for the collage)
 const listPosters = await Promise.all(
   watchLists.map(async list => {
-    const first4 = list.items.slice(0, 4);
-    const posters = await Promise.all(
-      first4.map((item: any) => fetchTmdb(item.tmdbId, item.type))
-    );
-    return posters.map(t => t?.poster_path ? 'https://image.tmdb.org/t/p/w92' + t.poster_path : null);
+    const results = await Promise.all(list.items.slice(0, 4).map((item: any) => fetchTmdb(item.tmdbId, item.type)));
+    return results.map((t: any) => t?.poster_path ? IMG_S + t.poster_path : null);
   })
 );
 ---
 
 <Layout title="Dizi & Film">
 
-  <div class="px-window">
+  <!-- LİSTELER bölümü -->
+  <div class="px-window" style="margin-bottom:8px;">
     <div class="px-titlebar" style="border-left-color:#e879f9;">
-      <span class="px-title" style="color:#e879f9;">🎬 DİZİ & FİLM.EXE — {combined.length} YAPIM</span>
+      <span class="px-title" style="color:#e879f9;">📋 LİSTELER — {watchLists.length} LİSTE</span>
       <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
     </div>
 
-    <!-- Tabs -->
-    <div style="display:flex;flex-wrap:wrap;border-bottom:1px solid #1e1e2e;">
-      {(['Tümü', 'Diziler', 'Filmler', 'İzliyorum', 'Tamamlandı', 'Listede', 'Listeler'] as const).map((tab, i) => (
-        <button class="watch-tab" data-tab={tab}
-          style={`font-family:'VT323',monospace;font-size:16px;padding:8px 14px;background:none;border:none;cursor:pointer;letter-spacing:0.04em;border-bottom:2px solid ${i===0?'#e879f9':'transparent'};color:${i===0?'#e879f9':'#555566'};transition:all 0.1s;`}>
-          {tab.toUpperCase()}
-        </button>
-      ))}
-    </div>
-
-    <!-- Grid -->
-    <div id="watchGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:#1e1e2e;">
-      {combined.map(({ entry, tmdb }) => {
-        const slug = `${entry.type}-${entry.tmdbId}`;
-        const title = tmdb.name || tmdb.title || '?';
-        const year = (tmdb.first_air_date || tmdb.release_date || '').slice(0, 4);
-        const poster = tmdb.poster_path ? IMG + tmdb.poster_path : null;
-        const status = STATUS_MAP[entry.status] || STATUS_MAP.watchlist;
-        const tmdbScore = tmdb.vote_average ? Math.round(tmdb.vote_average * 10) / 10 : null;
-        return (
-          <a href={`/dizi-film/${slug}`}
-            class="watch-card"
-            data-type={entry.type}
-            data-status={entry.status}
-            style="display:flex;flex-direction:column;background:#0d0d12;text-decoration:none;transition:background 0.15s;"
-            onmouseover="this.style.background='#111118'" onmouseout="this.style.background='#0d0d12'">
-            <!-- Poster -->
-            <div style="width:100%;aspect-ratio:2/3;overflow:hidden;background:#080810;position:relative;">
-              {poster
-                ? <img src={poster} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />
-                : <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;">{entry.type === 'tv' ? '📺' : '🎬'}</div>
-              }
-              <div style={`position:absolute;top:6px;left:6px;font-family:'VT323',monospace;font-size:12px;color:#000;background:${status.color};padding:1px 6px;letter-spacing:0.04em;`}>
-                {status.label}
-              </div>
-            </div>
-            <!-- Info -->
-            <div style="padding:8px 10px;flex:1;">
-              <p style="font-family:'VT323',monospace;font-size:16px;color:#e5e5e5;margin:0 0 3px;line-height:1.2;letter-spacing:0.02em;">{title}</p>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
-                <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;">{year}</span>
-                {entry.rating && (
-                  <span style="font-family:'VT323',monospace;font-size:14px;color:#e5c46b;">{entry.rating}/10</span>
-                )}
-              </div>
-            </div>
-          </a>
-        );
-      })}
-    </div>
-
-    <!-- Lists section (hidden by default, shown on Listeler tab) -->
-    <div id="watchLists" style="display:none;flex-direction:column;">
+    <div style="display:flex;flex-direction:column;">
       {watchLists.map((list, li) => (
         <a href={`/dizi-film/liste/${list.slug}`}
-          style="display:block;padding:14px 16px;border-bottom:1px solid #1e1e2e;transition:background 0.15s;"
+          style="display:block;padding:12px 16px;border-bottom:1px solid #1e1e2e;transition:background 0.15s;"
           onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:5px;">
             <p style="font-family:'VT323',monospace;font-size:20px;color:#fff;margin:0;letter-spacing:0.02em;">{list.title}</p>
             <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;flex-shrink:0;">{list.items.length} yapım</span>
           </div>
-          {list.description && <p style="font-size:12px;color:#666677;margin:0 0 8px;line-height:1.5;">{list.description}</p>}
+          {list.description && <p style="font-size:12px;color:#666677;margin:0 0 7px;line-height:1.5;">{list.description}</p>}
           <div style="display:flex;justify-content:space-between;align-items:flex-end;">
             <div style="display:flex;gap:2px;">
-              {(listPosters[li] || []).filter(Boolean).map((p: string | null) => p && (
-                <div style="width:44px;height:66px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
+              {(listPosters[li] || []).filter(Boolean).map((p: any) => (
+                <div style="width:40px;height:60px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
                   <img src={p} alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
                 </div>
               ))}
@@ -139,19 +80,67 @@ const listPosters = await Promise.all(
         </a>
       ))}
     </div>
+  </div>
+
+  <!-- TÜMÜ bölümü -->
+  <div class="px-window">
+    <div class="px-titlebar" style="border-left-color:#e879f9;">
+      <span class="px-title" style="color:#e879f9;">🎬 TÜMÜ — {combined.length} YAPIM</span>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+    </div>
+
+    <!-- Filtre butonları -->
+    <div style="padding:8px 12px;border-bottom:1px solid #1e1e2e;display:flex;gap:4px;flex-wrap:wrap;">
+      {(['Tümü', 'Diziler', 'Filmler', 'İzliyorum', 'Tamamlandı', 'Listede'] as const).map((tab, i) => (
+        <button class="watch-tab" data-tab={tab}
+          style={`font-family:'VT323',monospace;font-size:15px;padding:3px 12px;background:#0d0d12;border:1px solid ${i===0?'#e879f9':'#1e1e2e'};color:${i===0?'#e879f9':'#555566'};cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;`}>
+          {tab.toUpperCase()}
+        </button>
+      ))}
+    </div>
+
+    <!-- Poster grid -->
+    <div id="watchGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1px;background:#1e1e2e;">
+      {combined.map(({ entry, tmdb }) => {
+        const slug = `${entry.type}-${entry.tmdbId}`;
+        const title = tmdb.name || tmdb.title || '?';
+        const year = (tmdb.first_air_date || tmdb.release_date || '').slice(0, 4);
+        const poster = tmdb.poster_path ? IMG + tmdb.poster_path : null;
+        const status = STATUS_MAP[entry.status] || STATUS_MAP.watchlist;
+        return (
+          <a href={`/dizi-film/${slug}`}
+            class="watch-card"
+            data-type={entry.type}
+            data-status={entry.status}
+            style="display:flex;flex-direction:column;background:#0d0d12;text-decoration:none;transition:background 0.15s;"
+            onmouseover="this.style.background='#111118'" onmouseout="this.style.background='#0d0d12'">
+            <div style="width:100%;aspect-ratio:2/3;overflow:hidden;background:#080810;position:relative;">
+              {poster
+                ? <img src={poster} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                : <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;">{entry.type==='tv'?'📺':'🎬'}</div>
+              }
+              <div style={`position:absolute;top:5px;left:5px;font-family:'VT323',monospace;font-size:11px;color:#000;background:${status.color};padding:1px 5px;letter-spacing:0.04em;`}>
+                {status.label}
+              </div>
+            </div>
+            <div style="padding:7px 9px;">
+              <p style="font-family:'VT323',monospace;font-size:15px;color:#e5e5e5;margin:0 0 2px;line-height:1.2;">{title}</p>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
+                <span style="font-family:'VT323',monospace;font-size:12px;color:#444455;">{year}</span>
+                {entry.rating && <span style="font-family:'VT323',monospace;font-size:13px;color:#e5c46b;">{entry.rating}/10</span>}
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
 
     {!TMDB_KEY && (
-      <div style="padding:32px;text-align:center;">
-        <p style="font-family:'VT323',monospace;font-size:16px;color:#ef4444;margin:0 0 8px;letter-spacing:0.04em;">PUBLIC_TMDB_KEY TANIMLI DEĞİL</p>
+      <div style="padding:24px;text-align:center;">
+        <p style="font-family:'VT323',monospace;font-size:16px;color:#ef4444;margin:0 0 6px;">PUBLIC_TMDB_KEY TANIMLI DEĞİL</p>
         <p style="font-size:12px;color:#555566;margin:0;">themoviedb.org adresinden ücretsiz API key alıp Vercel env'e ekle.</p>
       </div>
     )}
-
-    <!-- "Yeni ekle" link -->
-    <a href="/dizi-film/create" style="display:block;padding:10px 14px;font-family:'VT323',monospace;font-size:15px;color:#555566;text-align:center;letter-spacing:0.06em;transition:color 0.1s;border-top:1px solid #1e1e2e;"
-      onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#555566'">
-      [ + YENİ EKLE ]
-    </a>
   </div>
 
 </Layout>
@@ -159,33 +148,22 @@ const listPosters = await Promise.all(
 <script>
   const tabs = document.querySelectorAll<HTMLElement>('.watch-tab');
   const cards = document.querySelectorAll<HTMLElement>('.watch-card');
-  const grid = document.getElementById('watchGrid')!;
-  const listsSection = document.getElementById('watchLists')!;
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const t = tab.dataset.tab!;
-      tabs.forEach(b => { b.style.color='#555566'; b.style.borderBottomColor='transparent'; });
-      tab.style.color='#e879f9'; tab.style.borderBottomColor='#e879f9';
-
-      if (t === 'Listeler') {
-        grid.style.display = 'none';
-        listsSection.style.display = 'flex';
-        return;
-      }
-
-      grid.style.display = 'grid';
-      listsSection.style.display = 'none';
+      tabs.forEach(b => { b.style.color='#555566'; b.style.borderColor='#1e1e2e'; });
+      tab.style.color='#e879f9'; tab.style.borderColor='#e879f9';
 
       cards.forEach(card => {
         const type = card.dataset.type!;
         const status = card.dataset.status!;
         let show = true;
-        if (t === 'Diziler')    show = type === 'tv';
-        else if (t === 'Filmler')    show = type === 'movie';
-        else if (t === 'İzliyorum')  show = status === 'watching';
-        else if (t === 'Tamamlandı') show = status === 'completed';
-        else if (t === 'Listede')    show = status === 'watchlist';
+        if (t === 'Diziler')     show = type === 'tv';
+        else if (t === 'Filmler')     show = type === 'movie';
+        else if (t === 'İzliyorum')   show = status === 'watching';
+        else if (t === 'Tamamlandı')  show = status === 'completed';
+        else if (t === 'Listede')     show = status === 'watchlist';
         card.style.display = show ? 'flex' : 'none';
       });
     });
