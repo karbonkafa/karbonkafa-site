@@ -253,15 +253,28 @@ const gameIndex = (gamesData as any[])
     btn.disabled = true;
     saveMsg.textContent = '';
 
+    // Debug: check session
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      saveMsg.textContent = 'Oturum süresi dolmuş, tekrar giriş yap.';
+      btn.textContent = 'LİSTEYİ OLUŞTUR →';
+      btn.disabled = false;
+      return;
+    }
+
+    const now = new Date().toISOString();
     const { data: list, error } = await sb.from('lists').insert({
       user_id: currentUser.id,
       title,
       description: desc,
       is_public: true,
+      created_at: now,
+      updated_at: now,
     }).select().single();
 
     if (error || !list) {
-      saveMsg.textContent = 'Hata: ' + (error?.message || 'Bilinmeyen hata');
+      console.error('Liste hatası:', error);
+      saveMsg.textContent = 'Hata: ' + (error?.message || error?.code || 'Bilinmeyen hata');
       btn.textContent = 'LİSTEYİ OLUŞTUR →';
       btn.disabled = false;
       return;
@@ -270,12 +283,14 @@ const gameIndex = (gamesData as any[])
     const items = selectedItems.map((item, i) => ({
       list_id: list.id,
       game_slug: item.slug,
-      note: item.note,
+      note: item.note || '',
       position: i,
+      added_at: now,
     }));
 
     const { error: itemsErr } = await sb.from('list_items').insert(items);
     if (itemsErr) {
+      console.error('Oyun hatası:', itemsErr);
       saveMsg.textContent = 'Oyunlar kaydedilemedi: ' + itemsErr.message;
       btn.textContent = 'LİSTEYİ OLUŞTUR →';
       btn.disabled = false;
