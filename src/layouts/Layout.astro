@@ -92,7 +92,7 @@ const apps = [
                 👤 GİRİŞ
               </a>
               <div id="sysProfile" style="display:none;align-items:center;gap:7px;">
-                <div id="sysAvatar" style="width:22px;height:22px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:11px;color:#e5c46b;flex-shrink:0;"></div>
+                <div id="sysAvatar" style="width:22px;height:22px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:11px;color:#e5c46b;flex-shrink:0;"></div>
                 <span id="sysUser" style="font-family:'VT323',monospace;font-size:15px;color:#aaaacc;"></span>
               </div>
             </div>
@@ -313,7 +313,7 @@ const apps = [
         sysAvatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
       }
     }
-    if (sysUserEl) sysUserEl.textContent = (profile.username || '').toUpperCase();
+    if (sysUserEl) sysUserEl.textContent = (profile.display_name || profile.username || '').toUpperCase();
   }
   initAuth();
 
@@ -417,7 +417,10 @@ const apps = [
     tbBtn?.addEventListener('click', () => playBtn.click());
   }
 
-  // astro:page-load fires on initial load AND after each View Transitions navigation
+  // Call directly for initial load + via event for View Transitions navigations
+  startClock();
+  initAuth();
+  bindRadio();
   document.addEventListener('astro:page-load', () => {
     startClock();
     initAuth();

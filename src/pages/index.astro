@@ -128,7 +128,7 @@ const smallNews = latestNews.slice(3);
     <a id="quizPanel" href="/quiz" class="bento-quiz px-window" style="text-decoration:none;display:flex;flex-direction:column;border-color:#22c55e44;transition:border-color 0.15s;"
       onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
       <div class="px-titlebar" style="border-left-color:#22c55e;">
-        <a class="px-title" href="/quiz" style="color:#22c55e;text-decoration:none;transition:opacity 0.1s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">🎮 QUİZ.EXE</a>
+        <span class="px-title" style="color:#22c55e;">🎮 QUİZ.EXE</span>
         <div class="px-btns"><span class="px-btn" style="color:#22c55e;">▶</span></div>
       </div>
       <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
@@ -153,7 +153,7 @@ const smallNews = latestNews.slice(3);
     <a id="arcadePanel" href="/arcade" class="bento-arcade px-window" style="text-decoration:none;display:flex;flex-direction:column;border-color:#f9731644;transition:border-color 0.15s;"
       onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#f9731644'">
       <div class="px-titlebar" style="border-left-color:#f97316;">
-        <a class="px-title" href="/arcade" style="color:#f97316;text-decoration:none;transition:opacity 0.1s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">🕹 ARCADE.EXE</a>
+        <span class="px-title" style="color:#f97316;">🕹 ARCADE.EXE</span>
         <div class="px-btns"><span class="px-btn" style="color:#f97316;">▶</span></div>
       </div>
       <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
@@ -256,7 +256,32 @@ const smallNews = latestNews.slice(3);
     }).format(new Date());
   }
 
+  function cityDay(tz: string) {
+    return new Intl.DateTimeFormat('tr-TR', {
+      weekday: 'short', timeZone: tz
+    }).format(new Date()).toUpperCase();
+  }
+
   const widget = document.getElementById('worldWidget');
+
+  function cityCard(name: string, flag: string, tz: string, wx: any, tempStr: string) {
+    return `
+      <div class="city-row" data-tz="${tz}"
+        style="display:flex;flex-direction:column;justify-content:space-between;gap:3px;padding:8px 12px;border-right:1px solid #1e1e2e;border-bottom:1px solid #1e1e2e;flex:1;min-width:90px;">
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span style="font-size:13px;line-height:1;">${flag}</span>
+          <span style="font-family:'VT323',monospace;font-size:13px;color:#888899;letter-spacing:0.04em;">${name}</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:5px;">
+          <span style="font-family:'VT323',monospace;font-size:11px;color:#444455;" data-city-day="${tz}">${cityDay(tz)}</span>
+          <span style="font-family:'VT323',monospace;font-size:18px;color:#c8c8e0;white-space:nowrap;" data-city-time="${tz}">${cityTime(tz)}</span>
+        </div>
+        <div>
+          <span style="font-family:'VT323',monospace;font-size:15px;color:${wx ? wx.color : '#666677'};">${wx ? wx.icon + ' ' + tempStr : '---'}</span>
+        </div>
+      </div>
+    `;
+  }
 
   function renderCities(weatherData: Record<string, {temp: number, code: number}>) {
     if (!widget) return;
@@ -264,20 +289,7 @@ const smallNews = latestNews.slice(3);
       const w = weatherData[city.name];
       const wx = w ? getWeather(w.code) : null;
       const tempStr = w ? `${Math.round(w.temp)}°` : '---';
-      const timeStr = cityTime(city.tz);
-      return `
-        <div class="city-row" data-tz="${city.tz}"
-          style="display:flex;flex-direction:column;justify-content:space-between;gap:4px;padding:8px 12px;border-right:1px solid #1e1e2e;border-bottom:1px solid #1e1e2e;flex:1;min-width:100px;">
-          <div style="display:flex;align-items:center;gap:5px;">
-            <span style="font-size:14px;line-height:1;">${city.flag}</span>
-            <span style="font-family:'VT323',monospace;font-size:14px;color:#888899;letter-spacing:0.04em;">${city.name}</span>
-          </div>
-          <div style="font-family:'VT323',monospace;font-size:18px;color:#c8c8e0;white-space:nowrap;" data-city-time="${city.tz}">${timeStr}</div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-family:'VT323',monospace;font-size:16px;color:${wx ? wx.color : '#666677'};">${wx ? wx.icon + ' ' + tempStr : '---'}</span>
-          </div>
-        </div>
-      `;
+      return cityCard(city.name, city.flag, city.tz, wx, tempStr);
     }).join('');
   }
 
@@ -301,7 +313,11 @@ const smallNews = latestNews.slice(3);
       const tz = (el as HTMLElement).dataset.cityTime!;
       el.textContent = cityTime(tz);
     });
-  }, 1000);
+    document.querySelectorAll('[data-city-day]').forEach(el => {
+      const tz = (el as HTMLElement).dataset.cityDay!;
+      el.textContent = cityDay(tz);
+    });
+  }, 30000);
 
   async function fetchWeather() {
     const weatherData: Record<string, {temp: number, code: number}> = {};
@@ -319,4 +335,32 @@ const smallNews = latestNews.slice(3);
   }
 
   fetchWeather();
+
+  // Geolocation: add user's local weather as first card
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      try {
+        // Reverse geocode for city name
+        const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=tr`);
+        const geoData = await geoRes.json();
+        const cityName = (geoData.address?.city || geoData.address?.town || geoData.address?.village || 'KONUM').toUpperCase().slice(0, 10);
+
+        // Fetch weather for location
+        const wxRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto&forecast_days=1`);
+        const wxData = await wxRes.json();
+        const temp = Math.round(wxData.current.temperature_2m);
+        const code = wxData.current.weathercode;
+        const wx = getWeather(code);
+
+        // Determine local timezone
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Prepend local card to widget
+        const localCard = cityCard(cityName, '📍', tz, wx, `${temp}°`);
+        if (widget) widget.insertAdjacentHTML('afterbegin', localCard);
+        requestAnimationFrame(syncPanelHeights);
+      } catch {}
+    }, () => {}, { timeout: 5000 });
+  }
 </script>
