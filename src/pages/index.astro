@@ -33,19 +33,21 @@ const smallNews = latestNews.slice(3);
           const slugs = list.games.map((i: any) => i.slug);
           return (
             <a href={`/lists/${list.slug}`}
-              style="display: block; padding: 14px 16px; border-bottom: 1px solid #1e1e2e; transition: background 0.15s;"
+              style="display: block; padding: 8px 12px; border-bottom: 1px solid #1e1e2e; transition: background 0.15s;"
               onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
-              <p style="font-family:'VT323',monospace;font-size:20px;color:#ffffff;margin:0 0 3px;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
-              <p style="font-size:12px;color:#666677;margin:0 0 10px;line-height:1.4;font-family:'VT323',monospace;">{list.author} · {list.games.length} oyun</p>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px;">
+                <p style="font-family:'VT323',monospace;font-size:18px;color:#ffffff;margin:0;letter-spacing:0.02em;line-height:1.2;">{list.title}</p>
+                <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;flex-shrink:0;">{list.games.length} oyun</span>
+              </div>
               <div style="display: flex; gap: 2px; flex-wrap: wrap;">
                 {slugs.slice(0, 18).map((slug: string) => {
                   const g = gmap[slug];
                   const cover = g?.coverUrl;
                   return cover ? (
-                    <div style="width: 64px; height: 64px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
+                    <div style="width: 40px; height: 40px; overflow: hidden; border: 1px solid #2a2a3a; flex-shrink: 0;">
                       <img src={cover} alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>
                     </div>
-                  ) : <div style="width:64px;height:64px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
+                  ) : <div style="width:40px;height:40px;background:#0d0d12;border:1px solid #1e1e2e;flex-shrink:0;"></div>;
                 })}
               </div>
             </a>
