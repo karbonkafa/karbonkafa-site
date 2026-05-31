@@ -10,9 +10,9 @@ const gmap: Record<string, any> = {};
 for (const g of games) gmap[g.slug] = g;
 
 const allNews = await getCollection('news');
-const latestNews = allNews
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 6);
+const sorted = allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const newsWithImage    = sorted.filter(a => a.data.image).slice(0, 6);
+const newsWithoutImage = sorted.filter(a => !a.data.image).slice(0, 8);
 
 const categoryColors: Record<string, string> = {
   'Duyuru':   '#4a9eed',
@@ -77,29 +77,43 @@ const categoryColors: Record<string, string> = {
       onmouseover="this.style.color='#aaaacc'" onmouseout="this.style.color='#555566'">TÜM HABERLER →</a>
   </div>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;margin-bottom:28px;">
-    {latestNews.map(article => {
+  <!-- Görselli haberler -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;margin-bottom:6px;">
+    {newsWithImage.map(article => {
       const color = categoryColors[article.data.category] || '#666677';
       const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
       return (
         <a href={`/news/${article.id}`}
           style={`display:flex;flex-direction:column;background:#0d0d12;border:1px solid ${color}22;text-decoration:none;transition:border-color 0.15s;`}
           onmouseover={`this.style.borderColor='${color}66'`} onmouseout={`this.style.borderColor='${color}22'`}>
-          {article.data.image && (
-            <div style="width:100%;height:120px;overflow:hidden;">
-              <img src={article.data.image} alt="" loading="lazy"
-                style="width:100%;height:100%;object-fit:cover;opacity:0.85;display:block;" />
-            </div>
-          )}
-          <div style="padding:12px 14px;flex:1;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span style={`font-family:'VT323',monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:1px 7px;`}>
-                {article.data.category}
-              </span>
+          <div style="width:100%;height:120px;overflow:hidden;">
+            <img src={article.data.image} alt="" loading="lazy"
+              style="width:100%;height:100%;object-fit:cover;opacity:0.85;display:block;" />
+          </div>
+          <div style="padding:10px 12px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+              <span style={`font-family:'VT323',monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:1px 6px;`}>{article.data.category}</span>
               <span style="font-family:'VT323',monospace;font-size:12px;color:#444455;">{dateStr}</span>
             </div>
-            <p style="font-size:13px;font-weight:500;color:#d0d0e0;margin:0;line-height:1.4;">{article.data.title}</p>
+            <p style="font-size:13px;font-weight:500;color:#ffffff;margin:0;line-height:1.4;">{article.data.title}</p>
           </div>
+        </a>
+      );
+    })}
+  </div>
+
+  <!-- Görselsiz haberler -->
+  <div style="display:flex;flex-direction:column;gap:0;margin-bottom:28px;">
+    {newsWithoutImage.map(article => {
+      const color = categoryColors[article.data.category] || '#666677';
+      const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+      return (
+        <a href={`/news/${article.id}`}
+          style={`display:flex;align-items:baseline;gap:10px;padding:7px 12px;background:#0d0d12;border:1px solid ${color}11;border-top:none;text-decoration:none;transition:background 0.15s;`}
+          onmouseover="this.style.background='#111118'" onmouseout="this.style.background='#0d0d12'">
+          <span style={`font-family:'VT323',monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:0px 5px;flex-shrink:0;`}>{article.data.category}</span>
+          <span style="font-family:'VT323',monospace;font-size:12px;color:#444455;flex-shrink:0;">{dateStr}</span>
+          <p style="font-size:13px;color:#ffffff;margin:0;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title}</p>
         </a>
       );
     })}
