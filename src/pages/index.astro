@@ -143,6 +143,18 @@ const smallNews = latestNews.slice(3);
       </div>
     </div>
 
+    <!-- ARCADE -->
+    <a href="/arcade" class="bento-arcade px-window" style="text-decoration: none; display: block; border-color: #f97316aa; transition: border-color 0.15s;"
+      onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#f97316aa'">
+      <div class="px-titlebar" style="border-left-color: #f97316;">
+        <span class="px-title" style="color: #f97316;">🕹 ARCADE.EXE</span>
+        <div class="px-btns"><span class="px-btn" style="color:#f97316;">▶</span></div>
+      </div>
+      <div style="padding: 20px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 100px;">
+        <p style="font-family: 'VT323', monospace; font-size: 28px; color: #f97316; margin: 0; letter-spacing: 0.06em;">[ OYNA ]</p>
+      </div>
+    </a>
+
   </div>
 
 </Layout>
@@ -150,12 +162,12 @@ const smallNews = latestNews.slice(3);
 <style>
   .bento {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "lists  lists"
-      "news   news"
-      "weather weather"
-      "quiz   gta";
+      "lists   lists   lists"
+      "news    news    news"
+      "weather weather weather"
+      "quiz    gta     arcade";
     gap: 12px;
     align-items: start;
   }
@@ -164,12 +176,24 @@ const smallNews = latestNews.slice(3);
   .bento-right   { grid-area: weather; }
   .bento-quiz    { grid-area: quiz; }
   .bento-gta     { grid-area: gta; }
+  .bento-arcade  { grid-area: arcade; }
 
+  @media (max-width: 600px) {
+    .bento {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "lists   lists"
+        "news    news"
+        "weather weather"
+        "quiz    gta"
+        "arcade  arcade";
+    }
+  }
   @media (max-width: 480px) {
     .bento {
       grid-template-columns: 1fr;
       grid-template-areas:
-        "lists" "news" "weather" "quiz" "gta";
+        "lists" "news" "weather" "quiz" "gta" "arcade";
     }
     .icon-box { width: 44px; height: 44px; font-size: 22px; }
   }
