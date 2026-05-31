@@ -107,62 +107,53 @@ const smallNews = latestNews.slice(3);
       </div>
     </div>
 
-    <!-- BOTTOM ROW: Weather (left) + Quiz/GTA/Arcade (right) -->
-    <div class="bento-bottom" style="display:flex;gap:12px;align-items:stretch;">
-
-      <!-- WEATHER -->
-      <div class="px-window" style="flex:2;display:flex;flex-direction:column;">
-        <div class="px-titlebar" style="border-left-color:#06b6d4;">
-          <span class="px-title" style="color:#06b6d4;">🌍 DÜNYA / HAVA</span>
-          <div class="px-btns"><span class="px-btn">×</span></div>
-        </div>
-        <div id="worldWidget" style="display:flex;flex-wrap:wrap;flex:1;align-content:flex-start;">
-          <div style="padding:8px 12px;font-family:'VT323',monospace;font-size:16px;color:#778899;letter-spacing:0.04em;">YÜKLENİYOR...</div>
-        </div>
+    <!-- WEATHER — full width -->
+    <div id="weatherPanel" class="bento-weather px-window">
+      <div class="px-titlebar" style="border-left-color:#06b6d4;">
+        <span class="px-title" style="color:#06b6d4;">🌍 DÜNYA / HAVA</span>
+        <div class="px-btns"><span class="px-btn">×</span></div>
       </div>
-
-      <!-- RIGHT STACK: Quiz / GTA / Arcade -->
-      <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-width:0;">
-
-        <!-- QUIZ -->
-        <a href="/quiz" class="px-window" style="text-decoration:none;display:flex;flex-direction:column;flex:1;border-color:#22c55e44;transition:border-color 0.15s;"
-          onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
-          <div class="px-titlebar" style="border-left-color:#22c55e;">
-            <span class="px-title" style="color:#22c55e;">🎮 QUİZ.EXE</span>
-            <div class="px-btns"><span class="px-btn" style="color:#22c55e;">▶</span></div>
-          </div>
-          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
-            <p style="font-family:'VT323',monospace;font-size:24px;color:#22c55e;margin:0;letter-spacing:0.06em;">[ BAŞLAT ]</p>
-          </div>
-        </a>
-
-        <!-- GTA COUNTDOWN -->
-        <div class="px-window" style="display:flex;flex-direction:column;flex:1;border-color:#e5c46b44;">
-          <div class="px-titlebar" style="border-left-color:#ef4444;">
-            <span class="px-title" style="color:#ef4444;">📺 GTA VI SAYAÇ</span>
-            <div class="px-btns"><span class="px-btn">×</span></div>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;text-align:center;">
-            <p style="font-family:'VT323',monospace;font-size:13px;color:#666677;margin:0 0 4px;letter-spacing:0.04em;">19 KASIM 2026'YA</p>
-            <div id="gtaPixelCount" style="font-family:'VT323',monospace;font-size:32px;color:#e5c46b;line-height:1;margin-bottom:2px;">-- GÜN</div>
-            <p style="font-family:'VT323',monospace;font-size:11px;color:#444455;margin:0;letter-spacing:0.04em;">GTA TARİHİ SEZONU</p>
-          </div>
-        </div>
-
-        <!-- ARCADE -->
-        <a href="/arcade" class="px-window" style="text-decoration:none;display:flex;flex-direction:column;flex:1;border-color:#f9731644;transition:border-color 0.15s;"
-          onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#f9731644'">
-          <div class="px-titlebar" style="border-left-color:#f97316;">
-            <span class="px-title" style="color:#f97316;">🕹 ARCADE.EXE</span>
-            <div class="px-btns"><span class="px-btn" style="color:#f97316;">▶</span></div>
-          </div>
-          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
-            <p style="font-family:'VT323',monospace;font-size:24px;color:#f97316;margin:0;letter-spacing:0.06em;">[ OYNA ]</p>
-          </div>
-        </a>
-
+      <div id="worldWidget" style="display:flex;flex-wrap:wrap;gap:0;">
+        <div style="padding:8px 12px;font-family:'VT323',monospace;font-size:16px;color:#778899;letter-spacing:0.04em;">YÜKLENİYOR...</div>
       </div>
     </div>
+
+    <!-- QUIZ -->
+    <a id="quizPanel" href="/quiz" class="bento-quiz px-window" style="text-decoration:none;display:flex;flex-direction:column;border-color:#22c55e44;transition:border-color 0.15s;"
+      onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='#22c55e44'">
+      <div class="px-titlebar" style="border-left-color:#22c55e;">
+        <span class="px-title" style="color:#22c55e;">🎮 QUİZ.EXE</span>
+        <div class="px-btns"><span class="px-btn" style="color:#22c55e;">▶</span></div>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
+        <p style="font-family:'VT323',monospace;font-size:26px;color:#22c55e;margin:0;letter-spacing:0.06em;">[ BAŞLAT ]</p>
+      </div>
+    </a>
+
+    <!-- GTA COUNTDOWN -->
+    <div id="gtaPanel" class="bento-gta px-window" style="display:flex;flex-direction:column;border-color:#e5c46b44;">
+      <div class="px-titlebar" style="border-left-color:#ef4444;">
+        <span class="px-title" style="color:#ef4444;">📺 GTA VI SAYAÇ</span>
+        <div class="px-btns"><span class="px-btn">×</span></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;text-align:center;">
+        <p style="font-family:'VT323',monospace;font-size:14px;color:#666677;margin:0 0 4px;letter-spacing:0.04em;">19 KASIM 2026'YA</p>
+        <div id="gtaPixelCount" style="font-family:'VT323',monospace;font-size:34px;color:#e5c46b;line-height:1;margin-bottom:3px;">-- GÜN</div>
+        <p style="font-family:'VT323',monospace;font-size:12px;color:#444455;margin:0;letter-spacing:0.04em;">GTA TARİHİ SEZONU</p>
+      </div>
+    </div>
+
+    <!-- ARCADE -->
+    <a id="arcadePanel" href="/arcade" class="bento-arcade px-window" style="text-decoration:none;display:flex;flex-direction:column;border-color:#f9731644;transition:border-color 0.15s;"
+      onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#f9731644'">
+      <div class="px-titlebar" style="border-left-color:#f97316;">
+        <span class="px-title" style="color:#f97316;">🕹 ARCADE.EXE</span>
+        <div class="px-btns"><span class="px-btn" style="color:#f97316;">▶</span></div>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;">
+        <p style="font-family:'VT323',monospace;font-size:26px;color:#f97316;margin:0;letter-spacing:0.06em;">[ OYNA ]</p>
+      </div>
+    </a>
 
   </div>
 
@@ -171,22 +162,38 @@ const smallNews = latestNews.slice(3);
 <style>
   .bento {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "lists"
-      "news"
-      "bottom";
+      "lists    lists    lists"
+      "news     news     news"
+      "weather  weather  weather"
+      "quiz     gta      arcade";
     gap: 12px;
-    align-items: start;
+    align-items: stretch;
   }
-  .bento-lists  { grid-area: lists; }
-  .bento-news   { grid-area: news; margin-top: 8px; }
-  .bento-bottom { grid-area: bottom; }
+  .bento-lists   { grid-area: lists; }
+  .bento-news    { grid-area: news; margin-top: 8px; }
+  .bento-weather { grid-area: weather; }
+  .bento-quiz    { grid-area: quiz; }
+  .bento-gta     { grid-area: gta; }
+  .bento-arcade  { grid-area: arcade; }
 
   @media (max-width: 600px) {
-    .bento-bottom { flex-direction: column !important; }
+    .bento {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "lists   lists"
+        "news    news"
+        "weather weather"
+        "quiz    gta"
+        "arcade  arcade";
+    }
   }
   @media (max-width: 480px) {
+    .bento {
+      grid-template-columns: 1fr;
+      grid-template-areas: "lists" "news" "weather" "quiz" "gta" "arcade";
+    }
     .icon-box { width: 44px; height: 44px; font-size: 22px; }
   }
 </style>
@@ -250,7 +257,20 @@ const smallNews = latestNews.slice(3);
     }).join('');
   }
 
+  function syncPanelHeights() {
+    const weather = document.getElementById('weatherPanel');
+    const panels = ['quizPanel', 'gtaPanel', 'arcadePanel'];
+    if (!weather) return;
+    const h = weather.offsetHeight;
+    if (h === 0) return;
+    panels.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.height = h + 'px';
+    });
+  }
+
   renderCities({});
+  requestAnimationFrame(syncPanelHeights);
 
   setInterval(() => {
     document.querySelectorAll('[data-city-time]').forEach(el => {
@@ -271,6 +291,7 @@ const smallNews = latestNews.slice(3);
       } catch {}
     }));
     renderCities(weatherData);
+    requestAnimationFrame(syncPanelHeights);
   }
 
   fetchWeather();
