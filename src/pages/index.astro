@@ -12,7 +12,7 @@ for (const g of games) gmap[g.slug] = g;
 const allNews = await getCollection('news');
 const sorted = allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const newsWithImage    = sorted.filter(a => a.data.image).slice(0, 6);
-const newsWithoutImage = sorted.filter(a => !a.data.image).slice(0, 8);
+const newsWithoutImage = sorted.filter(a => !a.data.image).slice(0, 9);
 
 const categoryColors: Record<string, string> = {
   'Duyuru':   '#4a9eed',
@@ -95,7 +95,7 @@ const categoryColors: Record<string, string> = {
               <span style={`font-family:'VT323',monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:1px 6px;`}>{article.data.category}</span>
               <span style="font-family:'VT323',monospace;font-size:12px;color:#444455;">{dateStr}</span>
             </div>
-            <p style="font-size:13px;font-weight:500;color:#ffffff;margin:0;line-height:1.4;">{article.data.title}</p>
+            <p style="font-family:'VT323',monospace;font-size:19px;color:#ffffff;margin:0;line-height:1.2;letter-spacing:0.02em;">{article.data.title}</p>
           </div>
         </a>
       );
@@ -113,7 +113,7 @@ const categoryColors: Record<string, string> = {
           onmouseover="this.style.background='#111118'" onmouseout="this.style.background='#0d0d12'">
           <span style={`font-family:'VT323',monospace;font-size:12px;color:${color};border:1px solid ${color}44;padding:0px 5px;flex-shrink:0;`}>{article.data.category}</span>
           <span style="font-family:'VT323',monospace;font-size:12px;color:#444455;flex-shrink:0;">{dateStr}</span>
-          <p style="font-size:13px;color:#ffffff;margin:0;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title}</p>
+          <p style="font-family:'VT323',monospace;font-size:18px;color:#ffffff;margin:0;line-height:1.2;letter-spacing:0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{article.data.title}</p>
         </a>
       );
     })}
