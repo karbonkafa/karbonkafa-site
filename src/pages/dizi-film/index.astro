@@ -1,0 +1,144 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import watchData from '../../data/watch.json';
+
+const TMDB_KEY = import.meta.env.PUBLIC_TMDB_KEY;
+const IMG = 'https://image.tmdb.org/t/p/w300';
+
+const STATUS_MAP: Record<string, { label: string; color: string }> = {
+  watching:  { label: 'İZLİYORUM',   color: '#3b82f6' },
+  completed: { label: 'TAMAMLANDI',  color: '#22c55e' },
+  watchlist: { label: 'LİSTEDE',     color: '#e5c46b' },
+  dropped:   { label: 'BIRAKTI',     color: '#ef4444' },
+};
+
+type Entry = { tmdbId: number; type: string; status: string; rating: number | null; note: string | null };
+type TmdbItem = any;
+
+async function fetchTmdb(id: number, type: string): Promise<TmdbItem | null> {
+  if (!TMDB_KEY) return null;
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/${type}/${id}?api_key=${TMDB_KEY}&language=tr-TR`
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+const entries = watchData as Entry[];
+const shows  = entries.filter(e => e.type === 'tv');
+const movies = entries.filter(e => e.type === 'movie');
+
+// Fetch TMDB data in parallel
+const [showsData, moviesData] = await Promise.all([
+  Promise.all(shows.map(e => fetchTmdb(e.tmdbId, 'tv'))),
+  Promise.all(movies.map(e => fetchTmdb(e.tmdbId, 'movie'))),
+]);
+
+const combined = [
+  ...shows.map((e, i) => ({ entry: e, tmdb: showsData[i] })),
+  ...movies.map((e, i) => ({ entry: e, tmdb: moviesData[i] })),
+].filter(x => x.tmdb);
+---
+
+<Layout title="Dizi & Film">
+
+  <div class="px-window">
+    <div class="px-titlebar" style="border-left-color:#e879f9;">
+      <span class="px-title" style="color:#e879f9;">🎬 DİZİ & FİLM.EXE — {combined.length} YAPIM</span>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid #1e1e2e;">
+      {(['Tümü', 'Diziler', 'Filmler', 'İzliyorum', 'Tamamlandı', 'Listede'] as const).map((tab, i) => (
+        <button class="watch-tab" data-tab={tab}
+          style={`font-family:'VT323',monospace;font-size:16px;padding:8px 14px;background:none;border:none;cursor:pointer;letter-spacing:0.04em;border-bottom:2px solid ${i===0?'#e879f9':'transparent'};color:${i===0?'#e879f9':'#555566'};transition:all 0.1s;`}>
+          {tab.toUpperCase()}
+        </button>
+      ))}
+    </div>
+
+    <!-- Grid -->
+    <div id="watchGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:#1e1e2e;">
+      {combined.map(({ entry, tmdb }) => {
+        const slug = `${entry.type}-${entry.tmdbId}`;
+        const title = tmdb.name || tmdb.title || '?';
+        const year = (tmdb.first_air_date || tmdb.release_date || '').slice(0, 4);
+        const poster = tmdb.poster_path ? IMG + tmdb.poster_path : null;
+        const status = STATUS_MAP[entry.status] || STATUS_MAP.watchlist;
+        const tmdbScore = tmdb.vote_average ? Math.round(tmdb.vote_average * 10) / 10 : null;
+        return (
+          <a href={`/dizi-film/${slug}`}
+            class="watch-card"
+            data-type={entry.type}
+            data-status={entry.status}
+            style="display:flex;flex-direction:column;background:#0d0d12;text-decoration:none;transition:background 0.15s;"
+            onmouseover="this.style.background='#111118'" onmouseout="this.style.background='#0d0d12'">
+            <!-- Poster -->
+            <div style="width:100%;aspect-ratio:2/3;overflow:hidden;background:#080810;position:relative;">
+              {poster
+                ? <img src={poster} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                : <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;">{entry.type === 'tv' ? '📺' : '🎬'}</div>
+              }
+              <div style={`position:absolute;top:6px;left:6px;font-family:'VT323',monospace;font-size:12px;color:#000;background:${status.color};padding:1px 6px;letter-spacing:0.04em;`}>
+                {status.label}
+              </div>
+            </div>
+            <!-- Info -->
+            <div style="padding:8px 10px;flex:1;">
+              <p style="font-family:'VT323',monospace;font-size:16px;color:#e5e5e5;margin:0 0 3px;line-height:1.2;letter-spacing:0.02em;">{title}</p>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+                <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;">{year}</span>
+                {entry.rating && (
+                  <span style="font-family:'VT323',monospace;font-size:14px;color:#e5c46b;">{entry.rating}/10</span>
+                )}
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    {!TMDB_KEY && (
+      <div style="padding:32px;text-align:center;">
+        <p style="font-family:'VT323',monospace;font-size:16px;color:#ef4444;margin:0 0 8px;letter-spacing:0.04em;">PUBLIC_TMDB_KEY TANIMLI DEĞİL</p>
+        <p style="font-size:12px;color:#555566;margin:0;">themoviedb.org adresinden ücretsiz API key alıp Vercel env'e ekle.</p>
+      </div>
+    )}
+
+    <!-- "Yeni ekle" link -->
+    <a href="/dizi-film/create" style="display:block;padding:10px 14px;font-family:'VT323',monospace;font-size:15px;color:#555566;text-align:center;letter-spacing:0.06em;transition:color 0.1s;border-top:1px solid #1e1e2e;"
+      onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#555566'">
+      [ + YENİ EKLE ]
+    </a>
+  </div>
+
+</Layout>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLElement>('.watch-tab');
+  const cards = document.querySelectorAll<HTMLElement>('.watch-card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.tab!;
+      tabs.forEach(b => { b.style.color='#555566'; b.style.borderBottomColor='transparent'; });
+      tab.style.color='#e879f9'; tab.style.borderBottomColor='#e879f9';
+
+      cards.forEach(card => {
+        const type = card.dataset.type!;
+        const status = card.dataset.status!;
+        let show = true;
+        if (t === 'Diziler')    show = type === 'tv';
+        else if (t === 'Filmler')    show = type === 'movie';
+        else if (t === 'İzliyorum')  show = status === 'watching';
+        else if (t === 'Tamamlandı') show = status === 'completed';
+        else if (t === 'Listede')    show = status === 'watchlist';
+        card.style.display = show ? 'flex' : 'none';
+      });
+    });
+  });
+</script>

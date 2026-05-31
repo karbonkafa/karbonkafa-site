@@ -1,0 +1,16 @@
+[
+  { "tmdbId": 1396,   "type": "tv",    "status": "completed", "rating": 10, "note": "Tüm zamanların en iyi dizisi. Her bölüm bir şaheser." },
+  { "tmdbId": 100088, "type": "tv",    "status": "watching",  "rating": 9,  "note": "Oyundan bile iyi olması nasıl mümkün." },
+  { "tmdbId": 1399,   "type": "tv",    "status": "completed", "rating": 8,  "note": "İlk 4 sezon efsane, devamı tartışmalı ama izlenmeli." },
+  { "tmdbId": 95396,  "type": "tv",    "status": "watching",  "rating": 9,  "note": "Apple TV+'ın en iyi yapımı." },
+  { "tmdbId": 70523,  "type": "tv",    "status": "completed", "rating": 9,  "note": "Alman yapımı Netflix'in en iyisi. Zaman paradoksu ustaca." },
+  { "tmdbId": 42009,  "type": "tv",    "status": "completed", "rating": 8,  "note": "Her sezon ayrı bir film gibi." },
+  { "tmdbId": 136315, "type": "tv",    "status": "watchlist", "rating": null, "note": null },
+  { "tmdbId": 157336, "type": "movie", "status": "completed", "rating": 10, "note": "Nolan'ın başyapıtı. Birden fazla izlendi." },
+  { "tmdbId": 27205,  "type": "movie", "status": "completed", "rating": 9,  "note": "Rüya katmanları mükemmel kurgulanmış." },
+  { "tmdbId": 872585, "type": "movie", "status": "completed", "rating": 9,  "note": "3 saati solukla izlettiriyor." },
+  { "tmdbId": 496243, "type": "movie", "status": "completed", "rating": 10, "note": "Oscar'a layık bir başyapıt." },
+  { "tmdbId": 155,    "type": "movie", "status": "completed", "rating": 10, "note": "Süper kahraman filmlerinin zirvesi." },
+  { "tmdbId": 329865, "type": "movie", "status": "completed", "rating": 9,  "note": "Denis Villeneuve'ün en iyi filmi." },
+  { "tmdbId": 438631, "type": "movie", "status": "completed", "rating": 8,  "note": null }
+]

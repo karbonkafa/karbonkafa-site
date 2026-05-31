@@ -1,0 +1,191 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import watchData from '../../data/watch.json';
+
+const { slug } = Astro.params;
+const [type, idStr] = (slug || '').split('-');
+const tmdbId = parseInt(idStr);
+
+if (!type || !tmdbId) return Astro.redirect('/dizi-film');
+
+const TMDB_KEY = import.meta.env.PUBLIC_TMDB_KEY;
+const IMG_W = 'https://image.tmdb.org/t/p/w500';
+const IMG_BIG = 'https://image.tmdb.org/t/p/original';
+
+type Entry = { tmdbId: number; type: string; status: string; rating: number | null; note: string | null };
+const entry = (watchData as Entry[]).find(e => e.tmdbId === tmdbId && e.type === type);
+
+const STATUS_MAP: Record<string, { label: string; color: string }> = {
+  watching:  { label: '▶ İZLİYORUM',   color: '#3b82f6' },
+  completed: { label: '✓ TAMAMLANDI',  color: '#22c55e' },
+  watchlist: { label: '+ LİSTEDE',     color: '#e5c46b' },
+  dropped:   { label: '✕ BIRAKTI',     color: '#ef4444' },
+};
+
+let tmdb: any = null;
+let credits: any = null;
+
+if (TMDB_KEY) {
+  try {
+    const [tmdbRes, creditsRes] = await Promise.all([
+      fetch(`https://api.themoviedb.org/3/${type}/${tmdbId}?api_key=${TMDB_KEY}&language=tr-TR`),
+      fetch(`https://api.themoviedb.org/3/${type}/${tmdbId}/credits?api_key=${TMDB_KEY}&language=tr-TR`),
+    ]);
+    if (tmdbRes.ok) tmdb = await tmdbRes.json();
+    if (creditsRes.ok) credits = await creditsRes.json();
+  } catch {}
+}
+
+if (!tmdb) return Astro.redirect('/dizi-film');
+
+const title = tmdb.name || tmdb.title;
+const year = (tmdb.first_air_date || tmdb.release_date || '').slice(0, 4);
+const genres = (tmdb.genres || []).map((g: any) => g.name).join(' · ');
+const poster = tmdb.poster_path ? IMG_W + tmdb.poster_path : null;
+const backdrop = tmdb.backdrop_path ? IMG_BIG + tmdb.backdrop_path : null;
+const overview = tmdb.overview || '';
+const tmdbScore = tmdb.vote_average ? Math.round(tmdb.vote_average * 10) / 10 : null;
+const status = entry ? (STATUS_MAP[entry.status] || STATUS_MAP.watchlist) : null;
+const cast = (credits?.cast || []).slice(0, 10);
+const accentColor = '#e879f9';
+---
+
+<Layout title={title}>
+
+  <!-- Backdrop hero -->
+  {backdrop && (
+    <div style={`width:100%;max-height:280px;overflow:hidden;margin-bottom:12px;position:relative;border:2px solid #1e1e2e;`}>
+      <img src={backdrop} alt={title} style="width:100%;height:280px;object-fit:cover;object-position:top;opacity:0.5;display:block;" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,#050508 0%,transparent 60%);"></div>
+    </div>
+  )}
+
+  <!-- Header window -->
+  <div class="px-window" style="margin-bottom:12px;">
+    <div class="px-titlebar" style={`border-left-color:${accentColor};`}>
+      <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+        <span class="px-title" style={`color:${accentColor};`}>{type === 'tv' ? '📺' : '🎬'} {type === 'tv' ? 'DİZİ' : 'FİLM'}.EXE</span>
+        <span style="font-family:'VT323',monospace;font-size:13px;color:#333344;">›</span>
+        <span style="font-family:'VT323',monospace;font-size:13px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{title.toUpperCase()}</span>
+      </div>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:0;">
+      <!-- Poster -->
+      <div style="border-right:1px solid #1e1e2e;">
+        {poster
+          ? <img src={poster} alt={title} style="width:140px;height:210px;object-fit:cover;object-position:top;display:block;" />
+          : <div style="width:140px;height:210px;background:#080810;display:flex;align-items:center;justify-content:center;font-size:48px;">{type === 'tv' ? '📺' : '🎬'}</div>
+        }
+      </div>
+
+      <!-- Info -->
+      <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <h1 style="font-family:'VT323',monospace;font-size:28px;color:#fff;margin:0;letter-spacing:0.02em;line-height:1.2;">{title}</h1>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+          {year && <span style="font-family:'VT323',monospace;font-size:15px;color:#555566;">{year}</span>}
+          {genres && <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">{genres}</span>}
+          {type === 'tv' && tmdb.number_of_seasons && (
+            <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">{tmdb.number_of_seasons} SEZON · {tmdb.number_of_episodes} BÖLÜM</span>
+          )}
+          {type === 'movie' && tmdb.runtime && (
+            <span style="font-family:'VT323',monospace;font-size:14px;color:#444455;">{tmdb.runtime} DK</span>
+          )}
+        </div>
+
+        <!-- Scores row -->
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+          {status && entry && (
+            <span style={`font-family:'VT323',monospace;font-size:16px;color:${status.color};border:1px solid ${status.color}44;padding:2px 10px;`}>
+              {status.label}
+            </span>
+          )}
+          {entry?.rating && (
+            <div style="text-align:center;">
+              <div style="font-family:'VT323',monospace;font-size:28px;color:#e5c46b;line-height:1;">{entry.rating}<span style="font-size:16px;color:#444455;">/10</span></div>
+              <div style="font-family:'VT323',monospace;font-size:11px;color:#444455;">KİŞİSEL</div>
+            </div>
+          )}
+          {tmdbScore && (
+            <div style="text-align:center;">
+              <div style="font-family:'VT323',monospace;font-size:28px;color:#e5e5e5;line-height:1;">{tmdbScore}<span style="font-size:16px;color:#444455;">/10</span></div>
+              <div style="font-family:'VT323',monospace;font-size:11px;color:#444455;">TMDB</div>
+            </div>
+          )}
+        </div>
+
+        {entry?.note && (
+          <p style="font-size:13px;color:#778899;margin:0;line-height:1.7;border-left:2px solid #e879f933;padding-left:12px;font-style:italic;">
+            "{entry.note}"
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  {overview && (
+    <div class="px-window" style="margin-bottom:12px;">
+      <div class="px-titlebar">
+        <span class="px-title">📄 ÖZET</span>
+        <div class="px-btns"><span class="px-btn">─</span></div>
+      </div>
+      <p style="padding:14px 16px;font-size:14px;color:#aaaacc;line-height:1.75;margin:0;">{overview}</p>
+    </div>
+  )}
+
+  <!-- Seasons (TV only) -->
+  {type === 'tv' && tmdb.seasons && tmdb.seasons.length > 0 && (
+    <div class="px-window" style="margin-bottom:12px;">
+      <div class="px-titlebar">
+        <span class="px-title">📺 SEZONLAR</span>
+        <div class="px-btns"><span class="px-btn">─</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        {tmdb.seasons.filter((s: any) => s.season_number > 0).map((s: any) => (
+          <div style="display:grid;grid-template-columns:40px 80px 1fr auto;gap:10px;align-items:center;padding:8px 14px;border-bottom:1px solid #1e1e2e;">
+            <span style="font-family:'VT323',monospace;font-size:16px;color:#2a2a3a;text-align:right;">S{String(s.season_number).padStart(2,'0')}</span>
+            {s.poster_path
+              ? <img src={`https://image.tmdb.org/t/p/w92${s.poster_path}`} style="width:40px;height:60px;object-fit:cover;display:block;border:1px solid #2a2a3a;" loading="lazy" />
+              : <div style="width:40px;height:60px;background:#0d0d12;border:1px solid #1e1e2e;"></div>
+            }
+            <div>
+              <p style="font-family:'VT323',monospace;font-size:16px;color:#e5e5e5;margin:0 0 2px;">{s.name}</p>
+              <p style="font-family:'VT323',monospace;font-size:13px;color:#555566;margin:0;">{s.episode_count} bölüm{s.air_date ? ' · ' + s.air_date.slice(0,4) : ''}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Cast -->
+  {cast.length > 0 && (
+    <div class="px-window" style="margin-bottom:12px;">
+      <div class="px-titlebar">
+        <span class="px-title">👥 OYUNCULAR</span>
+        <div class="px-btns"><span class="px-btn">─</span></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:1px;background:#1e1e2e;">
+        {cast.map((c: any) => (
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:#0d0d12;min-width:80px;flex:1;text-align:center;">
+            {c.profile_path
+              ? <img src={`https://image.tmdb.org/t/p/w92${c.profile_path}`} style="width:48px;height:48px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #2a2a3a;" loading="lazy" />
+              : <div style="width:48px;height:48px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:16px;color:#e5c46b;">{c.name[0]}</div>
+            }
+            <p style="font-size:11px;color:#aaa;margin:0;line-height:1.3;">{c.name}</p>
+            {c.character && <p style="font-size:10px;color:#555566;margin:0;line-height:1.2;">{c.character}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Back -->
+  <a href="/dizi-film" style="font-family:'VT323',monospace;font-size:15px;color:#444455;transition:color 0.1s;"
+    onmouseover="this.style.color='#e879f9'" onmouseout="this.style.color='#444455'">← DİZİ & FİLM</a>
+
+</Layout>
