@@ -60,55 +60,45 @@ const apps = [
       <div class="layout-sys-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
 
         <!-- Radio -->
-        <div class="px-window" style="border-color: #3b82f644;">
-          <div class="px-titlebar" style="border-left-color: #3b82f6; padding: 3px 8px;">
-            <span class="px-title" style="color: #3b82f6;">🎧 RADYO.EXE</span>
-            <div class="px-btns">
-              <span class="px-btn" id="radio-close" style="cursor:pointer;">×</span>
-            </div>
-          </div>
-          <div id="radio-body" style="padding: 4px 10px; display: flex; align-items: center; gap: 10px;">
+        <div style="background:#0d0d12;border:1px solid #3b82f622;">
+          <div id="radio-body" style="padding:6px 12px;display:flex;align-items:center;gap:10px;">
+            <span style="font-family:'VT323',monospace;font-size:13px;color:#3b82f644;flex-shrink:0;letter-spacing:0.04em;">🎧 RADYO</span>
             <button id="radio-play"
-              style="font-family:'VT323',monospace;font-size:15px;background:#0d0d12;border:1px solid #3b82f6;color:#3b82f6;padding:2px 8px;cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;flex-shrink:0;"
-              onmouseover="this.style.background='#0a1020'" onmouseout="this.style.background='#0d0d12'">
+              style="font-family:'VT323',monospace;font-size:14px;background:none;border:1px solid #3b82f666;color:#3b82f6;padding:1px 8px;cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;flex-shrink:0;"
+              onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#3b82f666'">
               ▶ BAŞLAT
             </button>
-            <div id="radio-status" style="display:flex;align-items:center;gap:6px;flex:1;">
-              <span id="radio-dot" style="width:7px;height:7px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
-              <span id="radio-label" style="font-family:'VT323',monospace;font-size:15px;color:#555566;letter-spacing:0.04em;">HAZIR</span>
+            <div id="radio-status" style="display:flex;align-items:center;gap:5px;flex:1;min-width:0;">
+              <span id="radio-dot" style="width:6px;height:6px;border-radius:50%;background:#333344;display:inline-block;flex-shrink:0;"></span>
+              <span id="radio-label" style="font-family:'VT323',monospace;font-size:14px;color:#555566;letter-spacing:0.04em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">HAZIR</span>
             </div>
             <input id="radio-vol" type="range" min="0" max="100" value="25"
-              style="width:60px;accent-color:#3b82f6;flex-shrink:0;" />
+              style="width:50px;accent-color:#3b82f6;flex-shrink:0;" />
+            <span id="radio-close" style="font-family:'VT323',monospace;font-size:16px;color:#333344;cursor:pointer;flex-shrink:0;padding:0 2px;"
+              onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#333344'">×</span>
           </div>
         </div>
 
         <!-- System Info -->
-        <div class="px-window">
-          <div class="px-titlebar" style="padding: 3px 8px;">
-            <span class="px-title">🖥 SİSTEM</span>
-            <div class="px-btns"><span class="px-btn">─</span></div>
-          </div>
-          <div style="padding: 4px 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-            <!-- Auth first -->
+        <div style="background:#0d0d12;border:1px solid #1e1e2e;">
+          <div style="padding:6px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-              <a id="sysLogin" href="/auth/login" style="display:none;font-family:'VT323',monospace;font-size:15px;color:#888899;border:1px solid #1e1e2e;padding:3px 8px;text-decoration:none;transition:all 0.1s;"
-                onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#888899';this.style.borderColor='#1e1e2e'">
+              <a id="sysLogin" href="/auth/login" style="display:none;font-family:'VT323',monospace;font-size:14px;color:#888899;border:1px solid #2a2a3a;padding:1px 8px;text-decoration:none;transition:all 0.1s;"
+                onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b55'" onmouseout="this.style.color='#888899';this.style.borderColor='#2a2a3a'">
                 👤 GİRİŞ
               </a>
-              <div id="sysProfile" style="display:none;align-items:center;gap:7px;">
-                <div id="sysAvatar" style="width:22px;height:22px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:11px;color:#e5c46b;flex-shrink:0;"></div>
-                <span id="sysUser" style="font-family:'VT323',monospace;font-size:15px;color:#aaaacc;"></span>
+              <div id="sysProfile" style="display:none;align-items:center;gap:6px;">
+                <div id="sysAvatar" style="width:20px;height:20px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:10px;color:#e5c46b;flex-shrink:0;"></div>
+                <span id="sysUser" style="font-family:'VT323',monospace;font-size:14px;color:#aaaacc;"></span>
               </div>
             </div>
-            <!-- Date/time second -->
-            <div style="display:flex;flex-direction:row;align-items:baseline;gap:8px;flex-shrink:0;">
-              <span id="sysDate2" style="font-family:'VT323',monospace;font-size:13px;color:#555566;"></span>
-              <span id="sysClock2" style="font-family:'VT323',monospace;font-size:18px;color:#aaaacc;line-height:1;"></span>
+            <div style="display:flex;align-items:baseline;gap:6px;flex-shrink:0;">
+              <span id="sysDate2" style="font-family:'VT323',monospace;font-size:12px;color:#444455;"></span>
+              <span id="sysClock2" style="font-family:'VT323',monospace;font-size:17px;color:#aaaacc;line-height:1;"></span>
             </div>
-            <!-- Lang toggle -->
             <button id="langToggle2"
-              style="font-family:'VT323',monospace;font-size:15px;background:#0d0d12;border:1px solid #e5c46b44;color:#e5c46b88;padding:3px 8px;cursor:pointer;transition:all 0.1s;flex-shrink:0;"
-              onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b88';this.style.borderColor='#e5c46b44'">
+              style="font-family:'VT323',monospace;font-size:14px;background:none;border:1px solid #e5c46b33;color:#e5c46b66;padding:1px 7px;cursor:pointer;transition:all 0.1s;flex-shrink:0;"
+              onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b66';this.style.borderColor='#e5c46b33'">
               EN
             </button>
           </div>
@@ -116,22 +106,17 @@ const apps = [
       </div>
 
       <!-- Apps bar -->
-      <div class="px-window" style="margin-bottom: 8px;">
-        <div class="px-titlebar">
-          <span class="px-title">💾 UYGULAMALAR</span>
-          <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
-        </div>
-        <div style="padding: 1px 12px; display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto;">
-          <!-- Logo → Ana sayfa -->
-          <a href="/" class="app-icon" style="flex-shrink:0; min-width:60px;">
-            <div class="icon-box" style="width:40px;height:40px;overflow:hidden;padding:0;border-color:#e5c46b44;">
+      <div style="background:#0d0d12;border:1px solid #1e1e2e;margin-bottom:8px;">
+        <div style="padding:1px 8px;display:flex;gap:0;flex-wrap:nowrap;overflow-x:auto;">
+          <a href="/" class="app-icon" style="flex-shrink:0;min-width:56px;">
+            <div style="width:36px;height:36px;overflow:hidden;border:1px solid #e5c46b22;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
               <img src="/logo.png" alt="Ana Sayfa" style="width:100%;height:100%;object-fit:cover;image-rendering:pixelated;" />
             </div>
             <span class="icon-label">ANA SAYFA</span>
           </a>
           {apps.map(app => (
-            <a href={app.href} class="app-icon" style="flex: 1; min-width: 60px;">
-              <div class="icon-box" style="width: 40px; height: 40px; font-size: 20px;">{app.icon}</div>
+            <a href={app.href} class="app-icon" style="flex:1;min-width:56px;">
+              <div style="width:36px;height:36px;border:1px solid #1e1e2e;background:#080810;display:flex;align-items:center;justify-content:center;font-size:18px;">{app.icon}</div>
               <span class="icon-label">{app.label}</span>
             </a>
           ))}
