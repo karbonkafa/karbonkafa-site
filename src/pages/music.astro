@@ -14,7 +14,6 @@ const playlists = [
       { name: "Black Dog — Rat Boy", duration: "3:22" },
       { name: "Belly of the Beast — Grimes", duration: "3:54" },
     ],
-    youtube: "https://www.youtube.com/watch?v=rNDoCDHBqzY"
   },
   {
     title: "The Land of Wine",
@@ -28,7 +27,6 @@ const playlists = [
       { name: "Hunt or Be Hunted", duration: "2:31" },
       { name: "The Wolven Storm", duration: "3:17" },
     ],
-    youtube: "https://www.youtube.com/watch?v=SGQIWkUHjKU"
   },
   {
     title: "Elden Ring — A Grim Ascent",
@@ -42,7 +40,6 @@ const playlists = [
       { name: "Elden Beast", duration: "5:33" },
       { name: "A Vast Golden Sky", duration: "2:55" },
     ],
-    youtube: "https://www.youtube.com/watch?v=CnkT5iKxDXQ"
   },
   {
     title: "Hollow Knight — Silksong Beklentisi",
@@ -56,7 +53,6 @@ const playlists = [
       { name: "Gods & Glory", duration: "4:08" },
       { name: "Pale Court", duration: "5:22" },
     ],
-    youtube: "https://www.youtube.com/watch?v=Otn_64O1GgM"
   },
   {
     title: "GTA Tarihi Radyo",
@@ -70,7 +66,6 @@ const playlists = [
       { name: "Vice City FM — A Flock of Seagulls", duration: "Sonsuz" },
       { name: "BlueArk Radio — Bob Marley", duration: "Sonsuz" },
     ],
-    youtube: "https://www.youtube.com/watch?v=_EHLjnJMGoE"
   },
   {
     title: "Lo-Fi Gaming Session",
@@ -82,7 +77,6 @@ const playlists = [
       { name: "Study & Relax", duration: "Canlı" },
       { name: "Chilled Cow Beats", duration: "Canlı" },
     ],
-    youtube: "https://www.youtube.com/watch?v=jfKfPfyJRdk"
   },
 ];
 ---
@@ -98,11 +92,7 @@ const playlists = [
         <div style={`padding: 16px 18px; border-bottom: 1px solid ${pl.color}22;`}>
           <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
             <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{pl.title}</h2>
-            <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(pl.game + ' ' + pl.title)}`} target="_blank" rel="noopener"
-              style={`font-size: 14px; background: ${pl.color}22; border: 1px solid ${pl.color}66; color: ${pl.color}; padding: 1px 8px; font-family: 'IBM Plex Mono', monospace; text-decoration: none; flex-shrink: 0; letter-spacing: 0.04em;`}
-              onmouseover={`this.style.background='${pl.color}44'`} onmouseout={`this.style.background='${pl.color}22'`}>
-              ▶ YOUTUBE
-            </a>
+            <span style={`font-size: 12px; color: ${pl.color}; border: 1px solid ${pl.color}44; padding: 1px 8px; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; letter-spacing: 0.04em;`}>♪ {pl.tracks.length}</span>
           </div>
           <p style="font-size: 15px; color: #555566; margin: 0; font-family: 'IBM Plex Mono', monospace;">{pl.game}  ·  {pl.mood}</p>
         </div>
