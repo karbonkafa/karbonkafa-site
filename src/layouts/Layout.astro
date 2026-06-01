@@ -26,6 +26,11 @@ const apps = [
   { href: '/quiz',       icon: '🎮', label: 'QUİZ' },
   { href: '/arcade',     icon: '🕹', label: 'ARCADE' },
 ];
+
+// Active app highlight (normalize trailing slash)
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath === href || currentPath.startsWith(href + '/');
 ---
 
 <!doctype html>
@@ -143,22 +148,17 @@ const apps = [
         </div>
       </div>
 
-      <!-- Apps bar -->
+      <!-- Apps bar — terminal tabs -->
       <div style="background:#0d0d12;border:1px solid #1e1e2e;margin-bottom:8px;">
-        <div style="padding:1px 8px;display:flex;gap:0;flex-wrap:nowrap;overflow-x:auto;">
-          <a href="/" class="app-icon" style="flex-shrink:0;min-width:56px;">
-            <div style="width:36px;height:36px;overflow:hidden;border:1px solid #e5c46b22;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-              <img src="/logo.png" alt="Ana Sayfa" style="width:100%;height:100%;object-fit:cover;image-rendering:pixelated;" />
-            </div>
-            <span class="icon-label">ANA SAYFA</span>
-          </a>
-          {apps.map(app => (
-            <a href={app.href} class="app-icon" style="flex:1;min-width:56px;">
-              <div style="width:36px;height:36px;border:1px solid #1e1e2e;background:#080810;display:flex;align-items:center;justify-content:center;font-size:20px;">{app.icon}</div>
-              <span class="icon-label">{app.label}</span>
-            </a>
-          ))}
+        <div class="px-titlebar" style="border-left-color:#33ff66;">
+          <span class="px-title" style="color:#33ff66;font-size:11px;">▸ KARBON OS — UYGULAMALAR</span>
         </div>
+        <nav class="apps-tabs">
+          <a href="/" class={`app-tab${isActive('/') ? ' is-active' : ''}`}>ANA</a>
+          {apps.map(app => (
+            <a href={app.href} class={`app-tab${isActive(app.href) ? ' is-active' : ''}`}>{app.label}</a>
+          ))}
+        </nav>
       </div>
 
       <slot />

@@ -148,6 +148,36 @@ html.crt .icon-label { text-shadow: 0 0 4px currentColor; }
   letter-spacing: 0.04em;
 }
 
+/* Apps bar — terminal tabs */
+.apps-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 6px 8px;
+}
+.app-tab {
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #777788;
+  text-decoration: none;
+  padding: 5px 11px;
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.app-tab:hover {
+  color: var(--accent);
+  background: rgba(229, 196, 107, 0.06);
+}
+.app-tab.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: rgba(229, 196, 107, 0.08);
+}
+html.crt .app-tab.is-active { text-shadow: 0 0 5px currentColor; }
+
 * {
   box-sizing: border-box;
 }
