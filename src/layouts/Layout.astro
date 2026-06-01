@@ -108,20 +108,28 @@ const apps = [
                 onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b55'" onmouseout="this.style.color='#888899';this.style.borderColor='#2a2a3a'">
                 👤 GİRİŞ
               </a>
-              <div id="sysProfile" style="display:none;align-items:center;gap:6px;">
+              <a id="sysProfile" href="#" style="display:none;align-items:center;gap:6px;text-decoration:none;cursor:pointer;transition:opacity 0.1s;"
+                onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
                 <div id="sysAvatar" style="width:20px;height:20px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:10px;color:#e5c46b;flex-shrink:0;"></div>
                 <span id="sysUser" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#aaaacc;"></span>
-              </div>
+              </a>
             </div>
             <div style="display:flex;align-items:baseline;gap:6px;flex-shrink:0;">
               <span id="sysDate2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#444455;"></span>
               <span id="sysClock2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#aaaacc;line-height:1;"></span>
             </div>
-            <button id="langToggle2"
-              style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #e5c46b33;color:#e5c46b66;padding:1px 7px;cursor:pointer;transition:all 0.1s;flex-shrink:0;"
-              onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b66';this.style.borderColor='#e5c46b33'">
-              EN
-            </button>
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <a id="sysLogout" href="/auth/logout" title="Çıkış Yap"
+                style="display:none;align-items:center;justify-content:center;font-size:13px;line-height:1;background:none;border:1px solid #ef444433;color:#ef444477;padding:1px 7px;cursor:pointer;text-decoration:none;transition:all 0.1s;"
+                onmouseover="this.style.color='#ef4444';this.style.borderColor='#ef4444'" onmouseout="this.style.color='#ef444477';this.style.borderColor='#ef444433'">
+                ⏻
+              </a>
+              <button id="langToggle2"
+                style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #e5c46b33;color:#e5c46b66;padding:1px 7px;cursor:pointer;transition:all 0.1s;flex-shrink:0;"
+                onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b66';this.style.borderColor='#e5c46b33'">
+                EN
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -292,9 +300,10 @@ const apps = [
     const taskbarProfileEl = document.getElementById('taskbarProfile') as HTMLAnchorElement;
     const taskbarAvatarEl = document.getElementById('taskbarAvatar');
     const sysLoginEl = document.getElementById('sysLogin');
-    const sysProfileEl = document.getElementById('sysProfile') as HTMLElement;
+    const sysProfileEl = document.getElementById('sysProfile') as HTMLAnchorElement;
     const sysAvatarEl = document.getElementById('sysAvatar');
     const sysUserEl = document.getElementById('sysUser');
+    const sysLogoutEl = document.getElementById('sysLogout');
 
     if (!user) {
       if (taskbarLoginEl) taskbarLoginEl.style.display = 'flex';
@@ -322,7 +331,8 @@ const apps = [
     }
 
     // System panel
-    if (sysProfileEl) sysProfileEl.style.display = 'flex';
+    if (sysProfileEl) { sysProfileEl.href = `/u/${profile.username}`; sysProfileEl.style.display = 'flex'; }
+    if (sysLogoutEl) sysLogoutEl.style.display = 'flex';
     if (sysAvatarEl) {
       sysAvatarEl.innerHTML = '';
       if (profile.avatar_url) {
