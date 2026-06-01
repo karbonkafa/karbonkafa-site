@@ -24,7 +24,10 @@ html {
 }
 
 /* CRT scanlines overlay */
-body::after {
+/* ── CRT shell — toggleable via .crt on <html>, persisted in localStorage ──
+   CSS-only: scanlines + vignette + subtle phosphor glow on terminal titles.
+   No flicker / chroma / warp (readability + WCAG 2.3.1). Body text never glows. */
+html.crt body::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -37,6 +40,23 @@ body::after {
   );
   pointer-events: none;
   z-index: 9999;
+}
+html.crt body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.45) 100%);
+  pointer-events: none;
+  z-index: 9998;
+}
+/* Subtle phosphor glow — terminal titles only, blur ≤4px so text stays crisp */
+html.crt .os-title,
+html.crt .px-title,
+html.crt .icon-label { text-shadow: 0 0 4px currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.crt body::after,
+  html.crt body::before { animation: none !important; }
 }
 
 /* Pixel window chrome */
