@@ -3,6 +3,14 @@ export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
 import gamesData from '../../data/games.json';
+import { entityHref, entitySubtitle, typeInfo } from '../../lib/entities';
+
+const STATUS_BADGE: Record<string, { label: string; color: string }> = {
+  want:    { label: 'İSTİYOR',  color: '#e5c46b' },
+  active:  { label: 'AKTİF',    color: '#3b82f6' },
+  done:    { label: 'BİTTİ',    color: '#22c55e' },
+  dropped: { label: 'BIRAKTI',  color: '#ef4444' },
+};
 
 const { username } = Astro.params;
 
@@ -21,28 +29,43 @@ const { data: lists } = await supabase
   .eq('is_public', true)
   .order('updated_at', { ascending: false });
 
-const listIds = (lists || []).map(l => l.id);
-const { data: allItems } = listIds.length > 0
-  ? await supabase.from('list_items').select('list_id, game_slug, position').in('list_id', listIds).order('position')
-  : { data: [] };
-
-const itemsByList: Record<string, string[]> = {};
-for (const item of (allItems || [])) {
-  if (!itemsByList[item.list_id]) itemsByList[item.list_id] = [];
-  itemsByList[item.list_id].push(item.game_slug);
-}
-
 const gmap: Record<string, any> = {};
 for (const g of gamesData as any[]) gmap[g.slug] = g;
 
-const totalGames = new Set(Object.values(itemsByList).flat()).size;
+const listIds = (lists || []).map(l => l.id);
+const { data: allItems } = listIds.length > 0
+  ? await supabase.from('list_items')
+      .select('list_id, game_slug, position, entity:entities(id, image_url)')
+      .in('list_id', listIds).order('position')
+  : { data: [] };
+
+// Cover mosaic + count per list (entity image wins, legacy game_slug falls back)
+const coversByList: Record<string, string[]> = {};
+const countByList: Record<string, number> = {};
+for (const item of (allItems || []) as any[]) {
+  countByList[item.list_id] = (countByList[item.list_id] || 0) + 1;
+  const cover = item.entity?.image_url ?? gmap[item.game_slug]?.coverUrl ?? null;
+  if (cover) (coversByList[item.list_id] ||= []).push(cover);
+}
+
+const totalItems = new Set(
+  (allItems || []).map((i: any) => i.entity?.id ? `e:${i.entity.id}` : `g:${i.game_slug}`)
+).size;
+
+// Library: everything this user has logged
+const { data: entries } = await supabase
+  .from('entries')
+  .select('status, rating, logged_at, entity:entities(id, type, source_id, slug, title, image_url, year, meta)')
+  .eq('user_id', profile.id)
+  .order('logged_at', { ascending: false });
+const library = (entries || []).filter((e: any) => e.entity);
+
 const joinDate = new Date(profile.created_at).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
 const displayName = profile.display_name || profile.username;
 const initials = displayName[0].toUpperCase();
 
-// Hero background: first cover from first list
-const heroCoverSlug = Object.values(itemsByList)[0]?.[0];
-const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
+// Hero background: first cover available
+const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.image_url ?? null;
 ---
 
 <Layout title={`${displayName} — Profil`}>
@@ -76,9 +99,14 @@ const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
           <span style="font-size: 13px; color: #aaa;">
             <strong style="color: #e5e5e5;">{(lists || []).length}</strong> liste
           </span>
-          {totalGames > 0 && (
+          {totalItems > 0 && (
             <span style="font-size: 13px; color: #aaa;">
-              <strong style="color: #e5e5e5;">{totalGames}</strong> oyun
+              <strong style="color: #e5e5e5;">{totalItems}</strong> öğe
+            </span>
+          )}
+          {library.length > 0 && (
+            <span style="font-size: 13px; color: #aaa;">
+              <strong style="color: #e5e5e5;">{library.length}</strong> loglandı
             </span>
           )}
           <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">{joinDate}'dan beri</span>
@@ -113,8 +141,8 @@ const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
     ) : (
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
         {lists.map(list => {
-          const slugs = itemsByList[list.id] || [];
-          const covers = slugs.slice(0, 4).map(s => gmap[s]?.coverUrl).filter(Boolean);
+          const covers = (coversByList[list.id] || []).slice(0, 4);
+          const itemTotal = countByList[list.id] || 0;
           const updatedStr = new Date(list.updated_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
           return (
             <a href={`/lists/u/${list.id}`}
@@ -147,7 +175,7 @@ const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
               <!-- Info -->
               <div style="padding: 12px 14px 14px;">
                 <h3 style="font-size: 13px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; line-height: 1.3; color: #e5e5e5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{list.title}</h3>
-                <p style="font-size: 11px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;">{slugs.length} oyun · {updatedStr}</p>
+                <p style="font-size: 11px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;">{itemTotal} öğe · {updatedStr}</p>
               </div>
             </a>
           );
@@ -155,6 +183,56 @@ const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
       </div>
     )}
   </div>
+
+  <!-- Library section -->
+  {library.length > 0 && (
+    <div style="margin-top: 48px;">
+      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">
+        Kütüphane
+      </p>
+
+      <!-- Type filter tabs -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;">
+        <button class="lib-tab" data-type="all"
+          style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #3b82f6;color:#3b82f6;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;">TÜMÜ</button>
+        {[...new Set(library.map((e: any) => e.entity.type))].map((t: any) => (
+          <button class="lib-tab" data-type={t}
+            style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;">
+            {typeInfo(t).icon} {typeInfo(t).label.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;">
+        {library.map((e: any) => {
+          const ent = e.entity;
+          const href = entityHref(ent);
+          const badge = STATUS_BADGE[e.status] || null;
+          const inner = (
+            <>
+              <div style="aspect-ratio:2/3;overflow:hidden;background:#0d0d12;position:relative;">
+                {ent.image_url
+                  ? <img src={ent.image_url} alt={ent.title} loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                  : <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;">{typeInfo(ent.type).icon}</div>}
+                {badge && (
+                  <div style={`position:absolute;top:5px;left:5px;font-family:'IBM Plex Mono', monospace;font-size:10px;color:#000;background:${badge.color};padding:1px 5px;letter-spacing:0.04em;`}>{badge.label}</div>
+                )}
+                {e.rating && (
+                  <div style="position:absolute;bottom:5px;right:5px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;background:rgba(5,5,8,0.85);padding:1px 5px;">{e.rating}/10</div>
+                )}
+              </div>
+              <div style="padding:7px 4px 0;">
+                <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5e5e5;margin:0;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{typeInfo(ent.type).icon} {ent.title}</p>
+              </div>
+            </>
+          );
+          return href
+            ? <a class="lib-card" data-type={ent.type} href={href} style="text-decoration:none;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.82'" onmouseout="this.style.opacity='1'">{inner}</a>
+            : <div class="lib-card" data-type={ent.type}>{inner}</div>;
+        })}
+      </div>
+    </div>
+  )}
 
 </Layout>
 
@@ -176,5 +254,19 @@ const heroCover = heroCoverSlug ? gmap[heroCoverSlug]?.coverUrl : null;
       const el = document.getElementById('ownActions');
       if (el) el.style.display = 'flex';
     }
+  });
+
+  // Library type filter
+  const libTabs = document.querySelectorAll<HTMLElement>('.lib-tab');
+  const libCards = document.querySelectorAll<HTMLElement>('.lib-card');
+  libTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.type!;
+      libTabs.forEach(b => { b.style.color = '#555566'; b.style.borderColor = '#1e1e2e'; });
+      tab.style.color = '#3b82f6'; tab.style.borderColor = '#3b82f6';
+      libCards.forEach(card => {
+        card.style.display = (t === 'all' || card.dataset.type === t) ? '' : 'none';
+      });
+    });
   });
 </script>

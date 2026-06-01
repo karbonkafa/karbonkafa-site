@@ -10,6 +10,10 @@ interface Props {
 
 const { title, description = 'KarbonGameStudios — game guides, news and content archive' } = Astro.props;
 
+const fullTitle = `${title} — karbonkafa`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://www.karbonkafa.com');
+const ogImage = new URL('/logo.png', Astro.site ?? 'https://www.karbonkafa.com');
+
 const apps = [
   { href: '/lists',      icon: '📋', label: 'LİSTELER' },
   { href: '/guides',     icon: '🏆', label: 'REHBERLER' },
@@ -30,7 +34,24 @@ const apps = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <title>{title} — karbonkafa</title>
+    <title>{fullTitle}</title>
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="karbonkafa" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="tr_TR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet" />

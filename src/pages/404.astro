@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 — Sayfa Bulunamadı" description="Aradığın sayfa bulunamadı.">
+
+  <p class="os-path">C:\KARBON\HATA</p>
+
+  <div class="px-window" style="max-width:520px;margin:40px auto;">
+    <div class="px-titlebar" style="border-left-color:#ef4444;">
+      <span class="px-title" style="color:#ef4444;">⚠ SYSTEM.ERR</span>
+      <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+    </div>
+
+    <div style="padding:32px 24px;text-align:center;">
+      <div style="font-family:'IBM Plex Mono', monospace;font-size:64px;color:#ef4444;line-height:1;margin-bottom:8px;font-weight:300;">404</div>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#e5e5e5;margin:0 0 6px;letter-spacing:0.04em;">SAYFA BULUNAMADI</p>
+      <p style="font-size:12px;color:#666677;margin:0 0 24px;line-height:1.6;">
+        Aradığın dosya taşınmış, silinmiş ya da hiç var olmamış olabilir.
+      </p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+        <a href="/"
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;color:#0a0a0a;padding:8px 18px;text-decoration:none;letter-spacing:0.06em;">
+          ANA EKRAN →
+        </a>
+        <a href="/lists"
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#0d0d12;border:1px solid #1e1e2e;color:#888899;padding:8px 18px;text-decoration:none;letter-spacing:0.06em;transition:border-color 0.15s;"
+          onmouseover="this.style.borderColor='#444455'" onmouseout="this.style.borderColor='#1e1e2e'">
+          LİSTELER
+        </a>
+        <a href="/news"
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#0d0d12;border:1px solid #1e1e2e;color:#888899;padding:8px 18px;text-decoration:none;letter-spacing:0.06em;transition:border-color 0.15s;"
+          onmouseover="this.style.borderColor='#444455'" onmouseout="this.style.borderColor='#1e1e2e'">
+          HABERLER
+        </a>
+      </div>
+    </div>
+  </div>
+
+</Layout>

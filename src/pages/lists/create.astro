@@ -1,24 +1,10 @@
 ---
 export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
-import gamesData from '../../data/games.json';
-
-const gameIndex = (gamesData as any[])
-  .filter((g: any) => g.coverUrl && g.title)
-  .map((g: any) => ({
-    slug: g.slug,
-    title: g.title,
-    cover: g.coverUrl,
-    mc: g.metacriticScore || null,
-    year: g.releaseYear || null,
-    dev: Array.isArray(g.developer) ? g.developer[0] : (typeof g.developer === 'string' ? g.developer : null),
-  }));
+import { ENTITY_TYPES } from '../../lib/entities';
 ---
 
 <Layout title="Liste Oluştur">
-
-  <!-- Game index for client-side search -->
-  <script type="application/json" id="__gi" set:text={JSON.stringify(gameIndex)}></script>
 
   <!-- Auth wall -->
   <div id="authWall" style="display:none;">
@@ -54,29 +40,37 @@ const gameIndex = (gamesData as any[])
       </div>
     </div>
 
-    <!-- Game search -->
+    <!-- Content search -->
     <div class="px-window" style="margin-bottom:12px;">
       <div class="px-titlebar">
-        <span class="px-title">🎮 OYUN EKLE</span>
-        <span id="gameCount" class="px-title" style="color:#444455;font-size:11px;">0 OYUN</span>
+        <span class="px-title">➕ İÇERİK EKLE</span>
+        <span id="itemCount" class="px-title" style="color:#444455;font-size:11px;">0 ÖĞE</span>
       </div>
+
+      <!-- Type tabs -->
+      <div style="padding:8px 12px;border-bottom:1px solid #1e1e2e;display:flex;gap:4px;flex-wrap:wrap;">
+        {ENTITY_TYPES.map((t, i) => (
+          <button class="type-tab" data-type={t.type}
+            style={`font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid ${i === 0 ? '#3b82f6' : '#1e1e2e'};color:${i === 0 ? '#3b82f6' : '#555566'};cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;`}>
+            {t.icon} {t.label.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
       <div style="padding:10px 12px;border-bottom:1px solid #1e1e2e;position:relative;">
-        <input id="gameSearch" type="text" placeholder="Oyun adı yaz..."
+        <input id="itemSearch" type="text" placeholder="Ara..."
           autocomplete="off"
           style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:8px 12px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
           onfocus="this.style.borderColor='#3b82f644'" onblur="this.style.borderColor='#1e1e2e'" />
-        <!-- Search results dropdown -->
-        <div id="gameResults"
-          style="display:none;position:absolute;top:calc(100% - 2px);left:12px;right:12px;background:#0d0d12;border:1px solid #1e1e2e;border-top:none;z-index:50;max-height:280px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+        <div id="searchResults"
+          style="display:none;position:absolute;top:calc(100% - 2px);left:12px;right:12px;background:#0d0d12;border:1px solid #1e1e2e;border-top:none;z-index:50;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
         </div>
       </div>
 
-      <!-- Selected games list -->
       <div id="selectedList" style="display:flex;flex-direction:column;"></div>
 
-      <!-- Empty state -->
       <div id="emptyState" style="padding:32px 16px;text-align:center;">
-        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#2a2a3a;letter-spacing:0.06em;margin:0;">HENÜZ OYUN EKLENMEDİ</p>
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#2a2a3a;letter-spacing:0.06em;margin:0;">HENÜZ ÖĞE EKLENMEDİ</p>
       </div>
     </div>
 
@@ -96,20 +90,15 @@ const gameIndex = (gamesData as any[])
 
 <script>
   import { createClient } from '@supabase/supabase-js';
+  import { resolveEntity, typeInfo, type SearchResult } from '../../lib/entities';
 
   const sb = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
 
-  // Read game index injected by server
-  const gameIndex: any[] = JSON.parse(
-    (document.getElementById('__gi') as HTMLScriptElement).textContent || '[]'
-  );
-
   let currentUser: any = null;
 
-  // Auth check
   (async () => {
     const { data: { user } } = await sb.auth.getUser();
     if (!user) {
@@ -121,180 +110,200 @@ const gameIndex = (gamesData as any[])
   })();
 
   // State
-  const selectedSlugs = new Set<string>();
-  const selectedItems: { slug: string; note: string }[] = [];
+  type Picked = { result: SearchResult; note: string };
+  const picked: Picked[] = [];
+  const pickedKeys = new Set<string>();
+  const keyOf = (r: SearchResult) => `${r.source}:${r.source_id}`;
 
-  const searchInput = document.getElementById('gameSearch') as HTMLInputElement;
-  const resultsEl = document.getElementById('gameResults') as HTMLElement;
+  let activeType = 'game';
+  let searchSeq = 0;
+  let debounce: ReturnType<typeof setTimeout> | undefined;
+
+  const tabs = document.querySelectorAll<HTMLElement>('.type-tab');
+  const searchInput = document.getElementById('itemSearch') as HTMLInputElement;
+  const resultsEl = document.getElementById('searchResults') as HTMLElement;
   const selectedListEl = document.getElementById('selectedList') as HTMLElement;
   const emptyEl = document.getElementById('emptyState') as HTMLElement;
-  const countEl = document.getElementById('gameCount') as HTMLElement;
+  const countEl = document.getElementById('itemCount') as HTMLElement;
   const saveMsg = document.getElementById('saveMsg') as HTMLElement;
 
-  function normalize(s: string) {
-    return s.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
-  }
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
-  function mcColor(mc: number | null): string {
-    if (!mc) return '#444455';
-    return mc >= 75 ? '#22c55e' : mc >= 50 ? '#eab308' : '#ef4444';
-  }
+  // ── Type tabs ─────────────────────────────────────────────
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      activeType = tab.dataset.type!;
+      tabs.forEach(b => { b.style.color = '#555566'; b.style.borderColor = '#1e1e2e'; });
+      tab.style.color = '#3b82f6'; tab.style.borderColor = '#3b82f6';
+      resultsEl.style.display = 'none';
+      if (searchInput.value.trim().length >= 2) runSearch(searchInput.value);
+    });
+  });
 
-  // ── Search ────────────────────────────────────────────────
+  // ── Search (debounced, via /api/search) ───────────────────
   searchInput.addEventListener('input', () => {
-    const q = normalize(searchInput.value);
+    clearTimeout(debounce);
+    const q = searchInput.value.trim();
     if (q.length < 2) { resultsEl.style.display = 'none'; return; }
-    const matches = gameIndex
-      .filter(g => normalize(g.title).includes(q) && !selectedSlugs.has(g.slug))
-      .slice(0, 8);
-    if (!matches.length) { resultsEl.style.display = 'none'; return; }
+    debounce = setTimeout(() => runSearch(q), 280);
+  });
 
-    resultsEl.innerHTML = matches.map(g => `
-      <div class="gr" data-slug="${g.slug}"
-        style="display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:8px 12px;cursor:pointer;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
-        onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
-        <div style="width:52px;height:52px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
-          ${g.cover ? `<img src="${g.cover}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>` : '<div style="width:100%;height:100%;background:#0d0d12;"></div>'}
-        </div>
-        <div style="min-width:0;">
-          <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5e5e5;margin:0;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${g.title}</p>
-          <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:2px 0 0;">${g.dev || ''}${g.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-          ${g.mc ? `<span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
-          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3b82f6;padding:0 4px;">+</span>
-        </div>
-      </div>
-    `).join('');
+  async function runSearch(q: string) {
+    const seq = ++searchSeq;
+    resultsEl.innerHTML = `<div style="padding:10px 12px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">ARANIYOR...</div>`;
     resultsEl.style.display = 'block';
-  });
+    let results: SearchResult[] = [];
+    try {
+      const res = await fetch(`/api/search?type=${activeType}&q=${encodeURIComponent(q)}`);
+      results = (await res.json()).results ?? [];
+    } catch {}
+    if (seq !== searchSeq) return; // stale response
 
-  resultsEl.addEventListener('click', e => {
-    const row = (e.target as HTMLElement).closest('.gr') as HTMLElement;
-    if (!row) return;
-    addGame(row.dataset.slug!);
-    searchInput.value = '';
-    resultsEl.style.display = 'none';
-    searchInput.focus();
-  });
+    const fresh = results.filter(r => !pickedKeys.has(keyOf(r))).slice(0, 10);
+    if (!fresh.length) {
+      resultsEl.innerHTML = `<div style="padding:10px 12px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">SONUÇ YOK</div>`;
+      return;
+    }
+    resultsEl.innerHTML = fresh.map((r, i) => {
+      const ti = typeInfo(r.type);
+      const sub = subtitleOf(r);
+      return `
+        <div class="sr" data-i="${i}"
+          style="display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:8px 12px;cursor:pointer;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
+          onmouseover="this.style.background='#111118'" onmouseout="this.style.background='none'">
+          <div style="width:44px;height:60px;overflow:hidden;border:1px solid #2a2a3a;background:#0d0d12;flex-shrink:0;">
+            ${r.image_url ? `<img src="${esc(r.image_url)}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.display='none'"/>` : ''}
+          </div>
+          <div style="min-width:0;">
+            <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5e5e5;margin:0;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(r.title)}</p>
+            <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:2px 0 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ti.icon} ${esc(sub)}</p>
+          </div>
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#3b82f6;padding:0 4px;flex-shrink:0;">+</span>
+        </div>`;
+    }).join('');
+
+    resultsEl.querySelectorAll<HTMLElement>('.sr').forEach((row, i) => {
+      row.addEventListener('click', () => {
+        addItem(fresh[i]);
+        searchInput.value = '';
+        resultsEl.style.display = 'none';
+        searchInput.focus();
+      });
+    });
+  }
 
   document.addEventListener('click', e => {
     if (!resultsEl.contains(e.target as Node) && e.target !== searchInput)
       resultsEl.style.display = 'none';
   });
 
-  // ── Add / Remove game ─────────────────────────────────────
-  function addGame(slug: string) {
-    if (selectedSlugs.has(slug)) return;
-    selectedSlugs.add(slug);
-    selectedItems.push({ slug, note: '' });
-    renderSelected();
+  function subtitleOf(r: SearchResult): string {
+    const m: any = r.meta ?? {};
+    let lead = '';
+    if (r.type === 'game') lead = Array.isArray(m.developer) ? m.developer[0] : (m.developer || '');
+    else if (r.type === 'album') lead = m.artist || '';
+    else if (r.type === 'book') lead = m.author || '';
+    return [lead, r.year ? String(r.year) : ''].filter(Boolean).join(' · ');
   }
 
-  function removeGame(slug: string) {
-    const idx = selectedItems.findIndex(i => i.slug === slug);
-    if (idx !== -1) selectedItems.splice(idx, 1);
-    selectedSlugs.delete(slug);
-    renderSelected();
+  // ── Add / remove / note ───────────────────────────────────
+  function addItem(r: SearchResult) {
+    const k = keyOf(r);
+    if (pickedKeys.has(k)) return;
+    pickedKeys.add(k);
+    picked.push({ result: r, note: '' });
+    render();
   }
+  (window as any).__rm = (idx: number) => {
+    const it = picked[idx];
+    if (!it) return;
+    pickedKeys.delete(keyOf(it.result));
+    picked.splice(idx, 1);
+    render();
+  };
+  (window as any).__note = (idx: number, v: string) => { if (picked[idx]) picked[idx].note = v; };
 
-  function updateNote(idx: number, note: string) {
-    if (selectedItems[idx]) selectedItems[idx].note = note;
-  }
-
-  // Expose to inline onclick handlers
-  (window as any).__rmGame = removeGame;
-  (window as any).__note = updateNote;
-
-  function renderSelected() {
-    countEl.textContent = selectedItems.length + ' OYUN';
-    emptyEl.style.display = selectedItems.length === 0 ? 'block' : 'none';
-
-    selectedListEl.innerHTML = selectedItems.map((item, i) => {
-      const g = gameIndex.find(x => x.slug === item.slug);
+  function render() {
+    countEl.textContent = `${picked.length} ÖĞE`;
+    emptyEl.style.display = picked.length === 0 ? 'block' : 'none';
+    selectedListEl.innerHTML = picked.map((it, i) => {
+      const r = it.result;
+      const ti = typeInfo(r.type);
+      const sub = subtitleOf(r);
       return `
-        <div style="display:grid;grid-template-columns:32px 64px 1fr auto;gap:12px;align-items:start;padding:12px 14px;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
-          onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
+        <div style="display:grid;grid-template-columns:28px 48px 1fr auto;gap:12px;align-items:start;padding:12px 14px;border-bottom:1px solid #1e1e2e;">
           <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#2a2a3a;padding-top:4px;text-align:right;">${String(i + 1).padStart(2, '0')}</span>
-          <a href="/games/${item.slug}" target="_blank" style="display:block;width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
-            ${g?.cover ? `<img src="${g.cover}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" loading="lazy"/>` : '<div style="width:100%;height:100%;background:#0d0d12;"></div>'}
-          </a>
-          <div style="display:flex;flex-direction:column;gap:6px;padding-top:2px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5e5e5;line-height:1.2;">${g?.title || item.slug}</span>
-              ${g?.mc ? `<span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:${mcColor(g.mc)};">${g.mc}</span>` : ''}
-            </div>
-            ${g?.dev || g?.year ? `<p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:0;">${g.dev || ''}${g?.year ? (g.dev ? ' · ' : '') + g.year : ''}</p>` : ''}
-            <input type="text" placeholder="Not ekle..." value="${item.note.replace(/"/g, '&quot;')}"
+          <div style="width:48px;height:64px;overflow:hidden;border:1px solid #2a2a3a;background:#0d0d12;flex-shrink:0;">
+            ${r.image_url ? `<img src="${esc(r.image_url)}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.display='none'"/>` : ''}
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding-top:2px;min-width:0;">
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5e5e5;line-height:1.2;">${esc(r.title)}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;">${ti.icon} ${esc(sub)}</span>
+            <input type="text" placeholder="Not ekle..." value="${esc(it.note)}"
               oninput="window.__note(${i}, this.value)"
               style="background:#080810;border:1px solid #1e1e2e;color:#888899;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;transition:border-color 0.1s;"
               onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
           </div>
-          <button onclick="window.__rmGame('${item.slug}')"
+          <button onclick="window.__rm(${i})"
             style="background:none;border:1px solid #1e1e2e;color:#444455;cursor:pointer;font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 8px;margin-top:2px;transition:all 0.1s;"
             onmouseover="this.style.color='#ef4444';this.style.borderColor='#ef444444'" onmouseout="this.style.color='#444455';this.style.borderColor='#1e1e2e'">×</button>
-        </div>
-      `;
+        </div>`;
     }).join('');
   }
 
-  // ── Save ─────────────────────────────────────────────────
+  // ── Save ──────────────────────────────────────────────────
   document.getElementById('saveBtn')!.addEventListener('click', async () => {
     if (!currentUser) { window.location.href = '/auth/login'; return; }
-
     const title = (document.getElementById('listTitle') as HTMLInputElement).value.trim();
     const desc = (document.getElementById('listDesc') as HTMLTextAreaElement).value.trim();
-
     if (!title) { saveMsg.textContent = 'Liste başlığı gerekli.'; return; }
-    if (selectedItems.length === 0) { saveMsg.textContent = 'En az 1 oyun ekle.'; return; }
+    if (picked.length === 0) { saveMsg.textContent = 'En az 1 öğe ekle.'; return; }
 
     const btn = document.getElementById('saveBtn') as HTMLButtonElement;
     btn.textContent = 'KAYDEDİLİYOR...';
     btn.disabled = true;
     saveMsg.textContent = '';
 
-    // Debug: check session
     const { data: { session } } = await sb.auth.getSession();
     if (!session) {
       saveMsg.textContent = 'Oturum süresi dolmuş, tekrar giriş yap.';
-      btn.textContent = 'LİSTEYİ OLUŞTUR →';
-      btn.disabled = false;
-      return;
+      btn.textContent = 'LİSTEYİ OLUŞTUR →'; btn.disabled = false; return;
+    }
+
+    // Resolve every picked item to an entity id (creates catalog rows as needed)
+    const entityIds: string[] = [];
+    for (let i = 0; i < picked.length; i++) {
+      saveMsg.textContent = `İçerik çözümleniyor ${i + 1}/${picked.length}...`;
+      const id = await resolveEntity(sb, picked[i].result);
+      if (!id) {
+        saveMsg.textContent = `"${picked[i].result.title}" eklenemedi, tekrar dene.`;
+        btn.textContent = 'LİSTEYİ OLUŞTUR →'; btn.disabled = false; return;
+      }
+      entityIds.push(id);
     }
 
     const now = new Date().toISOString();
     const { data: list, error } = await sb.from('lists').insert({
-      user_id: currentUser.id,
-      title,
-      description: desc,
-      is_public: true,
-      created_at: now,
-      updated_at: now,
+      user_id: currentUser.id, title, description: desc,
+      is_public: true, created_at: now, updated_at: now,
     }).select().single();
 
     if (error || !list) {
-      console.error('Liste hatası:', error);
-      saveMsg.textContent = 'Hata: ' + (error?.message || error?.code || 'Bilinmeyen hata');
-      btn.textContent = 'LİSTEYİ OLUŞTUR →';
-      btn.disabled = false;
-      return;
+      saveMsg.textContent = 'Hata: ' + (error?.message || 'liste oluşturulamadı');
+      btn.textContent = 'LİSTEYİ OLUŞTUR →'; btn.disabled = false; return;
     }
 
-    const items = selectedItems.map((item, i) => ({
+    const items = picked.map((it, i) => ({
       list_id: list.id,
-      game_slug: item.slug,
-      note: item.note || '',
+      entity_id: entityIds[i],
+      note: it.note || '',
       position: i,
       added_at: now,
     }));
-
     const { error: itemsErr } = await sb.from('list_items').insert(items);
     if (itemsErr) {
-      console.error('Oyun hatası:', itemsErr);
-      saveMsg.textContent = 'Oyunlar kaydedilemedi: ' + itemsErr.message;
-      btn.textContent = 'LİSTEYİ OLUŞTUR →';
-      btn.disabled = false;
-      return;
+      saveMsg.textContent = 'Öğeler kaydedilemedi: ' + itemsErr.message;
+      btn.textContent = 'LİSTEYİ OLUŞTUR →'; btn.disabled = false; return;
     }
 
     window.location.href = `/lists/u/${list.id}`;

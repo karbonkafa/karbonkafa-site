@@ -1,0 +1,196 @@
+---
+// Logged-in actions for a single entity: quick-log (status + rating) and add-to-list.
+// Resolves/creates the catalog row lazily on first action.
+interface Props {
+  type: string;
+  source: string;
+  sourceId: string;
+  slug: string;
+  title: string;
+  image?: string | null;
+  year?: number | null;
+  meta?: Record<string, unknown>;
+}
+const { type, source, sourceId, slug, title, image = null, year = null, meta = {} } = Astro.props;
+const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, title, image_url: image, year, meta });
+---
+
+<div class="entity-actions px-window" data-entity={descriptor} style="margin-bottom:12px;">
+  <div class="px-titlebar" style="border-left-color:#3b82f6;">
+    <span class="px-title" style="color:#3b82f6;">＋ KİTAPLIĞIM</span>
+    <div class="px-btns"><span class="px-btn">─</span></div>
+  </div>
+
+  <!-- Not logged in -->
+  <div class="ea-guest" style="display:none;padding:14px 16px;">
+    <a href="/auth/login" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3b82f6;text-decoration:none;">
+      → Listene eklemek ve loglamak için giriş yap
+    </a>
+  </div>
+
+  <!-- Logged in -->
+  <div class="ea-body" style="display:none;padding:14px 16px;flex-direction:column;gap:12px;">
+    <!-- Log: status + rating -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <div class="ea-status" style="display:flex;gap:4px;flex-wrap:wrap;">
+        {[
+          { k: 'want',    label: 'İSTİYORUM', c: '#e5c46b' },
+          { k: 'active',  label: 'AKTİF',     c: '#3b82f6' },
+          { k: 'done',    label: 'BİTTİ',     c: '#22c55e' },
+          { k: 'dropped', label: 'BIRAKTI',   c: '#ef4444' },
+        ].map(s => (
+          <button class="ea-st" data-status={s.k} data-color={s.c}
+            style={`font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 10px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;`}>
+            {s.label}
+          </button>
+        ))}
+      </div>
+      <select class="ea-rating"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#e5c46b;padding:4px 8px;cursor:pointer;outline:none;">
+        <option value="">PUAN</option>
+        {[10,9,8,7,6,5,4,3,2,1].map(n => <option value={n}>{n}/10</option>)}
+      </select>
+    </div>
+
+    <!-- Add to list -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <select class="ea-listsel"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#aaaacc;padding:4px 8px;cursor:pointer;outline:none;max-width:200px;">
+        <option value="">— listeye ekle —</option>
+      </select>
+      <button class="ea-newlist"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+        onmouseover="this.style.color='#3b82f6';this.style.borderColor='#3b82f6'" onmouseout="this.style.color='#555566';this.style.borderColor='#1e1e2e'">
+        ＋ YENİ LİSTE
+      </button>
+    </div>
+
+    <span class="ea-msg" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;min-height:14px;"></span>
+  </div>
+</div>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+  import { resolveEntity, type SearchResult } from '../lib/entities';
+
+  const sb = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  async function initEntityActions(root: HTMLElement) {
+    const descriptor: SearchResult = JSON.parse(root.dataset.entity!);
+    const guest = root.querySelector<HTMLElement>('.ea-guest')!;
+    const body = root.querySelector<HTMLElement>('.ea-body')!;
+    const msg = root.querySelector<HTMLElement>('.ea-msg')!;
+
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) { guest.style.display = 'block'; return; }
+    body.style.display = 'flex';
+
+    let entityId: string | null = null;
+    async function ensureEntity(): Promise<string | null> {
+      if (!entityId) entityId = await resolveEntity(sb, descriptor);
+      return entityId;
+    }
+
+    // Prefill existing entry + populate lists in parallel
+    const stBtns = root.querySelectorAll<HTMLButtonElement>('.ea-st');
+    const ratingSel = root.querySelector<HTMLSelectElement>('.ea-rating')!;
+    const listSel = root.querySelector<HTMLSelectElement>('.ea-listsel')!;
+
+    function paintStatus(active: string | null) {
+      stBtns.forEach(b => {
+        const on = b.dataset.status === active;
+        b.style.color = on ? '#0a0a0a' : '#555566';
+        b.style.background = on ? (b.dataset.color || '#3b82f6') : '#0d0d12';
+        b.style.borderColor = on ? (b.dataset.color || '#3b82f6') : '#1e1e2e';
+      });
+    }
+
+    // Load lists owned by user
+    sb.from('lists').select('id, title').eq('user_id', user.id).order('updated_at', { ascending: false })
+      .then(({ data }) => {
+        for (const l of data ?? []) {
+          const o = document.createElement('option');
+          o.value = l.id; o.textContent = l.title;
+          listSel.appendChild(o);
+        }
+      });
+
+    // Load existing entry for this entity (need entity id first, but only if it already exists)
+    {
+      const found = await sb.from('entities').select('id').eq('source', descriptor.source).eq('source_id', descriptor.source_id).maybeSingle();
+      if (found.data?.id) {
+        entityId = found.data.id;
+        const { data: entry } = await sb.from('entries').select('status, rating').eq('user_id', user.id).eq('entity_id', entityId).maybeSingle();
+        if (entry) {
+          paintStatus(entry.status);
+          if (entry.rating) ratingSel.value = String(entry.rating);
+        }
+      }
+    }
+
+    async function upsertEntry(patch: { status?: string; rating?: number | null }) {
+      const id = await ensureEntity();
+      if (!id) { msg.textContent = 'Hata: içerik çözümlenemedi.'; return; }
+      const { error } = await sb.from('entries').upsert(
+        { user_id: user.id, entity_id: id, ...patch, logged_at: new Date().toISOString() },
+        { onConflict: 'user_id,entity_id' },
+      );
+      msg.textContent = error ? 'Hata: ' + error.message : '✓ kaydedildi';
+    }
+
+    stBtns.forEach(b => b.addEventListener('click', () => {
+      paintStatus(b.dataset.status!);
+      upsertEntry({ status: b.dataset.status! });
+    }));
+    ratingSel.addEventListener('change', () => {
+      upsertEntry({ rating: ratingSel.value ? Number(ratingSel.value) : null });
+    });
+
+    async function addToList(listId: string) {
+      const id = await ensureEntity();
+      if (!id) { msg.textContent = 'Hata: içerik çözümlenemedi.'; return; }
+      const dup = await sb.from('list_items').select('id').eq('list_id', listId).eq('entity_id', id).maybeSingle();
+      if (dup.data) { msg.textContent = 'Zaten bu listede.'; return; }
+      const { count } = await sb.from('list_items').select('id', { count: 'exact', head: true }).eq('list_id', listId);
+      const { error } = await sb.from('list_items').insert({
+        list_id: listId, entity_id: id, note: '', position: count ?? 0, added_at: new Date().toISOString(),
+      });
+      msg.textContent = error ? 'Hata: ' + error.message : '✓ listeye eklendi';
+    }
+
+    listSel.addEventListener('change', () => {
+      if (listSel.value) { addToList(listSel.value); listSel.value = ''; }
+    });
+
+    root.querySelector<HTMLButtonElement>('.ea-newlist')!.addEventListener('click', async () => {
+      const title = prompt('Yeni liste adı:');
+      if (!title?.trim()) return;
+      const id = await ensureEntity();
+      if (!id) { msg.textContent = 'Hata: içerik çözümlenemedi.'; return; }
+      const now = new Date().toISOString();
+      const { data: list, error } = await sb.from('lists').insert({
+        user_id: user.id, title: title.trim(), description: '', is_public: true, created_at: now, updated_at: now,
+      }).select().single();
+      if (error || !list) { msg.textContent = 'Hata: liste oluşturulamadı'; return; }
+      const { error: e2 } = await sb.from('list_items').insert({
+        list_id: list.id, entity_id: id, note: '', position: 0, added_at: now,
+      });
+      if (e2) { msg.textContent = 'Hata: ' + e2.message; return; }
+      const o = document.createElement('option');
+      o.value = list.id; o.textContent = list.title;
+      listSel.insertBefore(o, listSel.children[1]);
+      msg.textContent = '✓ yeni listeye eklendi';
+    });
+  }
+
+  function boot() {
+    document.querySelectorAll<HTMLElement>('.entity-actions').forEach(el => {
+      if (!el.dataset.eaInit) { el.dataset.eaInit = '1'; initEntityActions(el); }
+    });
+  }
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>

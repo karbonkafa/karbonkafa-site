@@ -4,6 +4,7 @@ import gamesData from '../../data/games.json';
 import reviewsData from '../../data/reviews.json';
 import igdbData from '../../data/igdb.json';
 import { guides, achievementLists } from '../../data/guides';
+import EntityActions from '../../components/EntityActions.astro';
 
 export function getStaticPaths() {
   return (gamesData as any[]).map(game => ({
@@ -219,6 +220,18 @@ const filteredWebsites = igdb.websites
     </div>
   </div>
 
+  <!-- Add to list / log -->
+  <EntityActions
+    type="game"
+    source={game.igdbId ? 'igdb' : 'karbon'}
+    sourceId={game.igdbId ? String(game.igdbId) : game.slug}
+    slug={game.slug}
+    title={game.title}
+    image={game.coverUrl ?? null}
+    year={game.releaseYear ?? null}
+    meta={{ developer: game.developer ?? null, genres: game.genres ?? [], platform: game.platform ?? null, metacritic: game.metacriticScore ?? null }}
+  />
+
   <!-- Personal Note -->
   {game.note && (
     <div class="px-window" style="margin-bottom: 12px;">
@@ -369,7 +382,7 @@ const filteredWebsites = igdb.websites
           </div>
           <div style="display:flex;gap:2px;align-items:center;">
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
-              <button class="score-btn" data-value={n}
+              <button class="score-btn admin-edit" data-value={n}
                 style={`background:none;border:none;cursor:pointer;width:16px;height:16px;border-radius:2px;font-size:0;padding:0;background-color:${score && n <= score ? '#e5c46b' : '#1e1e2e'};transition:background-color 0.1s;`}
                 title={String(n)}>{n}</button>
             ))}
@@ -385,7 +398,7 @@ const filteredWebsites = igdb.websites
       <p id="reviewStatus" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;margin:0;">
         {review.overall ? `güncellendi ${new Date(review.updatedAt).toLocaleDateString('tr-TR')}` : 'henüz incelenmedi'}
       </p>
-      <button id="saveReview" data-slug={game.slug}
+      <button id="saveReview" data-slug={game.slug} class="admin-edit"
         style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#e5c46b;color:#0a0a0a;border:none;padding:6px 18px;cursor:pointer;transition:opacity 0.15s;"
         onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
         <span data-i18n="review.save">KAYDET</span>
@@ -510,9 +523,24 @@ const filteredWebsites = igdb.websites
     ← GERİ
   </a>
 
+  <style>
+    /* İnceleme editörü yalnızca admin modunda görünür (skorlar herkese okunur) */
+    .admin-edit { display: none !important; }
+    body.is-admin .admin-edit { display: revert !important; }
+  </style>
+
 </Layout>
 
 <script>
+  // Admin modu: ?admin ile bir kez aç, oturum boyunca kalsın. İnceleme editörünü açar.
+  const adminMode = sessionStorage.getItem('karbon_admin') === '1'
+    || !!sessionStorage.getItem('admin_pw')
+    || new URLSearchParams(location.search).has('admin');
+  if (adminMode) {
+    sessionStorage.setItem('karbon_admin', '1');
+    document.body.classList.add('is-admin');
+  }
+
   // Achievement checklist
   const achieveChecks = document.querySelectorAll('.achievement-check') as NodeListOf<HTMLInputElement>;
   const progressEl = document.getElementById('achieveProgress');

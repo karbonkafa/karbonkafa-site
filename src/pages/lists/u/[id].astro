@@ -3,7 +3,7 @@ export const prerender = false;
 import Layout from '../../../layouts/Layout.astro';
 import { supabase } from '../../../lib/supabase';
 import gamesData from '../../../data/games.json';
-import igdbData from '../../../data/igdb.json';
+import { entityHref, entitySubtitle, typeInfo } from '../../../lib/entities';
 
 const { id } = Astro.params;
 
@@ -17,19 +17,38 @@ if (!list) return Astro.redirect('/lists');
 
 const { data: items } = await supabase
   .from('list_items')
-  .select('*')
+  .select('*, entity:entities(id, type, source, source_id, slug, title, image_url, year, meta)')
   .eq('list_id', id)
   .order('position');
 
 const gmap: Record<string, any> = {};
 for (const g of gamesData as any[]) gmap[g.slug] = g;
-const igdb = igdbData as Record<string, any>;
+
+// Build a unified view per item: entity row wins, legacy game_slug falls back.
+function itemView(item: any) {
+  const e = item.entity;
+  if (e) {
+    return { title: e.title, image: e.image_url, sub: entitySubtitle(e), href: entityHref(e), icon: typeInfo(e.type).icon };
+  }
+  const g = gmap[item.game_slug];
+  if (g) {
+    const dev = Array.isArray(g.developer) ? g.developer[0] : g.developer;
+    return {
+      title: g.title,
+      image: g.coverUrl ? g.coverUrl.replace('t_cover_big/', 't_cover_big_2x/') : null,
+      sub: [dev, g.releaseYear].filter(Boolean).join(' · '),
+      href: `/games/${item.game_slug}`,
+      icon: '🎮',
+    };
+  }
+  return null;
+}
 
 const dateStr = new Date(list.created_at).toLocaleDateString('tr-TR', {
   day: 'numeric', month: 'long', year: 'numeric'
 });
 const author = list.profiles as any;
-const gameCount = (items || []).length;
+const itemCount = (items || []).length;
 ---
 
 <Layout title={list.title}>
@@ -77,7 +96,7 @@ const gameCount = (items || []).length;
           </a>
         )}
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{dateStr}</span>
-        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{gameCount} oyun</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{itemCount} öğe</span>
 
         <!-- Edit button — shown client-side if own list -->
         <a id="editBtn" href={`/lists/u/${id}/edit`} style="display:none;font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;text-decoration:none;transition:all 0.1s;"
@@ -91,47 +110,42 @@ const gameCount = (items || []).length;
   <!-- Game list window -->
   <div class="px-window">
     <div class="px-titlebar">
-      <span class="px-title">🎮 {gameCount} OYUN</span>
+      <span class="px-title">📚 {itemCount} ÖĞE</span>
       <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
     </div>
 
     <div style="display:flex;flex-direction:column;">
       {(items || []).map((item: any, idx: number) => {
-        const game = gmap[item.game_slug];
-        if (!game) return null;
-        const igdbEntry = igdb[item.game_slug] || {};
-        const devs = igdbEntry.mainDevs?.length > 0
-          ? igdbEntry.mainDevs
-          : (game.developer ? [game.developer] : []);
-        const mc = game.metacriticScore;
-        const mcColor = mc >= 75 ? '#22c55e' : mc >= 50 ? '#eab308' : '#ef4444';
+        const v = itemView(item);
+        if (!v) return null;
+        const cover = (
+          <div style="width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;background:#0d0d12;">
+            {v.image
+              ? <img src={v.image} alt={v.title} loading="lazy"
+                  style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+              : <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;">{v.icon}</div>
+            }
+          </div>
+        );
         return (
           <div style="border-bottom:1px solid #1e1e2e;padding:14px 16px;display:grid;grid-template-columns:32px 64px 1fr;gap:14px;align-items:start;transition:background 0.1s;"
             onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
             <div style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#2a2a3a;padding-top:4px;text-align:right;">
               {String(idx + 1).padStart(2, '0')}
             </div>
-            <a href={`/games/${item.game_slug}`} style="display:block;width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;transition:border-color 0.15s;"
-              onmouseover="this.style.borderColor='#e5c46b'" onmouseout="this.style.borderColor='#2a2a3a'">
-              {game.coverUrl
-                ? <img src={game.coverUrl.replace('t_cover_big/', 't_cover_big_2x/')} alt={game.title} loading="lazy"
-                    style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
-                : <div style="width:100%;height:100%;background:#0d0d12;"></div>
-              }
-            </a>
+            {v.href
+              ? <a href={v.href} style="display:block;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">{cover}</a>
+              : cover}
             <div style="display:flex;flex-direction:column;gap:4px;padding-top:2px;">
-              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-                <a href={`/games/${item.game_slug}`}
-                  style="font-size:11px;font-weight:600;letter-spacing:-0.02em;color:#e5e5e5;line-height:1.3;transition:color 0.15s;"
-                  onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5e5e5'">
-                  {game.title}
-                </a>
-                {mc && <span style={`font-family:'IBM Plex Mono', monospace;font-size:11px;font-weight:600;color:${mcColor};flex-shrink:0;padding-top:2px;`}>{mc}</span>}
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span style="font-size:13px;flex-shrink:0;line-height:1.2;">{v.icon}</span>
+                {v.href
+                  ? <a href={v.href} style="font-size:11px;font-weight:600;letter-spacing:-0.02em;color:#e5e5e5;line-height:1.3;transition:color 0.15s;"
+                      onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5e5e5'">{v.title}</a>
+                  : <span style="font-size:11px;font-weight:600;letter-spacing:-0.02em;color:#e5e5e5;line-height:1.3;">{v.title}</span>}
               </div>
-              {devs.length > 0 && (
-                <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:0;">
-                  {devs.join(', ')}{game.releaseYear ? ` · ${game.releaseYear}` : ''}
-                </p>
+              {v.sub && (
+                <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:0;">{v.sub}</p>
               )}
               {item.note && (
                 <p style="font-size:11px;color:#778899;margin:4px 0 0;line-height:1.6;border-left:2px solid #e5c46b33;padding-left:10px;font-style:italic;">
