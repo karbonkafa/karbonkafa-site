@@ -124,16 +124,12 @@ const isActive = (href: string) =>
                 <span id="sysUser" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#aaaacc;"></span>
               </a>
             </div>
-            <div style="display:flex;align-items:baseline;gap:6px;flex-shrink:0;">
+            <div style="display:flex;align-items:baseline;gap:8px;flex-shrink:0;">
+              <span id="sysWeather" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#778899;white-space:nowrap;"></span>
               <span id="sysDate2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#444455;"></span>
               <span id="sysClock2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#aaaacc;line-height:1;"></span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <button id="crtToggle" title="CRT ekran efekti aç/kapa"
-                style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #33ff6633;color:#33ff6677;padding:1px 7px;cursor:pointer;transition:all 0.1s;"
-                onmouseover="this.style.borderColor='#33ff66'" onmouseout="this.style.borderColor='#33ff6633'">
-                CRT
-              </button>
               <a id="sysLogout" href="/auth/logout" title="Çıkış Yap"
                 style="display:none;align-items:center;justify-content:center;font-size:13px;line-height:1;background:none;border:1px solid #ef444433;color:#ef444477;padding:1px 7px;cursor:pointer;text-decoration:none;transition:all 0.1s;"
                 onmouseover="this.style.color='#ef4444';this.style.borderColor='#ef4444'" onmouseout="this.style.color='#ef444477';this.style.borderColor='#ef444433'">
@@ -190,6 +186,11 @@ const isActive = (href: string) =>
           🎧 ▶
         </button>
         <span id="taskbarRadioStatus" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;white-space:nowrap;display:none;">●</span>
+        <button id="crtToggle" title="CRT ekran efekti aç/kapa"
+          style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #33ff6633;color:#33ff6677;padding:3px 10px;cursor:pointer;transition:all 0.1s;"
+          onmouseover="this.style.borderColor='#33ff66'" onmouseout="this.style.borderColor='#33ff6633'">
+          CRT
+        </button>
       </div>
 
       <div style="display:flex;align-items:center;border-left:1px solid #1e1e2e;flex-shrink:0;">
@@ -483,13 +484,40 @@ const isActive = (href: string) =>
     tbBtn?.addEventListener('click', () => playBtn.click());
   }
 
+  // ── WEATHER (system panel) ─────────────────────────────────
+  function wxIcon(code: number) {
+    if (code === 0) return '☀'; if (code <= 3) return '⛅'; if (code <= 48) return '🌫';
+    if (code <= 67) return '🌧'; if (code <= 77) return '❄'; if (code <= 82) return '🌦'; return '⛈';
+  }
+  function showWeather() {
+    const el = document.getElementById('sysWeather');
+    if (!el) return;
+    const W = window as any;
+    if (W.__wx && Date.now() - W.__wx.t < 1800000) { el.textContent = W.__wx.s; return; }
+    const put = async (lat: number, lon: number) => {
+      try {
+        const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto&forecast_days=1`);
+        if (!r.ok) return;
+        const d = await r.json();
+        const s = `${wxIcon(d.current.weathercode)} ${Math.round(d.current.temperature_2m)}°`;
+        W.__wx = { s, t: Date.now() };
+        const cur = document.getElementById('sysWeather'); if (cur) cur.textContent = s;
+      } catch {}
+    };
+    put(41.01, 28.98); // İstanbul default
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(
+      p => put(p.coords.latitude, p.coords.longitude), () => {}, { timeout: 5000 });
+  }
+
   // Call directly for initial load + via event for View Transitions navigations
   startClock();
   initAuth();
   bindRadio();
+  showWeather();
   document.addEventListener('astro:page-load', () => {
     startClock();
     initAuth();
     bindRadio();
+    showWeather();
   });
 </script>
