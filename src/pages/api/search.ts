@@ -1,11 +1,11 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
+import games from '../../data/games.json';
 
 // Unified, normalized search result. Enough to upsert an `entities` row.
 export interface SearchResult {
-  type: 'game' | 'movie' | 'tv' | 'album' | 'book';
+  type: 'game' | 'movie' | 'tv' | 'album' | 'track' | 'book';
   source: string;
   source_id: string;
   slug: string;
@@ -24,20 +24,32 @@ function slugify(s: string): string {
     .slice(0, 80) || 'untitled';
 }
 
-// ── Games: our own curated catalog (backfilled IGDB data) ──────────────
+// ── Games: our own curated static catalog (games.json) ─────────────────
+// The `entities` table starts empty and is populated on demand by
+// resolveEntity() when an item is actually added to a list, so search must
+// read the static catalog directly. source/source_id mirror the backfill
+// scheme so a resolved row matches an eventual backfill upsert.
 async function searchGames(q: string): Promise<SearchResult[]> {
-  const url = import.meta.env.PUBLIC_SUPABASE_URL;
-  const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return [];
-  const sb = createClient(url, key);
-  const { data } = await sb
-    .from('entities')
-    .select('source, source_id, slug, title, image_url, year, meta')
-    .eq('type', 'game')
-    .ilike('title', `%${q}%`)
-    .order('year', { ascending: false, nullsFirst: false })
-    .limit(20);
-  return (data ?? []).map(r => ({ type: 'game', ...r })) as SearchResult[];
+  const needle = q.toLowerCase();
+  return (games as any[])
+    .filter(g => g.title && g.title.toLowerCase().includes(needle))
+    .sort((a, b) => (b.releaseYear ?? 0) - (a.releaseYear ?? 0))
+    .slice(0, 20)
+    .map((g): SearchResult => ({
+      type: 'game',
+      source: g.igdbId ? 'igdb' : 'karbon',
+      source_id: g.igdbId ? String(g.igdbId) : g.slug,
+      slug: g.slug,
+      title: g.title,
+      image_url: g.coverUrl ?? null,
+      year: g.releaseYear ?? null,
+      meta: {
+        developer: g.developer ?? null,
+        genres: g.genres ?? [],
+        platform: g.platform ?? null,
+        metacritic: g.metacriticScore ?? null,
+      },
+    }));
 }
 
 // ── Movies & TV: TMDB multi-search ─────────────────────────────────────
@@ -92,6 +104,33 @@ async function searchMusic(q: string): Promise<SearchResult[]> {
   });
 }
 
+// ── Music tracks: MusicBrainz recordings + Cover Art Archive ───────────
+async function searchTracks(q: string): Promise<SearchResult[]> {
+  const res = await fetch(
+    `https://musicbrainz.org/ws/2/recording/?query=${encodeURIComponent(q)}&fmt=json&limit=20`,
+    { headers: { 'User-Agent': 'karbonkafa/1.0 ( https://www.karbonkafa.com )', Accept: 'application/json' } },
+  );
+  if (!res.ok) return [];
+  const json = await res.json();
+  return (json.recordings ?? []).map((rec: any): SearchResult => {
+    const artist = (rec['artist-credit'] ?? []).map((a: any) => a.name).join(', ');
+    // Tracks have no cover of their own — borrow the first release's art.
+    const release = (rec.releases ?? [])[0];
+    const album = release?.title ?? '';
+    const date: string = rec['first-release-date'] || release?.date || '';
+    return {
+      type: 'track',
+      source: 'musicbrainz',
+      source_id: rec.id,
+      slug: `${slugify(rec.title)}-${rec.id.slice(0, 8)}`,
+      title: rec.title,
+      image_url: release?.id ? `https://coverartarchive.org/release/${release.id}/front-250` : null,
+      year: date ? Number(date.slice(0, 4)) || null : null,
+      meta: { artist, album, mbid: rec.id },
+    };
+  });
+}
+
 // ── Books: OpenLibrary ─────────────────────────────────────────────────
 async function searchBooks(q: string): Promise<SearchResult[]> {
   const res = await fetch(
@@ -120,6 +159,7 @@ const ADAPTERS: Record<string, (q: string) => Promise<SearchResult[]>> = {
   movie: searchTmdb,
   tv: searchTmdb,
   album: searchMusic,
+  track: searchTracks,
   book: searchBooks,
 };
 

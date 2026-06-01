@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 
 // Mirror of the normalized shape returned by /api/search.
 export interface SearchResult {
-  type: 'game' | 'movie' | 'tv' | 'album' | 'book';
+  type: 'game' | 'movie' | 'tv' | 'album' | 'track' | 'book';
   source: string;
   source_id: string;
   slug: string;
@@ -21,6 +21,7 @@ export const ENTITY_TYPES = [
   { type: 'movie', label: 'Film',       icon: '🎬' },
   { type: 'tv',    label: 'Dizi',       icon: '📺' },
   { type: 'album', label: 'Albüm',      icon: '🎵' },
+  { type: 'track', label: 'Parça',      icon: '🎶' },
   { type: 'book',  label: 'Kitap',      icon: '📚' },
 ] as const;
 
@@ -41,6 +42,7 @@ export function entitySubtitle(e: { type: string; year: number | null; meta?: an
   let lead = '';
   if (e.type === 'game') lead = Array.isArray(m.developer) ? m.developer[0] : (m.developer || '');
   else if (e.type === 'album') lead = m.artist || '';
+  else if (e.type === 'track') lead = [m.artist, m.album].filter(Boolean).join(' — ');
   else if (e.type === 'book') lead = m.author || '';
   return [lead, e.year ? String(e.year) : ''].filter(Boolean).join(' · ');
 }

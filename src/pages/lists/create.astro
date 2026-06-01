@@ -202,6 +202,7 @@ import { ENTITY_TYPES } from '../../lib/entities';
     let lead = '';
     if (r.type === 'game') lead = Array.isArray(m.developer) ? m.developer[0] : (m.developer || '');
     else if (r.type === 'album') lead = m.artist || '';
+    else if (r.type === 'track') lead = [m.artist, m.album].filter(Boolean).join(' — ');
     else if (r.type === 'book') lead = m.author || '';
     return [lead, r.year ? String(r.year) : ''].filter(Boolean).join(' · ');
   }
