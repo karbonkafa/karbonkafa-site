@@ -53,6 +53,15 @@ import { supabase } from '../../lib/supabase';
         <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 6px 0 0;">Sadece harf, rakam ve alt çizgi. Profil URL'in: /u/[kullanıcı adın]</p>
       </div>
 
+      <!-- Title (opt-in) -->
+      <div style="margin-bottom: 32px;">
+        <label style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px;">Unvan <span style="color: #2a2a2a;">(profilinde gösterilir)</span></label>
+        <div id="titlePicker" style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">Yükleniyor...</p>
+        </div>
+        <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 8px 0 0;">Soluk unvanlar henüz kilitli — yanlarındaki koşulu tamamlayınca açılır.</p>
+      </div>
+
       <!-- Save -->
       <div style="display: flex; align-items: center; gap: 12px;">
         <button id="saveBtn"
@@ -69,6 +78,7 @@ import { supabase } from '../../lib/supabase';
 
 <script>
   import { createClient } from '@supabase/supabase-js';
+  import { TITLES } from '../../lib/titles';
   const supabase = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
@@ -76,6 +86,7 @@ import { supabase } from '../../lib/supabase';
 
   let currentUser: any = null;
   let currentUsername = '';
+  let selectedTitle: string | null = null;
 
   async function init() {
     const { data: { user } } = await supabase.auth.getUser();
@@ -104,7 +115,45 @@ import { supabase } from '../../lib/supabase';
       avatarEl.textContent = (profile.display_name || profile.username)[0].toUpperCase();
     }
 
+    selectedTitle = profile.display_title ?? null;
     document.getElementById('editForm')!.style.display = 'block';
+
+    await renderTitles(user.id);
+  }
+
+  // Load activity stats, compute earned titles, render selectable chips
+  async function renderTitles(userId: string) {
+    const picker = document.getElementById('titlePicker')!;
+    const [entriesRes, listsRes] = await Promise.all([
+      supabase.from('entries').select('entity:entities(type)').eq('user_id', userId),
+      supabase.from('lists').select('id', { count: 'exact', head: true }).eq('user_id', userId),
+    ]);
+    const entries = (entriesRes.data || []) as any[];
+    const stats = {
+      logged: entries.length,
+      types: new Set(entries.map(e => e.entity?.type).filter(Boolean)).size,
+      lists: listsRes.count ?? 0,
+      replays: 0, // logs table not consumed yet (Faz 3)
+    };
+
+    const draw = () => {
+      const chip = (id: string | null, label: string, on: boolean, locked: boolean, title: string) =>
+        `<button type="button" data-tid="${id ?? ''}" ${locked ? 'disabled' : ''} title="${title}"
+          style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 11px;letter-spacing:0.04em;cursor:${locked ? 'not-allowed' : 'pointer'};
+          background:${on ? '#e5c46b' : 'transparent'};color:${on ? '#0a0a0a' : (locked ? '#3a3a3a' : '#aaa')};
+          border:1px solid ${on ? '#e5c46b' : (locked ? '#1f1f1f' : '#333')};opacity:${locked ? 0.6 : 1};">${label}</button>`;
+      picker.innerHTML =
+        chip(null, 'GİZLE', selectedTitle === null, false, 'Unvan gösterme') +
+        TITLES.map(t => {
+          const earned = t.earned(stats);
+          return chip(t.id, t.label, selectedTitle === t.id, !earned, earned ? t.desc : 'Kilitli — ' + t.desc);
+        }).join('');
+      picker.querySelectorAll<HTMLButtonElement>('button[data-tid]').forEach(b => {
+        if (b.disabled) return;
+        b.addEventListener('click', () => { selectedTitle = b.dataset.tid || null; draw(); });
+      });
+    };
+    draw();
   }
 
   document.getElementById('saveBtn')?.addEventListener('click', async () => {
@@ -136,6 +185,7 @@ import { supabase } from '../../lib/supabase';
     const { error } = await supabase.from('profiles').update({
       display_name: displayName || username,
       username,
+      display_title: selectedTitle,
     }).eq('id', currentUser.id);
 
     if (error) {

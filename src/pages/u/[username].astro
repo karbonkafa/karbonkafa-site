@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
 import gamesData from '../../data/games.json';
 import { entityHref, entitySubtitle, typeInfo } from '../../lib/entities';
+import { titleById } from '../../lib/titles';
 
 const STATUS_BADGE: Record<string, { label: string; color: string }> = {
   want:    { label: 'İSTİYOR',  color: '#e5c46b' },
@@ -64,6 +65,18 @@ const joinDate = new Date(profile.created_at).toLocaleDateString('tr-TR', { mont
 const displayName = profile.display_name || profile.username;
 const initials = displayName[0].toUpperCase();
 
+// Opt-in identity title (only shown if the user has one set and still earned it)
+const titleStats = {
+  logged: library.length,
+  types: new Set(library.map((e: any) => e.entity?.type).filter(Boolean)).size,
+  lists: (lists || []).length,
+  replays: 0, // logs table not consumed yet (Faz 3)
+};
+const shownTitle = (() => {
+  const t = titleById(profile.display_title);
+  return t && t.earned(titleStats) ? t : null;
+})();
+
 // Hero background: first cover available
 const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.image_url ?? null;
 ---
@@ -95,6 +108,9 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
       <div style="flex: 1; min-width: 200px;">
         <p style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.12em; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px;">Profil</p>
         <h1 style="font-size: clamp(28px, 5vw, 52px); font-weight: 700; letter-spacing: -0.04em; margin: 0 0 12px; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.5);">{displayName}</h1>
+        {shownTitle && (
+          <p style="display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e5c46b; background: #e5c46b14; border: 1px solid #e5c46b33; padding: 2px 10px; margin: 0 0 12px; letter-spacing: 0.06em;">&gt; rank: {shownTitle.label}</p>
+        )}
         <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
           <span style="font-size: 13px; color: #aaa;">
             <strong style="color: #e5e5e5;">{(lists || []).length}</strong> liste
