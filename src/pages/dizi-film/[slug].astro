@@ -55,9 +55,9 @@ const accentColor = '#e879f9';
 
   <!-- Backdrop hero -->
   {backdrop && (
-    <div style={`width:100%;max-height:280px;overflow:hidden;margin-bottom:12px;position:relative;border:2px solid #1e1e2e;`}>
+    <div style={`width:100%;max-height:280px;overflow:hidden;margin-bottom:12px;position:relative;border:2px solid #2a1c0c;`}>
       <img src={backdrop} alt={title} style="width:100%;height:280px;object-fit:cover;object-position:top;opacity:0.5;display:block;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,#050508 0%,transparent 60%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,#0a0907 0%,transparent 60%);"></div>
     </div>
   )}
 
@@ -74,10 +74,10 @@ const accentColor = '#e879f9';
 
     <div style="display:grid;grid-template-columns:140px 1fr;gap:0;">
       <!-- Poster -->
-      <div style="border-right:1px solid #1e1e2e;">
+      <div style="border-right:1px solid #2a1c0c;">
         {poster
           ? <img src={poster} alt={title} style="width:140px;height:210px;object-fit:cover;object-position:top;display:block;" />
-          : <div style="width:140px;height:210px;background:#080810;display:flex;align-items:center;justify-content:center;font-size:48px;">{type === 'tv' ? '📺' : '🎬'}</div>
+          : <div style="width:140px;height:210px;background:#0a0805;display:flex;align-items:center;justify-content:center;font-size:48px;">{type === 'tv' ? '📺' : '🎬'}</div>
         }
       </div>
 
@@ -146,11 +146,11 @@ const accentColor = '#e879f9';
       </div>
       <div style="display:flex;flex-direction:column;">
         {tmdb.seasons.filter((s: any) => s.season_number > 0).map((s: any) => (
-          <div style="display:grid;grid-template-columns:40px 80px 1fr auto;gap:10px;align-items:center;padding:8px 14px;border-bottom:1px solid #1e1e2e;">
-            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#2a2a3a;text-align:right;">S{String(s.season_number).padStart(2,'0')}</span>
+          <div style="display:grid;grid-template-columns:40px 80px 1fr auto;gap:10px;align-items:center;padding:8px 14px;border-bottom:1px solid #2a1c0c;">
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3a2410;text-align:right;">S{String(s.season_number).padStart(2,'0')}</span>
             {s.poster_path
-              ? <img src={`https://image.tmdb.org/t/p/w92${s.poster_path}`} style="width:40px;height:60px;object-fit:cover;display:block;border:1px solid #2a2a3a;" loading="lazy" />
-              : <div style="width:40px;height:60px;background:#0d0d12;border:1px solid #1e1e2e;"></div>
+              ? <img src={`https://image.tmdb.org/t/p/w92${s.poster_path}`} style="width:40px;height:60px;object-fit:cover;display:block;border:1px solid #3a2410;" loading="lazy" />
+              : <div style="width:40px;height:60px;background:#120e08;border:1px solid #2a1c0c;"></div>
             }
             <div>
               <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5e5e5;margin:0 0 2px;">{s.name}</p>
@@ -169,12 +169,12 @@ const accentColor = '#e879f9';
         <span class="px-title">👥 OYUNCULAR</span>
         <div class="px-btns"><span class="px-btn">─</span></div>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:1px;background:#1e1e2e;">
+      <div style="display:flex;flex-wrap:wrap;gap:1px;background:#2a1c0c;">
         {cast.map((c: any) => (
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:#0d0d12;min-width:80px;flex:1;text-align:center;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:#120e08;min-width:80px;flex:1;text-align:center;">
             {c.profile_path
-              ? <img src={`https://image.tmdb.org/t/p/w92${c.profile_path}`} style="width:48px;height:48px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #2a2a3a;" loading="lazy" />
-              : <div style="width:48px;height:48px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">{c.name[0]}</div>
+              ? <img src={`https://image.tmdb.org/t/p/w92${c.profile_path}`} style="width:48px;height:48px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #3a2410;" loading="lazy" />
+              : <div style="width:48px;height:48px;border-radius:50%;background:#1c1409;border:1px solid #3a2410;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">{c.name[0]}</div>
             }
             <p style="font-size:11px;color:#aaa;margin:0;line-height:1.3;">{c.name}</p>
             {c.character && <p style="font-size:10px;color:#555566;margin:0;line-height:1.2;">{c.character}</p>}

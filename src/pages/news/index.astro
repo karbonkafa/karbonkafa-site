@@ -26,12 +26,12 @@ const categoryColors: Record<string, string> = {
     </div>
 
     <!-- Category filter -->
-    <div style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; display: flex; gap: 4px; flex-wrap: wrap;">
+    <div style="padding: 10px 14px; border-bottom: 1px solid #2a1c0c; display: flex; gap: 4px; flex-wrap: wrap;">
       {categories.map((cat, i) => (
         <button
           class="cat-btn"
           data-cat={cat}
-          style={`font-family:'IBM Plex Mono', monospace; font-size: 11px; padding: 3px 10px; border: 1px solid ${i === 0 ? '#ffc20a' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#ffc20a' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
+          style={`font-family:'IBM Plex Mono', monospace; font-size: 11px; padding: 3px 10px; border: 1px solid ${i === 0 ? '#ffc20a' : '#2a1c0c'}; background: #120e08; color: ${i === 0 ? '#ffc20a' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
         >
           {cat}
         </button>
@@ -43,7 +43,7 @@ const categoryColors: Record<string, string> = {
         İÇERİK HAZIRLANIYOR...
       </div>
     ) : (
-      <div id="newsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: #1e1e2e;">
+      <div id="newsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: #2a1c0c;">
         {sorted.map((article) => {
           const color = categoryColors[article.data.category] || '#666';
           const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -52,9 +52,9 @@ const categoryColors: Record<string, string> = {
               href={`/news/${article.id}`}
               class="news-item"
               data-category={article.data.category}
-              style="display: flex; flex-direction: column; background: #0d0d12; transition: background 0.15s;"
-              onmouseover="this.style.background='#111118'"
-              onmouseout="this.style.background='#0d0d12'"
+              style="display: flex; flex-direction: column; background: #120e08; transition: background 0.15s;"
+              onmouseover="this.style.background='#16110a'"
+              onmouseout="this.style.background='#120e08'"
             >
               {article.data.image ? (
                 <div style="width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #0a0a0a;">
@@ -67,7 +67,7 @@ const categoryColors: Record<string, string> = {
                   />
                 </div>
               ) : (
-                <div style={`width: 100%; aspect-ratio: 16/9; background: #080810; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #1e1e2e;`}>
+                <div style={`width: 100%; aspect-ratio: 16/9; background: #0a0805; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #2a1c0c;`}>
                   <span style={`font-family:'IBM Plex Mono', monospace;font-size:11px;color:${color};text-transform:uppercase;letter-spacing:0.1em;`}>{article.data.category}</span>
                 </div>
               )}
@@ -106,7 +106,7 @@ const categoryColors: Record<string, string> = {
       btn.addEventListener('click', () => {
         const cat = btn.dataset.cat!;
         document.querySelectorAll<HTMLButtonElement>('.cat-btn').forEach(b => {
-          b.style.borderColor = '#1e1e2e';
+          b.style.borderColor = '#2a1c0c';
           b.style.color = '#666677';
         });
         btn.style.borderColor = '#ffc20a';

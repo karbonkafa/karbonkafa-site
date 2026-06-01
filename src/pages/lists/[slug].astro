@@ -36,7 +36,7 @@ function getMetacritic(slug: string): number | null {
     <div style="padding: 16px;">
       <div style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;letter-spacing:0.06em;margin-bottom:8px;">
         <a href="/lists" style="color:#444455;transition:color 0.1s;" onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#444455'">LİSTELER</a>
-        <span style="margin:0 6px;color:#2a2a3a;">›</span>
+        <span style="margin:0 6px;color:#3a2410;">›</span>
         <span style="color:#888899;">{list.title.toUpperCase()}</span>
       </div>
       <h1 style="font-family:'IBM Plex Mono', monospace;font-size:30px;color:#ffffff;margin:0 0 8px;letter-spacing:0.02em;line-height:1.15;">{list.title}</h1>
@@ -69,20 +69,20 @@ function getMetacritic(slug: string): number | null {
         const igdbEntry = igdb[item.slug] || {};
         const devs = igdbEntry.mainDevs?.length > 0 ? igdbEntry.mainDevs : (game.developer ? [game.developer] : []);
         return (
-          <div style="border-bottom: 1px solid #1e1e2e; padding: 14px 16px; display: grid; grid-template-columns: 32px 64px 1fr; gap: 14px; align-items: start; transition: background 0.1s;"
+          <div style="border-bottom: 1px solid #2a1c0c; padding: 14px 16px; display: grid; grid-template-columns: 32px 64px 1fr; gap: 14px; align-items: start; transition: background 0.1s;"
             onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
             <!-- Number -->
-            <div style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#2a2a3a;padding-top:4px;text-align:right;">
+            <div style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#3a2410;padding-top:4px;text-align:right;">
               {String(idx + 1).padStart(2, '0')}
             </div>
             <!-- Cover -->
-            <a href={`/games/${item.slug}`} style="display:block;width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;transition:border-color 0.15s;"
-              onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#2a2a3a'">
+            <a href={`/games/${item.slug}`} style="display:block;width:64px;height:64px;overflow:hidden;border:1px solid #3a2410;flex-shrink:0;transition:border-color 0.15s;"
+              onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#3a2410'">
               {game.coverUrl ? (
                 <img src={game.coverUrl.replace('t_cover_big/', 't_cover_big_2x/')} alt={game.title} loading="lazy"
                   style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
               ) : (
-                <div style="width:100%;height:100%;background:#0d0d12;"></div>
+                <div style="width:100%;height:100%;background:#120e08;"></div>
               )}
             </a>
             <!-- Info -->

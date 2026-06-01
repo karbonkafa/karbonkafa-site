@@ -41,7 +41,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
 
     <!-- Hero Image -->
     {article.data.image && (
-      <div style="width: 100%; overflow: hidden; border-bottom: 1px solid #1e1e2e;">
+      <div style="width: 100%; overflow: hidden; border-bottom: 1px solid #2a1c0c;">
         <img src={article.data.image} alt={article.data.title} style="width: 100%; max-height: 380px; object-fit: cover; display: block; opacity: 0.9;" />
       </div>
     )}
@@ -61,7 +61,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
       </h1>
 
       <!-- Excerpt -->
-      <p style="font-size:11px;color:#888899;line-height:1.7;margin:0 0 16px;border-left:2px solid #2a2a3a;padding-left:14px;">
+      <p style="font-size:11px;color:#888899;line-height:1.7;margin:0 0 16px;border-left:2px solid #3a2410;padding-left:14px;">
         {article.data.excerpt}
       </p>
 
@@ -81,16 +81,16 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
         </div>
 
         <button id="listenBtn"
-          style="display:flex;align-items:center;gap:7px;background:#0d0d12;border:1px solid #2a2a3a;color:#555566;font-family:'IBM Plex Mono', monospace;font-size:11px;padding:5px 12px;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;"
+          style="display:flex;align-items:center;gap:7px;background:#120e08;border:1px solid #3a2410;color:#555566;font-family:'IBM Plex Mono', monospace;font-size:11px;padding:5px 12px;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;"
           onmouseover="this.style.borderColor='#444455';this.style.color='#aaaacc';"
-          onmouseout="if(!this.dataset.active){this.style.borderColor='#2a2a3a';this.style.color='#555566';}">
+          onmouseout="if(!this.dataset.active){this.style.borderColor='#3a2410';this.style.color='#555566';}">
           <span id="listenIcon">▶</span>
           <span id="listenLabel">DİNLE</span>
         </button>
       </div>
 
       <!-- Progress bar -->
-      <div id="listenProgress" style="display:none;margin-top:10px;height:2px;background:#1e1e2e;position:relative;overflow:hidden;">
+      <div id="listenProgress" style="display:none;margin-top:10px;height:2px;background:#2a1c0c;position:relative;overflow:hidden;">
         <div id="listenBar" style="height:100%;background:#ffc20a;width:0%;transition:width 0.3s;"></div>
       </div>
     </div>
@@ -113,7 +113,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">ETİKETLER:</span>
         {article.data.tags.map((tag: string) => (
-          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;padding:2px 8px;">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#120e08;border:1px solid #2a1c0c;color:#555566;padding:2px 8px;">
             {tag}
           </span>
         ))}
@@ -160,7 +160,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
 
   function setIdle() {
     icon.textContent = '▶'; label.textContent = 'DİNLE';
-    btn.style.borderColor = '#2a2a3a'; btn.style.color = '#555566';
+    btn.style.borderColor = '#3a2410'; btn.style.color = '#555566';
     delete btn.dataset.active; progress.style.display = 'none';
     bar.style.width = '0%';
     if (progressInterval) clearInterval(progressInterval);

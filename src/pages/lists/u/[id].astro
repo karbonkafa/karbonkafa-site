@@ -75,7 +75,7 @@ const { count: likeCount } = await supabase
       <div style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;margin-bottom:10px;letter-spacing:0.06em;">
         <a href="/lists" style="color:#444455;transition:color 0.1s;"
           onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#444455'">LİSTELER</a>
-        <span style="margin:0 6px;color:#2a2a3a;">›</span>
+        <span style="margin:0 6px;color:#3a2410;">›</span>
         <span style="color:#888899;">{list.title.toUpperCase()}</span>
       </div>
 
@@ -91,7 +91,7 @@ const { count: likeCount } = await supabase
         {author && (
           <a href={`/u/${author.username}`} style="display:flex;align-items:center;gap:7px;text-decoration:none;transition:opacity 0.1s;"
             onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-            <div style="width:22px;height:22px;border-radius:50%;overflow:hidden;background:#1a1a2a;border:1px solid #2a2a3a;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">
+            <div style="width:22px;height:22px;border-radius:50%;overflow:hidden;background:#1c1409;border:1px solid #3a2410;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">
               {author.avatar_url
                 ? <img src={author.avatar_url} style="width:100%;height:100%;object-fit:cover;" />
                 : (author.display_name || author.username)[0].toUpperCase()
@@ -105,14 +105,14 @@ const { count: likeCount } = await supabase
 
         <!-- Like button -->
         <button id="likeBtn" data-list-id={id} aria-pressed="false"
-          style="display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;cursor:pointer;transition:all 0.1s;">
+          style="display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #2a1c0c;color:#555566;padding:2px 10px;cursor:pointer;transition:all 0.1s;">
           <span id="likeHeart">♡</span>
           <span id="likeCount">{likeCount ?? 0}</span>
         </button>
 
         <!-- Edit button — shown client-side if own list -->
-        <a id="editBtn" href={`/lists/u/${id}/edit`} style="display:none;font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;text-decoration:none;transition:all 0.1s;"
-          onmouseover="this.style.color='#ffc20a';this.style.borderColor='#ffc20a'" onmouseout="this.style.color='#555566';this.style.borderColor='#1e1e2e'">
+        <a id="editBtn" href={`/lists/u/${id}/edit`} style="display:none;font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #2a1c0c;color:#555566;padding:2px 10px;text-decoration:none;transition:all 0.1s;"
+          onmouseover="this.style.color='#ffc20a';this.style.borderColor='#ffc20a'" onmouseout="this.style.color='#555566';this.style.borderColor='#2a1c0c'">
           DÜZENLE
         </a>
       </div>
@@ -131,7 +131,7 @@ const { count: likeCount } = await supabase
         const v = itemView(item);
         if (!v) return null;
         const cover = (
-          <div style="width:64px;height:64px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;background:#0d0d12;">
+          <div style="width:64px;height:64px;overflow:hidden;border:1px solid #3a2410;flex-shrink:0;background:#120e08;">
             {v.image
               ? <img src={v.image} alt={v.title} loading="lazy"
                   style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
@@ -140,9 +140,9 @@ const { count: likeCount } = await supabase
           </div>
         );
         return (
-          <div style="border-bottom:1px solid #1e1e2e;padding:14px 16px;display:grid;grid-template-columns:32px 64px 1fr;gap:14px;align-items:start;transition:background 0.1s;"
+          <div style="border-bottom:1px solid #2a1c0c;padding:14px 16px;display:grid;grid-template-columns:32px 64px 1fr;gap:14px;align-items:start;transition:background 0.1s;"
             onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='none'">
-            <div style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#2a2a3a;padding-top:4px;text-align:right;">
+            <div style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#3a2410;padding-top:4px;text-align:right;">
               {String(idx + 1).padStart(2, '0')}
             </div>
             {v.href
@@ -204,10 +204,10 @@ const { count: likeCount } = await supabase
     likeBtn.setAttribute('aria-pressed', String(liked));
     likeHeart.textContent = liked ? '♥' : '♡';
     likeBtn.style.color = liked ? '#ffc20a' : '#555566';
-    likeBtn.style.borderColor = liked ? '#ffc20a' : '#1e1e2e';
+    likeBtn.style.borderColor = liked ? '#ffc20a' : '#2a1c0c';
   }
   likeBtn?.addEventListener('mouseover', () => { if (!liked) likeBtn.style.borderColor = '#ffc20a66'; });
-  likeBtn?.addEventListener('mouseout', () => { if (!liked) likeBtn.style.borderColor = '#1e1e2e'; });
+  likeBtn?.addEventListener('mouseout', () => { if (!liked) likeBtn.style.borderColor = '#2a1c0c'; });
 
   let likeUser: any = null;
 

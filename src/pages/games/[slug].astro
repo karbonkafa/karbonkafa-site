@@ -106,7 +106,7 @@ const filteredWebsites = igdb.websites
         {statusLabel[game.status] || game.status}
       </span>
       {game.libraryPlatforms?.map((p: string) => (
-        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;">{p}</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #2a1c0c;color:#555566;padding:2px 10px;">{p}</span>
       ))}
       {game.isPriorityBacklog && (
         <span data-i18n="game.priority" style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #ffc20a44;color:#ffc20a;padding:2px 10px;">⭐ Priority</span>
@@ -128,10 +128,10 @@ const filteredWebsites = igdb.websites
           <img
             src={game.coverUrl?.replace('t_cover_big/', 't_cover_big_2x/')}
             alt={game.title}
-            style="width: 180px; aspect-ratio: 3/4; object-fit: cover; display: block; border: 1px solid #2a2a3a;"
+            style="width: 180px; aspect-ratio: 3/4; object-fit: cover; display: block; border: 1px solid #3a2410;"
           />
         ) : (
-          <div style="width: 180px; aspect-ratio: 3/4; background: #0d0d12; border: 1px solid #2a2a3a; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 180px; aspect-ratio: 3/4; background: #120e08; border: 1px solid #3a2410; display: flex; align-items: center; justify-content: center;">
             <span style="font-size: 11px; color: #444455; font-family: 'JetBrains Mono', monospace; text-align: center; padding: 12px;">{game.title}</span>
           </div>
         )}
@@ -142,25 +142,25 @@ const filteredWebsites = igdb.websites
         <h1 style="font-family:'IBM Plex Mono', monospace;font-size:clamp(20px,2.5vw,30px);color:#ffffff;letter-spacing:0.02em;margin:0 0 14px;line-height:1.15;">{game.title}</h1>
 
         <!-- Ref table -->
-        <div style="border: 1px solid #1e1e2e; margin-bottom: 14px;">
+        <div style="border: 1px solid #2a1c0c; margin-bottom: 14px;">
           {refRows.map(row => (
-            <div style="display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid #1e1e2e;">
-              <div style="padding: 8px 12px; background: #080810; display: flex; align-items: center;">
+            <div style="display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid #2a1c0c;">
+              <div style="padding: 8px 12px; background: #0a0805; display: flex; align-items: center;">
                 <span data-i18n={row.key || ''} style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;text-transform:uppercase;letter-spacing:0.04em;">{row.label}</span>
               </div>
-              <div style="padding: 8px 12px; background: #0d0d12; display: flex; align-items: center;">
+              <div style="padding: 8px 12px; background: #120e08; display: flex; align-items: center;">
                 <span style={`font-size: 13px; color: ${row.color || '#ccccdd'};`}>{row.value}</span>
               </div>
             </div>
           ))}
           <!-- HLTB row -->
           <a href={`https://howlongtobeat.com/?q=${encodeURIComponent(game.title)}`} target="_blank" rel="noopener"
-            style="display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid #1e1e2e; transition: opacity 0.15s;"
+            style="display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid #2a1c0c; transition: opacity 0.15s;"
             onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
-            <div style="padding: 8px 12px; background: #080810; display: flex; align-items: center;">
+            <div style="padding: 8px 12px; background: #0a0805; display: flex; align-items: center;">
               <span data-i18n="game.completion" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;text-transform:uppercase;letter-spacing:0.04em;">Tamamlama</span>
             </div>
-            <div style="padding: 8px 12px; background: #0d0d12; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+            <div style="padding: 8px 12px; background: #120e08; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
               <div style="display: flex; gap: 14px; flex-wrap: wrap;">
                 {igdb.timeToBeat?.main ? (
                   <>
@@ -212,7 +212,7 @@ const filteredWebsites = igdb.websites
 
         <!-- Summary -->
         {(game.summaryTr || game.summary) && (
-          <p style="font-size: 13px; color: #888899; line-height: 1.7; margin: 0; border-left: 2px solid #2a2a3a; padding-left: 12px;">
+          <p style="font-size: 13px; color: #888899; line-height: 1.7; margin: 0; border-left: 2px solid #3a2410; padding-left: 12px;">
             {game.summaryTr || game.summary}
           </p>
         )}
@@ -280,8 +280,8 @@ const filteredWebsites = igdb.websites
             : `https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${similar.cover}.jpg`;
           return (
             <a href={`/games/${similar.slug}`}
-              style="display:flex;flex-direction:column;background:#0d0d12;border:1px solid #1e1e2e;overflow:hidden;transition:border-color 0.15s;"
-              onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#1e1e2e'">
+              style="display:flex;flex-direction:column;background:#120e08;border:1px solid #2a1c0c;overflow:hidden;transition:border-color 0.15s;"
+              onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#2a1c0c'">
               <div style="aspect-ratio:16/9;overflow:hidden;">
                 <img src={bannerUrl} alt={similar.name} loading="lazy"
                   style={`width:100%;height:100%;object-fit:cover;object-position:${sId ? 'center' : 'top center'};display:block;`} />
@@ -308,13 +308,13 @@ const filteredWebsites = igdb.websites
         {igdb.themes?.length > 0 && (
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;min-width:70px;text-transform:uppercase;">Tema</span>
-            {igdb.themes.map((tag: string) => <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#778899;padding:2px 8px;">{tag}</span>)}
+            {igdb.themes.map((tag: string) => <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #2a1c0c;color:#778899;padding:2px 8px;">{tag}</span>)}
           </div>
         )}
         {igdb.gameModes?.length > 0 && (
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;min-width:70px;text-transform:uppercase;">Mod</span>
-            {igdb.gameModes.map((tag: string) => <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#778899;padding:2px 8px;">{tag}</span>)}
+            {igdb.gameModes.map((tag: string) => <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #2a1c0c;color:#778899;padding:2px 8px;">{tag}</span>)}
           </div>
         )}
         {igdb.keywords?.length > 0 && (
@@ -322,7 +322,7 @@ const filteredWebsites = igdb.websites
             <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;min-width:70px;text-transform:uppercase;padding-top:3px;">Anahtar</span>
             <div style="display:flex;gap:5px;flex-wrap:wrap;">
               {igdb.keywords.map((k: string) => (
-                <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#080810;border:1px solid #1e1e2e;color:#555566;padding:2px 8px;">{k}</span>
+                <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0a0805;border:1px solid #2a1c0c;color:#555566;padding:2px 8px;">{k}</span>
               ))}
             </div>
           </div>
@@ -339,13 +339,13 @@ const filteredWebsites = igdb.websites
         <div class="px-btns"><span class="px-btn">─</span></div>
       </div>
       {igdb.languages?.audio?.length > 0 && (
-        <div style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;">
+        <div style="padding: 10px 14px; border-bottom: 1px solid #2a1c0c; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;">
           <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;min-width:70px;" data-i18n="game.audio">SES</span>
           <p style="font-size: 13px; color: #888899; margin: 0;">{igdb.languages.audio.join(' · ')}</p>
         </div>
       )}
       {igdb.languages?.subtitles?.length > 0 && (
-        <div style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;">
+        <div style="padding: 10px 14px; border-bottom: 1px solid #2a1c0c; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;">
           <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;min-width:70px;" data-i18n="game.subtitles">ALTYAZI</span>
           <p style="font-size: 13px; color: #888899; margin: 0;">{igdb.languages.subtitles.join(' · ')}</p>
         </div>
@@ -372,18 +372,18 @@ const filteredWebsites = igdb.websites
     ].map(cat => {
       const score = review[cat.key];
       return (
-        <div class="review-row" data-key={cat.key} style="padding: 12px 16px; border-bottom: 1px solid #1e1e2e; display: grid; grid-template-columns: 140px 1fr auto; gap: 14px; align-items: center;">
+        <div class="review-row" data-key={cat.key} style="padding: 12px 16px; border-bottom: 1px solid #2a1c0c; display: grid; grid-template-columns: 140px 1fr auto; gap: 14px; align-items: center;">
           <div>
             <p data-i18n={cat.labelKey} style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#ccccdd;margin:0 0 2px;line-height:1;">{cat.label}</p>
             <p data-i18n={cat.descKey} style="font-size:11px;color:#444455;margin:0;">{cat.desc}</p>
           </div>
-          <div style="position:relative;height:3px;background:#1e1e2e;border-radius:2px;">
+          <div style="position:relative;height:3px;background:#2a1c0c;border-radius:2px;">
             <div class="score-bar" style={`height:100%;border-radius:2px;background:#ffc20a;width:${score ? score * 10 : 0}%;transition:width 0.3s;`}></div>
           </div>
           <div style="display:flex;gap:2px;align-items:center;">
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
               <button class="score-btn admin-edit" data-value={n}
-                style={`background:none;border:none;cursor:pointer;width:16px;height:16px;border-radius:2px;font-size:0;padding:0;background-color:${score && n <= score ? '#ffc20a' : '#1e1e2e'};transition:background-color 0.1s;`}
+                style={`background:none;border:none;cursor:pointer;width:16px;height:16px;border-radius:2px;font-size:0;padding:0;background-color:${score && n <= score ? '#ffc20a' : '#2a1c0c'};transition:background-color 0.1s;`}
                 title={String(n)}>{n}</button>
             ))}
             <span class="score-label" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;min-width:26px;text-align:right;margin-left:4px;">
@@ -418,12 +418,12 @@ const filteredWebsites = igdb.websites
         return items.length > 0 ? (
           <div>
             {section !== 'Parent Game' && (
-              <div style="padding: 7px 14px; background: #080810; border-bottom: 1px solid #1e1e2e;">
+              <div style="padding: 7px 14px; background: #0a0805; border-bottom: 1px solid #2a1c0c;">
                 <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{section}</span>
               </div>
             )}
             {items.map((a: any) => (
-              <label style="display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid #1e1e2e;cursor:pointer;transition:background 0.1s;"
+              <label style="display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid #2a1c0c;cursor:pointer;transition:background 0.1s;"
                 onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='transparent'">
                 <input type="checkbox" class="achievement-check" data-name={a.name}
                   style="accent-color:#ffc20a;width:14px;height:14px;cursor:pointer;flex-shrink:0;" />
@@ -450,13 +450,13 @@ const filteredWebsites = igdb.websites
         <div class="px-btns"><span class="px-btn">─</span></div>
       </div>
       {igdb.expansions?.map((e: any) => (
-        <div style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="padding: 10px 14px; border-bottom: 1px solid #2a1c0c; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
           <p style="font-size:11px;margin:0;color:#ccccdd;">{e.name}</p>
           <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;white-space:nowrap;">EXPANSION</span>
         </div>
       ))}
       {igdb.dlcs?.map((d: any) => (
-        <div style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="padding: 10px 14px; border-bottom: 1px solid #2a1c0c; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
           <p style="font-size:11px;margin:0;color:#ccccdd;">{d.name}</p>
           <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#666677;white-space:nowrap;">DLC</span>
         </div>
@@ -471,7 +471,7 @@ const filteredWebsites = igdb.websites
         <span class="px-title" data-i18n="game.media">🖼 MEDYA</span>
         <div class="px-btns"><span class="px-btn">─</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #1e1e2e;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #2a1c0c;">
         {[...(igdb.screenshots || []).map((id: string) => ({id})),
            ...(igdb.artworks   || []).map((id: string) => ({id}))]
           .slice(0, 6).map((img: any) => (
@@ -509,8 +509,8 @@ const filteredWebsites = igdb.websites
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
       {filteredWebsites.map(([cat, url]) => (
         <a href={String(url)} target="_blank" rel="noopener"
-          style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:4px 10px;transition:all 0.15s;text-transform:capitalize;"
-          onmouseover="this.style.borderColor='#444455';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#555566'">
+          style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #2a1c0c;color:#555566;padding:4px 10px;transition:all 0.15s;text-transform:capitalize;"
+          onmouseover="this.style.borderColor='#444455';this.style.color='#e5e5e5'" onmouseout="this.style.borderColor='#2a1c0c';this.style.color='#555566'">
           {cat} ↗
         </a>
       ))}
@@ -592,7 +592,7 @@ const filteredWebsites = igdb.websites
     if (current > 0) scores[key] = current;
 
     function render(val: number) {
-      btns.forEach(b => { b.style.backgroundColor = parseInt(b.dataset.value!) <= val ? '#ffc20a' : '#1e1e2e'; });
+      btns.forEach(b => { b.style.backgroundColor = parseInt(b.dataset.value!) <= val ? '#ffc20a' : '#2a1c0c'; });
       bar.style.width = `${val * 10}%`;
       scoreLabel.textContent = val > 0 ? String(val) : '—';
     }

@@ -36,7 +36,7 @@ const titles = pool.map(g => g.title);
     </div>
 
     <!-- Canvas -->
-    <div style="position:relative;background:#050508;">
+    <div style="position:relative;background:#0a0907;">
       <canvas id="quizCanvas" style="display:block;width:100%;max-height:420px;image-rendering:pixelated;cursor:crosshair;"></canvas>
       <!-- Level indicator -->
       <div style="position:absolute;top:10px;left:10px;display:flex;gap:4px;" id="levelDots"></div>
@@ -57,20 +57,20 @@ const titles = pool.map(g => g.title);
       <div style="position:relative;">
         <input id="guessInput" type="text" placeholder="Oyun adını yaz..."
           autocomplete="off" spellcheck="false"
-          style="width:100%;background:#0d0d12;border:2px solid #1e1e2e;color:#e5e5e5;padding:12px 14px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
-          onfocus="this.style.borderColor='#444'" onblur="this.style.borderColor='#1e1e2e'" />
-        <div id="suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#0d0d12;border:2px solid #1e1e2e;border-top:none;z-index:20;max-height:200px;overflow-y:auto;"></div>
+          style="width:100%;background:#120e08;border:2px solid #2a1c0c;color:#e5e5e5;padding:12px 14px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;"
+          onfocus="this.style.borderColor='#444'" onblur="this.style.borderColor='#2a1c0c'" />
+        <div id="suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#120e08;border:2px solid #2a1c0c;border-top:none;z-index:20;max-height:200px;overflow-y:auto;"></div>
       </div>
       <!-- Buttons row -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <button id="hintBtn"
-          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
-          onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#120e08;border:2px solid #2a1c0c;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#2a1c0c';this.style.color='#666677'">
           💡 İPUCU
         </button>
         <button id="skipBtn"
-          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#0d0d12;border:2px solid #1e1e2e;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
-          onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
+          style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#120e08;border:2px solid #2a1c0c;color:#666677;padding:7px 16px;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+          onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#2a1c0c';this.style.color='#666677'">
           ✕ BİLMİYORUM
         </button>
         <button id="nextBtn" style="display:none;font-family:'IBM Plex Mono', monospace;font-size:12px;background:#ffc20a;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
@@ -124,13 +124,13 @@ function normalize(s) {
 
 function renderLives() {
   livesEl.innerHTML = Array.from({length: MAX_LIVES}, (_, i) =>
-    `<span style="color:${i < lives ? '#ef4444' : '#1e1e2e'}">♥</span>`
+    `<span style="color:${i < lives ? '#ef4444' : '#2a1c0c'}">♥</span>`
   ).join('');
 }
 
 function renderLevelDots() {
   levelDots.innerHTML = Array.from({length: CROPS.length - 1}, (_, i) =>
-    `<div style="width:8px;height:8px;border-radius:50%;background:${i < level ? '#22c55e' : i === level ? '#ffc20a' : '#1e1e2e'};"></div>`
+    `<div style="width:8px;height:8px;border-radius:50%;background:${i < level ? '#22c55e' : i === level ? '#ffc20a' : '#2a1c0c'};"></div>`
   ).join('');
 }
 
@@ -156,7 +156,7 @@ function drawCrop(screenshotId, cropFrac) {
     const sx = Math.random() * Math.max(0, img.width - sw);
     const sy = Math.random() * Math.max(0, img.height - sh);
 
-    ctx.fillStyle = '#050508';
+    ctx.fillStyle = '#0a0907';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.imageSmoothingEnabled = cropFrac > 0.5;
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
@@ -172,7 +172,7 @@ function drawCrop(screenshotId, cropFrac) {
     ctx.fillText(`KESİT ${level + 1}/${CROPS.length - 1}  •  ZOOM: ${Math.round(cropFrac * 100)}%`, 10, canvas.height - 8);
   };
   img.onerror = () => {
-    ctx.fillStyle = '#0d0d12';
+    ctx.fillStyle = '#120e08';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#333344';
     ctx.font = '20px VT323';
@@ -189,7 +189,7 @@ function loadGame() {
   wrongGuesses = [];
   guessInput.value = '';
   guessInput.disabled = false;
-  guessInput.style.borderColor = '#1e1e2e';
+  guessInput.style.borderColor = '#2a1c0c';
   suggestionsEl.style.display = 'none';
   overlay.style.display = 'none';
   nextBtn.style.display = 'none';
@@ -264,7 +264,7 @@ function reveal(correct) {
   const infoBtn = document.createElement('a');
   infoBtn.href = `/games/${g.slug}`;
   infoBtn.textContent = 'OYUN SAYFASI';
-  infoBtn.style.cssText = 'border:2px solid #1e1e2e;color:#888899;padding:8px 18px;font-family:"VT323",monospace;font-size:12px;text-decoration:none;letter-spacing:0.06em;';
+  infoBtn.style.cssText = 'border:2px solid #2a1c0c;color:#888899;padding:8px 18px;font-family:"VT323",monospace;font-size:12px;text-decoration:none;letter-spacing:0.06em;';
   cta.appendChild(infoBtn);
 }
 
@@ -281,7 +281,7 @@ function checkGuess(val) {
     renderWrong();
     guessInput.style.borderColor = '#ef4444';
     guessInput.value = '';
-    setTimeout(() => { guessInput.style.borderColor = '#1e1e2e'; }, 600);
+    setTimeout(() => { guessInput.style.borderColor = '#2a1c0c'; }, 600);
     if (lives <= 0) { reveal(false); return; }
     if (!revealed) giveHint();
   }
@@ -294,7 +294,7 @@ guessInput.addEventListener('input', () => {
   if (!matches.length) { suggestionsEl.style.display = 'none'; return; }
   suggestionsEl.innerHTML = matches.map(t =>
     `<div class="sug" data-title="${t.replace(/"/g,'&quot;')}"
-      style="padding:10px 14px;cursor:pointer;font-size:11px;color:#ccc;border-bottom:1px solid #1e1e2e;transition:background 0.1s;"
+      style="padding:10px 14px;cursor:pointer;font-size:11px;color:#ccc;border-bottom:1px solid #2a1c0c;transition:background 0.1s;"
       onmouseover="this.style.background='#0d0d1a'" onmouseout="this.style.background='none'">${t}</div>`
   ).join('');
   suggestionsEl.style.display = 'block';

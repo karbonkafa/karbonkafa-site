@@ -40,18 +40,18 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
           { k: 'dropped', label: 'BIRAKTI',   c: '#ef4444' },
         ].map(s => (
           <button class="ea-st" data-status={s.k} data-color={s.c}
-            style={`font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 10px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;`}>
+            style={`font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 10px;background:#120e08;border:1px solid #2a1c0c;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;`}>
             {s.label}
           </button>
         ))}
       </div>
       <select class="ea-rating"
-        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#ffc20a;padding:4px 8px;cursor:pointer;outline:none;">
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#120e08;border:1px solid #2a1c0c;color:#ffc20a;padding:4px 8px;cursor:pointer;outline:none;">
         <option value="">PUAN</option>
         {[10,9,8,7,6,5,4,3,2,1].map(n => <option value={n}>{n}/10</option>)}
       </select>
       <button class="ea-log" title="Bir deneyim kaydı ekle (yeniden izleme/oynama de sayılır)"
-        style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #33ff6633;color:#33ff66aa;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#120e08;border:1px solid #33ff6633;color:#33ff66aa;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
         onmouseover="this.style.color='#33ff66';this.style.borderColor='#33ff66'" onmouseout="this.style.color='#33ff66aa';this.style.borderColor='#33ff6633'">
         📼 LOGLA <span class="ea-logcount" style="color:#33ff6666;"></span>
       </button>
@@ -60,12 +60,12 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
     <!-- Add to list -->
     <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
       <select class="ea-listsel"
-        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#aaaacc;padding:4px 8px;cursor:pointer;outline:none;max-width:200px;">
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#120e08;border:1px solid #2a1c0c;color:#aaaacc;padding:4px 8px;cursor:pointer;outline:none;max-width:200px;">
         <option value="">— listeye ekle —</option>
       </select>
       <button class="ea-newlist"
-        style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
-        onmouseover="this.style.color='#3b82f6';this.style.borderColor='#3b82f6'" onmouseout="this.style.color='#555566';this.style.borderColor='#1e1e2e'">
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#120e08;border:1px solid #2a1c0c;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+        onmouseover="this.style.color='#3b82f6';this.style.borderColor='#3b82f6'" onmouseout="this.style.color='#555566';this.style.borderColor='#2a1c0c'">
         ＋ YENİ LİSTE
       </button>
     </div>
@@ -118,8 +118,8 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
       stBtns.forEach(b => {
         const on = b.dataset.status === active;
         b.style.color = on ? '#0a0a0a' : '#555566';
-        b.style.background = on ? (b.dataset.color || '#3b82f6') : '#0d0d12';
-        b.style.borderColor = on ? (b.dataset.color || '#3b82f6') : '#1e1e2e';
+        b.style.background = on ? (b.dataset.color || '#3b82f6') : '#120e08';
+        b.style.borderColor = on ? (b.dataset.color || '#3b82f6') : '#2a1c0c';
       });
     }
 

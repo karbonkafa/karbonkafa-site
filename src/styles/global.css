@@ -3,8 +3,8 @@
 
 :root {
   --bg: #0a0907;
-  --card: #0d0d12;
-  --border: #1e1e2e;
+  --card: #120e08;
+  --border: #2a1c0c;
   --text: #e5e5e5;
   --muted: #555566;
   --accent: #ffc20a;
@@ -313,6 +313,6 @@ a {
   font-size: 20px;
   color: #ccc;
   margin: 24px 0 10px;
-  border-bottom: 1px solid #1e1e2e;
+  border-bottom: 1px solid #2a1c0c;
   padding-bottom: 6px;
 }

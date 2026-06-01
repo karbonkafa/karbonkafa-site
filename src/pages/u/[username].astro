@@ -77,7 +77,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
 <Layout title={`${displayName} — Profil`}>
 
   <!-- Hero -->
-  <div style="position: relative; padding: 32px 24px; overflow: hidden; min-height: 180px; display: flex; align-items: flex-end; border: 1px solid #1e1e2e;">
+  <div style="position: relative; padding: 32px 24px; overflow: hidden; min-height: 180px; display: flex; align-items: flex-end; border: 1px solid #2a1c0c;">
     <!-- Background blur -->
     {heroCover && (
       <div style={`position: absolute; inset: 0; background-image: url('${heroCover}'); background-size: cover; background-position: center; filter: blur(40px) brightness(0.25); transform: scale(1.1);`}></div>
@@ -146,7 +146,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
         const earned = t.earned(titleStats);
         const col = earned ? '#ffc20a' : '#3a3a44';
         return (
-          <div style={`background:#0d0d12;border:1px solid ${earned ? '#ffc20a33' : '#1e1e2e'};padding:10px 12px;${earned ? '' : 'opacity:0.6;'}`}>
+          <div style={`background:#120e08;border:1px solid ${earned ? '#ffc20a33' : '#2a1c0c'};padding:10px 12px;${earned ? '' : 'opacity:0.6;'}`}>
             <p style={`font-family:'IBM Plex Mono', monospace;font-size:11px;color:${col};margin:0 0 4px;letter-spacing:0.04em;`}>{earned ? '◆' : '◇'} {t.label}</p>
             <p style="font-size:11px;color:#555566;margin:0;line-height:1.4;">{t.desc}</p>
           </div>
@@ -173,9 +173,9 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
           const likeCount = likesByList[list.id] || 0;
           return (
             <a href={`/lists/u/${list.id}`}
-              style="display:block;background:#0d0d12;border:1px solid #ffc20a22;text-decoration:none;transition:border-color 0.15s;"
+              style="display:block;background:#120e08;border:1px solid #ffc20a22;text-decoration:none;transition:border-color 0.15s;"
               onmouseover="this.style.borderColor='#ffc20a66'" onmouseout="this.style.borderColor='#ffc20a22'">
-              <div style="padding:14px 16px;border-bottom:1px solid #1e1e2e;">
+              <div style="padding:14px 16px;border-bottom:1px solid #2a1c0c;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px;">
                   <p style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#ffffff;margin:0;line-height:1.2;">{list.title}</p>
                   <span style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#444455;flex-shrink:0;white-space:nowrap;">{itemTotal} öğe{likeCount > 0 ? ` · ♥${likeCount}` : ''}</span>
@@ -185,12 +185,12 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
               <div style="padding:8px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
                 <div style="display:flex;gap:2px;flex-wrap:wrap;">
                   {covers.map((c: string) => (
-                    <div style="width:32px;height:32px;overflow:hidden;border:1px solid #2a2a3a;flex-shrink:0;">
+                    <div style="width:32px;height:32px;overflow:hidden;border:1px solid #3a2410;flex-shrink:0;">
                       <img src={c} alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
                     </div>
                   ))}
                 </div>
-                <div style="width:32px;height:32px;background:#1a1a2a;border:1px solid #2a2a3a;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;flex-shrink:0;">
+                <div style="width:32px;height:32px;background:#1c1409;border:1px solid #3a2410;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;flex-shrink:0;">
                   {profile.avatar_url
                     ? <img src={profile.avatar_url} alt="" style="width:100%;height:100%;object-fit:cover;" />
                     : initials}
@@ -213,10 +213,10 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
       <!-- Type filter tabs -->
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;">
         <button class="lib-tab" data-type="all"
-          style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #3b82f6;color:#3b82f6;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;">TÜMÜ</button>
+          style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#120e08;border:1px solid #3b82f6;color:#3b82f6;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;">TÜMÜ</button>
         {[...new Set(library.map((e: any) => e.entity.type))].map((t: any) => (
           <button class="lib-tab" data-type={t}
-            style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #1e1e2e;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;">
+            style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#120e08;border:1px solid #2a1c0c;color:#555566;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;">
             {typeInfo(t).icon} {typeInfo(t).label.toUpperCase()}
           </button>
         ))}
@@ -229,7 +229,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
           const badge = STATUS_BADGE[e.status] || null;
           const inner = (
             <>
-              <div style="aspect-ratio:2/3;overflow:hidden;background:#0d0d12;position:relative;">
+              <div style="aspect-ratio:2/3;overflow:hidden;background:#120e08;position:relative;">
                 {ent.image_url
                   ? <img src={ent.image_url} alt={ent.title} loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />
                   : <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;">{typeInfo(ent.type).icon}</div>}
@@ -278,7 +278,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
   libTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const t = tab.dataset.type!;
-      libTabs.forEach(b => { b.style.color = '#555566'; b.style.borderColor = '#1e1e2e'; });
+      libTabs.forEach(b => { b.style.color = '#555566'; b.style.borderColor = '#2a1c0c'; });
       tab.style.color = '#3b82f6'; tab.style.borderColor = '#3b82f6';
       libCards.forEach(card => {
         card.style.display = (t === 'all' || card.dataset.type === t) ? '' : 'none';
