@@ -3,7 +3,7 @@ export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
 import { entityHref, typeInfo } from '../../lib/entities';
-import { titleById } from '../../lib/titles';
+import { titleById, TITLES } from '../../lib/titles';
 
 const STATUS_BADGE: Record<string, { label: string; color: string }> = {
   want:    { label: 'İSTİYOR',  color: '#e5c46b' },
@@ -77,7 +77,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
 <Layout title={`${displayName} — Profil`}>
 
   <!-- Hero -->
-  <div style="position: relative; margin: 0 -24px; padding: 36px 24px 32px; overflow: hidden; min-height: 200px; display: flex; align-items: flex-end; border-bottom: 1px solid #1e1e2e;">
+  <div style="position: relative; padding: 32px 24px; overflow: hidden; min-height: 180px; display: flex; align-items: flex-end; border: 1px solid #1e1e2e;">
     <!-- Background blur -->
     {heroCover && (
       <div style={`position: absolute; inset: 0; background-image: url('${heroCover}'); background-size: cover; background-position: center; filter: blur(40px) brightness(0.25); transform: scale(1.1);`}></div>
@@ -99,7 +99,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
       <!-- Name + stats -->
       <div style="flex: 1; min-width: 200px;">
         <p style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.12em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 8px;">Profil</p>
-        <h1 style="font-size: clamp(28px, 5vw, 52px); font-weight: 700; letter-spacing: -0.04em; margin: 0 0 12px; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.5);">{displayName}</h1>
+        <h1 style="font-family: 'IBM Plex Mono', monospace; font-size: clamp(24px, 4vw, 40px); font-weight: 400; letter-spacing: 0.01em; margin: 0 0 12px; line-height: 1.05; text-shadow: 0 2px 16px rgba(0,0,0,0.5);">{displayName}</h1>
         {shownTitle && (
           <p style="display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e5c46b; background: #e5c46b14; border: 1px solid #e5c46b33; padding: 2px 10px; margin: 0 0 12px; letter-spacing: 0.06em;">&gt; rank: {shownTitle.label}</p>
         )}
@@ -133,6 +133,25 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
           Çıkış
         </a>
       </div>
+    </div>
+  </div>
+
+  <!-- Achievements (titles) section -->
+  <div style="margin-top: 40px;">
+    <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 16px;">
+      Başarımlar <span style="color:#e5c46b;">{TITLES.filter(t => t.earned(titleStats)).length}/{TITLES.length}</span>
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;">
+      {TITLES.map(t => {
+        const earned = t.earned(titleStats);
+        const col = earned ? '#e5c46b' : '#3a3a44';
+        return (
+          <div style={`background:#0d0d12;border:1px solid ${earned ? '#e5c46b33' : '#1e1e2e'};padding:10px 12px;${earned ? '' : 'opacity:0.6;'}`}>
+            <p style={`font-family:'IBM Plex Mono', monospace;font-size:11px;color:${col};margin:0 0 4px;letter-spacing:0.04em;`}>{earned ? '◆' : '◇'} {t.label}</p>
+            <p style="font-size:11px;color:#555566;margin:0;line-height:1.4;">{t.desc}</p>
+          </div>
+        );
+      })}
     </div>
   </div>
 
