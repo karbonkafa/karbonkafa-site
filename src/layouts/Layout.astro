@@ -148,8 +148,23 @@ const isActive = (href: string) =>
         </div>
       </div>
 
-      <!-- Taskbar (moved under the weather / system panel) -->
-      <div style="background:#050508;border:1px solid #1e1e2e;display:flex;align-items:stretch;height:44px;margin-bottom:6px;overflow:hidden;">
+      <!-- Apps bar — terminal tabs -->
+      <div style="background:#0d0d12;border:1px solid #1e1e2e;margin-bottom:8px;">
+        <nav class="apps-tabs">
+          {[HOME, ...apps].map(app => {
+            const on = isActive(app.href);
+            const style = `color:${app.color};` + (on ? `border-bottom-color:${app.color};background:${app.color}1a;` : '');
+            return (
+              <a href={app.href} class={`app-tab${on ? ' is-active' : ''}`} style={style}>{app.label}</a>
+            );
+          })}
+        </nav>
+      </div>
+
+      <slot />
+
+      <!-- Taskbar (under page content — below DÜNYA/HAVA on the homepage) -->
+      <div style="background:#050508;border:1px solid #1e1e2e;display:flex;align-items:stretch;height:44px;margin-top:6px;overflow:hidden;">
 
         <a href="/" style="display:flex;align-items:center;gap:6px;padding:0 14px;border-right:1px solid #1e1e2e;text-decoration:none;transition:background 0.1s;flex-shrink:0;"
           onmouseover="this.style.background='#0d0d12'" onmouseout="this.style.background='none'">
@@ -192,21 +207,6 @@ const isActive = (href: string) =>
         </div>
 
       </div>
-
-      <!-- Apps bar — terminal tabs -->
-      <div style="background:#0d0d12;border:1px solid #1e1e2e;margin-bottom:8px;">
-        <nav class="apps-tabs">
-          {[HOME, ...apps].map(app => {
-            const on = isActive(app.href);
-            const style = `color:${app.color};` + (on ? `border-bottom-color:${app.color};background:${app.color}1a;` : '');
-            return (
-              <a href={app.href} class={`app-tab${on ? ' is-active' : ''}`} style={style}>{app.label}</a>
-            );
-          })}
-        </nav>
-      </div>
-
-      <slot />
     </main>
 
     <footer style="border-top: 1px solid #1e1e2e; padding: 16px 24px; text-align: center; font-family:'IBM Plex Mono', monospace; font-size: 16px; color: #333344; letter-spacing:0.04em;">
