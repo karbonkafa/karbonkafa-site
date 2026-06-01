@@ -1,0 +1,113 @@
+---
+export const prerender = false;
+import Layout from '../../../../layouts/Layout.astro';
+const { id } = Astro.params;
+---
+
+<Layout title="Liste Düzenle">
+
+  <!-- Not owner / not logged in -->
+  <div id="wall" style="display:none;">
+    <div class="px-window" style="text-align:center;">
+      <div class="px-titlebar"><span class="px-title">🔒 ERİŞİM REDDEDİLDİ</span><div class="px-btns"><span class="px-btn">×</span></div></div>
+      <div style="padding:32px 24px;">
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#555566;margin:0 0 20px;letter-spacing:0.04em;">Bu listeyi düzenleme yetkin yok.</p>
+        <a id="wallBack" href="/lists" style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">← LİSTEYE DÖN</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit form -->
+  <div id="editForm" style="display:none;">
+    <div class="px-window" style="margin-bottom:12px;">
+      <div class="px-titlebar" style="border-left-color:#e5c46b;">
+        <span class="px-title" style="color:#e5c46b;">✎ LİSTE DÜZENLE.EXE</span>
+        <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
+      </div>
+      <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <input id="listTitle" type="text" placeholder="Liste başlığı..." maxlength="100" autocomplete="off"
+          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:10px 12px;font-family:'IBM Plex Mono', monospace;font-size:12px;outline:none;box-sizing:border-box;"
+          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
+        <textarea id="listDesc" placeholder="Açıklama (isteğe bağlı)..." maxlength="500" rows="2"
+          style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#aaaacc;padding:10px 12px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;resize:vertical;"
+          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#888899;cursor:pointer;">
+          <input id="listPublic" type="checkbox" style="accent-color:#e5c46b;" /> Herkese açık
+        </label>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <button id="saveBtn"
+        style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">
+        KAYDET →
+      </button>
+      <a id="cancelBtn" href="#" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;text-decoration:none;border:1px solid #1e1e2e;padding:8px 16px;transition:all 0.1s;"
+        onmouseover="this.style.color='#aaa';this.style.borderColor='#333'" onmouseout="this.style.color='#555566';this.style.borderColor='#1e1e2e'">VAZGEÇ</a>
+      <span style="flex:1;"></span>
+      <button id="deleteBtn"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #ef444433;color:#ef444488;padding:8px 16px;cursor:pointer;letter-spacing:0.04em;transition:all 0.1s;"
+        onmouseover="this.style.color='#ef4444';this.style.borderColor='#ef4444'" onmouseout="this.style.color='#ef444488';this.style.borderColor='#ef444433'">
+        🗑 LİSTEYİ SİL
+      </button>
+      <span id="msg" style="width:100%;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;"></span>
+    </div>
+  </div>
+
+</Layout>
+
+<div id="__meta" data-id={id} style="display:none;"></div>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const sb = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  const listId = (document.getElementById('__meta') as HTMLElement).dataset.id!;
+  const wall = document.getElementById('wall') as HTMLElement;
+  const form = document.getElementById('editForm') as HTMLElement;
+  const titleEl = document.getElementById('listTitle') as HTMLInputElement;
+  const descEl = document.getElementById('listDesc') as HTMLTextAreaElement;
+  const publicEl = document.getElementById('listPublic') as HTMLInputElement;
+  const msg = document.getElementById('msg') as HTMLElement;
+  const backHref = `/lists/u/${listId}`;
+  (document.getElementById('cancelBtn') as HTMLAnchorElement).href = backHref;
+  (document.getElementById('wallBack') as HTMLAnchorElement).href = backHref;
+
+  (async () => {
+    const { data: { user } } = await sb.auth.getUser();
+    const { data: list } = await sb.from('lists').select('user_id, title, description, is_public').eq('id', listId).single();
+    if (!user || !list || user.id !== list.user_id) { wall.style.display = 'block'; return; }
+    titleEl.value = list.title || '';
+    descEl.value = list.description || '';
+    publicEl.checked = !!list.is_public;
+    form.style.display = 'block';
+  })();
+
+  document.getElementById('saveBtn')!.addEventListener('click', async () => {
+    const title = titleEl.value.trim();
+    if (!title) { msg.textContent = 'Başlık boş olamaz.'; return; }
+    const btn = document.getElementById('saveBtn') as HTMLButtonElement;
+    btn.disabled = true; btn.textContent = 'KAYDEDİLİYOR...';
+    const { error } = await sb.from('lists').update({
+      title, description: descEl.value.trim(), is_public: publicEl.checked, updated_at: new Date().toISOString(),
+    }).eq('id', listId);
+    if (error) { msg.textContent = 'Hata: ' + error.message; btn.disabled = false; btn.textContent = 'KAYDET →'; return; }
+    window.location.href = backHref;
+  });
+
+  document.getElementById('deleteBtn')!.addEventListener('click', async () => {
+    if (!confirm('Bu liste kalıcı olarak silinecek. Emin misin?')) return;
+    const btn = document.getElementById('deleteBtn') as HTMLButtonElement;
+    btn.disabled = true; btn.textContent = 'SİLİNİYOR...';
+    // Remove items first (list_likes cascade-delete with the list)
+    const i = await sb.from('list_items').delete().eq('list_id', listId);
+    if (i.error) { msg.textContent = 'Hata: ' + i.error.message; btn.disabled = false; btn.textContent = '🗑 LİSTEYİ SİL'; return; }
+    const d = await sb.from('lists').delete().eq('id', listId);
+    if (d.error) { msg.textContent = 'Hata: ' + d.error.message; btn.disabled = false; btn.textContent = '🗑 LİSTEYİ SİL'; return; }
+    window.location.href = '/lists';
+  });
+</script>
