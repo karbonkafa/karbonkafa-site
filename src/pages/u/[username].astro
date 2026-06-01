@@ -2,8 +2,7 @@
 export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
-import gamesData from '../../data/games.json';
-import { entityHref, entitySubtitle, typeInfo } from '../../lib/entities';
+import { entityHref, typeInfo } from '../../lib/entities';
 import { titleById } from '../../lib/titles';
 
 const STATUS_BADGE: Record<string, { label: string; color: string }> = {
@@ -23,55 +22,39 @@ const { data: profile } = await supabase
 
 if (!profile) return Astro.redirect('/lists');
 
-const { data: lists } = await supabase
-  .from('lists')
-  .select('*')
-  .eq('user_id', profile.id)
-  .eq('is_public', true)
-  .order('updated_at', { ascending: false });
+// Parallel fetch (no games.json import): lists, library entries, replay count
+const [listsRes, entriesRes, replayRes] = await Promise.all([
+  supabase.from('lists').select('id, title, updated_at')
+    .eq('user_id', profile.id).eq('is_public', true)
+    .order('updated_at', { ascending: false }),
+  supabase.from('entries').select('status, rating, entity:entities(id, type, source_id, slug, title, image_url)')
+    .eq('user_id', profile.id).order('logged_at', { ascending: false }),
+  supabase.from('logs').select('id', { count: 'exact', head: true })
+    .eq('user_id', profile.id).eq('is_replay', true),
+]);
+const lists = listsRes.data || [];
+const library = (entriesRes.data || []).filter((e: any) => e.entity);
+const replayCount = replayRes.count ?? 0;
 
-const gmap: Record<string, any> = {};
-for (const g of gamesData as any[]) gmap[g.slug] = g;
-
-const listIds = (lists || []).map(l => l.id);
+// List covers + counts (entity images only — everything is entity-backed now)
+const listIds = lists.map(l => l.id);
 const { data: allItems } = listIds.length > 0
-  ? await supabase.from('list_items')
-      .select('list_id, game_slug, position, entity:entities(id, image_url)')
+  ? await supabase.from('list_items').select('list_id, entity:entities(id, image_url)')
       .in('list_id', listIds).order('position')
   : { data: [] };
 
-// Cover mosaic + count per list (entity image wins, legacy game_slug falls back)
 const coversByList: Record<string, string[]> = {};
 const countByList: Record<string, number> = {};
 for (const item of (allItems || []) as any[]) {
   countByList[item.list_id] = (countByList[item.list_id] || 0) + 1;
-  const cover = item.entity?.image_url ?? gmap[item.game_slug]?.coverUrl ?? null;
+  const cover = item.entity?.image_url ?? null;
   if (cover) (coversByList[item.list_id] ||= []).push(cover);
 }
-
-const totalItems = new Set(
-  (allItems || []).map((i: any) => i.entity?.id ? `e:${i.entity.id}` : `g:${i.game_slug}`)
-).size;
-
-// Library: everything this user has logged
-const { data: entries } = await supabase
-  .from('entries')
-  .select('status, rating, logged_at, entity:entities(id, type, source_id, slug, title, image_url, year, meta)')
-  .eq('user_id', profile.id)
-  .order('logged_at', { ascending: false });
-const library = (entries || []).filter((e: any) => e.entity);
+const totalItems = new Set((allItems || []).map((i: any) => i.entity?.id).filter(Boolean)).size;
 
 const joinDate = new Date(profile.created_at).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
 const displayName = profile.display_name || profile.username;
 const initials = displayName[0].toUpperCase();
-
-// Opt-in identity title (only shown if the user has one set and still earned it)
-// Replay count from the diary logs (graceful 0 if the logs table isn't applied yet)
-const { count: replayCount } = await supabase
-  .from('logs')
-  .select('id', { count: 'exact', head: true })
-  .eq('user_id', profile.id)
-  .eq('is_replay', true);
 
 const titleStats = {
   logged: library.length,
@@ -90,9 +73,8 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
 
 <Layout title={`${displayName} — Profil`}>
 
-  <p class="os-path" style="margin-bottom:12px;">C:\\KARBON\\USER\\{profile.username.toUpperCase()}</p>
   <!-- Hero -->
-  <div style="position: relative; margin: -40px -40px 0; padding: 60px 40px 40px; overflow: hidden; min-height: 240px; display: flex; align-items: flex-end;">
+  <div style="position: relative; margin: 0 -24px; padding: 36px 24px 32px; overflow: hidden; min-height: 200px; display: flex; align-items: flex-end; border-bottom: 1px solid #1e1e2e;">
     <!-- Background blur -->
     {heroCover && (
       <div style={`position: absolute; inset: 0; background-image: url('${heroCover}'); background-size: cover; background-position: center; filter: blur(40px) brightness(0.25); transform: scale(1.1);`}></div>
@@ -113,7 +95,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
       </div>
       <!-- Name + stats -->
       <div style="flex: 1; min-width: 200px;">
-        <p style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.12em; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px;">Profil</p>
+        <p style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.12em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 8px;">Profil</p>
         <h1 style="font-size: clamp(28px, 5vw, 52px); font-weight: 700; letter-spacing: -0.04em; margin: 0 0 12px; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.5);">{displayName}</h1>
         {shownTitle && (
           <p style="display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e5c46b; background: #e5c46b14; border: 1px solid #e5c46b33; padding: 2px 10px; margin: 0 0 12px; letter-spacing: 0.06em;">&gt; rank: {shownTitle.label}</p>
@@ -132,18 +114,18 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
               <strong style="color: #e5e5e5;">{library.length}</strong> loglandı
             </span>
           )}
-          <span style="font-size: 12px; color: #555; font-family: 'JetBrains Mono', monospace;">{joinDate}'dan beri</span>
+          <span style="font-size: 12px; color: #555; font-family: 'IBM Plex Mono', monospace;">{joinDate}'dan beri</span>
         </div>
       </div>
       <!-- Own profile actions -->
       <div id="ownActions" style="display: none; align-self: center; gap: 10px; flex-wrap: wrap;">
         <a href="/lists/create"
-          style="background: #e5c46b; color: #0a0a0a; padding: 10px 22px; font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.15s;"
+          style="background: #e5c46b; color: #0a0a0a; padding: 10px 22px; font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.15s;"
           onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           + Yeni Liste
         </a>
         <a href="/auth/logout"
-          style="border: 1px solid #333; color: #555; padding: 10px 16px; font-size: 12px; font-family: 'JetBrains Mono', monospace; text-decoration: none; transition: all 0.15s;"
+          style="border: 1px solid #333; color: #555; padding: 10px 16px; font-size: 12px; font-family: 'IBM Plex Mono', monospace; text-decoration: none; transition: all 0.15s;"
           onmouseover="this.style.borderColor='#555';this.style.color='#888'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">
           Çıkış
         </a>
@@ -153,12 +135,12 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
 
   <!-- Lists section -->
   <div style="margin-top: 48px;">
-    <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 20px;">
+    <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 20px;">
       Genel Listeler
     </p>
 
     {(!lists || lists.length === 0) ? (
-      <div style="text-align: center; padding: 80px 0; color: #333; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+      <div style="text-align: center; padding: 80px 0; color: #333; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">
         Henüz liste yok.
       </div>
     ) : (
@@ -198,7 +180,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
               <!-- Info -->
               <div style="padding: 12px 14px 14px;">
                 <h3 style="font-size: 13px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; line-height: 1.3; color: #e5e5e5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{list.title}</h3>
-                <p style="font-size: 11px; color: #555; margin: 0; font-family: 'JetBrains Mono', monospace;">{itemTotal} öğe · {updatedStr}</p>
+                <p style="font-size: 11px; color: #555; margin: 0; font-family: 'IBM Plex Mono', monospace;">{itemTotal} öğe · {updatedStr}</p>
               </div>
             </a>
           );
@@ -210,7 +192,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
   <!-- Library section -->
   {library.length > 0 && (
     <div style="margin-top: 48px;">
-      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace; margin: 0 0 16px;">
+      <p style="font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'IBM Plex Mono', monospace; margin: 0 0 16px;">
         Kütüphane
       </p>
 
@@ -260,10 +242,7 @@ const heroCover = Object.values(coversByList)[0]?.[0] ?? library[0]?.entity?.ima
 </Layout>
 
 <style>
-  /* Compensate for Layout padding to make hero full-bleed */
-  :global(main) {
-    padding-top: 0 !important;
-  }
+  /* Hero bleeds to the container edges (matches Layout's 24px side padding) */
 </style>
 
 <script define:vars={{ profileId: profile.id }}>
