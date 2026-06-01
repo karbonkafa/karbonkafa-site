@@ -280,11 +280,7 @@ a {
 
 /* ── OS PAGE CHROME ─────────────────── */
 .os-path {
-  font-family: var(--pixel);
-  font-size: 14px;
-  color: #555566;
-  letter-spacing: 0.06em;
-  margin: 0 0 6px;
+  display: none; /* C:\KARBON breadcrumb hidden site-wide */
 }
 
 .os-title {

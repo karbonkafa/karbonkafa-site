@@ -105,26 +105,6 @@ const categoryColors: Record<string, string> = {
     </div>
   </div>
 
-  <div class="bottom-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:28px;align-items:stretch;">
-    <!-- GTA -->
-    <div id="gtaPanel" style="background:#0d0d12;border:1px solid #ef444422;text-align:center;padding:16px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-      <p style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#666677;margin:0 0 4px;letter-spacing:0.04em;">📺 GTA VI — 19 KASIM 2026</p>
-      <div id="gtaPixelCount" style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#e5c46b;line-height:1;margin-bottom:2px;font-weight:300;">-- GÜN</div>
-      <p style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#444455;margin:0;">GTA TARİHİ SEZONU</p>
-    </div>
-    <!-- QUIZ -->
-    <a id="quizPanel" href="/quiz" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0d12;border:1px solid #22c55e22;text-decoration:none;padding:16px;transition:border-color 0.15s;"
-      onmouseover="this.style.borderColor='#22c55e66'" onmouseout="this.style.borderColor='#22c55e22'">
-      <p style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#22c55e;margin:0 0 6px;letter-spacing:0.06em;">🎮 QUİZ.EXE</p>
-      <p style="font-family:'IBM Plex Mono', monospace;font-size:16px;color:#22c55e;margin:0;font-weight:300;">[ BAŞLAT ]</p>
-    </a>
-    <!-- ARCADE -->
-    <a id="arcadePanel" href="/arcade" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0d12;border:1px solid #f9731622;text-decoration:none;padding:16px;transition:border-color 0.15s;"
-      onmouseover="this.style.borderColor='#f9731666'" onmouseout="this.style.borderColor='#f9731622'">
-      <p style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#f97316;margin:0 0 6px;letter-spacing:0.06em;">🕹 ARCADE.EXE</p>
-      <p style="font-family:'IBM Plex Mono', monospace;font-size:16px;color:#f97316;margin:0;font-weight:300;">[ OYNA ]</p>
-    </a>
-  </div>
 
 </Layout>
 
@@ -160,11 +140,6 @@ const categoryColors: Record<string, string> = {
       });
     });
   })();
-
-  // GTA countdown
-  const days = Math.ceil((new Date('2026-11-19T10:00:00Z').getTime() - Date.now()) / 86400000);
-  const gtaEl = document.getElementById('gtaPixelCount');
-  if (gtaEl) gtaEl.textContent = `${Math.max(0, days)} GÜN`;
 
   // World cities
   const CITIES = [

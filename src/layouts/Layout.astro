@@ -85,10 +85,12 @@ const isActive = (href: string) =>
           </a>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #ef4444; letter-spacing: 0.06em;">ALPHA VERSION</span>
         </div>
+        <a id="gtaCounter" href="/schedule" title="GTA VI — 19 Kasım 2026" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;text-decoration:none;border:1px solid #e5c46b33;padding:2px 10px;white-space:nowrap;transition:border-color 0.1s;"
+          onmouseover="this.style.borderColor='#e5c46b'" onmouseout="this.style.borderColor='#e5c46b33'">📺 GTA VI · -- GÜN</a>
       </div>
 
       <!-- Radio + System Info -->
-      <div class="layout-sys-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
+      <div class="layout-sys-row" style="display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 6px; margin-bottom: 6px;">
 
         <!-- Radio -->
         <div style="background:#0d0d12;border:1px solid #3b82f622;">
@@ -126,6 +128,7 @@ const isActive = (href: string) =>
             </div>
             <div style="display:flex;align-items:baseline;gap:8px;flex-shrink:0;">
               <span id="sysWeather" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#778899;white-space:nowrap;"></span>
+              <span id="sysDay" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5c46b;white-space:nowrap;"></span>
               <span id="sysDate2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#444455;"></span>
               <span id="sysClock2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#aaaacc;line-height:1;"></span>
             </div>
@@ -320,8 +323,10 @@ const isActive = (href: string) =>
       const now = new Date();
       const time = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const date = now.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      const day = now.toLocaleDateString('tr-TR', { weekday: 'long' }).toUpperCase();
       const c = document.getElementById('sysClock2'); if (c) c.textContent = time;
       const d = document.getElementById('sysDate2'); if (d) d.textContent = date;
+      const dy = document.getElementById('sysDay'); if (dy) dy.textContent = day;
     }
     tick();
     (window as any).kbClockInterval = setInterval(tick, 1000);
@@ -509,15 +514,25 @@ const isActive = (href: string) =>
       p => put(p.coords.latitude, p.coords.longitude), () => {}, { timeout: 5000 });
   }
 
+  // ── GTA VI countdown (top bar) ─────────────────────────────
+  function setGta() {
+    const el = document.getElementById('gtaCounter');
+    if (!el) return;
+    const days = Math.ceil((new Date('2026-11-19T10:00:00Z').getTime() - Date.now()) / 86400000);
+    el.textContent = `📺 GTA VI · ${Math.max(0, days)} GÜN`;
+  }
+
   // Call directly for initial load + via event for View Transitions navigations
   startClock();
   initAuth();
   bindRadio();
   showWeather();
+  setGta();
   document.addEventListener('astro:page-load', () => {
     startClock();
     initAuth();
     bindRadio();
     showWeather();
+    setGta();
   });
 </script>
