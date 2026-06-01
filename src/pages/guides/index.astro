@@ -28,12 +28,12 @@ const guideList = [
         <div>
           <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
             <span style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">{r.platform}</span>
-            <span style="font-size: 11px; color: #e5c46b; font-family: 'JetBrains Mono', monospace;">🏆 {r.trophy}</span>
+            <span style="font-size: 11px; color: #ffc20a; font-family: 'JetBrains Mono', monospace;">🏆 {r.trophy}</span>
           </div>
           <h2 style="font-size: 17px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em;">{r.title}</h2>
           <p style="font-size: 13px; color: #666; margin: 0;">{r.missable} <span data-i18n="guide.missable">missable trophy</span> · {r.time}</p>
         </div>
-        <span style={`font-size: 12px; padding: 4px 10px; border: 1px solid ${r.status === 'Active' ? '#e5c46b44' : '#222'}; color: ${r.status === 'Active' ? '#e5c46b' : '#444'}; font-family: 'JetBrains Mono', monospace;`}>{r.status}</span>
+        <span style={`font-size: 12px; padding: 4px 10px; border: 1px solid ${r.status === 'Active' ? '#ffc20a44' : '#222'}; color: ${r.status === 'Active' ? '#ffc20a' : '#444'}; font-family: 'JetBrains Mono', monospace;`}>{r.status}</span>
       </a>
     ))}
   </div>

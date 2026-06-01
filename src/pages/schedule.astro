@@ -50,9 +50,9 @@ for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
   <!-- Channel header -->
   <div style="border: 1px solid #2a2a2a; background: #0d0d0d; margin-bottom: 2px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
     <div style="display: flex; align-items: center; gap: 16px;">
-      <div style="border: 2px solid #e5c46b; padding: 4px 10px; display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 10px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.15em; font-weight: 700;">CH</span>
-        <span style="font-size: 18px; font-weight: 700; color: #e5c46b; font-family: 'JetBrains Mono', monospace; line-height: 1;">01</span>
+      <div style="border: 2px solid #ffc20a; padding: 4px 10px; display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 10px; color: #ffc20a; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.15em; font-weight: 700;">CH</span>
+        <span style="font-size: 18px; font-weight: 700; color: #ffc20a; font-family: 'JetBrains Mono', monospace; line-height: 1;">01</span>
       </div>
       <div>
         <p style="font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.08em; text-transform: uppercase;">KARBON TV</p>
@@ -112,9 +112,9 @@ for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
           return (
             <div style={`min-height: 90px; border-right: 1px solid #1a1a1a; padding: 6px; background: ${isToday ? '#111008' : isPast ? '#090909' : '#0d0d0d'}; position: relative;`}>
               <!-- Day number -->
-              <div style={`font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; color: ${isToday ? '#e5c46b' : isPast ? '#333' : '#444'};`}>
+              <div style={`font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; color: ${isToday ? '#ffc20a' : isPast ? '#333' : '#444'};`}>
                 {String(day).padStart(2,'0')}
-                {isToday && <span style="font-size: 7px; background: #e5c46b; color: #000; padding: 1px 4px; font-weight: 700; letter-spacing: 0.06em;">BUGÜN</span>}
+                {isToday && <span style="font-size: 7px; background: #ffc20a; color: #000; padding: 1px 4px; font-weight: 700; letter-spacing: 0.06em;">BUGÜN</span>}
               </div>
               <!-- Slots -->
               {slots.map((slot: any) => {
@@ -142,7 +142,7 @@ for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
     <p style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace; margin: 0; letter-spacing: 0.04em;">KARBON TV © 2026 — Tüm yayın saatleri TSİ (UTC+3)</p>
     <div style="display: flex; align-items: center; gap: 12px;">
       <span style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace;">GTA 6 Konsol Lansmanına</span>
-      <span id="gtaCountdownSmall" style="font-size: 10px; color: #e5c46b; font-family: 'JetBrains Mono', monospace; font-weight: 700;"></span>
+      <span id="gtaCountdownSmall" style="font-size: 10px; color: #ffc20a; font-family: 'JetBrains Mono', monospace; font-weight: 700;"></span>
       <span style="font-size: 10px; color: #333; font-family: 'JetBrains Mono', monospace;">gün kaldı</span>
     </div>
   </div>

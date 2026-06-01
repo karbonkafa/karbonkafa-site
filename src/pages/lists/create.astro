@@ -15,7 +15,7 @@ import { ENTITY_TYPES } from '../../lib/entities';
       </div>
       <div style="padding:32px 24px;text-align:center;">
         <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#555566;margin:0 0 20px;letter-spacing:0.04em;">Liste oluşturmak için giriş yapman gerekiyor.</p>
-        <a href="/auth/login" style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">GİRİŞ YAP →</a>
+        <a href="/auth/login" style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#ffc20a;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">GİRİŞ YAP →</a>
       </div>
     </div>
   </div>
@@ -25,18 +25,18 @@ import { ENTITY_TYPES } from '../../lib/entities';
 
     <!-- Title & Description -->
     <div class="px-window" style="margin-bottom:12px;">
-      <div class="px-titlebar" style="border-left-color:#e5c46b;">
-        <span class="px-title" style="color:#e5c46b;">📋 LİSTE OLUŞTUR.EXE</span>
+      <div class="px-titlebar" style="border-left-color:#ffc20a;">
+        <span class="px-title" style="color:#ffc20a;">📋 LİSTE OLUŞTUR.EXE</span>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
       <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
         <input id="listTitle" type="text" placeholder="Liste başlığı..."
           autocomplete="off" maxlength="100"
           style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:10px 12px;font-family:'IBM Plex Mono', monospace;font-size:12px;outline:none;box-sizing:border-box;letter-spacing:0.02em;transition:border-color 0.15s;"
-          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
+          onfocus="this.style.borderColor='#ffc20a44'" onblur="this.style.borderColor='#1e1e2e'" />
         <textarea id="listDesc" placeholder="Açıklama (isteğe bağlı)..." maxlength="500" rows="2"
           style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#aaaacc;padding:10px 12px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;resize:vertical;transition:border-color 0.15s;"
-          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
+          onfocus="this.style.borderColor='#ffc20a44'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
       </div>
     </div>
 
@@ -77,7 +77,7 @@ import { ENTITY_TYPES } from '../../lib/entities';
     <!-- Actions -->
     <div style="display:flex;align-items:center;gap:12px;">
       <button id="saveBtn"
-        style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;transition:opacity 0.15s;"
+        style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#ffc20a;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;transition:opacity 0.15s;"
         onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
         LİSTEYİ OLUŞTUR →
       </button>
@@ -243,7 +243,7 @@ import { ENTITY_TYPES } from '../../lib/entities';
             <input type="text" placeholder="Not ekle..." value="${esc(it.note)}"
               oninput="window.__note(${i}, this.value)"
               style="background:#080810;border:1px solid #1e1e2e;color:#888899;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;transition:border-color 0.1s;"
-              onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
+              onfocus="this.style.borderColor='#ffc20a44'" onblur="this.style.borderColor='#1e1e2e'" />
           </div>
           <button onclick="window.__rm(${i})"
             style="background:none;border:1px solid #1e1e2e;color:#444455;cursor:pointer;font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 8px;margin-top:2px;transition:all 0.1s;"

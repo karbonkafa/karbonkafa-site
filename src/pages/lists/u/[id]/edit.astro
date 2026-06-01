@@ -12,7 +12,7 @@ const { id } = Astro.params;
       <div class="px-titlebar"><span class="px-title">🔒 ERİŞİM REDDEDİLDİ</span><div class="px-btns"><span class="px-btn">×</span></div></div>
       <div style="padding:32px 24px;">
         <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#555566;margin:0 0 20px;letter-spacing:0.04em;">Bu listeyi düzenleme yetkin yok.</p>
-        <a id="wallBack" href="/lists" style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">← LİSTEYE DÖN</a>
+        <a id="wallBack" href="/lists" style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#ffc20a;color:#0a0a0a;padding:8px 24px;text-decoration:none;letter-spacing:0.06em;">← LİSTEYE DÖN</a>
       </div>
     </div>
   </div>
@@ -20,26 +20,26 @@ const { id } = Astro.params;
   <!-- Edit form -->
   <div id="editForm" style="display:none;">
     <div class="px-window" style="margin-bottom:12px;">
-      <div class="px-titlebar" style="border-left-color:#e5c46b;">
-        <span class="px-title" style="color:#e5c46b;">✎ LİSTE DÜZENLE.EXE</span>
+      <div class="px-titlebar" style="border-left-color:#ffc20a;">
+        <span class="px-title" style="color:#ffc20a;">✎ LİSTE DÜZENLE.EXE</span>
         <div class="px-btns"><span class="px-btn">─</span><span class="px-btn">□</span><span class="px-btn">×</span></div>
       </div>
       <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
         <input id="listTitle" type="text" placeholder="Liste başlığı..." maxlength="100" autocomplete="off"
           style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#e5e5e5;padding:10px 12px;font-family:'IBM Plex Mono', monospace;font-size:12px;outline:none;box-sizing:border-box;"
-          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'" />
+          onfocus="this.style.borderColor='#ffc20a44'" onblur="this.style.borderColor='#1e1e2e'" />
         <textarea id="listDesc" placeholder="Açıklama (isteğe bağlı)..." maxlength="500" rows="2"
           style="width:100%;background:#080810;border:1px solid #1e1e2e;color:#aaaacc;padding:10px 12px;font-size:11px;font-family:inherit;outline:none;box-sizing:border-box;resize:vertical;"
-          onfocus="this.style.borderColor='#e5c46b44'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
+          onfocus="this.style.borderColor='#ffc20a44'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
         <label style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#888899;cursor:pointer;">
-          <input id="listPublic" type="checkbox" style="accent-color:#e5c46b;" /> Herkese açık
+          <input id="listPublic" type="checkbox" style="accent-color:#ffc20a;" /> Herkese açık
         </label>
       </div>
     </div>
 
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <button id="saveBtn"
-        style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">
+        style="font-family:'IBM Plex Mono', monospace;font-size:12px;background:#ffc20a;border:none;color:#0a0a0a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">
         KAYDET →
       </button>
       <a id="cancelBtn" href="#" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;text-decoration:none;border:1px solid #1e1e2e;padding:8px 16px;transition:all 0.1s;"

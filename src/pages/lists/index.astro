@@ -9,11 +9,11 @@ import Layout from '../../layouts/Layout.astro';
   <!-- ── LİSTELER ─────────────────────────── -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:12px;">
     <div style="display:flex;align-items:baseline;gap:10px;">
-      <h2 style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#e5c46b;margin:0;letter-spacing:0.04em;">📋 LİSTELER.LOG</h2>
+      <h2 style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#ffc20a;margin:0;letter-spacing:0.04em;">📋 LİSTELER.LOG</h2>
       <span id="listCount" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;"></span>
     </div>
     <a href="/lists/create" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;transition:color 0.1s;"
-      onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#555566'">+ YENİ LİSTE</a>
+      onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#555566'">+ YENİ LİSTE</a>
   </div>
 
   <div id="allLists" class="list-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-bottom:24px;">
@@ -49,7 +49,7 @@ import Layout from '../../layouts/Layout.astro';
       el.innerHTML = `
         <div style="grid-column:1/-1;padding:32px;text-align:center;">
           <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;margin:0 0 12px;letter-spacing:0.04em;">HENÜZ LİSTE YOK — İLKİNİ SEN OLUŞTUR</p>
-          <a href="/lists/create" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#e5c46b;color:#0a0a0a;padding:6px 18px;text-decoration:none;letter-spacing:0.06em;">LİSTE OLUŞTUR →</a>
+          <a href="/lists/create" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#ffc20a;color:#0a0a0a;padding:6px 18px;text-decoration:none;letter-spacing:0.06em;">LİSTE OLUŞTUR →</a>
         </div>`;
       return;
     }
@@ -73,18 +73,18 @@ import Layout from '../../layouts/Layout.astro';
 
       return `
         <a href="/lists/u/${list.id}"
-          style="display:block;background:#0d0d12;border:1px solid #e5c46b22;text-decoration:none;transition:border-color 0.15s;"
-          onmouseover="this.style.borderColor='#e5c46b66'" onmouseout="this.style.borderColor='#e5c46b22'">
+          style="display:block;background:#0d0d12;border:1px solid #ffc20a22;text-decoration:none;transition:border-color 0.15s;"
+          onmouseover="this.style.borderColor='#ffc20a66'" onmouseout="this.style.borderColor='#ffc20a22'">
           <div style="padding:14px 16px;border-bottom:1px solid #1e1e2e;">
             <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px;">
               <p style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#ffffff;margin:0;line-height:1.2;">${esc(list.title)}</p>
-              <span style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#444455;flex-shrink:0;white-space:nowrap;">${items.length} öğe${likeCount > 0 ? ` · <span style="color:#e5c46b;">♥${likeCount}</span>` : ''}</span>
+              <span style="font-family:'IBM Plex Mono', monospace;font-size:10px;color:#444455;flex-shrink:0;white-space:nowrap;">${items.length} öğe${likeCount > 0 ? ` · <span style="color:#ffc20a;">♥${likeCount}</span>` : ''}</span>
             </div>
             ${list.description ? `<p style="font-size:11px;color:#555566;margin:0;line-height:1.5;">${esc(list.description)}</p>` : ''}
           </div>
           <div style="padding:8px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
             <div style="display:flex;gap:2px;flex-wrap:wrap;">${thumbs}</div>
-            <div style="width:32px;height:32px;background:#1a1a2a;border:1px solid #2a2a3a;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;flex-shrink:0;">${avatar}</div>
+            <div style="width:32px;height:32px;background:#1a1a2a;border:1px solid #2a2a3a;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;flex-shrink:0;">${avatar}</div>
           </div>
         </a>`;
     }).join('');

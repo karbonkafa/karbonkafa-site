@@ -60,9 +60,9 @@ const { count: likeCount } = await supabase
 
   <!-- Header window -->
   <div class="px-window" style="margin-bottom:12px;">
-    <div class="px-titlebar" style="border-left-color:#e5c46b;">
+    <div class="px-titlebar" style="border-left-color:#ffc20a;">
       <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-        <span class="px-title" style="color:#e5c46b;">📋 LİSTELER.LOG</span>
+        <span class="px-title" style="color:#ffc20a;">📋 LİSTELER.LOG</span>
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">›</span>
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{list.title.toUpperCase()}</span>
       </div>
@@ -74,7 +74,7 @@ const { count: likeCount } = await supabase
       <!-- Breadcrumb -->
       <div style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;margin-bottom:10px;letter-spacing:0.06em;">
         <a href="/lists" style="color:#444455;transition:color 0.1s;"
-          onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">LİSTELER</a>
+          onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#444455'">LİSTELER</a>
         <span style="margin:0 6px;color:#2a2a3a;">›</span>
         <span style="color:#888899;">{list.title.toUpperCase()}</span>
       </div>
@@ -91,13 +91,13 @@ const { count: likeCount } = await supabase
         {author && (
           <a href={`/u/${author.username}`} style="display:flex;align-items:center;gap:7px;text-decoration:none;transition:opacity 0.1s;"
             onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-            <div style="width:22px;height:22px;border-radius:50%;overflow:hidden;background:#1a1a2a;border:1px solid #2a2a3a;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;">
+            <div style="width:22px;height:22px;border-radius:50%;overflow:hidden;background:#1a1a2a;border:1px solid #2a2a3a;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">
               {author.avatar_url
                 ? <img src={author.avatar_url} style="width:100%;height:100%;object-fit:cover;" />
                 : (author.display_name || author.username)[0].toUpperCase()
               }
             </div>
-            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;">{author.username}</span>
+            <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">{author.username}</span>
           </a>
         )}
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{dateStr}</span>
@@ -112,7 +112,7 @@ const { count: likeCount } = await supabase
 
         <!-- Edit button — shown client-side if own list -->
         <a id="editBtn" href={`/lists/u/${id}/edit`} style="display:none;font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;text-decoration:none;transition:all 0.1s;"
-          onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#555566';this.style.borderColor='#1e1e2e'">
+          onmouseover="this.style.color='#ffc20a';this.style.borderColor='#ffc20a'" onmouseout="this.style.color='#555566';this.style.borderColor='#1e1e2e'">
           DÜZENLE
         </a>
       </div>
@@ -153,14 +153,14 @@ const { count: likeCount } = await supabase
                 <span style="font-size:13px;flex-shrink:0;line-height:1.2;">{v.icon}</span>
                 {v.href
                   ? <a href={v.href} style="font-size:11px;font-weight:600;letter-spacing:-0.02em;color:#e5e5e5;line-height:1.3;transition:color 0.15s;"
-                      onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#e5e5e5'">{v.title}</a>
+                      onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#e5e5e5'">{v.title}</a>
                   : <span style="font-size:11px;font-weight:600;letter-spacing:-0.02em;color:#e5e5e5;line-height:1.3;">{v.title}</span>}
               </div>
               {v.sub && (
                 <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:0;">{v.sub}</p>
               )}
               {item.note && (
-                <p style="font-size:11px;color:#778899;margin:4px 0 0;line-height:1.6;border-left:2px solid #e5c46b33;padding-left:10px;font-style:italic;">
+                <p style="font-size:11px;color:#778899;margin:4px 0 0;line-height:1.6;border-left:2px solid #ffc20a33;padding-left:10px;font-style:italic;">
                   "{item.note}"
                 </p>
               )}
@@ -174,7 +174,7 @@ const { count: likeCount } = await supabase
   <!-- Back link -->
   <div style="margin-top:12px;">
     <a href="/lists" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;transition:color 0.1s;"
-      onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">← LİSTELER</a>
+      onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#444455'">← LİSTELER</a>
   </div>
 
 </Layout>
@@ -203,10 +203,10 @@ const { count: likeCount } = await supabase
   function renderLike() {
     likeBtn.setAttribute('aria-pressed', String(liked));
     likeHeart.textContent = liked ? '♥' : '♡';
-    likeBtn.style.color = liked ? '#e5c46b' : '#555566';
-    likeBtn.style.borderColor = liked ? '#e5c46b' : '#1e1e2e';
+    likeBtn.style.color = liked ? '#ffc20a' : '#555566';
+    likeBtn.style.borderColor = liked ? '#ffc20a' : '#1e1e2e';
   }
-  likeBtn?.addEventListener('mouseover', () => { if (!liked) likeBtn.style.borderColor = '#e5c46b66'; });
+  likeBtn?.addEventListener('mouseover', () => { if (!liked) likeBtn.style.borderColor = '#ffc20a66'; });
   likeBtn?.addEventListener('mouseout', () => { if (!liked) likeBtn.style.borderColor = '#1e1e2e'; });
 
   let likeUser: any = null;

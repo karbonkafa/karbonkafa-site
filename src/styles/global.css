@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap');
 
 :root {
-  --bg: #050508;
+  --bg: #0a0907;
   --card: #0d0d12;
   --border: #1e1e2e;
   --text: #e5e5e5;
   --muted: #555566;
-  --accent: #e5c46b;
+  --accent: #ffc20a;
   --pixel: 'IBM Plex Mono', monospace;
   --win-title: #0d0d0d;
   --win-border: #2a2a2a;
@@ -122,7 +122,7 @@ html.crt .icon-label { text-shadow: 0 0 4px currentColor; }
   text-decoration: none;
   transition: background 0.1s;
 }
-.app-icon:hover { background: rgba(229,196,107,0.08); }
+.app-icon:hover { background: rgba(255,194,10,0.08); }
 .app-icon:hover .icon-box { border-color: var(--accent); }
 
 .icon-box {
@@ -173,7 +173,7 @@ html.crt .icon-label { text-shadow: 0 0 4px currentColor; }
 .app-tab.is-active {
   color: var(--accent);
   border-bottom-color: var(--accent);
-  background: rgba(229, 196, 107, 0.08);
+  background: rgba(255, 194, 10, 0.08);
 }
 html.crt .app-tab.is-active { text-shadow: 0 0 5px currentColor; }
 
@@ -247,7 +247,7 @@ a {
 }
 
 .prose a {
-  color: #e5c46b;
+  color: #ffc20a;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -257,7 +257,7 @@ a {
 }
 
 .prose blockquote {
-  border-left: 2px solid #e5c46b;
+  border-left: 2px solid #ffc20a;
   margin: 24px 0;
   padding: 8px 16px;
   color: #888;
@@ -269,7 +269,7 @@ a {
   background: #111;
   border: 1px solid #222;
   padding: 1px 6px;
-  color: #e5c46b;
+  color: #ffc20a;
 }
 
 .prose hr {

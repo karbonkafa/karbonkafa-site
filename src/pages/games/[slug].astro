@@ -22,7 +22,7 @@ const statusLabel: Record<string, string> = {
   active: 'Aktif', backlog: 'Arşivde', paused: 'Duraklatıldı', completed: 'Bitti',
 };
 const statusColor: Record<string, string> = {
-  active: '#22c55e', backlog: '#666677', paused: '#eab308', completed: '#e5c46b',
+  active: '#22c55e', backlog: '#666677', paused: '#eab308', completed: '#ffc20a',
 };
 
 const guide = guides[game.slug];
@@ -46,7 +46,7 @@ const q = encodeURIComponent(game.title);
 const allLinks = [
   ...(steamId ? [
     { label: 'Steam',   url: `https://store.steampowered.com/app/${steamId}/`,  color: '#4a9eed' },
-    { label: 'SteamDB', url: `https://www.steamdb.info/app/${steamId}/`,         color: '#e5c46b' },
+    { label: 'SteamDB', url: `https://www.steamdb.info/app/${steamId}/`,         color: '#ffc20a' },
   ] : []),
   ...(game.stores?.epic?.url  ? [{ label: 'Epic',  url: game.stores.epic.url,  color: '#aaa' }] : []),
   ...(game.stores?.gog?.url   ? [{ label: 'GOG',   url: game.stores.gog.url,   color: '#a1253a' }] : []),
@@ -76,8 +76,8 @@ const refRows = [
   ...(game.metacriticScore ? [{ key: '', label: 'Metacritic', value: String(game.metacriticScore), color: game.metacriticScore >= 80 ? '#22c55e' : game.metacriticScore >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(igdb.totalRating ? [{ key: '', label: 'IGDB', value: `${igdb.totalRating} / 100`, color: igdb.totalRating >= 80 ? '#22c55e' : igdb.totalRating >= 60 ? '#eab308' : '#ef4444' }] : []),
   ...(game.steamReviews?.total > 0 ? [{ key: '', label: 'Steam', value: `${game.steamReviews.percent}% · ${game.steamReviews.label}`, color: game.steamReviews.percent >= 80 ? '#22c55e' : game.steamReviews.percent >= 60 ? '#eab308' : '#ef4444' }] : []),
-  ...(hours ? [{ key: 'game.played', label: 'Oynandı', value: hours, color: '#e5c46b' }] : []),
-  ...(review.overall ? [{ key: '', label: 'Karbon Skoru', value: `${review.overall}/10`, color: '#e5c46b' }] : []),
+  ...(hours ? [{ key: 'game.played', label: 'Oynandı', value: hours, color: '#ffc20a' }] : []),
+  ...(review.overall ? [{ key: '', label: 'Karbon Skoru', value: `${review.overall}/10`, color: '#ffc20a' }] : []),
 ];
 
 const websiteCategories = ['official', 'wikipedia', 'reddit', 'discord', 'youtube', 'twitch'];
@@ -90,9 +90,9 @@ const filteredWebsites = igdb.websites
 
   <!-- Header window -->
   <div class="px-window" style="margin-bottom: 12px;">
-    <div class="px-titlebar" style={`border-left-color: ${statusColor[game.status] || '#e5c46b'};`}>
+    <div class="px-titlebar" style={`border-left-color: ${statusColor[game.status] || '#ffc20a'};`}>
       <div style="display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;">
-        <span class="px-title" style={`color:${statusColor[game.status] || '#e5c46b'};`}>🎮 OYUN.EXE</span>
+        <span class="px-title" style={`color:${statusColor[game.status] || '#ffc20a'};`}>🎮 OYUN.EXE</span>
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#333344;">›</span>
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{game.title.toUpperCase()}</span>
       </div>
@@ -109,7 +109,7 @@ const filteredWebsites = igdb.websites
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;">{p}</span>
       ))}
       {game.isPriorityBacklog && (
-        <span data-i18n="game.priority" style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #e5c46b44;color:#e5c46b;padding:2px 10px;">⭐ Priority</span>
+        <span data-i18n="game.priority" style="font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #ffc20a44;color:#ffc20a;padding:2px 10px;">⭐ Priority</span>
       )}
     </div>
   </div>
@@ -235,8 +235,8 @@ const filteredWebsites = igdb.websites
   <!-- Personal Note -->
   {game.note && (
     <div class="px-window" style="margin-bottom: 12px;">
-      <div class="px-titlebar" style="border-left-color: #e5c46b;">
-        <span class="px-title" style="color: #e5c46b;">📝 KARBON NOTU</span>
+      <div class="px-titlebar" style="border-left-color: #ffc20a;">
+        <span class="px-title" style="color: #ffc20a;">📝 KARBON NOTU</span>
         <div class="px-btns"><span class="px-btn">─</span></div>
       </div>
       <div style="padding: 14px 16px;">
@@ -247,18 +247,18 @@ const filteredWebsites = igdb.websites
 
   <!-- Achievement Guide Banner -->
   {guide && (
-    <a href={guide.path} class="px-window" style="display:block;text-decoration:none;margin-bottom:12px;border-color:#e5c46b44;transition:border-color 0.15s;"
-      onmouseover="this.style.borderColor='#e5c46b'" onmouseout="this.style.borderColor='#e5c46b44'">
-      <div class="px-titlebar" style="border-left-color: #e5c46b;">
-        <span class="px-title" style="color:#e5c46b;">🏆 ACHIEVEMENT GUIDE</span>
-        <div class="px-btns"><span class="px-btn" style="color:#e5c46b;">→</span></div>
+    <a href={guide.path} class="px-window" style="display:block;text-decoration:none;margin-bottom:12px;border-color:#ffc20a44;transition:border-color 0.15s;"
+      onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#ffc20a44'">
+      <div class="px-titlebar" style="border-left-color: #ffc20a;">
+        <span class="px-title" style="color:#ffc20a;">🏆 ACHIEVEMENT GUIDE</span>
+        <div class="px-btns"><span class="px-btn" style="color:#ffc20a;">→</span></div>
       </div>
       <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
         <div>
           <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5e5e5;margin:0 0 4px;">{game.title} — {guide.trophy}</p>
           <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;margin:0;">{guide.missable} missable · {guide.hours}</p>
         </div>
-        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;" data-i18n="guide.open">REHBER →</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;" data-i18n="guide.open">REHBER →</span>
       </div>
     </a>
   )}
@@ -281,7 +281,7 @@ const filteredWebsites = igdb.websites
           return (
             <a href={`/games/${similar.slug}`}
               style="display:flex;flex-direction:column;background:#0d0d12;border:1px solid #1e1e2e;overflow:hidden;transition:border-color 0.15s;"
-              onmouseover="this.style.borderColor='#e5c46b'" onmouseout="this.style.borderColor='#1e1e2e'">
+              onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#1e1e2e'">
               <div style="aspect-ratio:16/9;overflow:hidden;">
                 <img src={bannerUrl} alt={similar.name} loading="lazy"
                   style={`width:100%;height:100%;object-fit:cover;object-position:${sId ? 'center' : 'top center'};display:block;`} />
@@ -355,10 +355,10 @@ const filteredWebsites = igdb.websites
 
   <!-- Reviews -->
   <div class="px-window" style="margin-bottom: 12px;">
-    <div class="px-titlebar" style="border-left-color: #e5c46b;">
+    <div class="px-titlebar" style="border-left-color: #ffc20a;">
       <div style="display:flex;align-items:center;gap:12px;">
-        <span class="px-title" style="color:#e5c46b;" data-i18n="review.title">📊 İNCELEME</span>
-        {review.overall && <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;">{review.overall}/10</span>}
+        <span class="px-title" style="color:#ffc20a;" data-i18n="review.title">📊 İNCELEME</span>
+        {review.overall && <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;">{review.overall}/10</span>}
       </div>
       <div class="px-btns"><span class="px-btn">─</span></div>
     </div>
@@ -378,12 +378,12 @@ const filteredWebsites = igdb.websites
             <p data-i18n={cat.descKey} style="font-size:11px;color:#444455;margin:0;">{cat.desc}</p>
           </div>
           <div style="position:relative;height:3px;background:#1e1e2e;border-radius:2px;">
-            <div class="score-bar" style={`height:100%;border-radius:2px;background:#e5c46b;width:${score ? score * 10 : 0}%;transition:width 0.3s;`}></div>
+            <div class="score-bar" style={`height:100%;border-radius:2px;background:#ffc20a;width:${score ? score * 10 : 0}%;transition:width 0.3s;`}></div>
           </div>
           <div style="display:flex;gap:2px;align-items:center;">
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
               <button class="score-btn admin-edit" data-value={n}
-                style={`background:none;border:none;cursor:pointer;width:16px;height:16px;border-radius:2px;font-size:0;padding:0;background-color:${score && n <= score ? '#e5c46b' : '#1e1e2e'};transition:background-color 0.1s;`}
+                style={`background:none;border:none;cursor:pointer;width:16px;height:16px;border-radius:2px;font-size:0;padding:0;background-color:${score && n <= score ? '#ffc20a' : '#1e1e2e'};transition:background-color 0.1s;`}
                 title={String(n)}>{n}</button>
             ))}
             <span class="score-label" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;min-width:26px;text-align:right;margin-left:4px;">
@@ -399,7 +399,7 @@ const filteredWebsites = igdb.websites
         {review.overall ? `güncellendi ${new Date(review.updatedAt).toLocaleDateString('tr-TR')}` : 'henüz incelenmedi'}
       </p>
       <button id="saveReview" data-slug={game.slug} class="admin-edit"
-        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#e5c46b;color:#0a0a0a;border:none;padding:6px 18px;cursor:pointer;transition:opacity 0.15s;"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#ffc20a;color:#0a0a0a;border:none;padding:6px 18px;cursor:pointer;transition:opacity 0.15s;"
         onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
         <span data-i18n="review.save">KAYDET</span>
       </button>
@@ -426,7 +426,7 @@ const filteredWebsites = igdb.websites
               <label style="display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid #1e1e2e;cursor:pointer;transition:background 0.1s;"
                 onmouseover="this.style.background='#0d0d18'" onmouseout="this.style.background='transparent'">
                 <input type="checkbox" class="achievement-check" data-name={a.name}
-                  style="accent-color:#e5c46b;width:14px;height:14px;cursor:pointer;flex-shrink:0;" />
+                  style="accent-color:#ffc20a;width:14px;height:14px;cursor:pointer;flex-shrink:0;" />
                 <span style={`font-size:11px;color:${a.missable ? '#e5e5e5' : '#888899'};`}>{a.name}</span>
                 {a.missable && <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#ef4444;margin-left:auto;flex-shrink:0;">missable</span>}
               </label>
@@ -452,7 +452,7 @@ const filteredWebsites = igdb.websites
       {igdb.expansions?.map((e: any) => (
         <div style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
           <p style="font-size:11px;margin:0;color:#ccccdd;">{e.name}</p>
-          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;white-space:nowrap;">EXPANSION</span>
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;white-space:nowrap;">EXPANSION</span>
         </div>
       ))}
       {igdb.dlcs?.map((d: any) => (
@@ -519,7 +519,7 @@ const filteredWebsites = igdb.websites
 
   <a id="backBtn" href="/lists"
     style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;transition:color 0.15s;"
-    onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">
+    onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#444455'">
     ← GERİ
   </a>
 
@@ -592,7 +592,7 @@ const filteredWebsites = igdb.websites
     if (current > 0) scores[key] = current;
 
     function render(val: number) {
-      btns.forEach(b => { b.style.backgroundColor = parseInt(b.dataset.value!) <= val ? '#e5c46b' : '#1e1e2e'; });
+      btns.forEach(b => { b.style.backgroundColor = parseInt(b.dataset.value!) <= val ? '#ffc20a' : '#1e1e2e'; });
       bar.style.width = `${val * 10}%`;
       scoreLabel.textContent = val > 0 ? String(val) : '—';
     }

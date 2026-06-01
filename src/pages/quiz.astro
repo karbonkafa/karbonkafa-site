@@ -19,7 +19,7 @@ const titles = pool.map(g => g.title);
         <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">DOĞRU</div>
       </div>
       <div style="text-align:center;">
-        <div id="streakVal" style="font-size:28px;font-weight:600;color:#e5c46b;">0</div>
+        <div id="streakVal" style="font-size:28px;font-weight:600;color:#ffc20a;">0</div>
         <div style="font-size:12px;color:#444455;letter-spacing:0.06em;">SERİ</div>
       </div>
       <div style="text-align:center;">
@@ -73,7 +73,7 @@ const titles = pool.map(g => g.title);
           onmouseover="this.style.borderColor='#555566';this.style.color='#aaa'" onmouseout="this.style.borderColor='#1e1e2e';this.style.color='#666677'">
           ✕ BİLMİYORUM
         </button>
-        <button id="nextBtn" style="display:none;font-family:'IBM Plex Mono', monospace;font-size:12px;background:#e5c46b;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
+        <button id="nextBtn" style="display:none;font-family:'IBM Plex Mono', monospace;font-size:12px;background:#ffc20a;border:none;color:#0a0a0a;padding:7px 20px;cursor:pointer;letter-spacing:0.06em;margin-left:auto;"
           onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           SONRAKI →
         </button>
@@ -130,7 +130,7 @@ function renderLives() {
 
 function renderLevelDots() {
   levelDots.innerHTML = Array.from({length: CROPS.length - 1}, (_, i) =>
-    `<div style="width:8px;height:8px;border-radius:50%;background:${i < level ? '#22c55e' : i === level ? '#e5c46b' : '#1e1e2e'};"></div>`
+    `<div style="width:8px;height:8px;border-radius:50%;background:${i < level ? '#22c55e' : i === level ? '#ffc20a' : '#1e1e2e'};"></div>`
   ).join('');
 }
 
@@ -244,7 +244,7 @@ function reveal(correct) {
   const cta = document.getElementById('revealCta');
 
   icon.textContent = correct ? '✓' : '?';
-  icon.style.color = correct ? '#22c55e' : '#e5c46b';
+  icon.style.color = correct ? '#22c55e' : '#ffc20a';
   icon.style.fontSize = '56px';
   titleEl.textContent = g.title;
   titleEl.style.color = correct ? '#22c55e' : '#e5e5e5';
@@ -258,7 +258,7 @@ function reveal(correct) {
     const btn = document.createElement('a');
     btn.href = `/games/${g.slug}`;
     btn.textContent = 'OYNAMALISIN →';
-    btn.style.cssText = 'background:#e5c46b;color:#0a0a0a;padding:8px 18px;font-family:"VT323",monospace;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:0.06em;';
+    btn.style.cssText = 'background:#ffc20a;color:#0a0a0a;padding:8px 18px;font-family:"VT323",monospace;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:0.06em;';
     cta.appendChild(btn);
   }
   const infoBtn = document.createElement('a');

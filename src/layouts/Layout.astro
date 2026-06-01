@@ -16,7 +16,7 @@ const ogImage = new URL('/logo.png', Astro.site ?? 'https://www.karbonkafa.com')
 
 const HOME = { href: '/', icon: '🏠', label: 'ANA SAYFA', color: '#e5e5e5' };
 const apps = [
-  { href: '/lists',      icon: '📋', label: 'LİSTELER',  color: '#e5c46b' },
+  { href: '/lists',      icon: '📋', label: 'LİSTELER',  color: '#ffc20a' },
   { href: '/guides',     icon: '🏆', label: 'REHBERLER', color: '#f59e0b' },
   { href: '/news',       icon: '📰', label: 'HABERLER',  color: '#4a9eed' },
   { href: '/dizi-film',  icon: '🎬', label: 'DİZİ&FİLM', color: '#9b59b6' },
@@ -69,9 +69,9 @@ const isActive = (href: string) =>
     </script>
     <ClientRouter />
   </head>
-  <body style="background:#0a0a0a; color:#e5e5e5; margin:0;">
+  <body style="background:#0a0907; color:#e5e5e5; margin:0;">
 
-    <div style="position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 50%, #0a0a1a 0%, #050508 70%); pointer-events: none; z-index: -1;"></div>
+    <div style="position: fixed; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 35%, #15110a 0%, #0a0907 70%); pointer-events: none; z-index: -1;"></div>
 
     <button id="langToggle" style="display:none;">EN</button>
 
@@ -85,8 +85,8 @@ const isActive = (href: string) =>
           </a>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #ef4444; letter-spacing: 0.06em;">ALPHA VERSION</span>
         </div>
-        <a id="gtaCounter" href="/schedule" title="GTA VI — 19 Kasım 2026" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;text-decoration:none;border:1px solid #e5c46b33;padding:2px 10px;white-space:nowrap;transition:border-color 0.1s;"
-          onmouseover="this.style.borderColor='#e5c46b'" onmouseout="this.style.borderColor='#e5c46b33'">📺 GTA VI · -- GÜN</a>
+        <a id="gtaCounter" href="/schedule" title="GTA VI — 19 Kasım 2026" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#ffc20a;text-decoration:none;border:1px solid #ffc20a33;padding:2px 10px;white-space:nowrap;transition:border-color 0.1s;"
+          onmouseover="this.style.borderColor='#ffc20a'" onmouseout="this.style.borderColor='#ffc20a33'">📺 GTA VI · -- GÜN</a>
       </div>
 
       <!-- Radio + System Info -->
@@ -117,18 +117,18 @@ const isActive = (href: string) =>
           <div style="padding:6px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
               <a id="sysLogin" href="/auth/login" style="display:none;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#888899;border:1px solid #2a2a3a;padding:1px 8px;text-decoration:none;transition:all 0.1s;"
-                onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b55'" onmouseout="this.style.color='#888899';this.style.borderColor='#2a2a3a'">
+                onmouseover="this.style.color='#ffc20a';this.style.borderColor='#ffc20a55'" onmouseout="this.style.color='#888899';this.style.borderColor='#2a2a3a'">
                 👤 GİRİŞ
               </a>
               <a id="sysProfile" href="#" style="display:none;align-items:center;gap:6px;text-decoration:none;cursor:pointer;transition:opacity 0.1s;"
                 onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
-                <div id="sysAvatar" style="width:20px;height:20px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:10px;color:#e5c46b;flex-shrink:0;"></div>
+                <div id="sysAvatar" style="width:20px;height:20px;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:10px;color:#ffc20a;flex-shrink:0;"></div>
                 <span id="sysUser" style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#aaaacc;"></span>
               </a>
             </div>
             <div style="display:flex;align-items:baseline;gap:8px;flex-shrink:0;">
               <span id="sysWeather" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#778899;white-space:nowrap;"></span>
-              <span id="sysDay" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#e5c46b;white-space:nowrap;"></span>
+              <span id="sysDay" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#ffc20a;white-space:nowrap;"></span>
               <span id="sysDate2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#444455;"></span>
               <span id="sysClock2" style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#aaaacc;line-height:1;"></span>
             </div>
@@ -139,8 +139,8 @@ const isActive = (href: string) =>
                 ⏻
               </a>
               <button id="langToggle2"
-                style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #e5c46b33;color:#e5c46b66;padding:1px 7px;cursor:pointer;transition:all 0.1s;flex-shrink:0;"
-                onmouseover="this.style.color='#e5c46b';this.style.borderColor='#e5c46b'" onmouseout="this.style.color='#e5c46b66';this.style.borderColor='#e5c46b33'">
+                style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #ffc20a33;color:#ffc20a66;padding:1px 7px;cursor:pointer;transition:all 0.1s;flex-shrink:0;"
+                onmouseover="this.style.color='#ffc20a';this.style.borderColor='#ffc20a'" onmouseout="this.style.color='#ffc20a66';this.style.borderColor='#ffc20a33'">
                 EN
               </button>
             </div>
@@ -168,7 +168,7 @@ const isActive = (href: string) =>
 
         <a href="/" style="display:flex;align-items:center;gap:6px;padding:0 14px;border-right:1px solid #1e1e2e;text-decoration:none;transition:background 0.1s;flex-shrink:0;"
           onmouseover="this.style.background='#0d0d12'" onmouseout="this.style.background='none'">
-          <div style="width:16px;height:16px;background:#e5c46b;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#000;font-weight:900;flex-shrink:0;">K</div>
+          <div style="width:16px;height:16px;background:#ffc20a;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#000;font-weight:900;flex-shrink:0;">K</div>
         </a>
 
         <div style="display:flex;align-items:stretch;overflow-x:auto;flex:1;min-width:0;">
@@ -197,12 +197,12 @@ const isActive = (href: string) =>
 
         <div style="display:flex;align-items:center;border-left:1px solid #1e1e2e;flex-shrink:0;">
           <a id="taskbarLogin" href="/auth/login" style="display:none;align-items:center;padding:0 12px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#555566;text-decoration:none;transition:all 0.1s;height:100%;"
-            onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#555566'">
+            onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#555566'">
             👤
           </a>
           <a id="taskbarProfile" href="#" style="display:none;align-items:center;padding:0 12px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#aaaacc;text-decoration:none;transition:all 0.1s;height:100%;"
-            onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#aaaacc'">
-            <div id="taskbarAvatar" style="width:20px;height:20px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:11px;color:#e5c46b;"></div>
+            onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#aaaacc'">
+            <div id="taskbarAvatar" style="width:20px;height:20px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:11px;color:#ffc20a;"></div>
           </a>
         </div>
 

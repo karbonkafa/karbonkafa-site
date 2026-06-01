@@ -13,7 +13,7 @@ const categoryColors: Record<string, string> = {
   'Donanım':  '#f97316',
   'Endüstri': '#9b59b6',
   'Bağımsız': '#14b8a6',
-  'Haftalık': '#e5c46b',
+  'Haftalık': '#ffc20a',
 };
 ---
 
@@ -31,7 +31,7 @@ const categoryColors: Record<string, string> = {
         <button
           class="cat-btn"
           data-cat={cat}
-          style={`font-family:'IBM Plex Mono', monospace; font-size: 11px; padding: 3px 10px; border: 1px solid ${i === 0 ? '#e5c46b' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#e5c46b' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
+          style={`font-family:'IBM Plex Mono', monospace; font-size: 11px; padding: 3px 10px; border: 1px solid ${i === 0 ? '#ffc20a' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#ffc20a' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
         >
           {cat}
         </button>
@@ -109,8 +109,8 @@ const categoryColors: Record<string, string> = {
           b.style.borderColor = '#1e1e2e';
           b.style.color = '#666677';
         });
-        btn.style.borderColor = '#e5c46b';
-        btn.style.color = '#e5c46b';
+        btn.style.borderColor = '#ffc20a';
+        btn.style.color = '#ffc20a';
         document.querySelectorAll<HTMLElement>('.news-item').forEach(item => {
           const visible = cat === 'Tümü' || item.dataset.category === cat;
           item.style.display = visible ? 'flex' : 'none';

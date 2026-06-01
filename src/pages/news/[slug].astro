@@ -19,7 +19,7 @@ const categoryColors: Record<string, string> = {
   'Donanım':  '#f97316',
   'Endüstri': '#9b59b6',
   'Bağımsız': '#14b8a6',
-  'Haftalık': '#e5c46b',
+  'Haftalık': '#ffc20a',
 };
 
 const color = categoryColors[article.data.category] || '#666677';
@@ -91,7 +91,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
 
       <!-- Progress bar -->
       <div id="listenProgress" style="display:none;margin-top:10px;height:2px;background:#1e1e2e;position:relative;overflow:hidden;">
-        <div id="listenBar" style="height:100%;background:#e5c46b;width:0%;transition:width 0.3s;"></div>
+        <div id="listenBar" style="height:100%;background:#ffc20a;width:0%;transition:width 0.3s;"></div>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
     )}
     <a href="/news"
       style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;transition:color 0.1s;"
-      onmouseover="this.style.color='#e5c46b'" onmouseout="this.style.color='#444455'">
+      onmouseover="this.style.color='#ffc20a'" onmouseout="this.style.color='#444455'">
       ← HABERLER
     </a>
   </div>
@@ -154,7 +154,7 @@ const dateStr = article.data.date.toLocaleDateString('tr-TR', { day: 'numeric', 
 
   function setPlaying() {
     icon.textContent = '■'; label.textContent = 'DURDUR';
-    btn.style.borderColor = '#e5c46b'; btn.style.color = '#e5c46b';
+    btn.style.borderColor = '#ffc20a'; btn.style.color = '#ffc20a';
     btn.dataset.active = '1'; progress.style.display = 'block';
   }
 

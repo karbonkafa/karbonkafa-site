@@ -7,11 +7,11 @@ import Layout from '../layouts/Layout.astro';
   <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
     <div>
       <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#666677;margin:0 0 4px;letter-spacing:0.08em;">C:\KARBON\ARCADE</p>
-      <h1 style="font-family:'IBM Plex Mono', monospace;font-size:32px;color:#e5c46b;margin:0;letter-spacing:0.06em;">ARCADE.EXE</h1>
+      <h1 style="font-family:'IBM Plex Mono', monospace;font-size:32px;color:#ffc20a;margin:0;letter-spacing:0.06em;">ARCADE.EXE</h1>
     </div>
     <div style="display:flex;gap:4px;">
       {[
-        { id:'pong',   label:'🏓 PONG',   color:'#e5c46b' },
+        { id:'pong',   label:'🏓 PONG',   color:'#ffc20a' },
         { id:'snake',  label:'🐍 SNAKE',  color:'#22c55e' },
         { id:'pacman', label:'👾 PACMAN',  color:'#f59e0b' },
       ].map(g => (
@@ -31,7 +31,7 @@ import Layout from '../layouts/Layout.astro';
       <div style="display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;">
         <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#777788;margin:0;text-align:center;">MOUSE / DOKUNMA → sol raket. İlk 7 puan kazanır.</p>
         <canvas id="pong-canvas" style="border:2px solid #1e1e2e;display:block;max-width:100%;cursor:none;image-rendering:pixelated;"></canvas>
-        <button id="pong-start" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:2px solid #e5c46b;color:#e5c46b;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
+        <button id="pong-start" style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:2px solid #ffc20a;color:#ffc20a;padding:8px 24px;cursor:pointer;letter-spacing:0.06em;">[ BAŞLAT ]</button>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
 // ─── TABS ───────────────────────────────────────────────────────
-const COLORS: Record<string,string> = { pong:'#e5c46b', snake:'#22c55e', pacman:'#f59e0b' };
+const COLORS: Record<string,string> = { pong:'#ffc20a', snake:'#22c55e', pacman:'#f59e0b' };
 document.querySelectorAll('.game-tab').forEach(t =>
   t.addEventListener('click', () => {
     const id = (t as HTMLElement).dataset.game!;
@@ -166,7 +166,7 @@ function drawPong() {
     pctx.fillText('BAŞLAT butonuna bas', PW/2, PH/2); return;
   }
 
-  pctx.fillStyle='#e5c46b'; pctx.fillRect(20, pong.player.y, pong.player.w, pong.player.h);
+  pctx.fillStyle='#ffc20a'; pctx.fillRect(20, pong.player.y, pong.player.w, pong.player.h);
   pctx.fillStyle='#ef4444'; pctx.fillRect(PW-32, pong.ai.y, pong.ai.w, pong.ai.h);
   pctx.fillStyle='#e5e5e5'; pctx.fillRect(pong.ball.x-pong.ball.r, pong.ball.y-pong.ball.r, pong.ball.r*2, pong.ball.r*2);
 
@@ -255,7 +255,7 @@ function drawSnake() {
   sctx.fillStyle='#ef4444'; sctx.fillRect(snake.food.x*SG+3,snake.food.y*SG+3,SG-6,SG-6);
 
   snake.body.forEach((s,i)=>{
-    sctx.fillStyle=i===0?'#e5c46b':i%2===0?'#c6a84b':'#a88a3b';
+    sctx.fillStyle=i===0?'#ffc20a':i%2===0?'#c6a84b':'#a88a3b';
     sctx.fillRect(s.x*SG+1,s.y*SG+1,SG-2,SG-2);
   });
 
@@ -490,7 +490,7 @@ function drawPacman() {
     if(px.dc===-1){sa+=Math.PI;ea+=Math.PI;}
     else if(px.dr===-1){sa+=Math.PI*1.5;ea+=Math.PI*1.5;}
     else if(px.dr===1){sa+=Math.PI*0.5;ea+=Math.PI*0.5;}
-    pacx.fillStyle='#e5c46b';
+    pacx.fillStyle='#ffc20a';
     pacx.beginPath(); pacx.moveTo(cx,cy); pacx.arc(cx,cy,pr,sa,ea); pacx.closePath(); pacx.fill();
   }
 
@@ -498,7 +498,7 @@ function drawPacman() {
   pacx.fillStyle='#666677'; pacx.font='18px VT323'; pacx.textAlign='left';
   pacx.fillText(`SKOR:${pac.score}`,6,H+22);
   pacx.textAlign='center';
-  pacx.fillStyle='#e5c46b';
+  pacx.fillStyle='#ffc20a';
   for(let i=0;i<pac.lives;i++) pacx.fillText('●',W/2-16+i*18,H+22);
   pacx.textAlign='right'; pacx.fillStyle='#444455';
   pacx.fillText(`EN İYİ:${pac.hi}`,W-4,H+22);

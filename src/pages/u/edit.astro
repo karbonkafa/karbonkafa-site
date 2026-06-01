@@ -18,14 +18,14 @@ import { supabase } from '../../lib/supabase';
 
     <div id="authWall" style="display: none; text-align: center; padding: 48px 0; color: #444; font-family: 'JetBrains Mono', monospace;">
       <p style="margin: 0 0 16px;">Giriş yapman gerekiyor.</p>
-      <a href="/auth/login" style="color: #e5c46b; text-decoration: none;">Giriş Yap →</a>
+      <a href="/auth/login" style="color: #ffc20a; text-decoration: none;">Giriş Yap →</a>
     </div>
 
     <div id="editForm" style="display: none;">
 
       <!-- Avatar preview -->
       <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 32px; padding: 20px; background: #111; border: 1px solid #1a1a1a;">
-        <div id="avatarPreview" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; background: #222; border: 2px solid #333; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: #e5c46b;"></div>
+        <div id="avatarPreview" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; background: #222; border: 2px solid #333; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: #ffc20a;"></div>
         <div>
           <p style="font-size: 13px; color: #888; margin: 0 0 6px;">Profil fotoğrafın Discord/Google giriş bilgilerinden geliyor.</p>
           <p style="font-size: 11px; color: #444; font-family: 'JetBrains Mono', monospace; margin: 0;">Değiştirmek için farklı bir hesapla giriş yap.</p>
@@ -65,7 +65,7 @@ import { supabase } from '../../lib/supabase';
       <!-- Save -->
       <div style="display: flex; align-items: center; gap: 12px;">
         <button id="saveBtn"
-          style="background: #e5c46b; border: none; color: #0a0a0a; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;"
+          style="background: #ffc20a; border: none; color: #0a0a0a; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s;"
           onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           Kaydet
         </button>
@@ -141,8 +141,8 @@ import { supabase } from '../../lib/supabase';
       const chip = (id: string | null, label: string, on: boolean, locked: boolean, title: string) =>
         `<button type="button" data-tid="${id ?? ''}" ${locked ? 'disabled' : ''} title="${title}"
           style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 11px;letter-spacing:0.04em;cursor:${locked ? 'not-allowed' : 'pointer'};
-          background:${on ? '#e5c46b' : 'transparent'};color:${on ? '#0a0a0a' : (locked ? '#3a3a3a' : '#aaa')};
-          border:1px solid ${on ? '#e5c46b' : (locked ? '#1f1f1f' : '#333')};opacity:${locked ? 0.6 : 1};">${label}</button>`;
+          background:${on ? '#ffc20a' : 'transparent'};color:${on ? '#0a0a0a' : (locked ? '#3a3a3a' : '#aaa')};
+          border:1px solid ${on ? '#ffc20a' : (locked ? '#1f1f1f' : '#333')};opacity:${locked ? 0.6 : 1};">${label}</button>`;
       picker.innerHTML =
         chip(null, 'GİZLE', selectedTitle === null, false, 'Unvan gösterme') +
         TITLES.map(t => {

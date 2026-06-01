@@ -34,7 +34,7 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
     <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
       <div class="ea-status" style="display:flex;gap:4px;flex-wrap:wrap;">
         {[
-          { k: 'want',    label: 'İSTİYORUM', c: '#e5c46b' },
+          { k: 'want',    label: 'İSTİYORUM', c: '#ffc20a' },
           { k: 'active',  label: 'AKTİF',     c: '#3b82f6' },
           { k: 'done',    label: 'BİTTİ',     c: '#22c55e' },
           { k: 'dropped', label: 'BIRAKTI',   c: '#ef4444' },
@@ -46,7 +46,7 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
         ))}
       </div>
       <select class="ea-rating"
-        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#e5c46b;padding:4px 8px;cursor:pointer;outline:none;">
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;background:#0d0d12;border:1px solid #1e1e2e;color:#ffc20a;padding:4px 8px;cursor:pointer;outline:none;">
         <option value="">PUAN</option>
         {[10,9,8,7,6,5,4,3,2,1].map(n => <option value={n}>{n}/10</option>)}
       </select>
