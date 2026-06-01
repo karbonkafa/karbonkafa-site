@@ -84,7 +84,7 @@ for (const g of games) gmap[g.slug] = g;
   (async () => {
     const { data: lists } = await sb
       .from('lists')
-      .select('id, title, description, created_at, profiles(username, display_name, avatar_url), list_items(game_slug)')
+      .select('id, title, description, created_at, profiles!lists_user_id_fkey(username, display_name, avatar_url), list_items(entity_id)')
       .eq('is_public', true)
       .order('created_at', { ascending: false })
       .limit(20);

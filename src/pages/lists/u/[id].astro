@@ -9,7 +9,7 @@ const { id } = Astro.params;
 
 const { data: list } = await supabase
   .from('lists')
-  .select('*, profiles(username, display_name, avatar_url)')
+  .select('*, profiles!lists_user_id_fkey(username, display_name, avatar_url)')
   .eq('id', id)
   .single();
 
