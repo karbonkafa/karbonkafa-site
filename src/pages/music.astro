@@ -1,115 +1,105 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// `spotify`: paste a Spotify playlist/album/track share link (Share → Copy link).
+// Accepts full URL, spotify:playlist:ID, or a bare ID. Empty → track-list fallback.
 const playlists = [
-  {
-    title: "Night City Radio",
-    game: "Cyberpunk 2077",
-    mood: "Electro / Synthwave",
-    color: "#f7e700",
+  { title: "Night City Radio", game: "Cyberpunk 2077", mood: "Electro / Synthwave", color: "#f7e700", spotify: "",
     tracks: [
       { name: "A Like Supreme — Refused", duration: "4:12" },
       { name: "Chippin' In — Refused", duration: "3:48" },
       { name: "Never Fade Away — SAMURAI", duration: "4:31" },
       { name: "Black Dog — Rat Boy", duration: "3:22" },
       { name: "Belly of the Beast — Grimes", duration: "3:54" },
-    ],
-  },
-  {
-    title: "The Land of Wine",
-    game: "The Witcher 3: Blood and Wine",
-    mood: "Orkestral / Avrupa Folk",
-    color: "#c6a84b",
+    ] },
+  { title: "The Land of Wine", game: "The Witcher 3: Blood and Wine", mood: "Orkestral / Avrupa Folk", color: "#c6a84b", spotify: "",
     tracks: [
       { name: "Priscilla's Song", duration: "2:58" },
       { name: "Silver for Monsters", duration: "3:44" },
       { name: "Toussaint Knights", duration: "4:02" },
       { name: "Hunt or Be Hunted", duration: "2:31" },
       { name: "The Wolven Storm", duration: "3:17" },
-    ],
-  },
-  {
-    title: "Elden Ring — A Grim Ascent",
-    game: "Elden Ring",
-    mood: "Karanlık Orkestral / Ambient",
-    color: "#e07040",
+    ] },
+  { title: "Elden Ring — A Grim Ascent", game: "Elden Ring", mood: "Karanlık Orkestral / Ambient", color: "#e07040", spotify: "",
     tracks: [
       { name: "Marika's Woe", duration: "3:22" },
       { name: "God Slaying Sword", duration: "5:14" },
       { name: "Radahn, Starscourge", duration: "4:48" },
       { name: "Elden Beast", duration: "5:33" },
       { name: "A Vast Golden Sky", duration: "2:55" },
-    ],
-  },
-  {
-    title: "Hollow Knight — Silksong Beklentisi",
-    game: "Hollow Knight",
-    mood: "Orkestral / Melankoli",
-    color: "#22c55e",
+    ] },
+  { title: "Hollow Knight — Silksong Beklentisi", game: "Hollow Knight", mood: "Orkestral / Melankoli", color: "#22c55e", spotify: "",
     tracks: [
       { name: "Hollow Knight", duration: "3:41" },
       { name: "Dirtmouth", duration: "2:12" },
       { name: "White Palace", duration: "3:55" },
       { name: "Gods & Glory", duration: "4:08" },
       { name: "Pale Court", duration: "5:22" },
-    ],
-  },
-  {
-    title: "GTA Tarihi Radyo",
-    game: "GTA Serisi",
-    mood: "Radio / Mixed",
-    color: "#ef4444",
+    ] },
+  { title: "GTA Tarihi Radyo", game: "GTA Serisi", mood: "Radio / Mixed", color: "#ef4444", spotify: "",
     tracks: [
       { name: "K-DST — Fleetwood Mac", duration: "Sonsuz" },
       { name: "Radio Los Santos — Dr. Dre", duration: "Sonsuz" },
       { name: "Liberty City Radio — Deftones", duration: "Sonsuz" },
       { name: "Vice City FM — A Flock of Seagulls", duration: "Sonsuz" },
       { name: "BlueArk Radio — Bob Marley", duration: "Sonsuz" },
-    ],
-  },
-  {
-    title: "Lo-Fi Gaming Session",
-    game: "Genel",
-    mood: "Lo-Fi / Chill",
-    color: "#3b82f6",
+    ] },
+  { title: "Lo-Fi Gaming Session", game: "Genel", mood: "Lo-Fi / Chill", color: "#3b82f6", spotify: "",
     tracks: [
       { name: "Late Night Homework", duration: "Canlı" },
       { name: "Study & Relax", duration: "Canlı" },
       { name: "Chilled Cow Beats", duration: "Canlı" },
-    ],
-  },
+    ] },
 ];
+
+// Normalize a Spotify link/ID into an embed URL (dark theme).
+function spotifyEmbed(s: string): string | null {
+  if (!s) return null;
+  const m = s.match(/(playlist|album|track|artist|episode|show)[/:]([A-Za-z0-9]+)/);
+  if (m) return `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`;
+  if (/^[A-Za-z0-9]{18,}$/.test(s.trim())) return `https://open.spotify.com/embed/playlist/${s.trim()}?utm_source=generator&theme=0`;
+  return null;
+}
 ---
 
 <Layout title="Müzik — Karbon TV">
 
   <h1 class="os-title">🎵 MÜZİK</h1>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px;">
-    {playlists.map(pl => (
-      <div style={`background: #111; border: 1px solid ${pl.color}33; display: flex; flex-direction: column;`}>
-        <!-- Header -->
-        <div style={`padding: 16px 18px; border-bottom: 1px solid ${pl.color}22;`}>
-          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
-            <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{pl.title}</h2>
-            <span style={`font-size: 12px; color: ${pl.color}; border: 1px solid ${pl.color}44; padding: 1px 8px; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; letter-spacing: 0.04em;`}>♪ {pl.tracks.length}</span>
-          </div>
-          <p style="font-size: 15px; color: #555566; margin: 0; font-family: 'IBM Plex Mono', monospace;">{pl.game}  ·  {pl.mood}</p>
-        </div>
-        <!-- Track list -->
-        <div style="flex: 1;">
-          {pl.tracks.map((track, i) => (
-            <div style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 18px; border-bottom: 1px solid #1a1a1a;`}>
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 14px; color: #444455; font-family: 'IBM Plex Mono', monospace; min-width: 20px;">{i + 1}</span>
-                <span style="font-size: 12px; color: #888;">{track.name}</span>
-              </div>
-              <span style="font-size: 14px; color: #555566; font-family: 'IBM Plex Mono', monospace;">{track.duration}</span>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px;">
+    {playlists.map(pl => {
+      const embed = spotifyEmbed(pl.spotify);
+      return (
+        <div style={`background: #111; border: 1px solid ${pl.color}33; display: flex; flex-direction: column;`}>
+          <!-- Header -->
+          <div style={`padding: 14px 16px; border-bottom: 1px solid ${pl.color}22;`}>
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
+              <h2 style="font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -0.01em;">{pl.title}</h2>
+              <span style={`font-size: 12px; color: ${pl.color}; border: 1px solid ${pl.color}44; padding: 1px 8px; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; letter-spacing: 0.04em;`}>{embed ? '♫ SPOTIFY' : `♪ ${pl.tracks.length}`}</span>
             </div>
-          ))}
+            <p style="font-size: 13px; color: #555566; margin: 0; font-family: 'IBM Plex Mono', monospace;">{pl.game}  ·  {pl.mood}</p>
+          </div>
+
+          {embed ? (
+            <iframe src={embed} width="100%" height="352" loading="lazy"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              style="border:0; display:block;"></iframe>
+          ) : (
+            <div style="flex: 1;">
+              {pl.tracks.map((track, i) => (
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid #1a1a1a;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 14px; color: #444455; font-family: 'IBM Plex Mono', monospace; min-width: 20px;">{i + 1}</span>
+                    <span style="font-size: 12px; color: #888;">{track.name}</span>
+                  </div>
+                  <span style="font-size: 14px; color: #555566; font-family: 'IBM Plex Mono', monospace;">{track.duration}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
-    ))}
+      );
+    })}
   </div>
 
 </Layout>
