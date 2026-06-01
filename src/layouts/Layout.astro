@@ -514,12 +514,25 @@ const isActive = (href: string) =>
       p => put(p.coords.latitude, p.coords.longitude), () => {}, { timeout: 5000 });
   }
 
-  // ── GTA VI countdown (top bar) ─────────────────────────────
+  // ── GTA VI countdown (top bar) — live d:h:m:s ──────────────
   function setGta() {
-    const el = document.getElementById('gtaCounter');
-    if (!el) return;
-    const days = Math.ceil((new Date('2026-11-19T10:00:00Z').getTime() - Date.now()) / 86400000);
-    el.textContent = `📺 GTA VI · ${Math.max(0, days)} GÜN`;
+    if ((window as any).kbGtaInterval) clearInterval((window as any).kbGtaInterval);
+    const target = new Date('2026-11-19T10:00:00Z').getTime();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    function tick() {
+      const el = document.getElementById('gtaCounter');
+      if (!el) return;
+      let diff = Math.max(0, target - Date.now());
+      const d = Math.floor(diff / 86400000); diff -= d * 86400000;
+      const h = Math.floor(diff / 3600000);  diff -= h * 3600000;
+      const m = Math.floor(diff / 60000);     diff -= m * 60000;
+      const s = Math.floor(diff / 1000);
+      el.textContent = diff <= 0 && d + h + m + s === 0
+        ? '📺 GTA VI · ÇIKTI!'
+        : `📺 GTA VI · ${d}G ${pad(h)}:${pad(m)}:${pad(s)}`;
+    }
+    tick();
+    (window as any).kbGtaInterval = setInterval(tick, 1000);
   }
 
   // Call directly for initial load + via event for View Transitions navigations
