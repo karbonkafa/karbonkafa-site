@@ -19,7 +19,7 @@ const review = reviews[game.slug] || {};
 const igdb = (igdbData as Record<string, any>)[game.slug] || {};
 
 const statusLabel: Record<string, string> = {
-  active: 'Active', backlog: 'Backlog', paused: 'Paused', completed: 'Completed',
+  active: 'Aktif', backlog: 'Arşivde', paused: 'Duraklatıldı', completed: 'Bitti',
 };
 const statusColor: Record<string, string> = {
   active: '#22c55e', backlog: '#666677', paused: '#eab308', completed: '#e5c46b',
