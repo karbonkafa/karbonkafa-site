@@ -44,7 +44,8 @@ function getMetacritic(slug: string): number | null {
         <p style="font-size:11px;color:#888899;line-height:1.7;margin:0 0 12px;max-width:640px;">{list.description}</p>
       )}
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;">{list.author}</span>
+        <a href={`/u/${list.author}`} style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#e5c46b;text-decoration:none;transition:opacity 0.1s;"
+          onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">{list.author}</a>
         {list.authorRole && <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">· {list.authorRole}</span>}
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{dateStr}</span>
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{list.games.length} oyun</span>
