@@ -49,6 +49,11 @@ const dateStr = new Date(list.created_at).toLocaleDateString('tr-TR', {
 });
 const author = list.profiles as any;
 const itemCount = (items || []).length;
+
+const { count: likeCount } = await supabase
+  .from('list_likes')
+  .select('*', { count: 'exact', head: true })
+  .eq('list_id', id);
 ---
 
 <Layout title={list.title}>
@@ -97,6 +102,13 @@ const itemCount = (items || []).length;
         )}
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{dateStr}</span>
         <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;color:#444455;">{itemCount} öğe</span>
+
+        <!-- Like button -->
+        <button id="likeBtn" data-list-id={id} aria-pressed="false"
+          style="display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono', monospace;font-size:11px;background:none;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;cursor:pointer;transition:all 0.1s;">
+          <span id="likeHeart">♡</span>
+          <span id="likeCount">{likeCount ?? 0}</span>
+        </button>
 
         <!-- Edit button — shown client-side if own list -->
         <a id="editBtn" href={`/lists/u/${id}/edit`} style="display:none;font-family:'IBM Plex Mono', monospace;font-size:11px;border:1px solid #1e1e2e;color:#555566;padding:2px 10px;text-decoration:none;transition:all 0.1s;"
@@ -180,10 +192,59 @@ const itemCount = (items || []).length;
 
   const listUserId = (document.getElementById('__listMeta') as HTMLElement).dataset.userId;
 
-  sb.auth.getUser().then(({ data: { user } }) => {
+  // ── Like button ───────────────────────────────────────────
+  const likeBtn = document.getElementById('likeBtn') as HTMLButtonElement;
+  const likeHeart = document.getElementById('likeHeart') as HTMLElement;
+  const likeCountEl = document.getElementById('likeCount') as HTMLElement;
+  const listId = likeBtn?.dataset.listId;
+  let liked = false;
+  let busy = false;
+
+  function renderLike() {
+    likeBtn.setAttribute('aria-pressed', String(liked));
+    likeHeart.textContent = liked ? '♥' : '♡';
+    likeBtn.style.color = liked ? '#e5c46b' : '#555566';
+    likeBtn.style.borderColor = liked ? '#e5c46b' : '#1e1e2e';
+  }
+  likeBtn?.addEventListener('mouseover', () => { if (!liked) likeBtn.style.borderColor = '#e5c46b66'; });
+  likeBtn?.addEventListener('mouseout', () => { if (!liked) likeBtn.style.borderColor = '#1e1e2e'; });
+
+  let likeUser: any = null;
+
+  sb.auth.getUser().then(async ({ data: { user } }) => {
+    likeUser = user;
     if (user?.id === listUserId) {
       const btn = document.getElementById('editBtn');
       if (btn) btn.style.display = 'inline-block';
     }
+    if (user && listId) {
+      const { data } = await sb.from('list_likes')
+        .select('list_id').eq('user_id', user.id).eq('list_id', listId).maybeSingle();
+      liked = !!data;
+      renderLike();
+    }
+  });
+
+  likeBtn?.addEventListener('click', async () => {
+    if (!likeUser) { window.location.href = '/auth/login'; return; }
+    if (busy || !listId) return;
+    busy = true;
+    const wasLiked = liked;
+    const n = parseInt(likeCountEl.textContent || '0', 10) || 0;
+    // optimistic
+    liked = !wasLiked;
+    likeCountEl.textContent = String(Math.max(0, n + (wasLiked ? -1 : 1)));
+    renderLike();
+
+    const res = wasLiked
+      ? await sb.from('list_likes').delete().eq('user_id', likeUser.id).eq('list_id', listId)
+      : await sb.from('list_likes').insert({ user_id: likeUser.id, list_id: listId });
+
+    if (res.error) { // revert on failure
+      liked = wasLiked;
+      likeCountEl.textContent = String(n);
+      renderLike();
+    }
+    busy = false;
   });
 </script>
