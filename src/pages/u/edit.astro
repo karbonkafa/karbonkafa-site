@@ -124,16 +124,17 @@ import { supabase } from '../../lib/supabase';
   // Load activity stats, compute earned titles, render selectable chips
   async function renderTitles(userId: string) {
     const picker = document.getElementById('titlePicker')!;
-    const [entriesRes, listsRes] = await Promise.all([
+    const [entriesRes, listsRes, replayRes] = await Promise.all([
       supabase.from('entries').select('entity:entities(type)').eq('user_id', userId),
       supabase.from('lists').select('id', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('logs').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('is_replay', true),
     ]);
     const entries = (entriesRes.data || []) as any[];
     const stats = {
       logged: entries.length,
       types: new Set(entries.map(e => e.entity?.type).filter(Boolean)).size,
       lists: listsRes.count ?? 0,
-      replays: 0, // logs table not consumed yet (Faz 3)
+      replays: replayRes.count ?? 0, // 0 if logs table not applied yet
     };
 
     const draw = () => {

@@ -66,11 +66,18 @@ const displayName = profile.display_name || profile.username;
 const initials = displayName[0].toUpperCase();
 
 // Opt-in identity title (only shown if the user has one set and still earned it)
+// Replay count from the diary logs (graceful 0 if the logs table isn't applied yet)
+const { count: replayCount } = await supabase
+  .from('logs')
+  .select('id', { count: 'exact', head: true })
+  .eq('user_id', profile.id)
+  .eq('is_replay', true);
+
 const titleStats = {
   logged: library.length,
   types: new Set(library.map((e: any) => e.entity?.type).filter(Boolean)).size,
   lists: (lists || []).length,
-  replays: 0, // logs table not consumed yet (Faz 3)
+  replays: replayCount ?? 0,
 };
 const shownTitle = (() => {
   const t = titleById(profile.display_title);

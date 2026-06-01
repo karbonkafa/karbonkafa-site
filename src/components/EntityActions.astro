@@ -50,6 +50,11 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
         <option value="">PUAN</option>
         {[10,9,8,7,6,5,4,3,2,1].map(n => <option value={n}>{n}/10</option>)}
       </select>
+      <button class="ea-log" title="Bir deneyim kaydı ekle (yeniden izleme/oynama de sayılır)"
+        style="font-family:'IBM Plex Mono', monospace;font-size:11px;padding:4px 12px;background:#0d0d12;border:1px solid #33ff6633;color:#33ff66aa;cursor:pointer;transition:all 0.1s;letter-spacing:0.04em;"
+        onmouseover="this.style.color='#33ff66';this.style.borderColor='#33ff66'" onmouseout="this.style.color='#33ff66aa';this.style.borderColor='#33ff6633'">
+        📼 LOGLA <span class="ea-logcount" style="color:#33ff6666;"></span>
+      </button>
     </div>
 
     <!-- Add to list -->
@@ -98,6 +103,16 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
     const stBtns = root.querySelectorAll<HTMLButtonElement>('.ea-st');
     const ratingSel = root.querySelector<HTMLSelectElement>('.ea-rating')!;
     const listSel = root.querySelector<HTMLSelectElement>('.ea-listsel')!;
+    const logBtn = root.querySelector<HTMLButtonElement>('.ea-log')!;
+    const logCountEl = root.querySelector<HTMLElement>('.ea-logcount')!;
+    let logBusy = false;
+
+    async function refreshLogCount(id: string) {
+      const { count } = await sb.from('logs')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id).eq('entity_id', id);
+      logCountEl.textContent = count ? `×${count}` : '';
+    }
 
     function paintStatus(active: string | null) {
       stBtns.forEach(b => {
@@ -128,8 +143,30 @@ const descriptor = JSON.stringify({ type, source, source_id: sourceId, slug, tit
           paintStatus(entry.status);
           if (entry.rating) ratingSel.value = String(entry.rating);
         }
+        refreshLogCount(entityId);
       }
     }
+
+    // ── Log a diary entry (re-experiences count as replays) ──
+    logBtn.addEventListener('click', async () => {
+      if (logBusy) return;
+      logBusy = true;
+      const id = await ensureEntity();
+      if (!id) { msg.textContent = 'Hata: içerik çözümlenemedi.'; logBusy = false; return; }
+      const { count: prior } = await sb.from('logs')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id).eq('entity_id', id);
+      const isReplay = (prior ?? 0) > 0;
+      const { error } = await sb.from('logs').insert({
+        user_id: user.id, entity_id: id,
+        rating: ratingSel.value ? Number(ratingSel.value) : null,
+        is_replay: isReplay, logged_at: new Date().toISOString(),
+      });
+      if (error) { msg.textContent = 'Hata: ' + error.message; logBusy = false; return; }
+      await refreshLogCount(id);
+      msg.textContent = isReplay ? `✓ tekrar loglandı (replay)` : '✓ loglandı';
+      logBusy = false;
+    });
 
     async function upsertEntry(patch: { status?: string; rating?: number | null }) {
       const id = await ensureEntity();
