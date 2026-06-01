@@ -14,17 +14,18 @@ const fullTitle = `${title} — karbonkafa`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://www.karbonkafa.com');
 const ogImage = new URL('/logo.png', Astro.site ?? 'https://www.karbonkafa.com');
 
+const HOME = { href: '/', icon: '🏠', label: 'ANA SAYFA', color: '#e5e5e5' };
 const apps = [
-  { href: '/lists',      icon: '📋', label: 'LİSTELER' },
-  { href: '/guides',     icon: '🏆', label: 'REHBERLER' },
-  { href: '/news',       icon: '📰', label: 'HABERLER' },
-  { href: '/dizi-film',  icon: '🎬', label: 'DİZİ&FİLM' },
-  { href: '/schedule',   icon: '📺', label: 'KARBON TV' },
-  { href: '/muzik',      icon: '🎵', label: 'MÜZİK' },
-  { href: '/yemek',      icon: '🍜', label: 'YEMEK' },
-  { href: '/mekan',      icon: '📍', label: 'MEKAN' },
-  { href: '/quiz',       icon: '🎮', label: 'QUİZ' },
-  { href: '/arcade',     icon: '🕹', label: 'ARCADE' },
+  { href: '/lists',      icon: '📋', label: 'LİSTELER',  color: '#e5c46b' },
+  { href: '/guides',     icon: '🏆', label: 'REHBERLER', color: '#f59e0b' },
+  { href: '/news',       icon: '📰', label: 'HABERLER',  color: '#4a9eed' },
+  { href: '/dizi-film',  icon: '🎬', label: 'DİZİ&FİLM', color: '#9b59b6' },
+  { href: '/schedule',   icon: '📺', label: 'KARBON TV', color: '#ef4444' },
+  { href: '/muzik',      icon: '🎵', label: 'MÜZİK',     color: '#22c55e' },
+  { href: '/yemek',      icon: '🍜', label: 'YEMEK',     color: '#f97316' },
+  { href: '/mekan',      icon: '📍', label: 'MEKAN',     color: '#14b8a6' },
+  { href: '/quiz',       icon: '🎮', label: 'QUİZ',      color: '#3b82f6' },
+  { href: '/arcade',     icon: '🕹', label: 'ARCADE',    color: '#ec4899' },
 ];
 
 // Active app highlight (normalize trailing slash)
@@ -150,14 +151,14 @@ const isActive = (href: string) =>
 
       <!-- Apps bar — terminal tabs -->
       <div style="background:#0d0d12;border:1px solid #1e1e2e;margin-bottom:8px;">
-        <div class="px-titlebar" style="border-left-color:#33ff66;">
-          <span class="px-title" style="color:#33ff66;font-size:11px;">▸ KARBON OS — UYGULAMALAR</span>
-        </div>
         <nav class="apps-tabs">
-          <a href="/" class={`app-tab${isActive('/') ? ' is-active' : ''}`}>ANA</a>
-          {apps.map(app => (
-            <a href={app.href} class={`app-tab${isActive(app.href) ? ' is-active' : ''}`}>{app.label}</a>
-          ))}
+          {[HOME, ...apps].map(app => {
+            const on = isActive(app.href);
+            const style = `color:${app.color};` + (on ? `border-bottom-color:${app.color};background:${app.color}1a;` : '');
+            return (
+              <a href={app.href} class={`app-tab${on ? ' is-active' : ''}`} style={style}>{app.label}</a>
+            );
+          })}
         </nav>
       </div>
 
