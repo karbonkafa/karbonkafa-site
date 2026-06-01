@@ -31,7 +31,7 @@ const categoryColors: Record<string, string> = {
         <button
           class="cat-btn"
           data-cat={cat}
-          style={`font-family:'IBM Plex Mono', monospace; font-size: 16px; padding: 4px 12px; border: 1px solid ${i === 0 ? '#e5c46b' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#e5c46b' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
+          style={`font-family:'IBM Plex Mono', monospace; font-size: 11px; padding: 3px 10px; border: 1px solid ${i === 0 ? '#e5c46b' : '#1e1e2e'}; background: #0d0d12; color: ${i === 0 ? '#e5c46b' : '#666677'}; cursor: pointer; transition: all 0.15s; letter-spacing:0.04em;`}
         >
           {cat}
         </button>
@@ -97,22 +97,28 @@ const categoryColors: Record<string, string> = {
 </Layout>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.cat-btn');
-  const items = document.querySelectorAll<HTMLElement>('.news-item');
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cat = btn.dataset.cat!;
-      buttons.forEach(b => {
-        b.style.borderColor = '#1e1e2e';
-        b.style.color = '#666677';
-      });
-      btn.style.borderColor = '#e5c46b';
-      btn.style.color = '#e5c46b';
-      items.forEach(item => {
-        const visible = cat === 'Tümü' || item.dataset.category === cat;
-        item.style.display = visible ? 'flex' : 'none';
+  function initNewsFilter() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.cat-btn');
+    if (!buttons.length) return;
+    buttons.forEach(btn => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat!;
+        document.querySelectorAll<HTMLButtonElement>('.cat-btn').forEach(b => {
+          b.style.borderColor = '#1e1e2e';
+          b.style.color = '#666677';
+        });
+        btn.style.borderColor = '#e5c46b';
+        btn.style.color = '#e5c46b';
+        document.querySelectorAll<HTMLElement>('.news-item').forEach(item => {
+          const visible = cat === 'Tümü' || item.dataset.category === cat;
+          item.style.display = visible ? 'flex' : 'none';
+        });
       });
     });
-  });
+  }
+
+  initNewsFilter();
+  document.addEventListener('astro:page-load', initNewsFilter);
 </script>
